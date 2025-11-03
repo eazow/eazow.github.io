@@ -113,6 +113,90 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://eazow.com/LeetCode-541-Reverse-String-II/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Eazow">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Eazow">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Eazow">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/LeetCode-541-Reverse-String-II/" class="post-title-link" itemprop="url">[LeetCode]541. Reverse String II</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2017-08-23 15:05:03" itemprop="dateCreated datePublished" datetime="2017-08-23T15:05:03+08:00">2017-08-23</time>
+    </span>
+
+  
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h3 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h3><p>Given a string and an integer k, you need to reverse the first k characters for every 2k characters counting from the start of the string. If there are less than k characters left, reverse all of them. If there are less than 2k but greater than or equal to k characters, then reverse the first k characters and left the other as original.<br><strong>Example:</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Input: s = &quot;abcdefg&quot;, k = 2</span><br><span class="line">Output: &quot;bacdfeg&quot;</span><br></pre></td></tr></table></figure>
+<p><strong>Restrictions:</strong></p>
+<ol>
+<li>The string consists of lower English letters only.</li>
+<li>Length of the given string and k will in the range [1, 10000]</li>
+</ol>
+<h3 id="难度"><a href="#难度" class="headerlink" title="难度"></a>难度</h3><p>Easy</p>
+<h3 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h3><p>每次处理s[0:2k]，将s[0:k]逆序后拼接s[k:2k]，然后将s[2k:]赋值给s，循环处理直至s为空即可</p>
+<h3 id="python代码"><a href="#python代码" class="headerlink" title="python代码"></a>python代码</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">reverseStr</span>(<span class="params">self, s, k</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        :type s: str</span></span><br><span class="line"><span class="string">        :type k: int</span></span><br><span class="line"><span class="string">        :rtype: str</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        result = <span class="string">&quot;&quot;</span></span><br><span class="line">        <span class="keyword">while</span> s:</span><br><span class="line">            temp = s[<span class="number">0</span>:k]</span><br><span class="line">            result += temp[::-<span class="number">1</span>] + s[k:<span class="number">2</span>*k]</span><br><span class="line">            s = s[<span class="number">2</span>*k:]</span><br><span class="line">        <span class="keyword">return</span> result</span><br><span class="line"></span><br><span class="line"><span class="keyword">assert</span> Solution().reverseStr(<span class="string">&quot;abcdefg&quot;</span>, <span class="number">2</span>) == <span class="string">&quot;bacdfeg&quot;</span></span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
     <link itemprop="mainEntityOfPage" href="http://eazow.com/LeetCode-551-Student-Attendance-Record-I/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -868,86 +952,6 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://eazow.com/LeetCode-404-Sum-of-Left-Leaves/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Eazow">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Eazow">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Eazow">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/LeetCode-404-Sum-of-Left-Leaves/" class="post-title-link" itemprop="url">[LeetCode]404. Sum of Left Leaves</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2017-08-08 15:12:54" itemprop="dateCreated datePublished" datetime="2017-08-08T15:12:54+08:00">2017-08-08</time>
-    </span>
-
-  
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h3 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h3><p>Find the sum of all left leaves in a given binary tree.</p>
-<p><strong>Example:</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">    3</span><br><span class="line">   / \</span><br><span class="line">  9  20</span><br><span class="line">    /  \</span><br><span class="line">   15   7</span><br><span class="line"></span><br><span class="line">There are two left leaves in the binary tree, with values 9 and 15 respectively. Return 24.</span><br></pre></td></tr></table></figure>
-
-<h3 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h3><p>递归遍历，如果为左节点，则打上标记<code>isLeft</code>，如果该节点没有左右子节点，则将该节点值累加到最后的结果中</p>
-<h3 id="python代码"><a href="#python代码" class="headerlink" title="python代码"></a>python代码</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">TreeNode</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, x</span>):</span><br><span class="line">        self.val = x</span><br><span class="line">        self.left = <span class="literal">None</span></span><br><span class="line">        self.right = <span class="literal">None</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">sumOfLeftLeaves</span>(<span class="params">self, root</span>):</span><br><span class="line">        self.result = <span class="number">0</span></span><br><span class="line">        self.traverse(root)</span><br><span class="line">        <span class="keyword">return</span> self.result</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">traverse</span>(<span class="params">self, node, isLeft=<span class="literal">False</span></span>):</span><br><span class="line">        <span class="keyword">if</span> node <span class="keyword">and</span> node.left == <span class="literal">None</span> <span class="keyword">and</span> node.right == <span class="literal">None</span> <span class="keyword">and</span> isLeft:</span><br><span class="line">            self.result += node.val</span><br><span class="line">        <span class="keyword">if</span> node:</span><br><span class="line">            self.traverse(node.left, <span class="literal">True</span>)</span><br><span class="line">            self.traverse(node.right)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">root = TreeNode(<span class="number">3</span>)</span><br><span class="line">root.left = TreeNode(<span class="number">9</span>)</span><br><span class="line">root.right = TreeNode(<span class="number">20</span>)</span><br><span class="line">root.right.left = TreeNode(<span class="number">15</span>)</span><br><span class="line">root.right.right = TreeNode(<span class="number">7</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">assert</span> Solution().sumOfLeftLeaves(root) == <span class="number">24</span></span><br></pre></td></tr></table></figure>
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
     <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/5/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
@@ -961,7 +965,7 @@
 
 <div class="copyright">
   &copy; 2008 – 
-  <span itemprop="copyrightYear">2024</span>
+  <span itemprop="copyrightYear">2025</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -972,13 +976,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">149k</span>
+    <span title="Symbols count total">165k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">2:15</span>
+    <span title="Reading time total">2:30</span>
   </span>
 </div>
 <div class="busuanzi-count">

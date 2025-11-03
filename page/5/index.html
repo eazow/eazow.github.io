@@ -113,6 +113,86 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://eazow.com/LeetCode-404-Sum-of-Left-Leaves/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Eazow">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Eazow">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Eazow">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/LeetCode-404-Sum-of-Left-Leaves/" class="post-title-link" itemprop="url">[LeetCode]404. Sum of Left Leaves</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2017-08-08 15:12:54" itemprop="dateCreated datePublished" datetime="2017-08-08T15:12:54+08:00">2017-08-08</time>
+    </span>
+
+  
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h3 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h3><p>Find the sum of all left leaves in a given binary tree.</p>
+<p><strong>Example:</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">    3</span><br><span class="line">   / \</span><br><span class="line">  9  20</span><br><span class="line">    /  \</span><br><span class="line">   15   7</span><br><span class="line"></span><br><span class="line">There are two left leaves in the binary tree, with values 9 and 15 respectively. Return 24.</span><br></pre></td></tr></table></figure>
+
+<h3 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h3><p>递归遍历，如果为左节点，则打上标记<code>isLeft</code>，如果该节点没有左右子节点，则将该节点值累加到最后的结果中</p>
+<h3 id="python代码"><a href="#python代码" class="headerlink" title="python代码"></a>python代码</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">TreeNode</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, x</span>):</span><br><span class="line">        self.val = x</span><br><span class="line">        self.left = <span class="literal">None</span></span><br><span class="line">        self.right = <span class="literal">None</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">sumOfLeftLeaves</span>(<span class="params">self, root</span>):</span><br><span class="line">        self.result = <span class="number">0</span></span><br><span class="line">        self.traverse(root)</span><br><span class="line">        <span class="keyword">return</span> self.result</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">traverse</span>(<span class="params">self, node, isLeft=<span class="literal">False</span></span>):</span><br><span class="line">        <span class="keyword">if</span> node <span class="keyword">and</span> node.left == <span class="literal">None</span> <span class="keyword">and</span> node.right == <span class="literal">None</span> <span class="keyword">and</span> isLeft:</span><br><span class="line">            self.result += node.val</span><br><span class="line">        <span class="keyword">if</span> node:</span><br><span class="line">            self.traverse(node.left, <span class="literal">True</span>)</span><br><span class="line">            self.traverse(node.right)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">root = TreeNode(<span class="number">3</span>)</span><br><span class="line">root.left = TreeNode(<span class="number">9</span>)</span><br><span class="line">root.right = TreeNode(<span class="number">20</span>)</span><br><span class="line">root.right.left = TreeNode(<span class="number">15</span>)</span><br><span class="line">root.right.right = TreeNode(<span class="number">7</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">assert</span> Solution().sumOfLeftLeaves(root) == <span class="number">24</span></span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
     <link itemprop="mainEntityOfPage" href="http://eazow.com/LeetCode-383-Ransom-Note/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -879,95 +959,6 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://eazow.com/nce/4/03-matterhorn-man/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Eazow">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Eazow">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Eazow">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/nce/4/03-matterhorn-man/" class="post-title-link" itemprop="url">Lesson 03 Matternhorn Man</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2017-01-20 00:00:00" itemprop="dateCreated datePublished" datetime="2017-01-20T00:00:00+08:00">2017-01-20</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/English/" itemprop="url" rel="index"><span itemprop="name">English</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <blockquote>
-<p>What was the main objective of early mountain climbers?</p>
-</blockquote>
-<p>Modern <strong>alpinist</strong> try to climb mountains by a route which will give them good sport, and the more difficult it is , the more highly it is regarded. In the <strong>pioneering</strong> days, however, this was not the case at all. The early climbers were looking for the easiest way to the top, because the <strong>summit</strong> was the prize they sought, especially if it had never been attained before. It is true that during their explorations they often faced difficulties and dangers of the most <strong>perilous</strong> nature, equipped in a manner which would make a modern climber <strong>shudder</strong> at the thought, but they did not go out of their way to <strong>court</strong> such excitement. They had a single aim, a <strong>solitary</strong> goal — the top!</p>
-<p>It is hard for us to realize nowadays how difficult it was for the pioneers. Except for one or two places such as Zermatt and Chamonix, which had rapidly become popular, Alpine villages tended to be <strong>impoverished</strong> settlements cut off from civilization by the high mountains. Such <strong>inns</strong> as there were generally dirty and <strong>flea-ridden</strong>; the food simply local cheese accompanied by bread often twelve months old, all washed down with <strong>coarse</strong> wine. Often a valley <strong>boasted</strong> no inn at all, and climbers found <strong>shelter</strong> wherever they could sometimes with the local priest(who was usually as poor as his <strong>parishioners</strong>), sometimes with <strong>shepherds</strong> or cheese-makes. Invariably the background was the same: dirt and poverty, and very uncomfortable. For men accustomed to eating seven-course dinners and sleeping between fine <strong>linen</strong> sheets at home, the change to the Alps must have been very hard indeed.</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
     <a class="extend prev" rel="prev" href="/page/4/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/6/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
@@ -981,7 +972,7 @@
 
 <div class="copyright">
   &copy; 2008 – 
-  <span itemprop="copyrightYear">2024</span>
+  <span itemprop="copyrightYear">2025</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -992,13 +983,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">149k</span>
+    <span title="Symbols count total">165k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">2:15</span>
+    <span title="Reading time total">2:30</span>
   </span>
 </div>
 <div class="busuanzi-count">

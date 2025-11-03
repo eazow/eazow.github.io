@@ -113,6 +113,178 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://eazow.com/LeetCode-338-Counting-Bits/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Eazow">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Eazow">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Eazow">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/LeetCode-338-Counting-Bits/" class="post-title-link" itemprop="url">[LeetCode]338. Counting Bits</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2016-06-03 14:55:49" itemprop="dateCreated datePublished" datetime="2016-06-03T14:55:49+08:00">2016-06-03</time>
+    </span>
+
+  
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <blockquote>
+<p>Given a non negative integer number <strong>num</strong>. For every numbers <strong>i</strong> in the range <strong>0 ≤ i ≤ num</strong> calculate the number of 1’s in their binary representation and return them as an array.</p>
+</blockquote>
+<blockquote>
+<p>**Example:**For <code>num = 5</code>, you should return <code>[0,1,1,2,1,2]</code>.</p>
+</blockquote>
+<h4 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h4><p>给定一个非负整数num，计算出从0到num的每个数的二进制中包含1的个数</p>
+<h4 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h4><p>对于数字n，它二进制表示形式中1的个数<code>bits[n] = bits[n&gt;&gt;1]+n&amp;1</code></p>
+<h4 id="c代码"><a href="#c代码" class="headerlink" title="c代码"></a>c代码</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;assert.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Return an array of size *returnSize.</span></span><br><span class="line"><span class="comment"> * Note: The returned array must be malloced, assume caller calls free().</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="type">int</span>* <span class="title function_">countBits</span><span class="params">(<span class="type">int</span> num, <span class="type">int</span>* returnSize)</span> &#123;</span><br><span class="line">    <span class="type">int</span> i = <span class="number">0</span>;</span><br><span class="line">    <span class="type">int</span>* bits = (<span class="type">int</span> *)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(<span class="type">int</span>) * (num+<span class="number">1</span>));</span><br><span class="line">    bits[<span class="number">0</span>] = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(i = <span class="number">0</span>; i &lt;= num; i++) &#123;</span><br><span class="line">        bits[i] = bits[i&gt;&gt;<span class="number">1</span>] + (i&amp;<span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    *returnSize = num+<span class="number">1</span>;</span><br><span class="line">    <span class="keyword">return</span> bits;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">int</span> returnSize = <span class="number">0</span>;</span><br><span class="line">    <span class="type">int</span>* bits = countBits(<span class="number">5</span>, &amp;returnSize);</span><br><span class="line">    assert(bits[<span class="number">0</span>] == <span class="number">0</span>);</span><br><span class="line">    assert(bits[<span class="number">1</span>] == <span class="number">1</span>);</span><br><span class="line">    assert(bits[<span class="number">2</span>] == <span class="number">1</span>);</span><br><span class="line">    assert(bits[<span class="number">3</span>] == <span class="number">2</span>);</span><br><span class="line">    assert(bits[<span class="number">4</span>] == <span class="number">1</span>);</span><br><span class="line">    assert(bits[<span class="number">5</span>] == <span class="number">2</span>);</span><br><span class="line">    assert(returnSize == <span class="number">6</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://eazow.com/leetcode/1-two-sum/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Eazow">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Eazow">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Eazow">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/leetcode/1-two-sum/" class="post-title-link" itemprop="url">[LeetCode]1. Two Sum</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2016-06-02 18:03:00" itemprop="dateCreated datePublished" datetime="2016-06-02T18:03:00+08:00">2016-06-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Coding/" itemprop="url" rel="index"><span itemprop="name">Coding</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>2 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h4 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h4><p>Given an array of integers, return <strong>indices</strong> of the two numbers such that they add up to a specific target.<br>You may assume that each input would have <em><strong>exactly</strong></em> one solution.<br><strong>Example:</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Given nums = [2, 7, 11, 15], target = 9,</span><br><span class="line">Because nums[0] + nums[1] = 2 + 7 = 9,</span><br><span class="line">return [0, 1].</span><br></pre></td></tr></table></figure>
+
+
+<h4 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h4><p>对数组排序后，第一个数字从数组开始遍历，二分查找满足条件的第二个数字，返回2个数字的位置。<br>由于排序导致数字位置发生了变换，因此需要一个数组记录变化后第<code>i</code>个数字之前的位置<code>numsLocation[i]</code>。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;assert.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span>* <span class="title function_">sort</span><span class="params">(<span class="type">int</span>* nums, <span class="type">int</span> numsSize)</span> &#123;</span><br><span class="line">    <span class="type">int</span> *numsLocations = (<span class="type">int</span> *)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(<span class="type">int</span>) * numsSize);</span><br><span class="line">    <span class="type">int</span> i = <span class="number">0</span>, j = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(i = <span class="number">0</span>; i &lt; numsSize; i++)</span><br><span class="line">        numsLocations[i] = i;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span>(i = <span class="number">0</span>; i &lt; numsSize; i++) &#123;</span><br><span class="line">        <span class="type">int</span> sorted = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">for</span>(j = <span class="number">0</span>; j &lt; numsSize<span class="number">-1</span>; j++) &#123;</span><br><span class="line">            <span class="keyword">if</span>(nums[j] &gt; nums[j+<span class="number">1</span>]) &#123;</span><br><span class="line">                <span class="type">int</span> temp = nums[j];</span><br><span class="line">                nums[j] = nums[j+<span class="number">1</span>];</span><br><span class="line">                nums[j+<span class="number">1</span>] = temp;</span><br><span class="line">                sorted = <span class="number">0</span>;</span><br><span class="line">                temp = numsLocations[j];</span><br><span class="line">                numsLocations[j] = numsLocations[j+<span class="number">1</span>];</span><br><span class="line">                numsLocations[j+<span class="number">1</span>] = temp;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(sorted)</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> numsLocations;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">find</span><span class="params">(<span class="type">int</span>* nums, <span class="type">int</span> num, <span class="type">int</span> start, <span class="type">int</span> end)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span>(start &gt; end)</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    <span class="type">int</span> i = (start+end)/<span class="number">2</span>;</span><br><span class="line">    <span class="keyword">if</span>(num &gt; nums[i])</span><br><span class="line">        <span class="keyword">return</span> find(nums, num, i+<span class="number">1</span>, end);</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span>(num &lt; nums[i])</span><br><span class="line">        <span class="keyword">return</span> find(nums, num, start, i<span class="number">-1</span>);</span><br><span class="line">    <span class="keyword">return</span> i;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Note: The returned array must be malloced, assume caller calls free().</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="type">int</span>* <span class="title function_">twoSum</span><span class="params">(<span class="type">int</span>* nums, <span class="type">int</span> numsSize, <span class="type">int</span> target)</span> &#123;</span><br><span class="line">    <span class="type">int</span> *numsLocations = sort(nums, numsSize);</span><br><span class="line">    <span class="type">int</span> i = <span class="number">0</span>;</span><br><span class="line">    <span class="type">int</span> num;</span><br><span class="line">    <span class="type">int</span> *locations = (<span class="type">int</span> *)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(<span class="type">int</span>) * <span class="number">2</span>);</span><br><span class="line">    <span class="type">int</span> j;</span><br><span class="line">    <span class="keyword">for</span>(i = <span class="number">0</span>; i &lt; numsSize; i++) &#123;</span><br><span class="line">        num = nums[i];</span><br><span class="line">        <span class="keyword">if</span>((j=find(nums, target-num, i+<span class="number">1</span>, numsSize<span class="number">-1</span>)) &gt;= <span class="number">0</span>) &#123;</span><br><span class="line">            locations[<span class="number">1</span>] = numsLocations[j];</span><br><span class="line">            locations[<span class="number">0</span>] = numsLocations[i];</span><br><span class="line">            <span class="keyword">return</span> locations;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">int</span> nums[<span class="number">4</span>] = &#123;<span class="number">2</span>, <span class="number">7</span>, <span class="number">11</span>, <span class="number">15</span>&#125;;</span><br><span class="line">    <span class="type">int</span> *locations = twoSum(nums, <span class="number">4</span>, <span class="number">9</span>);</span><br><span class="line">    assert(locations[<span class="number">0</span>] == <span class="number">0</span>);</span><br><span class="line">    assert(locations[<span class="number">1</span>] == <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">    <span class="type">int</span> nums2[<span class="number">3</span>] = &#123;<span class="number">5</span>, <span class="number">75</span>, <span class="number">25</span>&#125;;</span><br><span class="line">    locations = twoSum(nums2, <span class="number">3</span>, <span class="number">100</span>);</span><br><span class="line">    assert(locations[<span class="number">0</span>] == <span class="number">2</span>);</span><br><span class="line">    assert(locations[<span class="number">1</span>] == <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
     <link itemprop="mainEntityOfPage" href="http://eazow.com/markdown/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -455,7 +627,7 @@
 
 <div class="copyright">
   &copy; 2008 – 
-  <span itemprop="copyrightYear">2024</span>
+  <span itemprop="copyrightYear">2025</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -466,13 +638,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">149k</span>
+    <span title="Symbols count total">165k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">2:15</span>
+    <span title="Reading time total">2:30</span>
   </span>
 </div>
 <div class="busuanzi-count">

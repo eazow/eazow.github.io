@@ -179,10 +179,10 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <p>我们将表的格式从未排序的行数组更改为 B 树。这是一个很大的更改，需要多篇文章来实现。在本文的结尾，我们将定义叶节点的布局，并支持将键&#x2F;值对插入到单节点树中。但首先，让我们回顾一下切换到树结构的原因。</p>
+        <p>我们将表的格式从未排序的行数组更改为 B 树。这是一个很大的改动，需要多篇文章来实现。在本文的结尾，我们将定义叶节点的布局，并支持将键&#x2F;值对插入到单节点树中。但首先，让我们回顾一下切换到树结构的原因。</p>
 <h3 id="替代表格格式"><a href="#替代表格格式" class="headerlink" title="替代表格格式"></a>替代表格格式</h3><p>使用当前格式，每个页面仅存储行（无元数据），因此非常节省空间。插入也很快速，因为我们只需追加到末尾即可。但是，只能通过扫描整个表来查找特定行。如果要删除一行，则必须通过移动其后的每一行来填补该空缺。</p>
 <p>如果我们将表存储为数组，但按 id 对行进行排序，则可以使用二分查找来查找特定 id。但是，插入会很慢，因为我们必须移动很多行来腾出空间。</p>
-<p>相反，我们使用树结构。树中的每个节点可以包含数量可变的行，因此我们必须在每个节点中存储一些信息来跟踪它包含多少行。此外，所有不存储任何行的内部节点还存在存储开销。作为对更大的数据库文件进行交换，我们获得了快速的插入、删除和查找。</p>
+<p>相反，我们采用树结构。树中的每个节点可以包含可变数量的行，因此我们必须在每个节点中存储一些信息以跟踪其包含的行数。此外，还有所有不存储任何行的内部节点的存储开销。作为交换，虽然数据库文件变大了，但我们获得了快速的插入、删除和查找功能。</p>
 <table>
 <thead>
 <tr>
@@ -322,7 +322,7 @@
 
 <div class="copyright">
   &copy; 2008 – 
-  <span itemprop="copyrightYear">2024</span>
+  <span itemprop="copyrightYear">2025</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -333,13 +333,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">149k</span>
+    <span title="Symbols count total">165k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">2:15</span>
+    <span title="Reading time total">2:30</span>
   </span>
 </div>
 <div class="busuanzi-count">
