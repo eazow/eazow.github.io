@@ -1093,7 +1093,7 @@ header.header {
 }
 .banner {
   width: 100%;
-  height: 390px;
+  height: 480px;
   object-fit: cover;
 }
 @media (max-width: 767px) {
@@ -1129,7 +1129,7 @@ header.header {
 }
 .site-title {
   font-family: Lato, 'PingFang SC', 'Microsoft YaHei', sans-serif;
-  font-size: 1.375em;
+  font-size: 1.6em;
   font-weight: normal;
   line-height: 1.5;
   margin: 0;
@@ -2658,7 +2658,7 @@ hr {
   vertical-align: middle;
 }
 .links-of-author a::before {
-  background: #c665b8;
+  background: #db9c87;
   display: inline-block;
   margin-right: 3px;
   transform: translateY(-2px);
