@@ -88,7 +88,7 @@
 
 </div>
     </header>
-    <img class="banner" />
+    <div class="banner"></div>
 
     
 
@@ -199,8 +199,8 @@
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/nce/4/06-the-sporting-spirit/" rel="prev" title="Lesson 06 The Sporting Spirit">
-                  <i class="fa fa-chevron-left"></i> Lesson 06 The Sporting Spirit
+                <a href="/nce/4/08-trading-standards/" rel="prev" title="Lesson 08 Trading Standards">
+                  <i class="fa fa-chevron-left"></i> Lesson 08 Trading Standards
                 </a>
             </div>
             <div class="post-nav-item">
@@ -244,13 +244,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">178k</span>
+    <span title="Symbols count total">186k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">2:42</span>
+    <span title="Reading time total">2:49</span>
   </span>
 </div>
 <div class="busuanzi-count">
@@ -275,10 +275,11 @@
 <script>
   var numberOfBanners = 9;
   var randomNum = Math.floor(Math.random() * numberOfBanners);
-  document.getElementsByClassName("banner")[0].src =
-    "https://hyz-blog.oss-cn-hangzhou.aliyuncs.com/banner" +
-    randomNum +
-    ".jpeg";
+  const banner = document.querySelector('.banner');
+//   document.getElementsByClassName("banner")[0].style.backgroundImage =
+  const imageExtension = randomNum === 9 ? ".webp" : ".jpeg";
+  const url = "url('https://hyz-blog.oss-cn-hangzhou.aliyuncs.com/banner" + randomNum + imageExtension + "')";
+  banner.style.backgroundImage = url;
 </script>
 
 

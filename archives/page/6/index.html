@@ -88,7 +88,7 @@
 
 </div>
     </header>
-    <img class="banner" />
+    <div class="banner"></div>
 
     
 
@@ -114,13 +114,53 @@
     <div class="post-content">
       <div class="collection-title">
         
-        <span class="collection-header">Nice! 65 posts in total. Keep on posting.</span>
+        <span class="collection-header">Nice! 67 posts in total. Keep on posting.</span>
       </div>
 
       
     <div class="collection-year">
       <span class="collection-header">2017</span>
     </div>
+
+  <article itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+      <div class="post-meta-container">
+        <time itemprop="dateCreated"
+              datetime="2017-07-27T14:59:15+08:00"
+              content="2017-07-27">
+          07-27
+        </time>
+      </div>
+
+      <div class="post-title">
+          <a class="post-title-link" href="/LeetCode-595-Big-Countries/" itemprop="url">
+            <span itemprop="name">[LeetCode]595. Big Countries</span>
+          </a>
+      </div>
+
+      
+    </header>
+  </article>
+
+  <article itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+      <div class="post-meta-container">
+        <time itemprop="dateCreated"
+              datetime="2017-07-26T12:05:16+08:00"
+              content="2017-07-26">
+          07-26
+        </time>
+      </div>
+
+      <div class="post-title">
+          <a class="post-title-link" href="/LeetCode-599-Minimum-Index-Sum-of-Two-lists/" itemprop="url">
+            <span itemprop="name">[LeetCode]599. Minimum Index Sum of Two lists</span>
+          </a>
+      </div>
+
+      
+    </header>
+  </article>
 
   <article itemscope itemtype="http://schema.org/Article">
     <header class="post-header">
@@ -285,46 +325,6 @@
     </header>
   </article>
 
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-      <div class="post-meta-container">
-        <time itemprop="dateCreated"
-              datetime="2016-08-12T19:03:49+08:00"
-              content="2016-08-12">
-          08-12
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/LeetCode-377-Combination-Sum-IV/" itemprop="url">
-            <span itemprop="name">[LeetCode]377. Combination Sum IV</span>
-          </a>
-      </div>
-
-      
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-      <div class="post-meta-container">
-        <time itemprop="dateCreated"
-              datetime="2016-06-03T17:41:06+08:00"
-              content="2016-06-03">
-          06-03
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/LeetCode-144-Binary-Tree-Preorder-Traversal/" itemprop="url">
-            <span itemprop="name">[LeetCode]144. Binary Tree Preorder Traversal</span>
-          </a>
-      </div>
-
-      
-    </header>
-  </article>
-
 
     </div>
   </div>
@@ -355,13 +355,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">178k</span>
+    <span title="Symbols count total">186k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">2:42</span>
+    <span title="Reading time total">2:49</span>
   </span>
 </div>
 <div class="busuanzi-count">
@@ -386,10 +386,11 @@
 <script>
   var numberOfBanners = 9;
   var randomNum = Math.floor(Math.random() * numberOfBanners);
-  document.getElementsByClassName("banner")[0].src =
-    "https://hyz-blog.oss-cn-hangzhou.aliyuncs.com/banner" +
-    randomNum +
-    ".jpeg";
+  const banner = document.querySelector('.banner');
+//   document.getElementsByClassName("banner")[0].style.backgroundImage =
+  const imageExtension = randomNum === 9 ? ".webp" : ".jpeg";
+  const url = "url('https://hyz-blog.oss-cn-hangzhou.aliyuncs.com/banner" + randomNum + imageExtension + "')";
+  banner.style.backgroundImage = url;
 </script>
 
 

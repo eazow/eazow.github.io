@@ -88,7 +88,7 @@
 
 </div>
     </header>
-    <img class="banner" />
+    <div class="banner"></div>
 
     
 
@@ -105,6 +105,178 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://eazow.com/LeetCode-506-Relative-Ranks/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Eazow">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Eazow">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Eazow">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/LeetCode-506-Relative-Ranks/" class="post-title-link" itemprop="url">[LeetCode]506. Relative Ranks</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2017-08-11 23:10:01" itemprop="dateCreated datePublished" datetime="2017-08-11T23:10:01+08:00">2017-08-11</time>
+    </span>
+
+  
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>2 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h3 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h3><p>Given scores of <strong>N</strong> athletes, find their relative ranks and the people with the top three highest scores, who will be awarded medals: “Gold Medal”, “Silver Medal” and “Bronze Medal”.</p>
+<p><strong>Example 1:</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Input: [5, 4, 3, 2, 1]</span><br><span class="line">Output: [&quot;Gold Medal&quot;, &quot;Silver Medal&quot;, &quot;Bronze Medal&quot;, &quot;4&quot;, &quot;5&quot;]</span><br><span class="line">Explanation: The first three athletes got the top three highest scores, so they got &quot;Gold Medal&quot;, </span><br><span class="line">&quot;Silver Medal&quot; and &quot;Bronze Medal&quot;. </span><br><span class="line">For the left two athletes, you just need to output their relative ranks according to their scores.</span><br></pre></td></tr></table></figure>
+<p><strong>Note:</strong></p>
+<ol>
+<li>N is a positive integer and won’t exceed 10,000.</li>
+<li>All the scores of athletes are guaranteed to be unique.</li>
+</ol>
+<h3 id="难度"><a href="#难度" class="headerlink" title="难度"></a>难度</h3><p>Easy</p>
+<h3 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h3><p>对数组排序，同时对其索引也排序，即排序后元素之前的索引被记录。排序后的元素对应的rank位置分别为<code>Gold Medal, Silver Medal, Bronze Medal, 4, 5...</code>，然后将该rank赋值给排序前索引对应的位置即可</p>
+<h3 id="python代码"><a href="#python代码" class="headerlink" title="python代码"></a>python代码</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">class Solution(object):</span><br><span class="line">    def findRelativeRanks(self, nums):</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        :type nums: List[int]</span><br><span class="line">        :rtype: List[str]</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        numsStrs = []</span><br><span class="line">        for i in range(len(nums)):</span><br><span class="line">            numsStrs.append(str(nums[i])+&#x27;-&#x27;+str(i))</span><br><span class="line"></span><br><span class="line">        numsStrs = sorted(numsStrs, lambda x,y: cmp(int(x.split(&quot;-&quot;)[0]), int(y.split(&quot;-&quot;)[0])))[::-1]</span><br><span class="line">        ranks = [&#x27;&#x27;] * len(nums)</span><br><span class="line">        for i in range(len(numsStrs)):</span><br><span class="line">            index = int(numsStrs[i].split(&quot;-&quot;)[1])</span><br><span class="line">            if i == 0:</span><br><span class="line">                ranks[index] = &quot;Gold Medal&quot;</span><br><span class="line">            elif i == 1:</span><br><span class="line">                ranks[index] = &quot;Silver Medal&quot;</span><br><span class="line">            elif i == 2:</span><br><span class="line">                ranks[index] = &quot;Bronze Medal&quot;</span><br><span class="line">            else:</span><br><span class="line">                ranks[index] = str(i+1)</span><br><span class="line">        return ranks</span><br><span class="line"></span><br><span class="line">assert Solution().findRelativeRanks([1, 2, 3, 4, 5]) == [&quot;5&quot;, &quot;4&quot;, &quot;Bronze Medal&quot;, &quot;Silver Medal&quot;, &quot;Gold Medal&quot;]</span><br><span class="line">assert Solution().findRelativeRanks([10, 3, 8, 9, 4]) == [&quot;Gold Medal&quot;, &quot;5&quot;, &quot;Bronze Medal&quot;, &quot;Silver Medal&quot;, &quot;4&quot;]</span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://eazow.com/LeetCode-563-Binary-Tree-Tilt/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Eazow">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Eazow">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Eazow">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/LeetCode-563-Binary-Tree-Tilt/" class="post-title-link" itemprop="url">[LeetCode]563. Binary Tree Tilt</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2017-08-09 17:31:12" itemprop="dateCreated datePublished" datetime="2017-08-09T17:31:12+08:00">2017-08-09</time>
+    </span>
+
+  
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h3 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h3><p>Given a binary tree, return the tilt of the whole tree.</p>
+<p>The tilt of a tree node is defined as the absolute difference between the sum of all left subtree node values and the sum of all right subtree node values. Null node has tilt 0.</p>
+<p>The tilt of the whole tree is defined as the sum of all nodes’ tilt.</p>
+<p><strong>Example:</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Input: </span><br><span class="line">         1</span><br><span class="line">       /   \</span><br><span class="line">      2     3</span><br><span class="line">Output: 1</span><br><span class="line">Explanation: </span><br><span class="line">Tilt of node 2 : 0</span><br><span class="line">Tilt of node 3 : 0</span><br><span class="line">Tilt of node 1 : |2-3| = 1</span><br><span class="line">Tilt of binary tree : 0 + 0 + 1 = 1</span><br></pre></td></tr></table></figure>
+<p><strong>Note:</strong></p>
+<ol>
+<li>The sum of node values in any subtree won’t exceed the range of 32-bit integer.</li>
+<li>All the tilt values won’t exceed the range of 32-bit integer.</li>
+</ol>
+<h3 id="难度"><a href="#难度" class="headerlink" title="难度"></a>难度</h3><p>Easy</p>
+<h3 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h3><p>对该二叉树进行后续遍历，算出每个节点的左右子树之和的差的绝对值，累加到最后的result中。然后将节点值替换为左右子树节点值之和。</p>
+<h3 id="python代码"><a href="#python代码" class="headerlink" title="python代码"></a>python代码</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">TreeNode</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, x</span>):</span><br><span class="line">        self.val = x</span><br><span class="line">        self.left = <span class="literal">None</span></span><br><span class="line">        self.right = <span class="literal">None</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">findTilt</span>(<span class="params">self, root</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        :type root: TreeNode</span></span><br><span class="line"><span class="string">        :rtype: int</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        self.result = <span class="number">0</span></span><br><span class="line">        self.traverse(root)</span><br><span class="line">        <span class="keyword">return</span> self.result</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">traverse</span>(<span class="params">self, node</span>):</span><br><span class="line">        <span class="keyword">if</span> node:</span><br><span class="line">            self.traverse(node.left)</span><br><span class="line">            self.traverse(node.right)</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> node.left <span class="keyword">and</span> node.right:</span><br><span class="line">                self.result += <span class="built_in">abs</span>(node.right.val - node.left.val)</span><br><span class="line">                node.val += node.right.val + node.left.val</span><br><span class="line">            <span class="keyword">elif</span> node.left:</span><br><span class="line">                self.result += <span class="built_in">abs</span>(node.left.val)</span><br><span class="line">                node.val += node.left.val</span><br><span class="line">            <span class="keyword">elif</span> node.right:</span><br><span class="line">                self.result += <span class="built_in">abs</span>(node.right.val)</span><br><span class="line">                node.val += node.right.val</span><br><span class="line"></span><br><span class="line">root = TreeNode(<span class="number">1</span>)</span><br><span class="line">root.left = TreeNode(<span class="number">2</span>)</span><br><span class="line">root.right = TreeNode(<span class="number">3</span>)</span><br><span class="line">root.left.left = TreeNode(<span class="number">4</span>)</span><br><span class="line"><span class="keyword">assert</span> Solution().findTilt(root) == <span class="number">7</span></span><br><span class="line"></span><br><span class="line">root = TreeNode(-<span class="number">8</span>)</span><br><span class="line">root.left = TreeNode(<span class="number">3</span>)</span><br><span class="line">root.right = TreeNode(<span class="number">0</span>)</span><br><span class="line">root.left.left = TreeNode(-<span class="number">8</span>)</span><br><span class="line">root.left.left.right = TreeNode(-<span class="number">1</span>)</span><br><span class="line">root.left.left.right.right = TreeNode(<span class="number">8</span>)</span><br><span class="line"><span class="keyword">assert</span> Solution().findTilt(root) == <span class="number">18</span></span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -770,196 +942,6 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://eazow.com/LeetCode-595-Big-Countries/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Eazow">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Eazow">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Eazow">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/LeetCode-595-Big-Countries/" class="post-title-link" itemprop="url">[LeetCode]595. Big Countries</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2017-07-27 14:59:15" itemprop="dateCreated datePublished" datetime="2017-07-27T14:59:15+08:00">2017-07-27</time>
-    </span>
-
-  
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h5 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h5><blockquote>
-<p>There is a table <code>World</code></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">+-----------------+------------+------------+--------------+---------------+</span><br><span class="line">| name            | continent  | area       | population   | gdp           |</span><br><span class="line">+-----------------+------------+------------+--------------+---------------+</span><br><span class="line">| Afghanistan     | Asia       | 652230     | 25500100     | 20343000      |</span><br><span class="line">| Albania         | Europe     | 28748      | 2831741      | 12960000      |</span><br><span class="line">| Algeria         | Africa     | 2381741    | 37100000     | 188681000     |</span><br><span class="line">| Andorra         | Europe     | 468        | 78115        | 3712000       |</span><br><span class="line">| Angola          | Africa     | 1246700    | 20609294     | 100990000     |</span><br><span class="line">+-----------------+------------+------------+--------------+---------------+</span><br></pre></td></tr></table></figure>
-<p>A country is big if it has an area of bigger than 3 million square km or a population of more than 25 million.</p>
-</blockquote>
-<blockquote>
-<p>Write a SQL solution to output big countries’ name, population and area.</p>
-</blockquote>
-<blockquote>
-<p>For example, according to the above table, we should output:</p>
-</blockquote>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">+--------------+-------------+--------------+</span><br><span class="line">| name         | population  | area         |</span><br><span class="line">+--------------+-------------+--------------+</span><br><span class="line">| Afghanistan  | 25500100    | 652230       |</span><br><span class="line">| Algeria      | 37100000    | 2381741      |</span><br><span class="line">+--------------+-------------+--------------+</span><br></pre></td></tr></table></figure>
-
-<h5 id="难度"><a href="#难度" class="headerlink" title="难度"></a>难度</h5><p>Easy</p>
-<h5 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h5><p>没想到LeetCode有这么简单的题，直接写sql即可</p>
-<h5 id="sql"><a href="#sql" class="headerlink" title="sql"></a>sql</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># Write your MySQL query statement below</span><br><span class="line">select name, population, area from world where area &gt; 3000000 or population &gt; 25000000;</span><br></pre></td></tr></table></figure>
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://eazow.com/LeetCode-599-Minimum-Index-Sum-of-Two-lists/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Eazow">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Eazow">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Eazow">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/LeetCode-599-Minimum-Index-Sum-of-Two-lists/" class="post-title-link" itemprop="url">[LeetCode]599. Minimum Index Sum of Two lists</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2017-07-26 12:05:16" itemprop="dateCreated datePublished" datetime="2017-07-26T12:05:16+08:00">2017-07-26</time>
-    </span>
-
-  
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>2 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h5 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h5><blockquote>
-<p>Suppose Andy and Doris want to choose a restaurant for dinner, and they both have a list of favorite restaurants represented by strings.</p>
-</blockquote>
-<blockquote>
-<p>You need to help them find out their <strong>common interest</strong> with the <strong>least list index sum</strong>. If there is a choice tie between answers, output all of them with no order requirement. You could assume there always exists an answer.</p>
-</blockquote>
-<blockquote>
-<p><strong>Example 1:</strong></p>
-</blockquote>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Input:</span><br><span class="line">[&quot;Shogun&quot;, &quot;Tapioca Express&quot;, &quot;Burger King&quot;, &quot;KFC&quot;]</span><br><span class="line">[&quot;Piatti&quot;, &quot;The Grill at Torrey Pines&quot;, &quot;Hungry Hunter Steakhouse&quot;, &quot;Shogun&quot;]</span><br><span class="line">Output: [&quot;Shogun&quot;]</span><br><span class="line">Explanation: The only restaurant they both like is &quot;Shogun&quot;.</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p><strong>Example 2:</strong></p>
-</blockquote>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Input:</span><br><span class="line">[&quot;Shogun&quot;, &quot;Tapioca Express&quot;, &quot;Burger King&quot;, &quot;KFC&quot;]</span><br><span class="line">[&quot;KFC&quot;, &quot;Shogun&quot;, &quot;Burger King&quot;]</span><br><span class="line">Output: [&quot;Shogun&quot;]</span><br><span class="line">Explanation: The restaurant they both like and have the least index sum is &quot;Shogun&quot; with index sum 1 (0+1).</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p><strong>Note:</strong></p>
-</blockquote>
-<ol>
-<li>The length of both lists will be in the range of [1, 1000].</li>
-<li>The length of strings in both lists will be in the range of [1, 30].</li>
-<li>The index is starting from 0 to the list length minus 1.</li>
-<li>No duplicates in both lists.</li>
-</ol>
-<h5 id="难度"><a href="#难度" class="headerlink" title="难度"></a>难度</h5><p>Easy</p>
-<h5 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h5><p>用<code>minSum</code>保存最小的索引和，用一个<code>dict</code>记录<code>list1</code>中每个单词对应的索引序号。遍历<code>list2</code>，将值存入<code>word</code>中，计算<code>word</code>在<code>list1</code>和<code>list2</code>中的索引和，如果小于<code>minSum</code>，则替换<code>minSum</code>，并清空结果<code>list</code>，加入该<code>word</code>，如果<code>==minSum</code>，则直接加入<code>word</code></p>
-<h5 id="python代码"><a href="#python代码" class="headerlink" title="python代码"></a>python代码</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">findRestaurant</span>(<span class="params">self, list1, list2</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        :type list1: List[str]</span></span><br><span class="line"><span class="string">        :type list2: List[str]</span></span><br><span class="line"><span class="string">        :rtype: List[str]</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        list1Map = &#123;&#125;</span><br><span class="line">        i = <span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> word <span class="keyword">in</span> list1:</span><br><span class="line">            list1Map[word] = i</span><br><span class="line">            i += <span class="number">1</span></span><br><span class="line"></span><br><span class="line">        minSum = sys.maxint</span><br><span class="line">        i = <span class="number">0</span></span><br><span class="line">        restaurants = [] </span><br><span class="line">        <span class="keyword">for</span> word <span class="keyword">in</span> list2:</span><br><span class="line">            <span class="keyword">if</span> word <span class="keyword">in</span> list1Map:</span><br><span class="line">                <span class="keyword">if</span> minSum &gt; list1Map[word]+i:</span><br><span class="line">                    <span class="built_in">print</span> minSum</span><br><span class="line">                    minSum = list1Map[word]+i</span><br><span class="line">                    restaurants = []</span><br><span class="line">                    restaurants.append(word)</span><br><span class="line">                <span class="keyword">elif</span> minSum == list1Map[word]+i:</span><br><span class="line">                    restaurants.append(word)</span><br><span class="line">            i += <span class="number">1</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> restaurants</span><br><span class="line"></span><br><span class="line"><span class="keyword">assert</span> Solution().findRestaurant([<span class="string">&quot;Shogun&quot;</span>, <span class="string">&quot;Tapioca Express&quot;</span>, <span class="string">&quot;Burger King&quot;</span>, <span class="string">&quot;KFC&quot;</span>], </span><br><span class="line">    [<span class="string">&quot;Piatti&quot;</span>, <span class="string">&quot;The Grill at Torrey Pines&quot;</span>, <span class="string">&quot;Hungry Hunter Steakhouse&quot;</span>, <span class="string">&quot;Shogun&quot;</span>]) == [<span class="string">&quot;Shogun&quot;</span>]</span><br><span class="line"><span class="keyword">assert</span> Solution().findRestaurant([<span class="string">&quot;Shogun&quot;</span>, <span class="string">&quot;Tapioca Express&quot;</span>, <span class="string">&quot;Burger King&quot;</span>, <span class="string">&quot;KFC&quot;</span>], </span><br><span class="line">    [<span class="string">&quot;KFC&quot;</span>, <span class="string">&quot;Shogun&quot;</span>, <span class="string">&quot;Burger King&quot;</span>]) == [<span class="string">&quot;Shogun&quot;</span>]</span><br><span class="line"><span class="keyword">assert</span> Solution().findRestaurant([<span class="string">&quot;Shogun&quot;</span>,<span class="string">&quot;Tapioca Express&quot;</span>,<span class="string">&quot;Burger King&quot;</span>,<span class="string">&quot;KFC&quot;</span>], </span><br><span class="line">    [<span class="string">&quot;KFC&quot;</span>,<span class="string">&quot;Burger King&quot;</span>,<span class="string">&quot;Tapioca Express&quot;</span>,<span class="string">&quot;Shogun&quot;</span>]) == [<span class="string">&quot;KFC&quot;</span>,<span class="string">&quot;Burger King&quot;</span>,<span class="string">&quot;Tapioca Express&quot;</span>,<span class="string">&quot;Shogun&quot;</span>]</span><br></pre></td></tr></table></figure>
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
     <a class="extend prev" rel="prev" href="/page/4/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/6/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
@@ -984,13 +966,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">178k</span>
+    <span title="Symbols count total">186k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">2:42</span>
+    <span title="Reading time total">2:49</span>
   </span>
 </div>
 <div class="busuanzi-count">
@@ -1015,10 +997,11 @@
 <script>
   var numberOfBanners = 9;
   var randomNum = Math.floor(Math.random() * numberOfBanners);
-  document.getElementsByClassName("banner")[0].src =
-    "https://hyz-blog.oss-cn-hangzhou.aliyuncs.com/banner" +
-    randomNum +
-    ".jpeg";
+  const banner = document.querySelector('.banner');
+//   document.getElementsByClassName("banner")[0].style.backgroundImage =
+  const imageExtension = randomNum === 9 ? ".webp" : ".jpeg";
+  const url = "url('https://hyz-blog.oss-cn-hangzhou.aliyuncs.com/banner" + randomNum + imageExtension + "')";
+  banner.style.backgroundImage = url;
 </script>
 
 

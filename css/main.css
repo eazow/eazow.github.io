@@ -1095,6 +1095,9 @@ header.header {
   width: 100%;
   height: 480px;
   object-fit: cover;
+  background-size: cover; /* 覆盖整个区域 */
+  background-position: center; /* 居中 */
+  background-repeat: no-repeat;
 }
 @media (max-width: 767px) {
   .banner {
@@ -2658,7 +2661,7 @@ hr {
   vertical-align: middle;
 }
 .links-of-author a::before {
-  background: #db9c87;
+  background: #0de8aa;
   display: inline-block;
   margin-right: 3px;
   transform: translateY(-2px);
