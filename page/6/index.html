@@ -114,6 +114,172 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://eazow.com/LeetCode-627-Swap-Salary/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Eazow">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Eazow">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Eazow">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/LeetCode-627-Swap-Salary/" class="post-title-link" itemprop="url">[LeetCode]627. Swap Salary</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2017-07-29 14:49:57" itemprop="dateCreated datePublished" datetime="2017-07-29T14:49:57+08:00">2017-07-29</time>
+    </span>
+
+  
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h5 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h5><p>Given a table <code>salary</code>, such as the one below, that has m&#x3D;male and f&#x3D;female values. Swap all f and m values (i.e., change all f values to m and vice versa) with a single update query and no intermediate temp table.</p>
+<p>For example:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">| id | name | sex | salary |</span><br><span class="line">|----|------|-----|--------|</span><br><span class="line">| 1  | A    | m   | 2500   |</span><br><span class="line">| 2  | B    | f   | 1500   |</span><br><span class="line">| 3  | C    | m   | 5500   |</span><br><span class="line">| 4  | D    | f   | 500    |</span><br></pre></td></tr></table></figure>
+<p>After running your query, the above salary table should have the following rows:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">| id | name | sex | salary |</span><br><span class="line">|----|------|-----|--------|</span><br><span class="line">| 1  | A    | f   | 2500   |</span><br><span class="line">| 2  | B    | m   | 1500   |</span><br><span class="line">| 3  | C    | f   | 5500   |</span><br><span class="line">| 4  | D    | m   | 500    |</span><br></pre></td></tr></table></figure>
+
+<h5 id="难度"><a href="#难度" class="headerlink" title="难度"></a>难度</h5><p>Easy</p>
+<h5 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h5><p>需要用到sql里的if</p>
+<h5 id="sql"><a href="#sql" class="headerlink" title="sql"></a>sql</h5><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># Write your MySQL query statement below</span><br><span class="line"><span class="keyword">update</span> salary <span class="keyword">set</span> sex <span class="operator">=</span> if(sex<span class="operator">=</span><span class="string">&#x27;m&#x27;</span>, <span class="string">&#x27;f&#x27;</span>, <span class="string">&#x27;m&#x27;</span>)</span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://eazow.com/LeetCode-617-Merge-Two-Binary-Trees/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Eazow">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Eazow">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Eazow">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/LeetCode-617-Merge-Two-Binary-Trees/" class="post-title-link" itemprop="url">[LeetCode]617. Merge Two Binary Trees</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2017-07-29 11:37:40" itemprop="dateCreated datePublished" datetime="2017-07-29T11:37:40+08:00">2017-07-29</time>
+    </span>
+
+  
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h5 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h5><p>Given two binary trees and imagine that when you put one of them to cover the other, some nodes of the two trees are overlapped while the others are not.</p>
+<p>You need to merge them into a new binary tree. The merge rule is that if two nodes overlap, then sum node values up as the new value of the merged node. Otherwise, the NOT null node will be used as the node of new tree.</p>
+<p><strong>Example 1:</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">Input: </span><br><span class="line">	Tree 1                     Tree 2                  </span><br><span class="line">          1                         2                             </span><br><span class="line">         / \                       / \                            </span><br><span class="line">        3   2                     1   3                        </span><br><span class="line">       /                           \   \                      </span><br><span class="line">      5                             4   7                  </span><br><span class="line">Output: </span><br><span class="line">Merged tree:</span><br><span class="line">	     3</span><br><span class="line">	    / \</span><br><span class="line">	   4   5</span><br><span class="line">	  / \   \ </span><br><span class="line">	 5   4   7</span><br></pre></td></tr></table></figure>
+
+<h5 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h5><p>采用递归的方法。假设有2个根节点<code>t1</code>,<code>t2</code>，用<code>t1</code>保存最后的合并结果。如果<code>t1</code>和<code>t2</code>都不为空，则<code>t1.val = t1.val+t2.val</code>，递归调用赋值<code>t1.left = mergeTrees(t1.left, t2.left)</code>和<code>t1.right = mergeTrees(t1.right, t2.right)</code>; 如果<code>t1</code>为空，<code>t2</code>不为空，则<code>t1 = t2</code>，最后返回<code>t1</code>节点</p>
+<h5 id="难度"><a href="#难度" class="headerlink" title="难度"></a>难度</h5><p>Easy</p>
+<h5 id="python代码"><a href="#python代码" class="headerlink" title="python代码"></a>python代码</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Definition for a binary tree node.</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">TreeNode</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, x</span>):</span><br><span class="line">        self.val = x</span><br><span class="line">        self.left = <span class="literal">None</span></span><br><span class="line">        self.right = <span class="literal">None</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">mergeTrees</span>(<span class="params">self, t1, t2</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        :type t1: TreeNode</span></span><br><span class="line"><span class="string">        :type t2: TreeNode</span></span><br><span class="line"><span class="string">        :rtype: TreeNode</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">if</span> t1 <span class="keyword">and</span> t2:</span><br><span class="line">            t1.val += t2.val</span><br><span class="line">            t1.left = self.mergeTrees(t1.left, t2.left)</span><br><span class="line">            t1.right = self.mergeTrees(t1.right, t2.right)</span><br><span class="line">        <span class="keyword">elif</span> t2:</span><br><span class="line">            t1 = t2</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> t1</span><br><span class="line"></span><br><span class="line">root1 = TreeNode(<span class="number">1</span>)</span><br><span class="line">left1 = TreeNode(<span class="number">3</span>)</span><br><span class="line">right1 = TreeNode(<span class="number">2</span>)</span><br><span class="line">root1.left = left1</span><br><span class="line">root1.right = right1</span><br><span class="line"></span><br><span class="line">root2 = TreeNode(<span class="number">2</span>)</span><br><span class="line">left2 = TreeNode(<span class="number">1</span>)</span><br><span class="line">right2 = TreeNode(<span class="number">3</span>)</span><br><span class="line">root2.left = left2</span><br><span class="line">root2.right = right2</span><br><span class="line"></span><br><span class="line">root = Solution().mergeTrees(root1, root2)</span><br><span class="line"><span class="keyword">assert</span> root.val == <span class="number">3</span></span><br><span class="line"><span class="keyword">assert</span> root.left.val == <span class="number">4</span></span><br><span class="line"><span class="keyword">assert</span> root.right.val == <span class="number">5</span></span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
     <link itemprop="mainEntityOfPage" href="http://eazow.com/LeetCode-595-Big-Countries/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1542,190 +1708,6 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://eazow.com/leetcode167-two-sum-2-input-array-is-sorted/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Eazow">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Eazow">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Eazow">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/leetcode167-two-sum-2-input-array-is-sorted/" class="post-title-link" itemprop="url">[LeetCode]167. Two Sum II - Input array is sorted</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2016-09-01 14:12:56" itemprop="dateCreated datePublished" datetime="2016-09-01T14:12:56+08:00">2016-09-01</time>
-    </span>
-
-  
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>2 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <blockquote>
-<p>Given an array of integers that is already <em><strong>sorted in ascending order</strong></em>, find two numbers such that they add up to a specific target number.</p>
-</blockquote>
-<blockquote>
-<p>The function twoSum should return indices of the two numbers such that they add up to the target, where index1 must be less than index2. </p>
-</blockquote>
-<blockquote>
-<p>Please note that your returned answers (both index1 and index2) are not zero-based.</p>
-</blockquote>
-<blockquote>
-<p>You may assume that each input would have exactly one solution.</p>
-</blockquote>
-<blockquote>
-<p><strong>Input:</strong> numbers&#x3D;{2, 7, 11, 15}, target&#x3D;9<br><strong>Output:</strong> index1&#x3D;1, index2&#x3D;2</p>
-</blockquote>
-<h5 id="C代码"><a href="#C代码" class="headerlink" title="C代码"></a>C代码</h5><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;assert.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Return an array of size *returnSize.</span></span><br><span class="line"><span class="comment"> * Note: The returned array must be malloced, assume caller calls free().</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="type">int</span>* <span class="title function_">twoSum</span><span class="params">(<span class="type">int</span>* nums, <span class="type">int</span> numsSize, <span class="type">int</span> target, <span class="type">int</span>* returnSize)</span> &#123;</span><br><span class="line">    <span class="type">int</span> left = <span class="number">0</span>, right = numsSize<span class="number">-1</span>;</span><br><span class="line">    <span class="type">int</span>* returnNums = <span class="literal">NULL</span>;</span><br><span class="line">    <span class="type">int</span> sum = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span>(left &lt; right) &#123;</span><br><span class="line">        sum = nums[left]+nums[right];</span><br><span class="line">        <span class="keyword">if</span>(sum == target) &#123;</span><br><span class="line">            returnNums = (<span class="type">int</span> *)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(<span class="type">int</span>)*<span class="number">2</span>);</span><br><span class="line">            returnNums[<span class="number">0</span>] = left+<span class="number">1</span>;</span><br><span class="line">            returnNums[<span class="number">1</span>] = right+<span class="number">1</span>;</span><br><span class="line">            *returnSize = <span class="number">2</span>;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span>(sum &gt; target)</span><br><span class="line">            right--;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            left++;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> returnNums;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">int* twoSum(int* nums, int numsSize, int target, int* returnSize) &#123;</span></span><br><span class="line"><span class="comment">    int i = 0, j = i+1;</span></span><br><span class="line"><span class="comment">    int* returnNums = NULL;</span></span><br><span class="line"><span class="comment">    for(i=0, j=i+1; i &lt; numsSize-1;) &#123;</span></span><br><span class="line"><span class="comment">        if(nums[i] + nums[j] == target) &#123;</span></span><br><span class="line"><span class="comment">            returnNums = (int *)malloc(sizeof(int) * 2);</span></span><br><span class="line"><span class="comment">            returnNums[0] = i+1;</span></span><br><span class="line"><span class="comment">            returnNums[1] = j+1;</span></span><br><span class="line"><span class="comment">            *returnSize = 2;</span></span><br><span class="line"><span class="comment">            return returnNums;</span></span><br><span class="line"><span class="comment">        &#125;</span></span><br><span class="line"><span class="comment">        else if(nums[i] + nums[j] &lt; target) &#123;</span></span><br><span class="line"><span class="comment">            j++;</span></span><br><span class="line"><span class="comment">            if(j == numsSize) &#123;</span></span><br><span class="line"><span class="comment">                i++;</span></span><br><span class="line"><span class="comment">                j = i+1;</span></span><br><span class="line"><span class="comment">            &#125;</span></span><br><span class="line"><span class="comment">        &#125;</span></span><br><span class="line"><span class="comment">        else &#123;</span></span><br><span class="line"><span class="comment">            i++;</span></span><br><span class="line"><span class="comment">            j = i+1;</span></span><br><span class="line"><span class="comment">        &#125;</span></span><br><span class="line"><span class="comment">    &#125;</span></span><br><span class="line"><span class="comment">    return returnNums;</span></span><br><span class="line"><span class="comment">&#125;</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">int</span> nums[<span class="number">3</span>] = &#123;<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>&#125;;</span><br><span class="line">    <span class="type">int</span> returnSize = <span class="number">0</span>;</span><br><span class="line">    <span class="type">int</span>* returnNums = twoSum(nums, <span class="number">3</span>, <span class="number">6</span>, &amp;returnSize);</span><br><span class="line">    assert(returnNums[<span class="number">0</span>] == <span class="number">1</span>);</span><br><span class="line">    assert(returnNums[<span class="number">1</span>] == <span class="number">3</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://eazow.com/leetcode/39-combination-sum/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Eazow">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Eazow">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Eazow">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/leetcode/39-combination-sum/" class="post-title-link" itemprop="url">[LeetCode]39. Combination Sum</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2016-08-19 16:42:04" itemprop="dateCreated datePublished" datetime="2016-08-19T16:42:04+08:00">2016-08-19</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Coding/" itemprop="url" rel="index"><span itemprop="name">Coding</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h4 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h4><p>Given a set of candidate numbers (<em><strong>C</strong></em>) and a target number (<em><strong>T</strong></em>), find all unique combinations in <em><strong>C</strong></em> where the candidate numbers sums to <em><strong>T</strong></em>.<br>The <strong>same</strong> repeated number may be chosen from <em><strong>C</strong></em> unlimited number of times.</p>
-<p><strong>Note:</strong></p>
-<ul>
-<li><p>All numbers (including target) will be positive integers.</p>
-</li>
-<li><p>The solution set must not contain duplicate combinations.<br>For example, given candidate set [2, 3, 6, 7] and target 7,<br>A solution set is:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[</span><br><span class="line">  [7],</span><br><span class="line">  [2, 2, 3]</span><br><span class="line">]</span><br></pre></td></tr></table></figure></li>
-</ul>
-<h4 id="难度"><a href="#难度" class="headerlink" title="难度"></a>难度</h4><p>Medium</p>
-<h4 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h4><p>利用栈，如果要入栈的数加上已入栈的数的和小于target, 则入栈；如果等于target，则复制该栈，加入返回结果，然后从栈取出一个数，取其下一个数准备入栈；如果大于target, 则从栈取出一个数，取其下一个数准备入栈。注意一些边界条件的判断</p>
-<h4 id="Python代码"><a href="#Python代码" class="headerlink" title="Python代码"></a>Python代码</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">combinationSum</span>(<span class="params">self, candidates, target</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        :type candidates: List[int]</span></span><br><span class="line"><span class="string">        :type tatget: int</span></span><br><span class="line"><span class="string">        :rtype List[List[int]]</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        nums = []</span><br><span class="line">        indexes = []</span><br><span class="line">        returnLists = []</span><br><span class="line">        <span class="built_in">sum</span> = <span class="number">0</span></span><br><span class="line">        i = <span class="number">0</span></span><br><span class="line">        candidates.sort()</span><br><span class="line">        <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">            <span class="keyword">while</span> i &gt;= <span class="built_in">len</span>(candidates):</span><br><span class="line">                <span class="keyword">if</span> <span class="built_in">len</span>(nums) == <span class="number">0</span>:</span><br><span class="line">                    <span class="keyword">return</span> returnLists</span><br><span class="line">                <span class="built_in">sum</span> -= nums.pop()</span><br><span class="line">                i = indexes.pop()+<span class="number">1</span></span><br><span class="line">            <span class="keyword">if</span> <span class="built_in">sum</span> + candidates[i] &lt; target:</span><br><span class="line">                nums.append(candidates[i])</span><br><span class="line">                indexes.append(i)</span><br><span class="line">                <span class="built_in">sum</span> += candidates[i]</span><br><span class="line">            <span class="keyword">elif</span> <span class="built_in">sum</span> + candidates[i] &gt; target:</span><br><span class="line">                <span class="keyword">if</span> <span class="built_in">len</span>(nums) &gt; <span class="number">0</span>:</span><br><span class="line">                    <span class="built_in">sum</span> -= nums.pop()</span><br><span class="line">                    i = indexes.pop()+<span class="number">1</span></span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    <span class="keyword">return</span> returnLists</span><br><span class="line">            <span class="keyword">elif</span> <span class="built_in">sum</span> + candidates[i] == target:</span><br><span class="line">                newNums = nums[:]</span><br><span class="line">                newNums.append(candidates[i])</span><br><span class="line">                returnLists.append(newNums)</span><br><span class="line">                <span class="keyword">if</span> <span class="built_in">len</span>(nums) &gt; <span class="number">0</span>:</span><br><span class="line">                    <span class="built_in">sum</span> -= nums.pop()</span><br><span class="line">                    i = indexes.pop()+<span class="number">1</span></span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    i += <span class="number">1</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">assert</span> Solution().combinationSum([<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>], <span class="number">7</span>)==[[<span class="number">2</span>,<span class="number">2</span>,<span class="number">3</span>], [<span class="number">3</span>,<span class="number">4</span>]]</span><br><span class="line"><span class="keyword">assert</span> Solution().combinationSum([<span class="number">2</span>,<span class="number">3</span>,<span class="number">6</span>,<span class="number">7</span>], <span class="number">7</span>)==[[<span class="number">2</span>,<span class="number">2</span>,<span class="number">3</span>], [<span class="number">7</span>]]</span><br><span class="line"><span class="keyword">assert</span> Solution().combinationSum([<span class="number">2</span>], <span class="number">1</span>) == []</span><br></pre></td></tr></table></figure>
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
     <a class="extend prev" rel="prev" href="/page/5/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/7/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
@@ -1750,13 +1732,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">186k</span>
+    <span title="Symbols count total">201k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">2:49</span>
+    <span title="Reading time total">3:02</span>
   </span>
 </div>
 <div class="busuanzi-count">
