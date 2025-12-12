@@ -859,7 +859,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://eazow.com/linux-kernel/">
+    <link itemprop="mainEntityOfPage" href="http://eazow.com/linux-kernel-custom-syscall/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -877,7 +877,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/linux-kernel/" class="post-title-link" itemprop="url">编译Linux内核增加系统调用</a>
+          <a href="/linux-kernel-custom-syscall/" class="post-title-link" itemprop="url">编译Linux内核增加系统调用</a>
         </h2>
 
         <div class="post-meta-container">
@@ -906,7 +906,7 @@
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>2 mins.</span>
+      <span>3 mins.</span>
     </span>
 </div>
 
@@ -917,46 +917,157 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <p>折腾了差不多一、两天，终于通过虚拟机在Ubuntu下完成了通过编译内核，增加系统调用的实验，在此与大家分享一下，希望能够对看到的xdjm们或多或少地提供些帮助！</p>
-<p>期间我换了几个内核版本，make了几次，浪费了大量的时间，主要还是对里面的文件不了解，找不到网上说的文件就很郁闷，甚至有些烦躁，最后换了个有同学成功的版本，终于坚持下来完成了！</p>
-<p>其中make modules很费时间，而且用的是虚拟机，那就更慢了，估计2小时左右吧，当然这两小时也不闲着，外面阳光灿烂，出去好好的打了几次球 ^_^，劳逸结合！正当我打累了回来它差不多就好了，Ubuntu真给面子啊！</p>
-<p>我用的 Ubuntu 7.10 ，编译的内核版本是2.6.23.12(更多版本可以到<a target="_blank" rel="noopener" href="http://www.kernel.org/">http://www.kernel.org</a>去下载)</p>
-<h4 id="内核解压"><a href="#内核解压" class="headerlink" title="内核解压"></a>内核解压</h4><p>将内核包解压到&#x2F;usr&#x2F;src下:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ tar jvxf linux-2.6.23.12.tar.gz2</span><br></pre></td></tr></table></figure>
-<p>或者是</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ tar zxvf linux-2.6.23.12.tar.gz</span><br></pre></td></tr></table></figure>
+          <blockquote>
+<p><strong>实验环境</strong>：Ubuntu 7.10 + Linux Kernel 2.6.23.12<br><strong>耗时</strong>：约 2-3 小时（主要是编译时间）<br><strong>难度</strong>：⭐⭐⭐</p>
+</blockquote>
+<p>经过一两天的摸索，终于在 Ubuntu 虚拟机中成功完成了内核编译和系统调用添加实验。期间踩了不少坑，换了几个内核版本，重新编译了多次。现将完整步骤整理如下，希望能有所帮助！</p>
+<h2 id="📋-准备工作"><a href="#📋-准备工作" class="headerlink" title="📋 准备工作"></a>📋 准备工作</h2><h3 id="系统要求"><a href="#系统要求" class="headerlink" title="系统要求"></a>系统要求</h3><ul>
+<li>Ubuntu 7.10 或更高版本</li>
+<li>至少 20GB 磁盘空间</li>
+<li>4GB 以上内存（虚拟机建议分配 2GB+）</li>
+</ul>
+<h3 id="下载内核源码"><a href="#下载内核源码" class="headerlink" title="下载内核源码"></a>下载内核源码</h3><p>访问 <a target="_blank" rel="noopener" href="https://www.kernel.org/">https://www.kernel.org</a> 下载 Linux 内核源码包（本文使用 <code>linux-2.6.23.12.tar.gz</code>）</p>
+<h2 id="🔧-详细步骤"><a href="#🔧-详细步骤" class="headerlink" title="🔧 详细步骤"></a>🔧 详细步骤</h2><h3 id="1-解压内核源码"><a href="#1-解压内核源码" class="headerlink" title="1. 解压内核源码"></a>1. 解压内核源码</h3><p>将内核包解压到 <code>/usr/src</code> 目录：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /usr/src</span><br><span class="line">sudo tar jxvf linux-2.6.23.12.tar.bz2</span><br><span class="line"><span class="comment"># 或者如果是 .tar.gz 格式</span></span><br><span class="line">sudo tar zxvf linux-2.6.23.12.tar.gz</span><br></pre></td></tr></table></figure>
 
 
 
-<h4 id="增加系统调用"><a href="#增加系统调用" class="headerlink" title="增加系统调用"></a>增加系统调用</h4><p>修改sys.c</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ cd /usr/src/linux-2.6.23.12</span><br><span class="line">$ vim kernel/sys.c</span><br></pre></td></tr></table></figure>
+<h3 id="2-添加自定义系统调用"><a href="#2-添加自定义系统调用" class="headerlink" title="2. 添加自定义系统调用"></a>2. 添加自定义系统调用</h3><h4 id="2-1-修改-sys-c-文件"><a href="#2-1-修改-sys-c-文件" class="headerlink" title="2.1 修改 sys.c 文件"></a>2.1 修改 <code>sys.c</code> 文件</h4><p>在内核源码中添加系统调用实现：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /usr/src/linux-2.6.23.12</span><br><span class="line">sudo vim kernel/sys.c</span><br></pre></td></tr></table></figure>
 
-<p>添加一个简单的调用</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">asmlinkage <span class="type">int</span> <span class="title function_">sys_mysyscall</span><span class="params">(<span class="type">int</span> num)</span> &#123;</span><br><span class="line">    printk(<span class="string">&quot;hello&quot;</span>);</span><br><span class="line">    <span class="keyword">return</span> num;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在文件末尾添加以下代码：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* 自定义系统调用：打印消息并返回参数 */</span></span><br><span class="line">asmlinkage <span class="type">int</span> <span class="title function_">sys_mysyscall</span><span class="params">(<span class="type">int</span> num)</span> &#123;</span><br><span class="line">    printk(KERN_INFO <span class="string">&quot;Hello from mysyscall! Received: %d\n&quot;</span>, num);</span><br><span class="line">    <span class="keyword">return</span> num;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p>修改系统调用表，syscall_table.S：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ cd /usr/src/linux-2.6.23.12/arch/i386/kernel</span><br><span class="line">//（没有i386文件夹的版本的貌似是进x86）</span><br><span class="line">$ vim syscall_table.S</span><br></pre></td></tr></table></figure>
-<p>在最后加上</p>
+<blockquote>
+<p><strong>注意</strong>：<code>asmlinkage</code> 是必需的，表示参数通过栈传递。</p>
+</blockquote>
+<h4 id="2-2-修改系统调用表"><a href="#2-2-修改系统调用表" class="headerlink" title="2.2 修改系统调用表"></a>2.2 修改系统调用表</h4><p>编辑系统调用表文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /usr/src/linux-2.6.23.12/arch/i386/kernel</span><br><span class="line"><span class="comment"># 如果没有 i386 目录，尝试 x86 目录</span></span><br><span class="line">sudo vim syscall_table.S</span><br></pre></td></tr></table></figure>
+
+<p>在文件<strong>末尾</strong>添加：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">.long sys_mysyscall</span><br></pre></td></tr></table></figure>
 
 
-<p>增加新系统调用号，修改&#x2F;usr&#x2F;include&#x2F;asm-i386&#x2F;unisted.h, 添加</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#define _ _NR_mysyscall 325</span><br></pre></td></tr></table></figure>
 
-<p>修改&#x2F;usr&#x2F;src&#x2F;linux-2.6.23.12&#x2F;include&#x2F;asm-i386&#x2F;unistd.h<br>添加<code>#define __NR_mysyscall 325</code>, 并将里面的<code>#define NR_syscall 325</code>改为326, 增加更多的系统调用依此类推</p>
-<p>开始编译内核了</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ cd /usr/src/linux-2.6.23.12</span><br><span class="line">$ make menuconfig</span><br><span class="line">$ make bzImage</span><br><span class="line">$ make modules</span><br><span class="line">$ make modules_install</span><br><span class="line">$ cp arch/i386/boot/bzImage /boot/vmlinuz-2.6.23.12 $ mkinitramfs -o initrd.img-2.6.23.12 2.6.23.12</span><br></pre></td></tr></table></figure>
-<p>&#x2F;lib&#x2F;modules会多出2.6.23.12这个文件夹</p>
-<p>修改grub：</p>
-<p>第5步后&#x2F;boot 下会多出两个文件 vmlinuz-2.6.23.12 initrd.img-2.6.23.12<br>修改<code>/boot/grub/menu.lst</code>, 没有menu.lst可能会是grub.conf<br>仿照里面的格式</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">title Ubuntu 7.10, kernel 2.6.22-14-generic</span><br><span class="line">root (hd0,0)</span><br><span class="line">kernel /boot/vmlinuz-2.6.22-14-generic root=UUID=e2478f9d-7f5d-458f-b017-43458a8f62ea ro quiet</span><br><span class="line">splash</span><br><span class="line">initrd /boot/initrd.img-2.6.22-14-generic </span><br><span class="line">quiet</span><br></pre></td></tr></table></figure>
-<p>添加</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">title Ubuntu 7.10, kernel 2.6.23-12</span><br><span class="line">root (hd0,0) </span><br><span class="line">kernel /boot/vmlinuz-2.6.23.12 root=UUID=e2478f9d-7f5d-458f-b017-43458a8f62ea ro quiet</span><br><span class="line">splash </span><br><span class="line">initrd /boot/initrd-2.6.23.12.img</span><br><span class="line">quiet</span><br></pre></td></tr></table></figure>
-<p>将hiddenmenu注释掉 即#hiddenmenu</p>
-<p>重启，导入新的内核，测试，新建test.c</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;linux/unistd.h&gt;</span><br><span class="line">#include &lt;stdio.h&gt;</span><br><span class="line">#include &lt;asm/unistd.h&gt;</span><br><span class="line"></span><br><span class="line">#define __NR_mycall     325 </span><br><span class="line">#define __NR_myfilecopy     326    //增加的拷贝文件的系统调用</span><br><span class="line"></span><br><span class="line">int main()</span><br><span class="line">&#123; </span><br><span class="line">    syscall(325, 6);    //6为系统调用的参数，多参数的类推</span><br><span class="line">    return 1;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="2-3-添加系统调用号"><a href="#2-3-添加系统调用号" class="headerlink" title="2.3 添加系统调用号"></a>2.3 添加系统调用号</h4><p><strong>修改系统头文件</strong>（用户空间）：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo vim /usr/include/asm-i386/unistd.h</span><br></pre></td></tr></table></figure>
 
-<p>最后，预祝你们圆满成功！！</p>
+<p>在文件末尾添加：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> __NR_mysyscall 325</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>修改内核头文件</strong>：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo vim /usr/src/linux-2.6.23.12/include/asm-i386/unistd.h</span><br></pre></td></tr></table></figure>
+
+<p>添加以下内容：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> __NR_mysyscall 325</span></span><br></pre></td></tr></table></figure>
+
+<p>同时将原有的：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> NR_syscalls 325</span></span><br></pre></td></tr></table></figure>
+
+<p>修改为：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> NR_syscalls 326</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><strong>提示</strong>：如果要添加多个系统调用，依次递增调用号（326, 327…）</p>
+</blockquote>
+<h3 id="3-编译内核"><a href="#3-编译内核" class="headerlink" title="3. 编译内核"></a>3. 编译内核</h3><h4 id="3-1-配置内核"><a href="#3-1-配置内核" class="headerlink" title="3.1 配置内核"></a>3.1 配置内核</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /usr/src/linux-2.6.23.12</span><br><span class="line">sudo make menuconfig</span><br></pre></td></tr></table></figure>
+
+<p>在菜单中保持默认配置即可，直接保存退出。</p>
+<h4 id="3-2-编译内核镜像"><a href="#3-2-编译内核镜像" class="headerlink" title="3.2 编译内核镜像"></a>3.2 编译内核镜像</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo make bzImage</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><strong>耗时</strong>：约 30-60 分钟</p>
+</blockquote>
+<h4 id="3-3-编译内核模块"><a href="#3-3-编译内核模块" class="headerlink" title="3.3 编译内核模块"></a>3.3 编译内核模块</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo make modules</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><strong>耗时</strong>：约 1-2 小时（虚拟机会更慢）<br><strong>建议</strong>：此时可以休息一下，喝杯咖啡或打打球 😊</p>
+</blockquote>
+<h4 id="3-4-安装模块"><a href="#3-4-安装模块" class="headerlink" title="3.4 安装模块"></a>3.4 安装模块</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo make modules_install</span><br></pre></td></tr></table></figure>
+
+<p>执行后会在 <code>/lib/modules/</code> 下生成 <code>2.6.23.12</code> 目录。</p>
+<h4 id="3-5-安装内核"><a href="#3-5-安装内核" class="headerlink" title="3.5 安装内核"></a>3.5 安装内核</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 复制内核镜像</span></span><br><span class="line">sudo <span class="built_in">cp</span> <span class="built_in">arch</span>/i386/boot/bzImage /boot/vmlinuz-2.6.23.12</span><br><span class="line"></span><br><span class="line"><span class="comment"># 生成 initramfs</span></span><br><span class="line">sudo mkinitramfs -o /boot/initrd.img-2.6.23.12 2.6.23.12</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="4-配置-GRUB-引导"><a href="#4-配置-GRUB-引导" class="headerlink" title="4. 配置 GRUB 引导"></a>4. 配置 GRUB 引导</h3><h4 id="4-1-编辑-GRUB-配置文件"><a href="#4-1-编辑-GRUB-配置文件" class="headerlink" title="4.1 编辑 GRUB 配置文件"></a>4.1 编辑 GRUB 配置文件</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo vim /boot/grub/menu.lst</span><br><span class="line"><span class="comment"># 或者</span></span><br><span class="line">sudo vim /boot/grub/grub.conf</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="4-2-添加新内核启动项"><a href="#4-2-添加新内核启动项" class="headerlink" title="4.2 添加新内核启动项"></a>4.2 添加新内核启动项</h4><p>在文件中找到类似以下的配置：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">title Ubuntu 7.10, kernel 2.6.22-14-generic</span><br><span class="line">root (hd0,0)</span><br><span class="line">kernel /boot/vmlinuz-2.6.22-14-generic root=UUID=e2478f9d-7f5d-458f-b017-43458a8f62ea ro quiet splash</span><br><span class="line">initrd /boot/initrd.img-2.6.22-14-generic</span><br><span class="line">quiet</span><br></pre></td></tr></table></figure>
+
+<p>仿照格式添加新内核配置：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">title Ubuntu 7.10, kernel 2.6.23.12 (Custom)</span><br><span class="line">root (hd0,0)</span><br><span class="line">kernel /boot/vmlinuz-2.6.23.12 root=UUID=e2478f9d-7f5d-458f-b017-43458a8f62ea ro quiet splash</span><br><span class="line">initrd /boot/initrd.img-2.6.23.12</span><br><span class="line">quiet</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><strong>注意</strong>：<code>UUID</code> 需要替换为你自己的分区 UUID，可通过 <code>sudo blkid</code> 查看。</p>
+</blockquote>
+<h4 id="4-3-显示-GRUB-菜单"><a href="#4-3-显示-GRUB-菜单" class="headerlink" title="4.3 显示 GRUB 菜单"></a>4.3 显示 GRUB 菜单</h4><p>注释掉隐藏菜单选项（如果有）：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#hiddenmenu</span><br></pre></td></tr></table></figure>
+
+<p>保存并退出。</p>
+<h3 id="5-重启系统"><a href="#5-重启系统" class="headerlink" title="5. 重启系统"></a>5. 重启系统</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo reboot</span><br></pre></td></tr></table></figure>
+
+<p>在 GRUB 启动菜单中选择新编译的内核 <code>kernel 2.6.23.12 (Custom)</code> 启动。</p>
+<h2 id="🧪-测试自定义系统调用"><a href="#🧪-测试自定义系统调用" class="headerlink" title="🧪 测试自定义系统调用"></a>🧪 测试自定义系统调用</h2><h3 id="编写测试程序"><a href="#编写测试程序" class="headerlink" title="编写测试程序"></a>编写测试程序</h3><p>创建 <code>test.c</code> 文件：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/syscall.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> __NR_mysyscall 325</span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">int</span> result;</span><br><span class="line">    </span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;调用自定义系统调用 mysyscall...\n&quot;</span>);</span><br><span class="line">    result = syscall(__NR_mysyscall, <span class="number">42</span>);</span><br><span class="line">    </span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;系统调用返回值: %d\n&quot;</span>, result);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="编译并运行"><a href="#编译并运行" class="headerlink" title="编译并运行"></a>编译并运行</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">gcc -o <span class="built_in">test</span> test.c</span><br><span class="line">./test</span><br></pre></td></tr></table></figure>
+
+<p><strong>预期输出</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">调用自定义系统调用 mysyscall...</span><br><span class="line">系统调用返回值: 42</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="查看内核日志"><a href="#查看内核日志" class="headerlink" title="查看内核日志"></a>查看内核日志</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dmesg | <span class="built_in">tail</span></span><br></pre></td></tr></table></figure>
+
+<p>应该能看到类似输出：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[12345.678901] Hello from mysyscall! Received: 42</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="常见问题及解决方案"><a href="#常见问题及解决方案" class="headerlink" title="常见问题及解决方案"></a>常见问题及解决方案</h2><h3 id="问题-1：找不到-i386-目录"><a href="#问题-1：找不到-i386-目录" class="headerlink" title="问题 1：找不到 i386 目录"></a>问题 1：找不到 <code>i386</code> 目录</h3><p><strong>解决方案</strong>：新版本内核可能使用 <code>x86</code> 目录，修改路径为：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /usr/src/linux-2.6.23.12/arch/x86/kernel</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="问题-2：make-modules-非常慢"><a href="#问题-2：make-modules-非常慢" class="headerlink" title="问题 2：make modules 非常慢"></a>问题 2：<code>make modules</code> 非常慢</h3><p><strong>解决方案</strong>：</p>
+<ul>
+<li>使用多核编译：<code>sudo make -j4 modules</code>（4 为 CPU 核心数）</li>
+<li>虚拟机分配更多 CPU 和内存</li>
+</ul>
+<h3 id="问题-3：编译报错缺少依赖"><a href="#问题-3：编译报错缺少依赖" class="headerlink" title="问题 3：编译报错缺少依赖"></a>问题 3：编译报错缺少依赖</h3><p><strong>解决方案</strong>：安装必要的编译工具：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get install build-essential libncurses5-dev</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="问题-4：系统调用返回-1"><a href="#问题-4：系统调用返回-1" class="headerlink" title="问题 4：系统调用返回 -1"></a>问题 4：系统调用返回 -1</h3><p><strong>解决方案</strong>：</p>
+<ul>
+<li>检查系统调用号是否正确</li>
+<li>确认 <code>NR_syscalls</code> 已更新</li>
+<li>查看 <code>dmesg</code> 输出是否有错误信息</li>
+</ul>
+<h2 id="✅-总结与建议"><a href="#✅-总结与建议" class="headerlink" title="✅ 总结与建议"></a>✅ 总结与建议</h2><h3 id="关键要点"><a href="#关键要点" class="headerlink" title="关键要点"></a>关键要点</h3><ol>
+<li><strong>耐心</strong>：内核编译耗时较长，尤其是 <code>make modules</code></li>
+<li><strong>备份</strong>：修改前备份重要文件</li>
+<li><strong>版本匹配</strong>：确保内核版本与教程一致</li>
+<li><strong>日志查看</strong>：善用 <code>dmesg</code> 调试</li>
+</ol>
+<h3 id="学习收获"><a href="#学习收获" class="headerlink" title="学习收获"></a>学习收获</h3><ul>
+<li>理解 Linux 内核编译流程</li>
+<li>掌握系统调用添加方法</li>
+<li>熟悉内核模块机制</li>
+<li>提升 Linux 系统底层认知</li>
+</ul>
+<h2 id="📚-参考资料"><a href="#📚-参考资料" class="headerlink" title="📚 参考资料"></a>📚 参考资料</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://www.kernel.org/">Linux Kernel Archives</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.kernel.org/doc/html/latest/">The Linux Kernel Documentation</a></li>
+<li><a target="_blank" rel="noopener" href="https://chromium.googlesource.com/chromiumos/docs/+/master/constants/syscalls.md">Linux System Call Table</a></li>
+</ul>
+<p><strong>祝各位实验顺利！如有问题欢迎交流讨论！</strong> 🎉</p>
 
       
     </div>
@@ -999,13 +1110,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">201k</span>
+    <span title="Symbols count total">202k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">3:02</span>
+    <span title="Reading time total">3:03</span>
   </span>
 </div>
 <div class="busuanzi-count">

@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"eazow.com","root":"/","images":"/images","scheme":"Mist","darkmode":false,"version":"8.12.2","exturl":false,"sidebar":{"position":"left","display":"remove","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":"giscus","storage":true,"lazyload":true,"nav":null,"activeClass":"giscus"},"stickytabs":false,"motion":{"enable":false,"async":true,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.12.2/config.min.js"></script>
+
+
+
+<link rel="canonical" href="http://eazow.com/linux-kernel-custom-syscall/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en-US","comments":true,"permalink":"http://eazow.com/linux-kernel-custom-syscall/","path":"linux-kernel-custom-syscall/","title":"编译Linux内核增加系统调用"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>编译Linux内核增加系统调用 | Eazow</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-NHS1WWDHJE"></script>
+  <script class="next-config" data-name="google_analytics" type="application/json">{"tracking_id":"G-NHS1WWDHJE","only_pageview":false}</script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.12.2/third-party/analytics/google-analytics.min.js"></script>
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <!--i class="logo-line"></i-->
+      <p class="site-title">Eazow</p>
+      <!--i class="logo-line"></i-->
+    </a>
+      <p class="site-subtitle" itemprop="description">Stay kind and positive</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+    <div class="banner"></div>
+
+    
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en-US">
+    <link itemprop="mainEntityOfPage" href="http://eazow.com/linux-kernel-custom-syscall/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Eazow">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Eazow">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="编译Linux内核增加系统调用 | Eazow">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          编译Linux内核增加系统调用
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2008-02-29 18:50:36" itemprop="dateCreated datePublished" datetime="2008-02-29T18:50:36+08:00">2008-02-29</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>3 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <blockquote>
+<p><strong>实验环境</strong>：Ubuntu 7.10 + Linux Kernel 2.6.23.12<br><strong>耗时</strong>：约 2-3 小时（主要是编译时间）<br><strong>难度</strong>：⭐⭐⭐</p>
+</blockquote>
+<p>经过一两天的摸索，终于在 Ubuntu 虚拟机中成功完成了内核编译和系统调用添加实验。期间踩了不少坑，换了几个内核版本，重新编译了多次。现将完整步骤整理如下，希望能有所帮助！</p>
+<h2 id="📋-准备工作"><a href="#📋-准备工作" class="headerlink" title="📋 准备工作"></a>📋 准备工作</h2><h3 id="系统要求"><a href="#系统要求" class="headerlink" title="系统要求"></a>系统要求</h3><ul>
+<li>Ubuntu 7.10 或更高版本</li>
+<li>至少 20GB 磁盘空间</li>
+<li>4GB 以上内存（虚拟机建议分配 2GB+）</li>
+</ul>
+<h3 id="下载内核源码"><a href="#下载内核源码" class="headerlink" title="下载内核源码"></a>下载内核源码</h3><p>访问 <a target="_blank" rel="noopener" href="https://www.kernel.org/">https://www.kernel.org</a> 下载 Linux 内核源码包（本文使用 <code>linux-2.6.23.12.tar.gz</code>）</p>
+<h2 id="🔧-详细步骤"><a href="#🔧-详细步骤" class="headerlink" title="🔧 详细步骤"></a>🔧 详细步骤</h2><h3 id="1-解压内核源码"><a href="#1-解压内核源码" class="headerlink" title="1. 解压内核源码"></a>1. 解压内核源码</h3><p>将内核包解压到 <code>/usr/src</code> 目录：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /usr/src</span><br><span class="line">sudo tar jxvf linux-2.6.23.12.tar.bz2</span><br><span class="line"><span class="comment"># 或者如果是 .tar.gz 格式</span></span><br><span class="line">sudo tar zxvf linux-2.6.23.12.tar.gz</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="2-添加自定义系统调用"><a href="#2-添加自定义系统调用" class="headerlink" title="2. 添加自定义系统调用"></a>2. 添加自定义系统调用</h3><h4 id="2-1-修改-sys-c-文件"><a href="#2-1-修改-sys-c-文件" class="headerlink" title="2.1 修改 sys.c 文件"></a>2.1 修改 <code>sys.c</code> 文件</h4><p>在内核源码中添加系统调用实现：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /usr/src/linux-2.6.23.12</span><br><span class="line">sudo vim kernel/sys.c</span><br></pre></td></tr></table></figure>
+
+<p>在文件末尾添加以下代码：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* 自定义系统调用：打印消息并返回参数 */</span></span><br><span class="line">asmlinkage <span class="type">int</span> <span class="title function_">sys_mysyscall</span><span class="params">(<span class="type">int</span> num)</span> &#123;</span><br><span class="line">    printk(KERN_INFO <span class="string">&quot;Hello from mysyscall! Received: %d\n&quot;</span>, num);</span><br><span class="line">    <span class="keyword">return</span> num;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><strong>注意</strong>：<code>asmlinkage</code> 是必需的，表示参数通过栈传递。</p>
+</blockquote>
+<h4 id="2-2-修改系统调用表"><a href="#2-2-修改系统调用表" class="headerlink" title="2.2 修改系统调用表"></a>2.2 修改系统调用表</h4><p>编辑系统调用表文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /usr/src/linux-2.6.23.12/arch/i386/kernel</span><br><span class="line"><span class="comment"># 如果没有 i386 目录，尝试 x86 目录</span></span><br><span class="line">sudo vim syscall_table.S</span><br></pre></td></tr></table></figure>
+
+<p>在文件<strong>末尾</strong>添加：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">.long sys_mysyscall</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="2-3-添加系统调用号"><a href="#2-3-添加系统调用号" class="headerlink" title="2.3 添加系统调用号"></a>2.3 添加系统调用号</h4><p><strong>修改系统头文件</strong>（用户空间）：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo vim /usr/include/asm-i386/unistd.h</span><br></pre></td></tr></table></figure>
+
+<p>在文件末尾添加：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> __NR_mysyscall 325</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>修改内核头文件</strong>：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo vim /usr/src/linux-2.6.23.12/include/asm-i386/unistd.h</span><br></pre></td></tr></table></figure>
+
+<p>添加以下内容：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> __NR_mysyscall 325</span></span><br></pre></td></tr></table></figure>
+
+<p>同时将原有的：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> NR_syscalls 325</span></span><br></pre></td></tr></table></figure>
+
+<p>修改为：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> NR_syscalls 326</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><strong>提示</strong>：如果要添加多个系统调用，依次递增调用号（326, 327…）</p>
+</blockquote>
+<h3 id="3-编译内核"><a href="#3-编译内核" class="headerlink" title="3. 编译内核"></a>3. 编译内核</h3><h4 id="3-1-配置内核"><a href="#3-1-配置内核" class="headerlink" title="3.1 配置内核"></a>3.1 配置内核</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /usr/src/linux-2.6.23.12</span><br><span class="line">sudo make menuconfig</span><br></pre></td></tr></table></figure>
+
+<p>在菜单中保持默认配置即可，直接保存退出。</p>
+<h4 id="3-2-编译内核镜像"><a href="#3-2-编译内核镜像" class="headerlink" title="3.2 编译内核镜像"></a>3.2 编译内核镜像</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo make bzImage</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><strong>耗时</strong>：约 30-60 分钟</p>
+</blockquote>
+<h4 id="3-3-编译内核模块"><a href="#3-3-编译内核模块" class="headerlink" title="3.3 编译内核模块"></a>3.3 编译内核模块</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo make modules</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><strong>耗时</strong>：约 1-2 小时（虚拟机会更慢）<br><strong>建议</strong>：此时可以休息一下，喝杯咖啡或打打球 😊</p>
+</blockquote>
+<h4 id="3-4-安装模块"><a href="#3-4-安装模块" class="headerlink" title="3.4 安装模块"></a>3.4 安装模块</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo make modules_install</span><br></pre></td></tr></table></figure>
+
+<p>执行后会在 <code>/lib/modules/</code> 下生成 <code>2.6.23.12</code> 目录。</p>
+<h4 id="3-5-安装内核"><a href="#3-5-安装内核" class="headerlink" title="3.5 安装内核"></a>3.5 安装内核</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 复制内核镜像</span></span><br><span class="line">sudo <span class="built_in">cp</span> <span class="built_in">arch</span>/i386/boot/bzImage /boot/vmlinuz-2.6.23.12</span><br><span class="line"></span><br><span class="line"><span class="comment"># 生成 initramfs</span></span><br><span class="line">sudo mkinitramfs -o /boot/initrd.img-2.6.23.12 2.6.23.12</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="4-配置-GRUB-引导"><a href="#4-配置-GRUB-引导" class="headerlink" title="4. 配置 GRUB 引导"></a>4. 配置 GRUB 引导</h3><h4 id="4-1-编辑-GRUB-配置文件"><a href="#4-1-编辑-GRUB-配置文件" class="headerlink" title="4.1 编辑 GRUB 配置文件"></a>4.1 编辑 GRUB 配置文件</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo vim /boot/grub/menu.lst</span><br><span class="line"><span class="comment"># 或者</span></span><br><span class="line">sudo vim /boot/grub/grub.conf</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="4-2-添加新内核启动项"><a href="#4-2-添加新内核启动项" class="headerlink" title="4.2 添加新内核启动项"></a>4.2 添加新内核启动项</h4><p>在文件中找到类似以下的配置：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">title Ubuntu 7.10, kernel 2.6.22-14-generic</span><br><span class="line">root (hd0,0)</span><br><span class="line">kernel /boot/vmlinuz-2.6.22-14-generic root=UUID=e2478f9d-7f5d-458f-b017-43458a8f62ea ro quiet splash</span><br><span class="line">initrd /boot/initrd.img-2.6.22-14-generic</span><br><span class="line">quiet</span><br></pre></td></tr></table></figure>
+
+<p>仿照格式添加新内核配置：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">title Ubuntu 7.10, kernel 2.6.23.12 (Custom)</span><br><span class="line">root (hd0,0)</span><br><span class="line">kernel /boot/vmlinuz-2.6.23.12 root=UUID=e2478f9d-7f5d-458f-b017-43458a8f62ea ro quiet splash</span><br><span class="line">initrd /boot/initrd.img-2.6.23.12</span><br><span class="line">quiet</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><strong>注意</strong>：<code>UUID</code> 需要替换为你自己的分区 UUID，可通过 <code>sudo blkid</code> 查看。</p>
+</blockquote>
+<h4 id="4-3-显示-GRUB-菜单"><a href="#4-3-显示-GRUB-菜单" class="headerlink" title="4.3 显示 GRUB 菜单"></a>4.3 显示 GRUB 菜单</h4><p>注释掉隐藏菜单选项（如果有）：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#hiddenmenu</span><br></pre></td></tr></table></figure>
+
+<p>保存并退出。</p>
+<h3 id="5-重启系统"><a href="#5-重启系统" class="headerlink" title="5. 重启系统"></a>5. 重启系统</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo reboot</span><br></pre></td></tr></table></figure>
+
+<p>在 GRUB 启动菜单中选择新编译的内核 <code>kernel 2.6.23.12 (Custom)</code> 启动。</p>
+<h2 id="🧪-测试自定义系统调用"><a href="#🧪-测试自定义系统调用" class="headerlink" title="🧪 测试自定义系统调用"></a>🧪 测试自定义系统调用</h2><h3 id="编写测试程序"><a href="#编写测试程序" class="headerlink" title="编写测试程序"></a>编写测试程序</h3><p>创建 <code>test.c</code> 文件：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/syscall.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> __NR_mysyscall 325</span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">int</span> result;</span><br><span class="line">    </span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;调用自定义系统调用 mysyscall...\n&quot;</span>);</span><br><span class="line">    result = syscall(__NR_mysyscall, <span class="number">42</span>);</span><br><span class="line">    </span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;系统调用返回值: %d\n&quot;</span>, result);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="编译并运行"><a href="#编译并运行" class="headerlink" title="编译并运行"></a>编译并运行</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">gcc -o <span class="built_in">test</span> test.c</span><br><span class="line">./test</span><br></pre></td></tr></table></figure>
+
+<p><strong>预期输出</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">调用自定义系统调用 mysyscall...</span><br><span class="line">系统调用返回值: 42</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="查看内核日志"><a href="#查看内核日志" class="headerlink" title="查看内核日志"></a>查看内核日志</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dmesg | <span class="built_in">tail</span></span><br></pre></td></tr></table></figure>
+
+<p>应该能看到类似输出：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[12345.678901] Hello from mysyscall! Received: 42</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="常见问题及解决方案"><a href="#常见问题及解决方案" class="headerlink" title="常见问题及解决方案"></a>常见问题及解决方案</h2><h3 id="问题-1：找不到-i386-目录"><a href="#问题-1：找不到-i386-目录" class="headerlink" title="问题 1：找不到 i386 目录"></a>问题 1：找不到 <code>i386</code> 目录</h3><p><strong>解决方案</strong>：新版本内核可能使用 <code>x86</code> 目录，修改路径为：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /usr/src/linux-2.6.23.12/arch/x86/kernel</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="问题-2：make-modules-非常慢"><a href="#问题-2：make-modules-非常慢" class="headerlink" title="问题 2：make modules 非常慢"></a>问题 2：<code>make modules</code> 非常慢</h3><p><strong>解决方案</strong>：</p>
+<ul>
+<li>使用多核编译：<code>sudo make -j4 modules</code>（4 为 CPU 核心数）</li>
+<li>虚拟机分配更多 CPU 和内存</li>
+</ul>
+<h3 id="问题-3：编译报错缺少依赖"><a href="#问题-3：编译报错缺少依赖" class="headerlink" title="问题 3：编译报错缺少依赖"></a>问题 3：编译报错缺少依赖</h3><p><strong>解决方案</strong>：安装必要的编译工具：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get install build-essential libncurses5-dev</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="问题-4：系统调用返回-1"><a href="#问题-4：系统调用返回-1" class="headerlink" title="问题 4：系统调用返回 -1"></a>问题 4：系统调用返回 -1</h3><p><strong>解决方案</strong>：</p>
+<ul>
+<li>检查系统调用号是否正确</li>
+<li>确认 <code>NR_syscalls</code> 已更新</li>
+<li>查看 <code>dmesg</code> 输出是否有错误信息</li>
+</ul>
+<h2 id="✅-总结与建议"><a href="#✅-总结与建议" class="headerlink" title="✅ 总结与建议"></a>✅ 总结与建议</h2><h3 id="关键要点"><a href="#关键要点" class="headerlink" title="关键要点"></a>关键要点</h3><ol>
+<li><strong>耐心</strong>：内核编译耗时较长，尤其是 <code>make modules</code></li>
+<li><strong>备份</strong>：修改前备份重要文件</li>
+<li><strong>版本匹配</strong>：确保内核版本与教程一致</li>
+<li><strong>日志查看</strong>：善用 <code>dmesg</code> 调试</li>
+</ol>
+<h3 id="学习收获"><a href="#学习收获" class="headerlink" title="学习收获"></a>学习收获</h3><ul>
+<li>理解 Linux 内核编译流程</li>
+<li>掌握系统调用添加方法</li>
+<li>熟悉内核模块机制</li>
+<li>提升 Linux 系统底层认知</li>
+</ul>
+<h2 id="📚-参考资料"><a href="#📚-参考资料" class="headerlink" title="📚 参考资料"></a>📚 参考资料</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://www.kernel.org/">Linux Kernel Archives</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.kernel.org/doc/html/latest/">The Linux Kernel Documentation</a></li>
+<li><a target="_blank" rel="noopener" href="https://chromium.googlesource.com/chromiumos/docs/+/master/constants/syscalls.md">Linux System Call Table</a></li>
+</ul>
+<p><strong>祝各位实验顺利！如有问题欢迎交流讨论！</strong> 🎉</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Linux/" rel="tag"><i class="fa fa-tag"></i> Linux</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+            </div>
+            <div class="post-nav-item">
+                <a href="/hexo-blog/" rel="next" title="在Github上用Hexo搭建个人Blog">
+                  在Github上用Hexo搭建个人Blog <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  
+  <div class="comments giscus-container">
+  </div>
+  
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2008 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Eazow</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Symbols count total">202k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">3:03</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+<script>
+  const numberOfBanners = 10;
+  const randomNum = Math.random() * numberOfBanners | 0;
+  const banner = document.querySelector('.banner');
+//   document.getElementsByClassName("banner")[0].style.backgroundImage =
+//   const imageExtension = randomNum === 9 ? ".webp" : ".jpeg";
+  const imageExtension = ".webp";
+  const url = "url('https://hyz-blog.oss-cn-hangzhou.aliyuncs.com/banner" + randomNum + imageExtension + "')";
+  banner.style.backgroundImage = url;
+</script>
+
+
+    </div>
+  </footer>
+
+  
+  <script size="200" alpha="0.2" zIndex="-1" src="https://cdnjs.cloudflare.com/ajax/libs/ribbon.js/1.0.2/ribbon.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.12.2/comments.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.12.2/utils.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.12.2/schemes/muse.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.12.2/next-boot.min.js"></script>
+
+  
+
+
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.12.2/third-party/pace.min.js"></script>
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  <!--script async src="https://cdn.jsdelivr.net/gh/sukkaw/busuanzi@2.3/bsz.pure.mini.js"></script-->
+
+
+
+
+<script class="next-config" data-name="giscus" type="application/json">{"enable":true,"repo":"eazow/hexo","repo_id":"MDEwOlJlcG9zaXRvcnkxNjI1NTM4Nzk=","category":"Announcements","category_id":"DIC_kwDOCbBgF84CQl0J","mapping":"pathname","reactions_enabled":1,"emit_metadata":0,"theme":"light","lang":"en","crossorigin":"anonymous","input_position":"top","loading":"lazy"}</script>
+
+<script>
+document.addEventListener('page:loaded', () => {
+  if (!CONFIG.page.comments) return;
+
+  NexT.utils.loadComments('.giscus-container')
+    .then(() => NexT.utils.getScript('https://giscus.app/client.js', {
+      attributes: {
+        async                   : true,
+        crossOrigin             : 'anonymous',
+        'data-repo'             : CONFIG.giscus.repo,
+        'data-repo-id'          : CONFIG.giscus.repo_id,
+        'data-category'         : CONFIG.giscus.category,
+        'data-category-id'      : CONFIG.giscus.category_id,
+        'data-mapping'          : CONFIG.giscus.mapping,
+        'data-reactions-enabled': CONFIG.giscus.reactions_enabled,
+        'data-emit-metadata'    : CONFIG.giscus.emit_metadata,
+        'data-theme'            : CONFIG.giscus.theme,
+        'data-lang'             : CONFIG.giscus.lang,
+        'data-input-position'   : CONFIG.giscus.input_position,
+        'data-loading'          : CONFIG.giscus.loading
+      },
+      parentNode: document.querySelector('.giscus-container')
+    }));
+});
+</script>
+
+</body>
+</html>

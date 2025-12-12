@@ -277,39 +277,14 @@
 
 <p>可以使用 -v 标志来调整tcpdump输出中的详细程度</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ tcpdump -i any -v (Verbose output)</span><br><span class="line">$ tcpdump -i any -vv (Even more verbose output)</span><br><span class="line">$ tcpdump -i any -vvv (The most verbose output)</span><br></pre></td></tr></table></figure>
-
-
-
-<h3 id="协议过滤器"><a href="#协议过滤器" class="headerlink" title="协议过滤器"></a>协议过滤器</h3><p>可以根据协议过滤捕获流量。例如，侦听所有TCP连接</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ tcpdump tcp</span><br></pre></td></tr></table></figure>
-
-
-
-<h3 id="端口过滤器"><a href="#端口过滤器" class="headerlink" title="端口过滤器"></a>端口过滤器</h3><p>如果只对特定端口的流量感兴趣，则可以使用端口过滤器来确定分析</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tcpdump port 80</span><br></pre></td></tr></table></figure>
-
-<p>将端口80作为其源端口或目标端口的流量，则可以使用</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ tcpdump src port 80</span><br><span class="line">$ tcpdump dest port 80</span><br></pre></td></tr></table></figure>
-
-
-
-<h3 id="主机过滤器"><a href="#主机过滤器" class="headerlink" title="主机过滤器"></a>主机过滤器</h3><p>如果只对特定主机的流量感兴趣，则可以使用主机过滤器。主机过滤器还可以与源或目的过滤器组合。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ tcpdump host 1.2.3.4</span><br><span class="line">$ tcpdump src host 1.2.3.4</span><br><span class="line">$ tcpdump dst host 1.2.3.4</span><br></pre></td></tr></table></figure>
-
-
-
-<h3 id="组合滤波器"><a href="#组合滤波器" class="headerlink" title="组合滤波器"></a>组合滤波器</h3><p>可以在tcpdump中组合多个过滤器</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ tcpdump &quot;src port 80&quot; and &quot;dst host 1.2.3.4&quot;</span><br><span class="line">$ tcpdump &quot;src port 80&quot; or &quot;src port 443&quot;</span><br></pre></td></tr></table></figure>
-<p>保存输出<br>可以使用 -w 将捕获的数据包保存到文件中</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ tcpdump tcp -w FILE_PATH</span><br></pre></td></tr></table></figure>
-<p>如果需要既保存又打印，可以将 –print 与 -w 结合使用</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ tcpdump tcp -w FILE_PATH --print</span><br></pre></td></tr></table></figure>
-
-
-
-<h3 id="扩展"><a href="#扩展" class="headerlink" title="扩展"></a>扩展</h3><p>更多内容可参考tcpdump手册</p>
-<p><a target="_blank" rel="noopener" href="https://www.tcpdump.org/manpages/tcpdump.1.html">https://www.tcpdump.org/manpages/tcpdump.1.html</a></p>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/tcpdump/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -1430,13 +1405,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">201k</span>
+    <span title="Symbols count total">202k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">3:02</span>
+    <span title="Reading time total">3:03</span>
   </span>
 </div>
 <div class="busuanzi-count">
