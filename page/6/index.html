@@ -114,6 +114,174 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://eazow.com/LeetCode-453-Minimum-Moves-to-Equal-Array-Elements/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Eazow">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Eazow">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Eazow">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/LeetCode-453-Minimum-Moves-to-Equal-Array-Elements/" class="post-title-link" itemprop="url">[LeetCode]453. Minimum Moves to Equal Array Elements</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2017-07-31 18:25:32" itemprop="dateCreated datePublished" datetime="2017-07-31T18:25:32+08:00">2017-07-31</time>
+    </span>
+
+  
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h3 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h3><p>Given a non-empty integer array of size n, find the minimum number of moves required to make all array elements equal, where a move is incrementing n - 1 elements by 1.</p>
+<p><strong>Example:</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Input:</span><br><span class="line">[1,2,3]</span><br><span class="line"></span><br><span class="line">Output:</span><br><span class="line">3</span><br><span class="line"></span><br><span class="line">Explanation:</span><br><span class="line">Only three moves are needed (remember each move increments two elements):</span><br><span class="line"></span><br><span class="line">[1,2,3]  =&gt;  [2,3,3]  =&gt;  [3,4,3]  =&gt;  [4,4,4]</span><br></pre></td></tr></table></figure>
+
+<h3 id="难度"><a href="#难度" class="headerlink" title="难度"></a>难度</h3><p>Easy</p>
+<h3 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h3><p>这是一个数学题，假设数组中最小的数为<code>min</code>，需要移动<code>x</code>次，最后数组中的数都为<code>m</code>，则其实是一个求<code>x</code>的方法</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">(n - 1) * x + sum = n * m</span><br><span class="line">min + x = m</span><br><span class="line">nx - x + sum = n * (min + x)</span><br><span class="line">nx - x + sum = n * min + nx</span><br><span class="line">sum - x = n * min</span><br><span class="line">x = sum - n * min</span><br></pre></td></tr></table></figure>
+
+<h3 id="python代码"><a href="#python代码" class="headerlink" title="python代码"></a>python代码</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">class Solution(object):</span><br><span class="line">    def minMoves(self, nums):</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        :type nums: List[int]</span><br><span class="line">        :rtype: int</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        nums = sorted(nums)</span><br><span class="line">        return sum(nums) - len(nums) * nums[0]</span><br><span class="line"></span><br><span class="line">assert Solution().minMoves([1,2,3]) == 3</span><br><span class="line">assert Solution().minMoves([1,1,3]) == 2</span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://eazow.com/LeetCode-637-Average-of-Levels-in-Binary-Tree/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Eazow">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Eazow">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Eazow">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/LeetCode-637-Average-of-Levels-in-Binary-Tree/" class="post-title-link" itemprop="url">[LeetCode]637. Average of Levels in Binary Tree</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2017-07-31 15:34:04" itemprop="dateCreated datePublished" datetime="2017-07-31T15:34:04+08:00">2017-07-31</time>
+    </span>
+
+  
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h5 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h5><p>Given a non-empty binary tree, return the average value of the nodes on each level in the form of an array.</p>
+<p><strong>Example 1:</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Input:</span><br><span class="line">    3</span><br><span class="line">   / \</span><br><span class="line">  9  20</span><br><span class="line">    /  \</span><br><span class="line">   15   7</span><br><span class="line">Output: [3, 14.5, 11]</span><br><span class="line">Explanation:</span><br><span class="line">The average value of nodes on level 0 is 3,  on level 1 is 14.5, and on level 2 is 11. </span><br><span class="line">Hence return [3, 14.5, 11].</span><br></pre></td></tr></table></figure>
+
+<p><strong>Note:</strong></p>
+<ol>
+<li>The range of node’s value is in the range of 32-bit signed integer.</li>
+</ol>
+<h5 id="难度"><a href="#难度" class="headerlink" title="难度"></a>难度</h5><p>Easy</p>
+<h5 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h5><p>对二叉树进行深度遍历，将深度level作为参数传递，记录每一级的sum和个数n，最后将sum&#x2F;n保存到结果列表中即可</p>
+<h5 id="python代码"><a href="#python代码" class="headerlink" title="python代码"></a>python代码</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">TreeNode</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, x</span>):</span><br><span class="line">        self.val = x</span><br><span class="line">        self.left = <span class="literal">None</span></span><br><span class="line">        self.right = <span class="literal">None</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">averageOfLevels</span>(<span class="params">self, root</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        :type root: TreeNode</span></span><br><span class="line"><span class="string">        :rtype: List[float]</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        sums = []</span><br><span class="line">        nums = []</span><br><span class="line">        <span class="keyword">def</span> <span class="title function_">dfs</span>(<span class="params">node, level</span>):</span><br><span class="line">            <span class="keyword">if</span> node:</span><br><span class="line">                <span class="keyword">if</span> <span class="built_in">len</span>(sums) &lt;= level:</span><br><span class="line">                    sums.append(<span class="number">0</span>)</span><br><span class="line">                    nums.append(<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">                sums[level] += node.val</span><br><span class="line">                nums[level] += <span class="number">1</span></span><br><span class="line"></span><br><span class="line">                dfs(node.left, level+<span class="number">1</span>)</span><br><span class="line">                dfs(node.right, level+<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">        dfs(root, <span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">        result = []</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(sums)):</span><br><span class="line">            result.append(sums[i]/<span class="built_in">float</span>(nums[i]))</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> result</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">root = TreeNode(<span class="number">3</span>)</span><br><span class="line">root.left = TreeNode(<span class="number">9</span>)</span><br><span class="line">root.right = TreeNode(<span class="number">20</span>)</span><br><span class="line">root.right.left = TreeNode(<span class="number">15</span>)</span><br><span class="line">root.right.right = TreeNode(<span class="number">7</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">assert</span> Solution().averageOfLevels(root) == [<span class="number">3</span>, <span class="number">14.5</span>, <span class="number">11</span>]</span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
     <link itemprop="mainEntityOfPage" href="http://eazow.com/LeetCode-620-Not-Boring-Movies/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1357,360 +1525,8 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://eazow.com/nce/4/01-finding-fossil-man/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Eazow">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Eazow">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Eazow">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/nce/4/01-finding-fossil-man/" class="post-title-link" itemprop="url">Lesson 01 Find Fossil Man</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2017-01-02 00:00:00" itemprop="dateCreated datePublished" datetime="2017-01-02T00:00:00+08:00">2017-01-02</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/English/" itemprop="url" rel="index"><span itemprop="name">English</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>4 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <blockquote>
-<p>Why are legends handed down by storytellers useful?</p>
-</blockquote>
-<p>We can read of things that happened 5,000 years ago in the Near East, where people first learned to write. But there are some parts of the world where even now people cannot write. The only way that they can preserve their history is to <strong>recount</strong> it as <strong>sagas</strong> - legends handed down from one generation of storyteller to another. These legends are useful because the can tell us something about migrations of people who lived long ago, but none could write down what they did. <strong>Anthropologist</strong> wondered where the remote ancestors of the <strong>Polynesian</strong> peoples now living in the Pacific Islands came from. The sagas of these people explain that some of them came from Indonesia about 2,000 years ago.</p>
-<p>But the first people who were like ourselves lived so long ago that even their sagas, if they had any, are forgotten. So archaeologists have neither history nor legends to help them find out where the first “modern men” came from.</p>
-<p>Fortunately, however, ancient men made tools of stone, especially <strong>flint</strong>, because this is easier to shape than other kinds. They may also have used wood and skins, but these have <strong>rotted</strong> away. Stone does not <strong>decay</strong>, and so the tools of lone ago have remained when even the bones of the men who made them have disappeared without <strong>trace</strong>.</p>
-<h2 id="📖-文章主题"><a href="#📖-文章主题" class="headerlink" title="📖 文章主题"></a>📖 <strong>文章主题</strong></h2><p>探讨人类如何通过<strong>文字记录、口头传说和考古发现</strong>来了解古代人类的历史。</p>
-<hr>
-<h2 id="🎯-核心问题回答"><a href="#🎯-核心问题回答" class="headerlink" title="🎯 核心问题回答"></a>🎯 <strong>核心问题回答</strong></h2><h3 id="Why-are-legends-handed-down-by-storytellers-useful"><a href="#Why-are-legends-handed-down-by-storytellers-useful" class="headerlink" title="Why are legends handed down by storytellers useful?"></a>Why are legends handed down by storytellers useful?</h3><p><strong>答案</strong>：传说之所以有用，是因为它们能告诉我们关于<strong>古代人类迁徙</strong>的信息，尤其是那些生活在很久以前、没有文字记录能力的人群。</p>
-<p><strong>原文依据</strong>：</p>
-<blockquote>
-<p>“These legends are useful because they can tell us something about migrations of people who lived long ago, but none could write down what they did.”</p>
-</blockquote>
-<hr>
-<h2 id="📝-段落解析"><a href="#📝-段落解析" class="headerlink" title="📝 段落解析"></a>📝 <strong>段落解析</strong></h2><h3 id="第一段：三种了解历史的方式"><a href="#第一段：三种了解历史的方式" class="headerlink" title="第一段：三种了解历史的方式"></a><strong>第一段：三种了解历史的方式</strong></h3><h4 id="核心内容"><a href="#核心内容" class="headerlink" title="核心内容"></a>核心内容</h4><ol>
-<li><p><strong>文字记录</strong>（5,000年前开始）</p>
-<ul>
-<li>近东地区最早学会书写</li>
-<li>可以读到5000年前发生的事情</li>
-</ul>
-</li>
-<li><p><strong>口头传说</strong>（无文字地区）</p>
-<ul>
-<li>通过讲故事的方式代代相传</li>
-<li>称为 <strong>sagas</strong>（传奇故事）</li>
-</ul>
-</li>
-<li><p><strong>传说的价值</strong></p>
-<ul>
-<li>帮助了解古代人类的迁徙</li>
-<li>例如：波利尼西亚人的祖先来自印度尼西亚（约2000年前）</li>
-</ul>
-</li>
-</ol>
-<h4 id="重点句型"><a href="#重点句型" class="headerlink" title="重点句型"></a>重点句型</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">The only way that they can preserve their history is to recount it as sagas.</span><br><span class="line">他们保存历史的唯一方式就是把它当作传说讲述出来。</span><br><span class="line"></span><br><span class="line">结构：The only way (that)... is to do sth.</span><br><span class="line">唯一的方法是...</span><br></pre></td></tr></table></figure>
-
-<hr>
-<h3 id="第二段：最早人类的困境"><a href="#第二段：最早人类的困境" class="headerlink" title="第二段：最早人类的困境"></a><strong>第二段：最早人类的困境</strong></h3><h4 id="核心内容-1"><a href="#核心内容-1" class="headerlink" title="核心内容"></a>核心内容</h4><ul>
-<li>最早的”现代人”生活得太久远</li>
-<li>即使有传说也已被遗忘</li>
-<li>考古学家<strong>既没有历史记录，也没有传说</strong>可以依靠</li>
-</ul>
-<h4 id="关键表达"><a href="#关键表达" class="headerlink" title="关键表达"></a>关键表达</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">But the first people who were like ourselves lived so long ago that...</span><br><span class="line">但是最早像我们这样的人生活得如此久远，以至于...</span><br><span class="line"></span><br><span class="line">结构：so... that...（如此...以至于...）</span><br></pre></td></tr></table></figure>
-
-<hr>
-<h3 id="第三段：考古学的希望——石器"><a href="#第三段：考古学的希望——石器" class="headerlink" title="第三段：考古学的希望——石器"></a><strong>第三段：考古学的希望——石器</strong></h3><h4 id="核心内容-2"><a href="#核心内容-2" class="headerlink" title="核心内容"></a>核心内容</h4><ol>
-<li><p><strong>古人制作石器</strong></p>
-<ul>
-<li>主要用燧石（flint），因为容易塑形</li>
-<li>也可能用木头和兽皮，但已腐烂</li>
-</ul>
-</li>
-<li><p><strong>石头的优势</strong></p>
-<ul>
-<li>不会腐烂（decay）</li>
-<li>即使制作者的骨头都消失了，石器仍然保留</li>
-</ul>
-</li>
-</ol>
-<h4 id="重点对比"><a href="#重点对比" class="headerlink" title="重点对比"></a>重点对比</h4><table>
-<thead>
-<tr>
-<th>材料</th>
-<th>特点</th>
-<th>结果</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>木头、兽皮</td>
-<td>会腐烂（rot away）</td>
-<td>已消失</td>
-</tr>
-<tr>
-<td>石头</td>
-<td>不会腐烂（does not decay）</td>
-<td>保存至今</td>
-</tr>
-<tr>
-<td>人骨</td>
-<td>会消失（disappear without trace）</td>
-<td>无踪迹</td>
-</tr>
-</tbody></table>
-<hr>
-<h2 id="📚-重点词汇详解"><a href="#📚-重点词汇详解" class="headerlink" title="📚 重点词汇详解"></a>📚 <strong>重点词汇详解</strong></h2><h3 id="1-recount-rɪˈkaʊnt"><a href="#1-recount-rɪˈkaʊnt" class="headerlink" title="1. recount &#x2F;rɪˈkaʊnt&#x2F;"></a>1. <strong>recount</strong> &#x2F;rɪˈkaʊnt&#x2F;</h3><ul>
-<li><strong>词性</strong>：动词</li>
-<li><strong>含义</strong>：详细叙述，讲述</li>
-<li><strong>例句</strong>：<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">She recounted her adventures in Africa.</span><br><span class="line">她详细讲述了在非洲的冒险经历。</span><br></pre></td></tr></table></figure></li>
-</ul>
-<h3 id="2-saga-ˈsɑːɡə"><a href="#2-saga-ˈsɑːɡə" class="headerlink" title="2. saga &#x2F;ˈsɑːɡə&#x2F;"></a>2. <strong>saga</strong> &#x2F;ˈsɑːɡə&#x2F;</h3><ul>
-<li><strong>词性</strong>：名词</li>
-<li><strong>含义</strong>：传奇故事；长篇冒险故事</li>
-<li><strong>例句</strong>：<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">The saga of their journey across the desert fascinated everyone.</span><br><span class="line">他们穿越沙漠的传奇故事让所有人着迷。</span><br></pre></td></tr></table></figure></li>
-</ul>
-<h3 id="3-anthropologist-ˌaenθrəˈpɒlədʒɪst"><a href="#3-anthropologist-ˌaenθrəˈpɒlədʒɪst" class="headerlink" title="3. anthropologist &#x2F;ˌænθrəˈpɒlədʒɪst&#x2F;"></a>3. <strong>anthropologist</strong> &#x2F;ˌænθrəˈpɒlədʒɪst&#x2F;</h3><ul>
-<li><strong>词性</strong>：名词</li>
-<li><strong>含义</strong>：人类学家</li>
-<li><strong>词根</strong>：anthropo-（人类）+ -logist（学家）</li>
-<li><strong>相关词</strong>：<ul>
-<li>anthropology（人类学）</li>
-<li>archaeology（考古学）</li>
-</ul>
-</li>
-</ul>
-<h3 id="4-Polynesian-ˌpɒlɪˈniːʒən"><a href="#4-Polynesian-ˌpɒlɪˈniːʒən" class="headerlink" title="4. Polynesian &#x2F;ˌpɒlɪˈniːʒən&#x2F;"></a>4. <strong>Polynesian</strong> &#x2F;ˌpɒlɪˈniːʒən&#x2F;</h3><ul>
-<li><strong>词性</strong>：形容词&#x2F;名词</li>
-<li><strong>含义</strong>：波利尼西亚的&#x2F;波利尼西亚人</li>
-<li><strong>地理</strong>：太平洋岛屿地区</li>
-</ul>
-<h3 id="5-flint-flɪnt"><a href="#5-flint-flɪnt" class="headerlink" title="5. flint &#x2F;flɪnt&#x2F;"></a>5. <strong>flint</strong> &#x2F;flɪnt&#x2F;</h3><ul>
-<li><strong>词性</strong>：名词</li>
-<li><strong>含义</strong>：燧石（一种坚硬的石头）</li>
-<li><strong>用途</strong>：古代制作工具和生火</li>
-</ul>
-<h3 id="6-rot-rɒt"><a href="#6-rot-rɒt" class="headerlink" title="6. rot &#x2F;rɒt&#x2F;"></a>6. <strong>rot</strong> &#x2F;rɒt&#x2F;</h3><ul>
-<li><strong>词性</strong>：动词</li>
-<li><strong>含义</strong>：腐烂，腐朽</li>
-<li><strong>短语</strong>：rot away（完全腐烂）</li>
-<li><strong>例句</strong>：<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">The wood had rotted away over the years.</span><br><span class="line">木头经年累月已经腐烂了。</span><br></pre></td></tr></table></figure></li>
-</ul>
-<h3 id="7-decay-dɪˈkeɪ"><a href="#7-decay-dɪˈkeɪ" class="headerlink" title="7. decay &#x2F;dɪˈkeɪ&#x2F;"></a>7. <strong>decay</strong> &#x2F;dɪˈkeɪ&#x2F;</h3><ul>
-<li><strong>词性</strong>：动词&#x2F;名词</li>
-<li><strong>含义</strong>：腐烂；衰败</li>
-<li><strong>区别</strong>：<ul>
-<li>rot：强调有机物质的腐烂</li>
-<li>decay：更广泛，可指任何形式的衰败</li>
-</ul>
-</li>
-</ul>
-<h3 id="8-trace-treɪs"><a href="#8-trace-treɪs" class="headerlink" title="8. trace &#x2F;treɪs&#x2F;"></a>8. <strong>trace</strong> &#x2F;treɪs&#x2F;</h3><ul>
-<li><strong>词性</strong>：名词&#x2F;动词</li>
-<li><strong>含义</strong>：痕迹；追踪</li>
-<li><strong>短语</strong>：without trace（无影无踪）</li>
-<li><strong>例句</strong>：<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">The plane vanished without trace.</span><br><span class="line">飞机消失得无影无踪。</span><br></pre></td></tr></table></figure></li>
-</ul>
-<hr>
-<h2 id="🔑-重点语法结构"><a href="#🔑-重点语法结构" class="headerlink" title="🔑 重点语法结构"></a>🔑 <strong>重点语法结构</strong></h2><h3 id="1-定语从句"><a href="#1-定语从句" class="headerlink" title="1. 定语从句"></a>1. <strong>定语从句</strong></h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">We can read of things that happened 5,000 years ago.</span><br><span class="line">我们可以读到5000年前发生的事情。</span><br><span class="line"></span><br><span class="line">The only way that they can preserve their history is...</span><br><span class="line">他们保存历史的唯一方式是...</span><br></pre></td></tr></table></figure>
-
-<h3 id="2-被动语态"><a href="#2-被动语态" class="headerlink" title="2. 被动语态"></a>2. <strong>被动语态</strong></h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">legends handed down from one generation to another</span><br><span class="line">代代相传的传说</span><br><span class="line"></span><br><span class="line">（完整形式：legends that are handed down...）</span><br></pre></td></tr></table></figure>
-
-<h3 id="3-so…that…结构"><a href="#3-so…that…结构" class="headerlink" title="3. so…that…结构"></a>3. <strong>so…that…结构</strong></h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">lived so long ago that even their sagas are forgotten</span><br><span class="line">生活得如此久远，以至于即使他们的传说也被遗忘了</span><br></pre></td></tr></table></figure>
-
-<h3 id="4-neither…nor…结构"><a href="#4-neither…nor…结构" class="headerlink" title="4. neither…nor…结构"></a>4. <strong>neither…nor…结构</strong></h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">archaeologists have neither history nor legends to help them</span><br><span class="line">考古学家既没有历史也没有传说来帮助他们</span><br></pre></td></tr></table></figure>
-
-<hr>
-<h2 id="💡-文章逻辑结构"><a href="#💡-文章逻辑结构" class="headerlink" title="💡 文章逻辑结构"></a>💡 <strong>文章逻辑结构</strong></h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">了解古代人类历史的三种方式：</span><br><span class="line"></span><br><span class="line">1. 文字记录 ✓</span><br><span class="line">   └─ 5000年前开始</span><br><span class="line">   └─ 有限制：只在某些地区</span><br><span class="line"></span><br><span class="line">2. 口头传说 ✓</span><br><span class="line">   └─ 无文字地区的方式</span><br><span class="line">   └─ 有限制：最早的人类连传说都没留下</span><br><span class="line"></span><br><span class="line">3. 考古发现 ✓✓✓</span><br><span class="line">   └─ 石器工具</span><br><span class="line">   └─ 最可靠：石头不会腐烂</span><br></pre></td></tr></table></figure>
-
-<hr>
-<h2 id="🎓-学习要点"><a href="#🎓-学习要点" class="headerlink" title="🎓 学习要点"></a>🎓 <strong>学习要点</strong></h2><h3 id="理解层面"><a href="#理解层面" class="headerlink" title="理解层面"></a><strong>理解层面</strong></h3><ol>
-<li>人类历史研究的三个来源</li>
-<li>为什么石器对考古学如此重要</li>
-<li>不同材料的保存性差异</li>
-</ol>
-<h3 id="语言层面"><a href="#语言层面" class="headerlink" title="语言层面"></a><strong>语言层面</strong></h3><ol>
-<li>定语从句的使用</li>
-<li>因果关系的表达（because, so…that）</li>
-<li>对比结构（but, however）</li>
-</ol>
-<h3 id="词汇层面"><a href="#词汇层面" class="headerlink" title="词汇层面"></a><strong>词汇层面</strong></h3><ol>
-<li>历史考古相关词汇</li>
-<li>材料特性描述词汇</li>
-<li>时间表达方式</li>
-</ol>
-<hr>
-<h2 id="✍️-写作可借鉴的表达"><a href="#✍️-写作可借鉴的表达" class="headerlink" title="✍️ 写作可借鉴的表达"></a>✍️ <strong>写作可借鉴的表达</strong></h2><ol>
-<li><p><strong>引出话题</strong>：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">We can read of things that happened...</span><br><span class="line">我们可以读到...发生的事情</span><br></pre></td></tr></table></figure>
-</li>
-<li><p><strong>转折对比</strong>：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">But there are some parts of the world where...</span><br><span class="line">但是世界上有些地方...</span><br></pre></td></tr></table></figure>
-</li>
-<li><p><strong>强调唯一性</strong>：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">The only way that... is to...</span><br><span class="line">...的唯一方式是...</span><br></pre></td></tr></table></figure>
-</li>
-<li><p><strong>表达幸运</strong>：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Fortunately, however,...</span><br><span class="line">然而，幸运的是...</span><br></pre></td></tr></table></figure></li>
-</ol>
-<p>这篇文章展示了<strong>说明文</strong>的典型结构：提出问题→分析问题→给出答案，语言简洁清晰，逻辑严密，非常适合学习英语写作！</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://eazow.com/leetcode/90-subsets-2/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Eazow">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Eazow">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Eazow">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/leetcode/90-subsets-2/" class="post-title-link" itemprop="url">[LeetCode]90. Subsets II</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2016-09-23 10:09:37" itemprop="dateCreated datePublished" datetime="2016-09-23T10:09:37+08:00">2016-09-23</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Coding/" itemprop="url" rel="index"><span itemprop="name">Coding</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h4 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h4><p>Given a collection of integers that might contain duplicates, <em><strong>nums</strong></em>, return all possible subsets.<br><strong>Note:</strong> The solution set must not contain duplicate subsets.<br>For example,<br>If <em><strong>nums</strong></em> &#x3D; [1,2,2], a solution is:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[</span><br><span class="line">  [2],</span><br><span class="line">  [1],</span><br><span class="line">  [1,2,2],</span><br><span class="line">  [2,2],</span><br><span class="line">  [1,2],</span><br><span class="line">  []</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
-
-
-
-<h4 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h4><p>设定返回的列表的列表为<code>result</code>。先对数组排序，如果<code>nums[i]!=nums[i-1]</code>，那么就遍历<code>result</code>，复制每个列表为<code>tempList</code>，加入<code>nums[i]</code>，然后将该列表加入<code>result</code>中；如果<code>nums[i]==nums[i-1]</code>，那么记录下加入<code>nums[i-1]</code>前返回列表的大小<code>resultIndex</code>，<code>resultSize</code>为加入<code>nums[i-1]</code>后的大小，对<code>result</code>中从<code>resultIndex</code>至<code>resultSize</code>的列表加入<code>nums[i]</code>，然后将新生成的列表加入<code>result</code></p>
-<h4 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">subsetsWithDup</span>(<span class="params">self, nums</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        :type nums: List[int]</span></span><br><span class="line"><span class="string">        :rtype: List[List[int]]</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        result = [[]]</span><br><span class="line">        nums.sort()</span><br><span class="line">        i = <span class="number">0</span></span><br><span class="line">        resultSize = <span class="number">0</span></span><br><span class="line">        <span class="keyword">while</span> i &lt; <span class="built_in">len</span>(nums):</span><br><span class="line">            num = nums[i]</span><br><span class="line">            resultIndex = <span class="number">0</span></span><br><span class="line">            <span class="keyword">if</span> i&gt;<span class="number">0</span> <span class="keyword">and</span> nums[i]==nums[i-<span class="number">1</span>]:</span><br><span class="line">                resultIndex = resultSize;</span><br><span class="line">            resultSize = <span class="built_in">len</span>(result)</span><br><span class="line">            <span class="keyword">while</span> resultIndex &lt; resultSize:</span><br><span class="line">                tempList = result[resultIndex][:]</span><br><span class="line">                tempList.append(num)</span><br><span class="line">                result.append(tempList)</span><br><span class="line">                resultIndex += <span class="number">1</span></span><br><span class="line">            i += <span class="number">1</span></span><br><span class="line">        <span class="keyword">return</span> result</span><br><span class="line"></span><br><span class="line"><span class="keyword">assert</span> Solution().subsetsWithDup([<span class="number">1</span>,<span class="number">2</span>,<span class="number">2</span>]) == [[],[<span class="number">1</span>],[<span class="number">2</span>],[<span class="number">1</span>,<span class="number">2</span>],[<span class="number">2</span>,<span class="number">2</span>],[<span class="number">1</span>,<span class="number">2</span>,<span class="number">2</span>]]</span><br></pre></td></tr></table></figure>
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/5/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/7/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+    <a class="extend prev" rel="prev" href="/page/5/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/7/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 </div>
@@ -1733,13 +1549,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">242k</span>
+    <span title="Symbols count total">279k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">3:40</span>
+    <span title="Reading time total">4:14</span>
   </span>
 </div>
 <div class="busuanzi-count">
