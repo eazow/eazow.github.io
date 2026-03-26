@@ -114,6 +114,108 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://eazow.com/fake/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Eazow">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Eazow">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Eazow">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/fake/" class="post-title-link" itemprop="url">Fake data</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2023-01-02 12:56:31" itemprop="dateCreated datePublished" datetime="2023-01-02T12:56:31+08:00">2023-01-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Coding/" itemprop="url" rel="index"><span itemprop="name">Coding</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>2 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>当测试程序需要数据时，可以通过faker来构造测试数据</p>
+<h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ pip install faker</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="基本使用"><a href="#基本使用" class="headerlink" title="基本使用"></a>基本使用</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">from faker import Faker</span><br><span class="line">faker = Faker()</span><br><span class="line"> </span><br><span class="line">faker.name()</span><br><span class="line"># &#x27;Lucy Cechtelar&#x27;</span><br><span class="line"> </span><br><span class="line">faker.address()</span><br><span class="line"># &#x27;426 Jordy Lodge</span><br><span class="line">#  Cartwrightshire, SC 88120-6700&#x27;</span><br><span class="line"> </span><br><span class="line">faker.ipv4()</span><br><span class="line"># &#x27;196.67.103.129&#x27;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>对方法 <a target="_blank" rel="noopener" href="http://fake.name/">faker.</a>ipv4()的每次调用都会产生不同的随机结果</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">for _ in range(10):</span><br><span class="line">  print(faker.ipv4())</span><br><span class="line"> </span><br><span class="line"># &#x27;120.36.235.152&#x27;</span><br><span class="line"># &#x27;16.58.6.69&#x27;</span><br><span class="line"># &#x27;170.215.56.41&#x27;</span><br><span class="line"># &#x27;135.217.158.192&#x27;</span><br><span class="line"># &#x27;218.235.87.38&#x27;</span><br><span class="line"># &#x27;175.80.75.73&#x27;</span><br><span class="line"># &#x27;122.120.1.128&#x27;</span><br><span class="line"># &#x27;99.91.143.38&#x27;</span><br><span class="line"># &#x27;1.90.129.142&#x27;</span><br><span class="line"># &#x27;184.148.193.249&#x27;</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/fake/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
     <link itemprop="mainEntityOfPage" href="http://eazow.com/commencement/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1233,111 +1335,6 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://eazow.com/nce/4/48-planning-a-share-portfolio/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Eazow">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Eazow">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Eazow">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/nce/4/48-planning-a-share-portfolio/" class="post-title-link" itemprop="url">Lesson 48 Planning a share portfolio</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2018-08-01 00:00:00" itemprop="dateCreated datePublished" datetime="2018-08-01T00:00:00+08:00">2018-08-01</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/English/" itemprop="url" rel="index"><span itemprop="name">English</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>2 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <blockquote>
-<p>How does the older investor differ in his approach to investment from the younger investor?</p>
-</blockquote>
-<p>There is no shortage of <strong>tipsters</strong> around offering “get-rich-quick” opportunities. </p>
-<p>But if you are a serious private investor, leave the Las Vegas <strong>mentality</strong> to those with money to <strong>fritter</strong>.</p>
-<p>The serious investor needs a proper “<strong>portfolio</strong>“ - a well-planned selection of investments, with a definite structure and a clear aim. </p>
-<p>But exactly how does a newcomer to the stock market go about achieving that?</p>
-<p>Well, if you go to five reputable stockbrokers and ask them what you should do with your money, you’re likely to get five different answers, — even if you give all the relevant information about your age, family, finances and what you want from your investments. </p>
-<p>Moral? There is no one “right” way to structure a portfolio.</p>
-<p>However, there are undoubtedly some wrong ways, and you can be sure that none of our five advisers would have suggested <strong>sinking</strong> all (or perhaps any) of your money into Periwigs*.</p>
-<p>So what should you do? We’ll assume that you have sorted out the basics — like <strong>mortgages</strong>, <strong>pensions</strong>, insurance and access to sufficient cash reserves. </p>
-<p>You should then establish your own individual aims. </p>
-<p>These are partly a matter of personal circumstances, partly a matter of psychology.</p>
-<p>For instance, if you are older you have less time to recover from any major losses, and you may well wish to boost your pension income. </p>
-<p>So preserving your capital and generating extra income are your main priorities. </p>
-<p>In this case, you’d probably construct a portfolio with some shares (but not high risk ones), along with <strong>gilts</strong>, cash deposits, and perhaps convertibles or the income shares of split capital investment <strong>trusts</strong>.</p>
-<p>If you are younger, and in a solid financial position, you may decide to take an aggressive approach — but only if you’re blessed with a <strong>sanguine</strong> disposition and won’t suffer sleepless nights over share prices. </p>
-<p>If you recognize yourself in this description, you might include a couple of heady growth stocks in your portfolio, alongside your more <strong>pedestrian</strong> investments. </p>
-<p>Once you have decided on your investment aims, you can then decide where to put your money. </p>
-<p>The golden rule here is “spread your risk” — if you put all of your money into Periwigs International, you’re setting yourself up as a hostage to fortune.</p>
-<p><em><strong>“Periwigs”</strong></em> is the name of a <strong>fictitious</strong> company.</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
     <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
@@ -1362,13 +1359,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">279k</span>
+    <span title="Symbols count total">296k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">4:14</span>
+    <span title="Reading time total">4:29</span>
   </span>
 </div>
 <div class="busuanzi-count">
