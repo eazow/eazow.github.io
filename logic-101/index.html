@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"eazow.com","root":"/","images":"/images","scheme":"Mist","darkmode":false,"version":"8.12.2","exturl":false,"sidebar":{"position":"left","display":"remove","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":"giscus","storage":true,"lazyload":true,"nav":null,"activeClass":"giscus"},"stickytabs":false,"motion":{"enable":false,"async":true,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.12.2/config.min.js"></script>
+
+
+
+<link rel="canonical" href="http://eazow.com/logic-101/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en-US","comments":true,"permalink":"http://eazow.com/logic-101/","path":"logic-101/","title":"逻辑学入门"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>逻辑学入门 | Eazow</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-NHS1WWDHJE"></script>
+  <script class="next-config" data-name="google_analytics" type="application/json">{"tracking_id":"G-NHS1WWDHJE","only_pageview":false}</script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.12.2/third-party/analytics/google-analytics.min.js"></script>
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <!--i class="logo-line"></i-->
+      <p class="site-title">Eazow</p>
+      <!--i class="logo-line"></i-->
+    </a>
+      <p class="site-subtitle" itemprop="description">Stay kind and positive</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+    <div class="banner"></div>
+
+    
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en-US">
+    <link itemprop="mainEntityOfPage" href="http://eazow.com/logic-101/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Eazow">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Eazow">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="逻辑学入门 | Eazow">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          逻辑学入门
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2026-05-12 15:16:08" itemprop="dateCreated datePublished" datetime="2026-05-12T15:16:08+08:00">2026-05-12</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Reading/" itemprop="url" rel="index"><span itemprop="name">Reading</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>4 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>这是一篇深入浅出的逻辑学入门文章，从日常生活切入，逐步带你进入逻辑学的世界。</p>
+<h2 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h2><ul>
+<li><a href="#%E7%AC%AC%E4%B8%80%E9%83%A8%E5%88%86%EF%BC%9A%E5%AD%A6%E4%BC%9A%E6%80%9D%E8%80%83%E2%80%94%E2%80%94%E9%80%BB%E8%BE%91%E5%AD%A6%E5%85%A5%E9%97%A8%E6%8C%87%E5%8D%97">第一部分：学会思考——逻辑学入门指南</a><ul>
+<li><a href="#%E4%B8%80%E3%80%81%E9%80%BB%E8%BE%91%E5%AD%A6%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F">一、逻辑学是什么？</a></li>
+<li><a href="#%E4%BA%8C%E3%80%81%E4%B8%A4%E5%A4%A7%E6%A0%B8%E5%BF%83%E6%8E%A8%E7%90%86%E6%96%B9%E5%BC%8F">二、两大核心推理方式</a></li>
+<li><a href="#%E4%B8%89%E3%80%81%E5%91%BD%E9%A2%98%E4%B8%8E%E9%80%BB%E8%BE%91%E8%81%94%E7%BB%93%E8%AF%8D">三、命题与逻辑联结词</a></li>
+<li><a href="#%E5%9B%9B%E3%80%81%E6%9C%80%E5%B8%B8%E8%A7%81%E7%9A%84%E9%80%BB%E8%BE%91%E8%B0%AC%E8%AF%AF">四、最常见的逻辑谬误</a></li>
+<li><a href="#%E4%BA%94%E3%80%81%E9%80%BB%E8%BE%91%E5%AD%A6%E6%80%8E%E4%B9%88%E5%AD%A6%EF%BC%9F">五、逻辑学怎么学？</a></li>
+<li><a href="#%E5%85%AD%E3%80%81%E4%B8%BA%E4%BB%80%E4%B9%88%E6%AF%8F%E4%B8%AA%E4%BA%BA%E9%83%BD%E5%BA%94%E8%AF%A5%E5%AD%A6%E9%80%BB%E8%BE%91%EF%BC%9F">六、为什么每个人都应该学逻辑？</a></li>
+<li><a href="#%E5%B0%8F%E7%BB%93">小结</a></li>
+</ul>
+</li>
+<li><a href="#%E7%AC%AC%E4%BA%8C%E9%83%A8%E5%88%86%EF%BC%9A%E4%BD%A0%E9%80%89%E5%93%AA%E6%89%87%E9%97%A8%EF%BC%9F%E2%80%94%E2%80%94%E8%92%99%E6%8F%90%E9%9C%8D%E5%B0%94%E9%97%AE%E9%A2%98">第二部分：你选哪扇门？——蒙提霍尔问题</a><ul>
+<li><a href="#%E6%95%85%E4%BA%8B%E8%83%8C%E6%99%AF">故事背景</a></li>
+<li><a href="#%E8%88%86%E8%AE%BA%E7%88%86%E7%82%B8">舆论爆炸</a></li>
+<li><a href="#%E7%94%A8%E9%80%BB%E8%BE%91%E5%AD%A6%E5%BD%BB%E5%BA%95%E6%8B%86%E8%A7%A3%E8%BF%99%E9%81%93%E9%A2%98">用逻辑学彻底拆解这道题</a></li>
+<li><a href="#%E8%BF%99%E9%81%93%E9%A2%98%E6%B7%B1%E5%88%BB%E5%9C%A8%E5%93%AA%E9%87%8C%EF%BC%9F">这道题深刻在哪里？</a></li>
+<li><a href="#%E4%BB%8E%E8%BF%99%E9%81%93%E9%A2%98%E5%AD%A6%E5%88%B0%E7%9A%84%E9%80%BB%E8%BE%91%E5%AD%A6%E7%B2%BE%E9%AB%93">从这道题学到的逻辑学精髓</a></li>
+</ul>
+</li>
+<li><a href="#%E7%BB%93%E8%AF%AD">结语</a></li>
+</ul>
+<hr>
+<h2 id="第一部分：学会思考——逻辑学入门指南"><a href="#第一部分：学会思考——逻辑学入门指南" class="headerlink" title="第一部分：学会思考——逻辑学入门指南"></a>第一部分：学会思考——逻辑学入门指南</h2><blockquote>
+<p><em>“逻辑是思维的语法。”</em></p>
+</blockquote>
+<p>你有没有遇到过这种情况：和别人争论了半天，最后发现根本不知道谁对谁错？或者被一段话说得似乎很有道理，但总觉得哪里不对劲，却说不出来？</p>
+<p>这就是缺乏逻辑训练的典型症状。逻辑学，正是帮你把这种”说不清楚的感觉”变成”清晰可辨的判断”的工具。</p>
+<span id="more"></span>
+<hr>
+<h3 id="一、逻辑学是什么？"><a href="#一、逻辑学是什么？" class="headerlink" title="一、逻辑学是什么？"></a>一、逻辑学是什么？</h3><p>很多人听到”逻辑学”三个字，脑海里浮现的是厚厚的哲学书和晦涩的符号公式。但其实，逻辑学的本质非常朴素：</p>
+<blockquote>
+<p><strong>研究”什么样的推理是有效的”这门学问。</strong></p>
+</blockquote>
+<p>换句话说，逻辑学不关心你说的内容是否正确，而关心你<strong>从前提到结论的推理过程</strong>是否站得住脚。</p>
+<p>举个例子：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">前提1：所有人都会死</span><br><span class="line">前提2：苏格拉底是人</span><br><span class="line">结论：苏格拉底会死</span><br></pre></td></tr></table></figure>
+
+<p>这个推理，不管你喜不喜欢苏格拉底，结论都是<strong>必然成立</strong>的——这就是逻辑有效性。</p>
+<hr>
+<h3 id="二、两大核心推理方式"><a href="#二、两大核心推理方式" class="headerlink" title="二、两大核心推理方式"></a>二、两大核心推理方式</h3><p>逻辑学的地基，是两种推理方式。搞懂它们，你就掌握了逻辑学的骨架。</p>
+<hr>
+<h4 id="演绎推理：从一般到特殊"><a href="#演绎推理：从一般到特殊" class="headerlink" title="演绎推理：从一般到特殊"></a>演绎推理：从一般到特殊</h4><p>演绎推理的特点是：<strong>如果前提为真，结论必然为真。</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">所有金属都能导电（一般规律）</span><br><span class="line">铜是金属（特殊事实）</span><br><span class="line">→ 铜能导电（必然结论）</span><br></pre></td></tr></table></figure>
+
+<p>演绎推理是<strong>保真的</strong>——真理不会在推理过程中丢失。数学证明、法律判决，都大量依赖演绎推理。</p>
+<hr>
+<h4 id="归纳推理：从特殊到一般"><a href="#归纳推理：从特殊到一般" class="headerlink" title="归纳推理：从特殊到一般"></a>归纳推理：从特殊到一般</h4><p>归纳推理的特点是：<strong>从大量具体案例中，总结出一般规律。</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">我见过的天鹅都是白色的</span><br><span class="line">→ 所以天鹅都是白色的？</span><br></pre></td></tr></table></figure>
+
+<p>等等——1697年，欧洲人在澳大利亚发现了黑天鹅。</p>
+<p>这就是归纳推理的本质局限：<strong>结论只是”很可能”，而非”必然”。</strong> 科学研究大量使用归纳推理，这也是为什么科学结论总是”在现有证据下成立”，而非永恒真理。</p>
+<hr>
+<h4 id="对比一眼看清"><a href="#对比一眼看清" class="headerlink" title="对比一眼看清"></a>对比一眼看清</h4><table>
+<thead>
+<tr>
+<th></th>
+<th>演绎推理</th>
+<th>归纳推理</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>方向</strong></td>
+<td>一般 → 特殊</td>
+<td>特殊 → 一般</td>
+</tr>
+<tr>
+<td><strong>结论强度</strong></td>
+<td>必然成立</td>
+<td>可能成立</td>
+</tr>
+<tr>
+<td><strong>典型应用</strong></td>
+<td>数学、逻辑证明</td>
+<td>科学研究、日常经验</td>
+</tr>
+<tr>
+<td><strong>风险</strong></td>
+<td>前提错了全错</td>
+<td>样本不足会误判</td>
+</tr>
+</tbody></table>
+<hr>
+<h3 id="三、命题与逻辑联结词"><a href="#三、命题与逻辑联结词" class="headerlink" title="三、命题与逻辑联结词"></a>三、命题与逻辑联结词</h3><p>推理是由<strong>命题</strong>组成的。命题就是一句<strong>能判断真假的陈述</strong>。</p>
+<ul>
+<li>✅ “今天下雨了” — 是命题</li>
+<li>✅ “2+2=5” — 是命题（假命题）</li>
+<li>❌ “请关门” — 不是命题（祈使句无真假）</li>
+<li>❌ “这朵花真美啊” — 不是命题（感叹句无真假）</li>
+</ul>
+<p>命题之间可以用<strong>逻辑联结词</strong>组合：</p>
+<table>
+<thead>
+<tr>
+<th>联结词</th>
+<th>符号</th>
+<th>含义</th>
+<th>例子</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>且</strong>（合取）</td>
+<td>∧</td>
+<td>两者都真才为真</td>
+<td>今天下雨 <strong>且</strong> 刮风</td>
+</tr>
+<tr>
+<td><strong>或</strong>（析取）</td>
+<td>∨</td>
+<td>至少一个真即为真</td>
+<td>今天下雨 <strong>或</strong> 出太阳</td>
+</tr>
+<tr>
+<td><strong>非</strong>（否定）</td>
+<td>¬</td>
+<td>真假翻转</td>
+<td><strong>不是</strong>今天下雨</td>
+</tr>
+<tr>
+<td><strong>如果…那么…</strong></td>
+<td>→</td>
+<td>蕴含关系</td>
+<td><strong>如果</strong>下雨，<strong>那么</strong>地会湿</td>
+</tr>
+<tr>
+<td><strong>当且仅当</strong></td>
+<td>↔</td>
+<td>双向蕴含</td>
+<td>双数<strong>当且仅当</strong>能被2整除</td>
+</tr>
+</tbody></table>
+<hr>
+<h3 id="四、最常见的逻辑谬误"><a href="#四、最常见的逻辑谬误" class="headerlink" title="四、最常见的逻辑谬误"></a>四、最常见的逻辑谬误</h3><p>学逻辑，不只是学”怎么推理正确”，更要学”识别推理错误”。以下是日常生活中最高频的谬误：</p>
+<hr>
+<h4 id="稻草人谬误"><a href="#稻草人谬误" class="headerlink" title="稻草人谬误"></a>稻草人谬误</h4><p><strong>歪曲对方观点，然后攻击这个歪曲版本。</strong></p>
+<blockquote>
+<p>甲：”我们应该减少吃肉。”<br>乙：”你想让所有人饿死吗？”</p>
+</blockquote>
+<p>乙攻击的根本不是甲说的话。</p>
+<hr>
+<h4 id="诉诸权威"><a href="#诉诸权威" class="headerlink" title="诉诸权威"></a>诉诸权威</h4><p><strong>因为某权威这么说，所以一定是对的。</strong></p>
+<blockquote>
+<p>“某著名教授说这个保健品有效，所以肯定有效。”</p>
+</blockquote>
+<p>权威的意见值得参考，但不能替代证据和推理。</p>
+<hr>
+<h4 id="滑坡谬误"><a href="#滑坡谬误" class="headerlink" title="滑坡谬误"></a>滑坡谬误</h4><p><strong>夸大一件事的连锁后果，制造恐慌。</strong></p>
+<blockquote>
+<p>“如果允许学生上课喝水，接下来他们就会要求吃东西，然后睡觉，课堂纪律就彻底崩溃了。”</p>
+</blockquote>
+<p>每一步跳跃都需要单独论证，不能想当然地连接。</p>
+<hr>
+<h4 id="人身攻击"><a href="#人身攻击" class="headerlink" title="人身攻击"></a>人身攻击</h4><p><strong>攻击说话者本人，而非其论点。</strong></p>
+<blockquote>
+<p>“他离过婚，他说的关于婚姻的话怎么能信？”</p>
+</blockquote>
+<p>一个人的品格和其论点的真假，是两回事。</p>
+<hr>
+<h4 id="循环论证"><a href="#循环论证" class="headerlink" title="循环论证"></a>循环论证</h4><p><strong>用结论来证明结论本身。</strong></p>
+<blockquote>
+<p>“圣经是真的，因为圣经里说圣经是上帝的话，上帝的话是真的。”</p>
+</blockquote>
+<p>前提和结论互为依赖，什么都没有证明。</p>
+<hr>
+<h3 id="五、逻辑学怎么学？"><a href="#五、逻辑学怎么学？" class="headerlink" title="五、逻辑学怎么学？"></a>五、逻辑学怎么学？</h3><p>理论讲完了，落地才是关键。</p>
+<h4 id="第一步：训练命题意识"><a href="#第一步：训练命题意识" class="headerlink" title="第一步：训练命题意识"></a>第一步：训练命题意识</h4><p>读到任何观点，先问自己：*”这句话的前提是什么？结论是什么？”* 把隐含的假设挖出来。</p>
+<hr>
+<h4 id="第二步：练习识别谬误"><a href="#第二步：练习识别谬误" class="headerlink" title="第二步：练习识别谬误"></a>第二步：练习识别谬误</h4><p>日常刷新闻、看辩论、听演讲时，主动寻找上面提到的谬误。你会发现它们无处不在。</p>
+<hr>
+<h4 id="第三步：学习形式逻辑基础"><a href="#第三步：学习形式逻辑基础" class="headerlink" title="第三步：学习形式逻辑基础"></a>第三步：学习形式逻辑基础</h4><p>了解基本的符号逻辑（命题逻辑、谓词逻辑），这是逻辑学的精确化工具。推荐从《逻辑学导论》入手。</p>
+<hr>
+<h4 id="第四步：实践批判性思维"><a href="#第四步：实践批判性思维" class="headerlink" title="第四步：实践批判性思维"></a>第四步：实践批判性思维</h4><p>逻辑学的终极目标不是赢得争论，而是<strong>更接近真相</strong>。用逻辑审视自己的观点，比审视别人的更有价值。</p>
+<hr>
+<h3 id="六、为什么每个人都应该学逻辑？"><a href="#六、为什么每个人都应该学逻辑？" class="headerlink" title="六、为什么每个人都应该学逻辑？"></a>六、为什么每个人都应该学逻辑？</h3><table>
+<thead>
+<tr>
+<th>场景</th>
+<th>逻辑学的作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>日常沟通</strong></td>
+<td>表达更清晰，减少误解</td>
+</tr>
+<tr>
+<td><strong>做决策</strong></td>
+<td>识别认知偏误，判断更理性</td>
+</tr>
+<tr>
+<td><strong>读新闻</strong></td>
+<td>辨别信息真假，不被带节奏</td>
+</tr>
+<tr>
+<td><strong>写作</strong></td>
+<td>论证结构严密，说服力更强</td>
+</tr>
+<tr>
+<td><strong>编程/AI</strong></td>
+<td>逻辑是代码和算法的底层语言</td>
+</tr>
+</tbody></table>
+<hr>
+<h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3><p>学逻辑不是为了在饭桌上把人辩得哑口无言，而是为了少被忽悠，也少忽悠自己。</p>
+<p>下次再听到一句听起来很有道理的话，可以先别急着信，问自己三句：前提站得住吗？从前提到结论有没有跳步？有没有我没想到的反例？</p>
+<p>想清楚这三点，很多”听起来很有道理”的话，就站不住了。</p>
+<hr>
+<h2 id="第二部分：你选哪扇门？——蒙提霍尔问题"><a href="#第二部分：你选哪扇门？——蒙提霍尔问题" class="headerlink" title="第二部分：你选哪扇门？——蒙提霍尔问题"></a>第二部分：你选哪扇门？——蒙提霍尔问题</h2><p>学完前面的理论，来看一个充满知识趣味的实战案例——这是数学史上最著名的一次”直觉被逻辑推翻”的时刻。</p>
+<h3 id="故事背景"><a href="#故事背景" class="headerlink" title="故事背景"></a>故事背景</h3><p>1990年，美国一本知名杂志《Parade》收到了一封读者来信，描述了一个电视游戏节目的场景：</p>
+<blockquote>
+<p>面前有<strong>三扇门</strong>。<br>其中一扇门后面是一辆<strong>豪华轿车</strong>，另外两扇后面是<strong>山羊</strong>。<br>你选了1号门。<br>主持人（他知道哪扇门后面是车）打开了3号门，露出一只山羊。<br>然后问你：<strong>你要不要换成2号门？</strong></p>
+</blockquote>
+<p>读者的问题是：<strong>换门，还是不换？</strong></p>
+<p>专栏作者玛丽莲·沃斯·莎凡特给出了答案：</p>
+<blockquote>
+<p><strong>应该换门。换门后赢得汽车的概率是 2/3，不换只有 1/3。</strong></p>
+</blockquote>
+<hr>
+<h3 id="舆论爆炸"><a href="#舆论爆炸" class="headerlink" title="舆论爆炸"></a>舆论爆炸</h3><p>这个答案引发了一场风暴。</p>
+<p>超过 <strong>10,000 名读者</strong>写信反驳她，其中包括：</p>
+<ul>
+<li>数百名拥有博士学位的数学家、统计学家、教授</li>
+<li>来自顶尖大学的学者</li>
+</ul>
+<p>他们的反驳几乎一致：</p>
+<blockquote>
+<p>“三扇门变成两扇门，概率明显是 1/2，你的答案是错的。”</p>
+</blockquote>
+<p>一位读者写道：</p>
+<blockquote>
+<p><em>“你犯了一个基础错误。请谦虚地承认你错了。”</em></p>
+</blockquote>
+<p>但玛丽莲是对的。</p>
+<hr>
+<h3 id="用逻辑学彻底拆解这道题"><a href="#用逻辑学彻底拆解这道题" class="headerlink" title="用逻辑学彻底拆解这道题"></a>用逻辑学彻底拆解这道题</h3><h4 id="第一步：直觉为什么会出错？"><a href="#第一步：直觉为什么会出错？" class="headerlink" title="第一步：直觉为什么会出错？"></a>第一步：直觉为什么会出错？</h4><p>大多数人的直觉推理是这样的：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">现在只剩两扇门</span><br><span class="line">一扇有车，一扇有羊</span><br><span class="line">所以概率各是 1/2</span><br><span class="line">换不换无所谓</span><br></pre></td></tr></table></figure>
+
+<p>这个推理看起来无懈可击，但它犯了一个逻辑错误：</p>
+<blockquote>
+<p><strong>忽略了”主持人的行为”携带的信息。</strong></p>
+</blockquote>
+<p>主持人不是随机开门的——他<strong>永远不会打开有车的门</strong>，也<strong>永远不会打开你选的门</strong>。</p>
+<p>这个约束条件，彻底改变了概率结构。</p>
+<hr>
+<h4 id="第二步：穷举法——让逻辑无处遁形"><a href="#第二步：穷举法——让逻辑无处遁形" class="headerlink" title="第二步：穷举法——让逻辑无处遁形"></a>第二步：穷举法——让逻辑无处遁形</h4><p>用最笨但最严密的方式：<strong>列出所有可能情况。</strong></p>
+<p>假设车在1号门后（其他情况对称，结论相同）：</p>
+<table>
+<thead>
+<tr>
+<th>你的初始选择</th>
+<th>车的位置</th>
+<th>主持人打开</th>
+<th>你换门后</th>
+<th>结果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1号门</td>
+<td>1号门</td>
+<td>2或3号（随机）</td>
+<td>换到另一扇</td>
+<td>❌ 输</td>
+</tr>
+<tr>
+<td>2号门</td>
+<td>1号门</td>
+<td>3号门（唯一选择）</td>
+<td>换到1号门</td>
+<td>✅ 赢</td>
+</tr>
+<tr>
+<td>3号门</td>
+<td>1号门</td>
+<td>2号门（唯一选择）</td>
+<td>换到1号门</td>
+<td>✅ 赢</td>
+</tr>
+</tbody></table>
+<p>三种情况，<strong>换门赢了2次，不换只赢1次。</strong></p>
+<p><mjx-container class="MathJax" jax="SVG" overflow="overflow" display="true"><svg style="vertical-align: -1.602ex;" xmlns="http://www.w3.org/2000/svg" width="34.063ex" height="4.638ex" role="img" focusable="false" viewBox="0 -1342 15055.8 2050"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math" data-latex="P(\text{换门赢}) = \frac{2}{3}, \quad P(\text{不换赢}) = \frac{1}{3}"><g data-mml-node="mi" data-latex="P"><path data-c="1D443" d="M555 683L235 683C212 683 201 682 201 660C201 649 212 644 234 644C254 644 294 647 294 631C294 629 293 623 290 613L158 82C152 60 142 47 128 42C121 40 103 39 72 39C50 39 40 37 40 16C40 5 46 0 59 0L184 3L248 2C259 2 299 0 312 0C328 0 336 8 336 24C336 34 325 39 304 39C264 39 244 43 244 52C244 52 245 55 247 68L307 312L472 312C537 312 599 332 657 371C722 414 754 467 754 530C754 629 660 683 555 683M524 644C611 644 654 614 654 554C654 498 626 423 597 397C559 363 509 346 447 346L313 346L379 610C387 644 387 644 429 644Z"></path></g><g data-mml-node="mo" data-latex="(" transform="translate(754,0)"><path data-c="28" d="M318-248C327-248 332-243 332-234C332-231 330-227 327-223C275-183 233-117 202-26C175 53 161 131 161 208L161 292C161 369 175 447 202 526C233 617 275 683 327 723C330 726 332 730 332 734C332 743 327 748 318 748C317 748 314 747 311 745C251 699 201 631 160 540C121 453 101 371 101 292L101 208C101 129 121 47 160-40C201-131 251-199 311-245C314-247 317-248 318-248Z"></path></g><g data-mml-node="mtext" data-latex="\text{换门赢}" transform="translate(1143,0)"><text data-variant="normal" transform="scale(1,-1)" font-size="884px" font-family="serif">换门赢</text></g><g data-mml-node="mo" data-latex=")" transform="translate(4143,0)"><path data-c="29" d="M78-245C138-199 188-131 229-40C268 47 288 129 288 208L288 292C288 371 268 453 229 540C188 631 138 699 78 745C75 747 72 748 71 748C62 748 57 743 57 734C57 730 59 726 62 723C114 683 156 617 187 526C214 447 228 369 228 292L228 208C228 131 214 53 187-26C156-117 114-183 62-223C59-227 57-231 57-234C57-243 62-248 71-248C72-248 75-247 78-245Z"></path></g><g data-mml-node="mo" data-latex="=" transform="translate(4809.8,0)"><path data-c="3D" d="M698 367L80 367C64 367 56 359 56 344C56 329 64 321 80 321L698 321C714 321 722 329 722 344C722 356 711 367 698 367M698 179L80 179C64 179 56 171 56 156C56 141 64 133 80 133L698 133C714 133 722 141 722 156C722 169 711 179 698 179Z"></path></g><g data-mml-node="mfrac" data-latex="\frac{2}{3}" transform="translate(5865.6,0)"><g data-mml-node="mn" data-latex="2" transform="translate(220,676)"><path data-c="32" d="M237 666C186 666 143 648 106 612C69 576 50 534 50 483C50 449 75 424 106 424C136 424 161 450 161 480C161 513 137 536 105 536C102 536 100 536 98 535C117 584 161 627 224 627C306 627 352 556 352 470C352 403 318 331 250 255L62 43C49 28 50 29 50 0L421 0L450 180L417 180C409 129 402 100 396 91C391 86 361 84 306 84L139 84L236 179C304 243 390 312 419 365C439 400 449 435 449 470C449 588 357 666 237 666Z"></path></g><g data-mml-node="mn" data-latex="3" transform="translate(220,-686)"><path data-c="33" d="M303 353C369 378 431 441 431 526C431 569 410 604 369 631C333 654 292 666 246 666C201 666 162 654 127 631C88 605 68 571 68 528C68 495 90 472 122 472C154 472 176 495 176 527C176 560 157 578 119 580C145 615 186 633 242 633C302 633 332 598 332 527C332 485 324 450 309 421C282 373 245 364 183 364C171 362 165 357 165 348C165 333 172 333 192 333L235 333C310 333 348 280 348 173C348 88 317 14 241 14C176 14 128 36 99 80C134 79 160 105 160 139C160 173 135 198 101 198C62 198 42 178 42 137C42 88 64 49 108 18C147-9 193-22 244-22C301-22 350-3 393 34C436 71 457 117 457 173C457 267 383 332 303 353Z"></path></g><rect width="700" height="60" x="120" y="220"></rect></g><g data-mml-node="mo" data-latex="," transform="translate(6805.6,0)"><path data-c="2C" d="M139 106C107 106 86 82 86 50C86 20 109-5 139-5C153-5 165-1 174 8L175 0C175-63 154-117 112-160C105-168 101-174 101-178C101-188 105-193 114-193C123-193 135-181 152-158C186-110 203-57 203 0C203 53 185 106 139 106Z"></path></g><g data-mml-node="mspace" data-latex="\quad" transform="translate(7083.6,0)"></g><g data-mml-node="mi" data-latex="P" transform="translate(8250.2,0)"><path data-c="1D443" d="M555 683L235 683C212 683 201 682 201 660C201 649 212 644 234 644C254 644 294 647 294 631C294 629 293 623 290 613L158 82C152 60 142 47 128 42C121 40 103 39 72 39C50 39 40 37 40 16C40 5 46 0 59 0L184 3L248 2C259 2 299 0 312 0C328 0 336 8 336 24C336 34 325 39 304 39C264 39 244 43 244 52C244 52 245 55 247 68L307 312L472 312C537 312 599 332 657 371C722 414 754 467 754 530C754 629 660 683 555 683M524 644C611 644 654 614 654 554C654 498 626 423 597 397C559 363 509 346 447 346L313 346L379 610C387 644 387 644 429 644Z"></path></g><g data-mml-node="mo" data-latex="(" transform="translate(9004.2,0)"><path data-c="28" d="M318-248C327-248 332-243 332-234C332-231 330-227 327-223C275-183 233-117 202-26C175 53 161 131 161 208L161 292C161 369 175 447 202 526C233 617 275 683 327 723C330 726 332 730 332 734C332 743 327 748 318 748C317 748 314 747 311 745C251 699 201 631 160 540C121 453 101 371 101 292L101 208C101 129 121 47 160-40C201-131 251-199 311-245C314-247 317-248 318-248Z"></path></g><g data-mml-node="mtext" data-latex="\text{不换赢}" transform="translate(9393.2,0)"><text data-variant="normal" transform="scale(1,-1)" font-size="884px" font-family="serif">不换赢</text></g><g data-mml-node="mo" data-latex=")" transform="translate(12393.2,0)"><path data-c="29" d="M78-245C138-199 188-131 229-40C268 47 288 129 288 208L288 292C288 371 268 453 229 540C188 631 138 699 78 745C75 747 72 748 71 748C62 748 57 743 57 734C57 730 59 726 62 723C114 683 156 617 187 526C214 447 228 369 228 292L228 208C228 131 214 53 187-26C156-117 114-183 62-223C59-227 57-231 57-234C57-243 62-248 71-248C72-248 75-247 78-245Z"></path></g><g data-mml-node="mo" data-latex="=" transform="translate(13060,0)"><path data-c="3D" d="M698 367L80 367C64 367 56 359 56 344C56 329 64 321 80 321L698 321C714 321 722 329 722 344C722 356 711 367 698 367M698 179L80 179C64 179 56 171 56 156C56 141 64 133 80 133L698 133C714 133 722 141 722 156C722 169 711 179 698 179Z"></path></g><g data-mml-node="mfrac" data-latex="\frac{1}{3}" transform="translate(14115.8,0)"><g data-mml-node="mn" data-latex="1" transform="translate(220,676)"><path data-c="31" d="M269 666C228 624 168 603 89 603L89 564C141 564 184 572 217 588L217 82C217 64 213 52 204 47C195 42 170 39 130 39L95 39L95 0C120 2 174 3 257 3C340 3 394 2 419 0L419 39L384 39C343 39 318 42 310 47C302 52 297 64 297 82L297 636C297 660 295 666 269 666Z"></path></g><g data-mml-node="mn" data-latex="3" transform="translate(220,-686)"><path data-c="33" d="M303 353C369 378 431 441 431 526C431 569 410 604 369 631C333 654 292 666 246 666C201 666 162 654 127 631C88 605 68 571 68 528C68 495 90 472 122 472C154 472 176 495 176 527C176 560 157 578 119 580C145 615 186 633 242 633C302 633 332 598 332 527C332 485 324 450 309 421C282 373 245 364 183 364C171 362 165 357 165 348C165 333 172 333 192 333L235 333C310 333 348 280 348 173C348 88 317 14 241 14C176 14 128 36 99 80C134 79 160 105 160 139C160 173 135 198 101 198C62 198 42 178 42 137C42 88 64 49 108 18C147-9 193-22 244-22C301-22 350-3 393 34C436 71 457 117 457 173C457 267 383 332 303 353Z"></path></g><rect width="700" height="60" x="120" y="220"></rect></g></g></g></svg></mjx-container></p>
+<hr>
+<h4 id="第三步：用条件概率理解本质"><a href="#第三步：用条件概率理解本质" class="headerlink" title="第三步：用条件概率理解本质"></a>第三步：用条件概率理解本质</h4><p>这是逻辑学最深刻的地方——<strong>新信息如何改变概率</strong>。</p>
+<p>初始状态：<br><mjx-container class="MathJax" jax="SVG" overflow="overflow" display="true"><svg style="vertical-align: -1.602ex;" xmlns="http://www.w3.org/2000/svg" width="45.332ex" height="4.638ex" role="img" focusable="false" viewBox="0 -1342 20036.7 2050"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math" data-latex="P(\text{车在1号}) = P(\text{车在2号}) = P(\text{车在3号}) = \frac{1}{3}"><g data-mml-node="mi" data-latex="P"><path data-c="1D443" d="M555 683L235 683C212 683 201 682 201 660C201 649 212 644 234 644C254 644 294 647 294 631C294 629 293 623 290 613L158 82C152 60 142 47 128 42C121 40 103 39 72 39C50 39 40 37 40 16C40 5 46 0 59 0L184 3L248 2C259 2 299 0 312 0C328 0 336 8 336 24C336 34 325 39 304 39C264 39 244 43 244 52C244 52 245 55 247 68L307 312L472 312C537 312 599 332 657 371C722 414 754 467 754 530C754 629 660 683 555 683M524 644C611 644 654 614 654 554C654 498 626 423 597 397C559 363 509 346 447 346L313 346L379 610C387 644 387 644 429 644Z"></path></g><g data-mml-node="mo" data-latex="(" transform="translate(754,0)"><path data-c="28" d="M318-248C327-248 332-243 332-234C332-231 330-227 327-223C275-183 233-117 202-26C175 53 161 131 161 208L161 292C161 369 175 447 202 526C233 617 275 683 327 723C330 726 332 730 332 734C332 743 327 748 318 748C317 748 314 747 311 745C251 699 201 631 160 540C121 453 101 371 101 292L101 208C101 129 121 47 160-40C201-131 251-199 311-245C314-247 317-248 318-248Z"></path></g><g data-mml-node="mtext" data-latex="\text{车在1号}" transform="translate(1143,0)"><text data-variant="normal" transform="scale(1,-1)" font-size="884px" font-family="serif">车在</text><path data-c="31" d="M269 666C228 624 168 603 89 603L89 564C141 564 184 572 217 588L217 82C217 64 213 52 204 47C195 42 170 39 130 39L95 39L95 0C120 2 174 3 257 3C340 3 394 2 419 0L419 39L384 39C343 39 318 42 310 47C302 52 297 64 297 82L297 636C297 660 295 666 269 666Z" transform="translate(2000,0)"></path><text data-variant="normal" transform="translate(2500,0) scale(1,-1)" font-size="884px" font-family="serif">号</text></g><g data-mml-node="mo" data-latex=")" transform="translate(4643,0)"><path data-c="29" d="M78-245C138-199 188-131 229-40C268 47 288 129 288 208L288 292C288 371 268 453 229 540C188 631 138 699 78 745C75 747 72 748 71 748C62 748 57 743 57 734C57 730 59 726 62 723C114 683 156 617 187 526C214 447 228 369 228 292L228 208C228 131 214 53 187-26C156-117 114-183 62-223C59-227 57-231 57-234C57-243 62-248 71-248C72-248 75-247 78-245Z"></path></g><g data-mml-node="mo" data-latex="=" transform="translate(5309.8,0)"><path data-c="3D" d="M698 367L80 367C64 367 56 359 56 344C56 329 64 321 80 321L698 321C714 321 722 329 722 344C722 356 711 367 698 367M698 179L80 179C64 179 56 171 56 156C56 141 64 133 80 133L698 133C714 133 722 141 722 156C722 169 711 179 698 179Z"></path></g><g data-mml-node="mi" data-latex="P" transform="translate(6365.6,0)"><path data-c="1D443" d="M555 683L235 683C212 683 201 682 201 660C201 649 212 644 234 644C254 644 294 647 294 631C294 629 293 623 290 613L158 82C152 60 142 47 128 42C121 40 103 39 72 39C50 39 40 37 40 16C40 5 46 0 59 0L184 3L248 2C259 2 299 0 312 0C328 0 336 8 336 24C336 34 325 39 304 39C264 39 244 43 244 52C244 52 245 55 247 68L307 312L472 312C537 312 599 332 657 371C722 414 754 467 754 530C754 629 660 683 555 683M524 644C611 644 654 614 654 554C654 498 626 423 597 397C559 363 509 346 447 346L313 346L379 610C387 644 387 644 429 644Z"></path></g><g data-mml-node="mo" data-latex="(" transform="translate(7119.6,0)"><path data-c="28" d="M318-248C327-248 332-243 332-234C332-231 330-227 327-223C275-183 233-117 202-26C175 53 161 131 161 208L161 292C161 369 175 447 202 526C233 617 275 683 327 723C330 726 332 730 332 734C332 743 327 748 318 748C317 748 314 747 311 745C251 699 201 631 160 540C121 453 101 371 101 292L101 208C101 129 121 47 160-40C201-131 251-199 311-245C314-247 317-248 318-248Z"></path></g><g data-mml-node="mtext" data-latex="\text{车在2号}" transform="translate(7508.6,0)"><text data-variant="normal" transform="scale(1,-1)" font-size="884px" font-family="serif">车在</text><path data-c="32" d="M237 666C186 666 143 648 106 612C69 576 50 534 50 483C50 449 75 424 106 424C136 424 161 450 161 480C161 513 137 536 105 536C102 536 100 536 98 535C117 584 161 627 224 627C306 627 352 556 352 470C352 403 318 331 250 255L62 43C49 28 50 29 50 0L421 0L450 180L417 180C409 129 402 100 396 91C391 86 361 84 306 84L139 84L236 179C304 243 390 312 419 365C439 400 449 435 449 470C449 588 357 666 237 666Z" transform="translate(2000,0)"></path><text data-variant="normal" transform="translate(2500,0) scale(1,-1)" font-size="884px" font-family="serif">号</text></g><g data-mml-node="mo" data-latex=")" transform="translate(11008.6,0)"><path data-c="29" d="M78-245C138-199 188-131 229-40C268 47 288 129 288 208L288 292C288 371 268 453 229 540C188 631 138 699 78 745C75 747 72 748 71 748C62 748 57 743 57 734C57 730 59 726 62 723C114 683 156 617 187 526C214 447 228 369 228 292L228 208C228 131 214 53 187-26C156-117 114-183 62-223C59-227 57-231 57-234C57-243 62-248 71-248C72-248 75-247 78-245Z"></path></g><g data-mml-node="mo" data-latex="=" transform="translate(11675.3,0)"><path data-c="3D" d="M698 367L80 367C64 367 56 359 56 344C56 329 64 321 80 321L698 321C714 321 722 329 722 344C722 356 711 367 698 367M698 179L80 179C64 179 56 171 56 156C56 141 64 133 80 133L698 133C714 133 722 141 722 156C722 169 711 179 698 179Z"></path></g><g data-mml-node="mi" data-latex="P" transform="translate(12731.1,0)"><path data-c="1D443" d="M555 683L235 683C212 683 201 682 201 660C201 649 212 644 234 644C254 644 294 647 294 631C294 629 293 623 290 613L158 82C152 60 142 47 128 42C121 40 103 39 72 39C50 39 40 37 40 16C40 5 46 0 59 0L184 3L248 2C259 2 299 0 312 0C328 0 336 8 336 24C336 34 325 39 304 39C264 39 244 43 244 52C244 52 245 55 247 68L307 312L472 312C537 312 599 332 657 371C722 414 754 467 754 530C754 629 660 683 555 683M524 644C611 644 654 614 654 554C654 498 626 423 597 397C559 363 509 346 447 346L313 346L379 610C387 644 387 644 429 644Z"></path></g><g data-mml-node="mo" data-latex="(" transform="translate(13485.1,0)"><path data-c="28" d="M318-248C327-248 332-243 332-234C332-231 330-227 327-223C275-183 233-117 202-26C175 53 161 131 161 208L161 292C161 369 175 447 202 526C233 617 275 683 327 723C330 726 332 730 332 734C332 743 327 748 318 748C317 748 314 747 311 745C251 699 201 631 160 540C121 453 101 371 101 292L101 208C101 129 121 47 160-40C201-131 251-199 311-245C314-247 317-248 318-248Z"></path></g><g data-mml-node="mtext" data-latex="\text{车在3号}" transform="translate(13874.1,0)"><text data-variant="normal" transform="scale(1,-1)" font-size="884px" font-family="serif">车在</text><path data-c="33" d="M303 353C369 378 431 441 431 526C431 569 410 604 369 631C333 654 292 666 246 666C201 666 162 654 127 631C88 605 68 571 68 528C68 495 90 472 122 472C154 472 176 495 176 527C176 560 157 578 119 580C145 615 186 633 242 633C302 633 332 598 332 527C332 485 324 450 309 421C282 373 245 364 183 364C171 362 165 357 165 348C165 333 172 333 192 333L235 333C310 333 348 280 348 173C348 88 317 14 241 14C176 14 128 36 99 80C134 79 160 105 160 139C160 173 135 198 101 198C62 198 42 178 42 137C42 88 64 49 108 18C147-9 193-22 244-22C301-22 350-3 393 34C436 71 457 117 457 173C457 267 383 332 303 353Z" transform="translate(2000,0)"></path><text data-variant="normal" transform="translate(2500,0) scale(1,-1)" font-size="884px" font-family="serif">号</text></g><g data-mml-node="mo" data-latex=")" transform="translate(17374.1,0)"><path data-c="29" d="M78-245C138-199 188-131 229-40C268 47 288 129 288 208L288 292C288 371 268 453 229 540C188 631 138 699 78 745C75 747 72 748 71 748C62 748 57 743 57 734C57 730 59 726 62 723C114 683 156 617 187 526C214 447 228 369 228 292L228 208C228 131 214 53 187-26C156-117 114-183 62-223C59-227 57-231 57-234C57-243 62-248 71-248C72-248 75-247 78-245Z"></path></g><g data-mml-node="mo" data-latex="=" transform="translate(18040.9,0)"><path data-c="3D" d="M698 367L80 367C64 367 56 359 56 344C56 329 64 321 80 321L698 321C714 321 722 329 722 344C722 356 711 367 698 367M698 179L80 179C64 179 56 171 56 156C56 141 64 133 80 133L698 133C714 133 722 141 722 156C722 169 711 179 698 179Z"></path></g><g data-mml-node="mfrac" data-latex="\frac{1}{3}" transform="translate(19096.7,0)"><g data-mml-node="mn" data-latex="1" transform="translate(220,676)"><path data-c="31" d="M269 666C228 624 168 603 89 603L89 564C141 564 184 572 217 588L217 82C217 64 213 52 204 47C195 42 170 39 130 39L95 39L95 0C120 2 174 3 257 3C340 3 394 2 419 0L419 39L384 39C343 39 318 42 310 47C302 52 297 64 297 82L297 636C297 660 295 666 269 666Z"></path></g><g data-mml-node="mn" data-latex="3" transform="translate(220,-686)"><path data-c="33" d="M303 353C369 378 431 441 431 526C431 569 410 604 369 631C333 654 292 666 246 666C201 666 162 654 127 631C88 605 68 571 68 528C68 495 90 472 122 472C154 472 176 495 176 527C176 560 157 578 119 580C145 615 186 633 242 633C302 633 332 598 332 527C332 485 324 450 309 421C282 373 245 364 183 364C171 362 165 357 165 348C165 333 172 333 192 333L235 333C310 333 348 280 348 173C348 88 317 14 241 14C176 14 128 36 99 80C134 79 160 105 160 139C160 173 135 198 101 198C62 198 42 178 42 137C42 88 64 49 108 18C147-9 193-22 244-22C301-22 350-3 393 34C436 71 457 117 457 173C457 267 383 332 303 353Z"></path></g><rect width="700" height="60" x="120" y="220"></rect></g></g></g></svg></mjx-container></p>
+<p>你选了1号门。此时：</p>
+<ul>
+<li>你选中车的概率：<mjx-container class="MathJax" jax="SVG" overflow="overflow"><svg style="vertical-align: -0.816ex;" xmlns="http://www.w3.org/2000/svg" width="1.795ex" height="2.773ex" role="img" focusable="false" viewBox="0 -864.9 793.6 1225.5"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math" data-latex="\frac{1}{3}"><g data-mml-node="mfrac" data-latex="\frac{1}{3}"><g data-mml-node="mn" transform="translate(220,394) scale(0.707)" data-latex="1"><path data-c="31" d="M269 666C228 624 168 603 89 603L89 564C141 564 184 572 217 588L217 82C217 64 213 52 204 47C195 42 170 39 130 39L95 39L95 0C120 2 174 3 257 3C340 3 394 2 419 0L419 39L384 39C343 39 318 42 310 47C302 52 297 64 297 82L297 636C297 660 295 666 269 666Z"></path></g><g data-mml-node="mn" transform="translate(220,-345) scale(0.707)" data-latex="3"><path data-c="33" d="M303 353C369 378 431 441 431 526C431 569 410 604 369 631C333 654 292 666 246 666C201 666 162 654 127 631C88 605 68 571 68 528C68 495 90 472 122 472C154 472 176 495 176 527C176 560 157 578 119 580C145 615 186 633 242 633C302 633 332 598 332 527C332 485 324 450 309 421C282 373 245 364 183 364C171 362 165 357 165 348C165 333 172 333 192 333L235 333C310 333 348 280 348 173C348 88 317 14 241 14C176 14 128 36 99 80C134 79 160 105 160 139C160 173 135 198 101 198C62 198 42 178 42 137C42 88 64 49 108 18C147-9 193-22 244-22C301-22 350-3 393 34C436 71 457 117 457 173C457 267 383 332 303 353Z"></path></g><rect width="553.6" height="60" x="120" y="220"></rect></g></g></g></svg></mjx-container></li>
+<li>车在<strong>另外两扇门</strong>之一的概率：<mjx-container class="MathJax" jax="SVG" overflow="overflow"><svg style="vertical-align: -0.816ex;" xmlns="http://www.w3.org/2000/svg" width="1.795ex" height="2.773ex" role="img" focusable="false" viewBox="0 -864.9 793.6 1225.5"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math" data-latex="\frac{2}{3}"><g data-mml-node="mfrac" data-latex="\frac{2}{3}"><g data-mml-node="mn" transform="translate(220,394) scale(0.707)" data-latex="2"><path data-c="32" d="M237 666C186 666 143 648 106 612C69 576 50 534 50 483C50 449 75 424 106 424C136 424 161 450 161 480C161 513 137 536 105 536C102 536 100 536 98 535C117 584 161 627 224 627C306 627 352 556 352 470C352 403 318 331 250 255L62 43C49 28 50 29 50 0L421 0L450 180L417 180C409 129 402 100 396 91C391 86 361 84 306 84L139 84L236 179C304 243 390 312 419 365C439 400 449 435 449 470C449 588 357 666 237 666Z"></path></g><g data-mml-node="mn" transform="translate(220,-345) scale(0.707)" data-latex="3"><path data-c="33" d="M303 353C369 378 431 441 431 526C431 569 410 604 369 631C333 654 292 666 246 666C201 666 162 654 127 631C88 605 68 571 68 528C68 495 90 472 122 472C154 472 176 495 176 527C176 560 157 578 119 580C145 615 186 633 242 633C302 633 332 598 332 527C332 485 324 450 309 421C282 373 245 364 183 364C171 362 165 357 165 348C165 333 172 333 192 333L235 333C310 333 348 280 348 173C348 88 317 14 241 14C176 14 128 36 99 80C134 79 160 105 160 139C160 173 135 198 101 198C62 198 42 178 42 137C42 88 64 49 108 18C147-9 193-22 244-22C301-22 350-3 393 34C436 71 457 117 457 173C457 267 383 332 303 353Z"></path></g><rect width="553.6" height="60" x="120" y="220"></rect></g></g></g></svg></mjx-container></li>
+</ul>
+<p>主持人打开3号门（空门）之后：</p>
+<blockquote>
+<p>车在”另外两扇门之一”的概率 <mjx-container class="MathJax" jax="SVG" overflow="overflow"><svg style="vertical-align: -0.816ex;" xmlns="http://www.w3.org/2000/svg" width="1.795ex" height="2.773ex" role="img" focusable="false" viewBox="0 -864.9 793.6 1225.5"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math" data-latex="\frac{2}{3}"><g data-mml-node="mfrac" data-latex="\frac{2}{3}"><g data-mml-node="mn" transform="translate(220,394) scale(0.707)" data-latex="2"><path data-c="32" d="M237 666C186 666 143 648 106 612C69 576 50 534 50 483C50 449 75 424 106 424C136 424 161 450 161 480C161 513 137 536 105 536C102 536 100 536 98 535C117 584 161 627 224 627C306 627 352 556 352 470C352 403 318 331 250 255L62 43C49 28 50 29 50 0L421 0L450 180L417 180C409 129 402 100 396 91C391 86 361 84 306 84L139 84L236 179C304 243 390 312 419 365C439 400 449 435 449 470C449 588 357 666 237 666Z"></path></g><g data-mml-node="mn" transform="translate(220,-345) scale(0.707)" data-latex="3"><path data-c="33" d="M303 353C369 378 431 441 431 526C431 569 410 604 369 631C333 654 292 666 246 666C201 666 162 654 127 631C88 605 68 571 68 528C68 495 90 472 122 472C154 472 176 495 176 527C176 560 157 578 119 580C145 615 186 633 242 633C302 633 332 598 332 527C332 485 324 450 309 421C282 373 245 364 183 364C171 362 165 357 165 348C165 333 172 333 192 333L235 333C310 333 348 280 348 173C348 88 317 14 241 14C176 14 128 36 99 80C134 79 160 105 160 139C160 173 135 198 101 198C62 198 42 178 42 137C42 88 64 49 108 18C147-9 193-22 244-22C301-22 350-3 393 34C436 71 457 117 457 173C457 267 383 332 303 353Z"></path></g><rect width="553.6" height="60" x="120" y="220"></rect></g></g></g></svg></mjx-container> <strong>没有消失</strong>——<br>它全部<strong>转移</strong>到了2号门上。</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">初始：  [1号: 1/3]  [2号: 1/3]  [3号: 1/3]</span><br><span class="line">                              ↓ 主持人打开3号（空）</span><br><span class="line">之后：  [1号: 1/3]  [2号: 2/3]  [3号: 已排除]</span><br></pre></td></tr></table></figure>
+
+<p>这就是为什么换门的胜率是 <mjx-container class="MathJax" jax="SVG" overflow="overflow"><svg style="vertical-align: -0.816ex;" xmlns="http://www.w3.org/2000/svg" width="1.795ex" height="2.773ex" role="img" focusable="false" viewBox="0 -864.9 793.6 1225.5"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math" data-latex="\frac{2}{3}"><g data-mml-node="mfrac" data-latex="\frac{2}{3}"><g data-mml-node="mn" transform="translate(220,394) scale(0.707)" data-latex="2"><path data-c="32" d="M237 666C186 666 143 648 106 612C69 576 50 534 50 483C50 449 75 424 106 424C136 424 161 450 161 480C161 513 137 536 105 536C102 536 100 536 98 535C117 584 161 627 224 627C306 627 352 556 352 470C352 403 318 331 250 255L62 43C49 28 50 29 50 0L421 0L450 180L417 180C409 129 402 100 396 91C391 86 361 84 306 84L139 84L236 179C304 243 390 312 419 365C439 400 449 435 449 470C449 588 357 666 237 666Z"></path></g><g data-mml-node="mn" transform="translate(220,-345) scale(0.707)" data-latex="3"><path data-c="33" d="M303 353C369 378 431 441 431 526C431 569 410 604 369 631C333 654 292 666 246 666C201 666 162 654 127 631C88 605 68 571 68 528C68 495 90 472 122 472C154 472 176 495 176 527C176 560 157 578 119 580C145 615 186 633 242 633C302 633 332 598 332 527C332 485 324 450 309 421C282 373 245 364 183 364C171 362 165 357 165 348C165 333 172 333 192 333L235 333C310 333 348 280 348 173C348 88 317 14 241 14C176 14 128 36 99 80C134 79 160 105 160 139C160 173 135 198 101 198C62 198 42 178 42 137C42 88 64 49 108 18C147-9 193-22 244-22C301-22 350-3 393 34C436 71 457 117 457 173C457 267 383 332 303 353Z"></path></g><rect width="553.6" height="60" x="120" y="220"></rect></g></g></g></svg></mjx-container>。</p>
+<hr>
+<h3 id="这道题深刻在哪里？"><a href="#这道题深刻在哪里？" class="headerlink" title="这道题深刻在哪里？"></a>这道题深刻在哪里？</h3><h4 id="深刻之处一：直觉是逻辑的敌人"><a href="#深刻之处一：直觉是逻辑的敌人" class="headerlink" title="深刻之处一：直觉是逻辑的敌人"></a>深刻之处一：直觉是逻辑的敌人</h4><p>人类大脑天生倾向于”简化”——看到两扇门，自动认为概率各半。</p>
+<p>但逻辑要求你追问：</p>
+<blockquote>
+<p><strong>这两个选项，是在同等条件下产生的吗？</strong></p>
+</blockquote>
+<p>答案是否定的。你的初始选择和主持人的行为，让两扇门携带了<strong>不对称的信息量</strong>。</p>
+<hr>
+<h4 id="深刻之处二：信息改变概率"><a href="#深刻之处二：信息改变概率" class="headerlink" title="深刻之处二：信息改变概率"></a>深刻之处二：信息改变概率</h4><p>这是贝叶斯逻辑的核心思想：</p>
+<blockquote>
+<p><strong>概率不是客观固定的，它随着你掌握的信息而更新。</strong></p>
+</blockquote>
+<p>主持人开门这个动作，是一条<strong>有价值的信息</strong>——因为他的行为受到约束。</p>
+<p>如果主持人是<strong>随机</strong>开门的（有可能开到有车的门），那换不换真的无所谓，概率才是各 <mjx-container class="MathJax" jax="SVG" overflow="overflow"><svg style="vertical-align: -0.781ex;" xmlns="http://www.w3.org/2000/svg" width="1.795ex" height="2.737ex" role="img" focusable="false" viewBox="0 -864.9 793.6 1209.9"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math" data-latex="\frac{1}{2}"><g data-mml-node="mfrac" data-latex="\frac{1}{2}"><g data-mml-node="mn" transform="translate(220,394) scale(0.707)" data-latex="1"><path data-c="31" d="M269 666C228 624 168 603 89 603L89 564C141 564 184 572 217 588L217 82C217 64 213 52 204 47C195 42 170 39 130 39L95 39L95 0C120 2 174 3 257 3C340 3 394 2 419 0L419 39L384 39C343 39 318 42 310 47C302 52 297 64 297 82L297 636C297 660 295 666 269 666Z"></path></g><g data-mml-node="mn" transform="translate(220,-345) scale(0.707)" data-latex="2"><path data-c="32" d="M237 666C186 666 143 648 106 612C69 576 50 534 50 483C50 449 75 424 106 424C136 424 161 450 161 480C161 513 137 536 105 536C102 536 100 536 98 535C117 584 161 627 224 627C306 627 352 556 352 470C352 403 318 331 250 255L62 43C49 28 50 29 50 0L421 0L450 180L417 180C409 129 402 100 396 91C391 86 361 84 306 84L139 84L236 179C304 243 390 312 419 365C439 400 449 435 449 470C449 588 357 666 237 666Z"></path></g><rect width="553.6" height="60" x="120" y="220"></rect></g></g></g></svg></mjx-container>。</p>
+<p>正是”主持人知情且有约束”这个条件，让换门变得值得。</p>
+<hr>
+<h4 id="深刻之处三：权威也会犯逻辑错误"><a href="#深刻之处三：权威也会犯逻辑错误" class="headerlink" title="深刻之处三：权威也会犯逻辑错误"></a>深刻之处三：权威也会犯逻辑错误</h4><p>10,000人写信反驳，其中数百位博士——他们都错了。</p>
+<p>这说明：</p>
+<blockquote>
+<p><strong>学历和头衔不能替代严密的逻辑推理。</strong><br>当直觉和逻辑冲突时，应该审视直觉，而不是攻击逻辑。</p>
+</blockquote>
+<p>这正是第一部分提到的”诉诸权威谬误”的现实版本。</p>
+<hr>
+<h3 id="从这道题学到的逻辑学精髓"><a href="#从这道题学到的逻辑学精髓" class="headerlink" title="从这道题学到的逻辑学精髓"></a>从这道题学到的逻辑学精髓</h3><table>
+<thead>
+<tr>
+<th>逻辑原则</th>
+<th>在蒙提霍尔问题中的体现</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>穷举所有可能</strong></td>
+<td>列出三种情况，结果一目了然</td>
+</tr>
+<tr>
+<td><strong>条件约束改变结论</strong></td>
+<td>主持人”知情+有约束”是关键前提</td>
+</tr>
+<tr>
+<td><strong>信息更新概率</strong></td>
+<td>贝叶斯推理的直观演示</td>
+</tr>
+<tr>
+<td><strong>质疑直觉</strong></td>
+<td>两扇门≠各50%，直觉在这里失效</td>
+</tr>
+<tr>
+<td><strong>用数据验证推理</strong></td>
+<td>可以用程序模拟10万次，结果完全吻合</td>
+</tr>
+</tbody></table>
+<hr>
+<p>蒙提霍尔问题之所以经典，是因为一道简单的游戏题，就能把大多数人的直觉当场打脸。</p>
+<p>从”什么是命题”到”主持人为什么不能随便开门”，说到底都是同一件事：结论要跟着前提走，不能跟着感觉走。前提摆对了，哪怕结论违反直觉，也得认。</p>
+<hr>
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>至此，理论和案例都讲完了。逻辑学不会让你逢辩必赢，它只是让你在下判断前，多问一句”凭什么”。这习惯养成了，被忽悠的次数自然就少了。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Reading/" rel="tag"><i class="fa fa-tag"></i> Reading</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/ted/1-thing-you-can-do-today-to-be-happier/" rel="prev" title="[TED]1 Thing You Can Do Today to Be Happier">
+                  <i class="fa fa-chevron-left"></i> [TED]1 Thing You Can Do Today to Be Happier
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  
+  <div class="comments giscus-container">
+  </div>
+  
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2008 – 
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Eazow</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Symbols count total">314k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">4:46</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+<script>
+  const numberOfBanners = 10;
+  const randomNum = Math.random() * numberOfBanners | 0;
+  const banner = document.querySelector('.banner');
+//   document.getElementsByClassName("banner")[0].style.backgroundImage =
+//   const imageExtension = randomNum === 9 ? ".webp" : ".jpeg";
+  const imageExtension = ".webp";
+  const url = "url('https://hyz-blog.oss-cn-hangzhou.aliyuncs.com/banner" + randomNum + imageExtension + "')";
+  banner.style.backgroundImage = url;
+</script>
+
+
+    </div>
+  </footer>
+
+  
+  <script size="200" alpha="0.2" zIndex="-1" src="https://cdnjs.cloudflare.com/ajax/libs/ribbon.js/1.0.2/ribbon.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.12.2/comments.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.12.2/utils.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.12.2/schemes/muse.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.12.2/next-boot.min.js"></script>
+
+  
+
+
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-theme-next/8.12.2/third-party/pace.min.js"></script>
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  <!--script async src="https://cdn.jsdelivr.net/gh/sukkaw/busuanzi@2.3/bsz.pure.mini.js"></script-->
+
+
+
+
+<script class="next-config" data-name="giscus" type="application/json">{"enable":true,"repo":"eazow/hexo","repo_id":"MDEwOlJlcG9zaXRvcnkxNjI1NTM4Nzk=","category":"Announcements","category_id":"DIC_kwDOCbBgF84CQl0J","mapping":"pathname","strict":0,"reactions_enabled":1,"emit_metadata":0,"theme":"light","lang":"en","crossorigin":"anonymous","input_position":"top","loading":"lazy"}</script>
+
+<script>
+document.addEventListener('page:loaded', () => {
+  if (!CONFIG.page.comments) return;
+
+  NexT.utils.loadComments('.giscus-container')
+    .then(() => NexT.utils.getScript('https://giscus.app/client.js', {
+      attributes: {
+        async                   : true,
+        crossOrigin             : 'anonymous',
+        'data-repo'             : CONFIG.giscus.repo,
+        'data-repo-id'          : CONFIG.giscus.repo_id,
+        'data-category'         : CONFIG.giscus.category,
+        'data-category-id'      : CONFIG.giscus.category_id,
+        'data-mapping'          : CONFIG.giscus.mapping,
+        'data-strict'           : CONFIG.giscus.strict,
+        'data-reactions-enabled': CONFIG.giscus.reactions_enabled,
+        'data-emit-metadata'    : CONFIG.giscus.emit_metadata,
+        'data-theme'            : CONFIG.giscus.theme,
+        'data-lang'             : CONFIG.giscus.lang,
+        'data-input-position'   : CONFIG.giscus.input_position,
+        'data-loading'          : CONFIG.giscus.loading
+      },
+      parentNode: document.querySelector('.giscus-container')
+    }));
+});
+</script>
+
+</body>
+</html>

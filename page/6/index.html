@@ -114,6 +114,173 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://eazow.com/LeetCode-563-Binary-Tree-Tilt/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Eazow">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Eazow">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Eazow">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/LeetCode-563-Binary-Tree-Tilt/" class="post-title-link" itemprop="url">[LeetCode]563. Binary Tree Tilt</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2017-08-09 17:31:12" itemprop="dateCreated datePublished" datetime="2017-08-09T17:31:12+08:00">2017-08-09</time>
+    </span>
+
+  
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>2 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h3 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h3><p>Given a binary tree, return the tilt of the whole tree.</p>
+<p>The tilt of a tree node is defined as the absolute difference between the sum of all left subtree node values and the sum of all right subtree node values. Null node has tilt 0.</p>
+<p>The tilt of the whole tree is defined as the sum of all nodes’ tilt.</p>
+<p><strong>Example:</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Input: </span><br><span class="line">         1</span><br><span class="line">       /   \</span><br><span class="line">      2     3</span><br><span class="line">Output: 1</span><br><span class="line">Explanation: </span><br><span class="line">Tilt of node 2 : 0</span><br><span class="line">Tilt of node 3 : 0</span><br><span class="line">Tilt of node 1 : |2-3| = 1</span><br><span class="line">Tilt of binary tree : 0 + 0 + 1 = 1</span><br></pre></td></tr></table></figure>
+<p><strong>Note:</strong></p>
+<ol>
+<li>The sum of node values in any subtree won’t exceed the range of 32-bit integer.</li>
+<li>All the tilt values won’t exceed the range of 32-bit integer.</li>
+</ol>
+<h3 id="难度"><a href="#难度" class="headerlink" title="难度"></a>难度</h3><p>Easy</p>
+<h3 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h3><p>对该二叉树进行后续遍历，算出每个节点的左右子树之和的差的绝对值，累加到最后的result中。然后将节点值替换为左右子树节点值之和。</p>
+<h3 id="python代码"><a href="#python代码" class="headerlink" title="python代码"></a>python代码</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">TreeNode</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, x</span>):</span><br><span class="line">        self.val = x</span><br><span class="line">        self.left = <span class="literal">None</span></span><br><span class="line">        self.right = <span class="literal">None</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">findTilt</span>(<span class="params">self, root</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        :type root: TreeNode</span></span><br><span class="line"><span class="string">        :rtype: int</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        self.result = <span class="number">0</span></span><br><span class="line">        self.traverse(root)</span><br><span class="line">        <span class="keyword">return</span> self.result</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">traverse</span>(<span class="params">self, node</span>):</span><br><span class="line">        <span class="keyword">if</span> node:</span><br><span class="line">            self.traverse(node.left)</span><br><span class="line">            self.traverse(node.right)</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> node.left <span class="keyword">and</span> node.right:</span><br><span class="line">                self.result += <span class="built_in">abs</span>(node.right.val - node.left.val)</span><br><span class="line">                node.val += node.right.val + node.left.val</span><br><span class="line">            <span class="keyword">elif</span> node.left:</span><br><span class="line">                self.result += <span class="built_in">abs</span>(node.left.val)</span><br><span class="line">                node.val += node.left.val</span><br><span class="line">            <span class="keyword">elif</span> node.right:</span><br><span class="line">                self.result += <span class="built_in">abs</span>(node.right.val)</span><br><span class="line">                node.val += node.right.val</span><br><span class="line"></span><br><span class="line">root = TreeNode(<span class="number">1</span>)</span><br><span class="line">root.left = TreeNode(<span class="number">2</span>)</span><br><span class="line">root.right = TreeNode(<span class="number">3</span>)</span><br><span class="line">root.left.left = TreeNode(<span class="number">4</span>)</span><br><span class="line"><span class="keyword">assert</span> Solution().findTilt(root) == <span class="number">7</span></span><br><span class="line"></span><br><span class="line">root = TreeNode(-<span class="number">8</span>)</span><br><span class="line">root.left = TreeNode(<span class="number">3</span>)</span><br><span class="line">root.right = TreeNode(<span class="number">0</span>)</span><br><span class="line">root.left.left = TreeNode(-<span class="number">8</span>)</span><br><span class="line">root.left.left.right = TreeNode(-<span class="number">1</span>)</span><br><span class="line">root.left.left.right.right = TreeNode(<span class="number">8</span>)</span><br><span class="line"><span class="keyword">assert</span> Solution().findTilt(root) == <span class="number">18</span></span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://eazow.com/LeetCode-404-Sum-of-Left-Leaves/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Eazow">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Eazow">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Eazow">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/LeetCode-404-Sum-of-Left-Leaves/" class="post-title-link" itemprop="url">[LeetCode]404. Sum of Left Leaves</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2017-08-08 15:12:54" itemprop="dateCreated datePublished" datetime="2017-08-08T15:12:54+08:00">2017-08-08</time>
+    </span>
+
+  
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h3 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h3><p>Find the sum of all left leaves in a given binary tree.</p>
+<p><strong>Example:</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">    3</span><br><span class="line">   / \</span><br><span class="line">  9  20</span><br><span class="line">    /  \</span><br><span class="line">   15   7</span><br><span class="line"></span><br><span class="line">There are two left leaves in the binary tree, with values 9 and 15 respectively. Return 24.</span><br></pre></td></tr></table></figure>
+
+<h3 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h3><p>递归遍历，如果为左节点，则打上标记<code>isLeft</code>，如果该节点没有左右子节点，则将该节点值累加到最后的结果中</p>
+<h3 id="python代码"><a href="#python代码" class="headerlink" title="python代码"></a>python代码</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">TreeNode</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, x</span>):</span><br><span class="line">        self.val = x</span><br><span class="line">        self.left = <span class="literal">None</span></span><br><span class="line">        self.right = <span class="literal">None</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">sumOfLeftLeaves</span>(<span class="params">self, root</span>):</span><br><span class="line">        self.result = <span class="number">0</span></span><br><span class="line">        self.traverse(root)</span><br><span class="line">        <span class="keyword">return</span> self.result</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">traverse</span>(<span class="params">self, node, isLeft=<span class="literal">False</span></span>):</span><br><span class="line">        <span class="keyword">if</span> node <span class="keyword">and</span> node.left == <span class="literal">None</span> <span class="keyword">and</span> node.right == <span class="literal">None</span> <span class="keyword">and</span> isLeft:</span><br><span class="line">            self.result += node.val</span><br><span class="line">        <span class="keyword">if</span> node:</span><br><span class="line">            self.traverse(node.left, <span class="literal">True</span>)</span><br><span class="line">            self.traverse(node.right)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">root = TreeNode(<span class="number">3</span>)</span><br><span class="line">root.left = TreeNode(<span class="number">9</span>)</span><br><span class="line">root.right = TreeNode(<span class="number">20</span>)</span><br><span class="line">root.right.left = TreeNode(<span class="number">15</span>)</span><br><span class="line">root.right.right = TreeNode(<span class="number">7</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">assert</span> Solution().sumOfLeftLeaves(root) == <span class="number">24</span></span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
     <link itemprop="mainEntityOfPage" href="http://eazow.com/LeetCode-383-Ransom-Note/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -780,287 +947,6 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://eazow.com/LeetCode-599-Minimum-Index-Sum-of-Two-lists/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Eazow">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Eazow">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Eazow">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/LeetCode-599-Minimum-Index-Sum-of-Two-lists/" class="post-title-link" itemprop="url">[LeetCode]599. Minimum Index Sum of Two lists</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2017-07-26 12:05:16" itemprop="dateCreated datePublished" datetime="2017-07-26T12:05:16+08:00">2017-07-26</time>
-    </span>
-
-  
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>3 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h5 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h5><blockquote>
-<p>Suppose Andy and Doris want to choose a restaurant for dinner, and they both have a list of favorite restaurants represented by strings.</p>
-</blockquote>
-<blockquote>
-<p>You need to help them find out their <strong>common interest</strong> with the <strong>least list index sum</strong>. If there is a choice tie between answers, output all of them with no order requirement. You could assume there always exists an answer.</p>
-</blockquote>
-<blockquote>
-<p><strong>Example 1:</strong></p>
-</blockquote>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Input:</span><br><span class="line">[&quot;Shogun&quot;, &quot;Tapioca Express&quot;, &quot;Burger King&quot;, &quot;KFC&quot;]</span><br><span class="line">[&quot;Piatti&quot;, &quot;The Grill at Torrey Pines&quot;, &quot;Hungry Hunter Steakhouse&quot;, &quot;Shogun&quot;]</span><br><span class="line">Output: [&quot;Shogun&quot;]</span><br><span class="line">Explanation: The only restaurant they both like is &quot;Shogun&quot;.</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p><strong>Example 2:</strong></p>
-</blockquote>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Input:</span><br><span class="line">[&quot;Shogun&quot;, &quot;Tapioca Express&quot;, &quot;Burger King&quot;, &quot;KFC&quot;]</span><br><span class="line">[&quot;KFC&quot;, &quot;Shogun&quot;, &quot;Burger King&quot;]</span><br><span class="line">Output: [&quot;Shogun&quot;]</span><br><span class="line">Explanation: The restaurant they both like and have the least index sum is &quot;Shogun&quot; with index sum 1 (0+1).</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p><strong>Note:</strong></p>
-</blockquote>
-<ol>
-<li>The length of both lists will be in the range of [1, 1000].</li>
-<li>The length of strings in both lists will be in the range of [1, 30].</li>
-<li>The index is starting from 0 to the list length minus 1.</li>
-<li>No duplicates in both lists.</li>
-</ol>
-<h5 id="难度"><a href="#难度" class="headerlink" title="难度"></a>难度</h5><p>Easy</p>
-<h5 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h5><p>用<code>minSum</code>保存最小的索引和，用一个<code>dict</code>记录<code>list1</code>中每个单词对应的索引序号。遍历<code>list2</code>，将值存入<code>word</code>中，计算<code>word</code>在<code>list1</code>和<code>list2</code>中的索引和，如果小于<code>minSum</code>，则替换<code>minSum</code>，并清空结果<code>list</code>，加入该<code>word</code>，如果<code>==minSum</code>，则直接加入<code>word</code></p>
-<h5 id="python代码"><a href="#python代码" class="headerlink" title="python代码"></a>python代码</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">findRestaurant</span>(<span class="params">self, list1, list2</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        :type list1: List[str]</span></span><br><span class="line"><span class="string">        :type list2: List[str]</span></span><br><span class="line"><span class="string">        :rtype: List[str]</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        list1Map = &#123;&#125;</span><br><span class="line">        i = <span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> word <span class="keyword">in</span> list1:</span><br><span class="line">            list1Map[word] = i</span><br><span class="line">            i += <span class="number">1</span></span><br><span class="line"></span><br><span class="line">        minSum = sys.maxint</span><br><span class="line">        i = <span class="number">0</span></span><br><span class="line">        restaurants = [] </span><br><span class="line">        <span class="keyword">for</span> word <span class="keyword">in</span> list2:</span><br><span class="line">            <span class="keyword">if</span> word <span class="keyword">in</span> list1Map:</span><br><span class="line">                <span class="keyword">if</span> minSum &gt; list1Map[word]+i:</span><br><span class="line">                    <span class="built_in">print</span> minSum</span><br><span class="line">                    minSum = list1Map[word]+i</span><br><span class="line">                    restaurants = []</span><br><span class="line">                    restaurants.append(word)</span><br><span class="line">                <span class="keyword">elif</span> minSum == list1Map[word]+i:</span><br><span class="line">                    restaurants.append(word)</span><br><span class="line">            i += <span class="number">1</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> restaurants</span><br><span class="line"></span><br><span class="line"><span class="keyword">assert</span> Solution().findRestaurant([<span class="string">&quot;Shogun&quot;</span>, <span class="string">&quot;Tapioca Express&quot;</span>, <span class="string">&quot;Burger King&quot;</span>, <span class="string">&quot;KFC&quot;</span>], </span><br><span class="line">    [<span class="string">&quot;Piatti&quot;</span>, <span class="string">&quot;The Grill at Torrey Pines&quot;</span>, <span class="string">&quot;Hungry Hunter Steakhouse&quot;</span>, <span class="string">&quot;Shogun&quot;</span>]) == [<span class="string">&quot;Shogun&quot;</span>]</span><br><span class="line"><span class="keyword">assert</span> Solution().findRestaurant([<span class="string">&quot;Shogun&quot;</span>, <span class="string">&quot;Tapioca Express&quot;</span>, <span class="string">&quot;Burger King&quot;</span>, <span class="string">&quot;KFC&quot;</span>], </span><br><span class="line">    [<span class="string">&quot;KFC&quot;</span>, <span class="string">&quot;Shogun&quot;</span>, <span class="string">&quot;Burger King&quot;</span>]) == [<span class="string">&quot;Shogun&quot;</span>]</span><br><span class="line"><span class="keyword">assert</span> Solution().findRestaurant([<span class="string">&quot;Shogun&quot;</span>,<span class="string">&quot;Tapioca Express&quot;</span>,<span class="string">&quot;Burger King&quot;</span>,<span class="string">&quot;KFC&quot;</span>], </span><br><span class="line">    [<span class="string">&quot;KFC&quot;</span>,<span class="string">&quot;Burger King&quot;</span>,<span class="string">&quot;Tapioca Express&quot;</span>,<span class="string">&quot;Shogun&quot;</span>]) == [<span class="string">&quot;KFC&quot;</span>,<span class="string">&quot;Burger King&quot;</span>,<span class="string">&quot;Tapioca Express&quot;</span>,<span class="string">&quot;Shogun&quot;</span>]</span><br></pre></td></tr></table></figure>
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://eazow.com/nce/4/04-seeing-hands/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Eazow">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Eazow">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Eazow">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/nce/4/04-seeing-hands/" class="post-title-link" itemprop="url">Lesson 04 Seeing Hands</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2017-02-20 00:00:00" itemprop="dateCreated datePublished" datetime="2017-02-20T00:00:00+08:00">2017-02-20</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/English/" itemprop="url" rel="index"><span itemprop="name">English</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>2 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <blockquote>
-<p>How did Vera discover she had this gift of second sight?</p>
-</blockquote>
-<p>Several cases have been reported in Russia recently of people who can read and detect colours with their fingers, and even see through solid doors and walls. One case concerns an eleven-year-old schoolgirl, Vera Petrova, who has normal <strong>vision</strong> but who can also <strong>perceive</strong> things with different parts of her skin, and through solid walls. This ability was first noticed by her father. One day she came into his office and happened to put her hand on the door of a locked safe. Suddenly she asked her father why he kept so many old newspapers locked away there, and even described the way they were done up in <strong>bundles</strong>.</p>
-<p>Vera’s curious talent was brought to the notice of a scientific research <strong>institute</strong> in the town of Ulyanovsk, near where she lives, and in April she was given a series of tests by a special commission of the <strong>Ministry</strong> of Health of the Russian Federal Republic. During these tests she was able to read a newspaper through an <strong>opaque</strong> screen and, stranger still, by moving her elbow over a child’s game of Lotto she was able to describe the figures and colours printed on it; and, in another instance, wearing stockings and <strong>slippers</strong>, to make out with her foot the outlines and colours of a picture hidden under a <strong>carpet</strong>. Other experiments showed that her knees and shoulders had a similar sensitivity. During all these tests Vera was <strong>blindfold</strong>; and, indeed, except when blindfold she lacked the ability to perceive things with her skin. It was also found that although she could perceive things with her fingers this ability ceased the moment her hands were wet.</p>
-<h2 id="📖-文章大意"><a href="#📖-文章大意" class="headerlink" title="📖 文章大意"></a>📖 <strong>文章大意</strong></h2><p>这是一篇关于超自然能力的报道，讲述了俄罗斯11岁女孩维拉·彼得罗娃（Vera Petrova）拥有用皮肤”看见”事物的特殊能力。</p>
-<h2 id="🔍-故事梗概"><a href="#🔍-故事梗概" class="headerlink" title="🔍 故事梗概"></a>🔍 <strong>故事梗概</strong></h2><h3 id="维拉的特殊能力"><a href="#维拉的特殊能力" class="headerlink" title="维拉的特殊能力"></a><strong>维拉的特殊能力</strong></h3><ul>
-<li><strong>正常视力</strong> + <strong>皮肤感知能力</strong></li>
-<li>可以透过实心墙壁和门”看见”物体</li>
-<li>能用身体不同部位（手指、肘部、膝盖、肩膀、脚）感知颜色和形状</li>
-</ul>
-<h3 id="能力的发现过程"><a href="#能力的发现过程" class="headerlink" title="能力的发现过程"></a><strong>能力的发现过程</strong></h3><p><strong>第一次发现（父亲的办公室）：</strong></p>
-<ul>
-<li>维拉无意中把手放在父亲办公室的保险柜门上</li>
-<li>突然问父亲为什么锁着这么多旧报纸</li>
-<li>甚至描述出报纸是如何捆扎的</li>
-</ul>
-<hr>
-<h2 id="🔬-科学测试"><a href="#🔬-科学测试" class="headerlink" title="🔬 科学测试"></a>🔬 <strong>科学测试</strong></h2><p>维拉被带到乌里扬诺夫斯克的科研机构接受测试：</p>
-<h3 id="测试项目及结果："><a href="#测试项目及结果：" class="headerlink" title="测试项目及结果："></a><strong>测试项目及结果：</strong></h3><ol>
-<li><strong>透过不透明屏幕读报纸</strong> ✓</li>
-<li><strong>用肘部感知儿童乐透游戏</strong><ul>
-<li>能描述印刷的图案和颜色 ✓</li>
-</ul>
-</li>
-<li><strong>穿着袜子和拖鞋，用脚感知</strong><ul>
-<li>辨认出地毯下隐藏图片的轮廓和颜色 ✓</li>
-</ul>
-</li>
-<li><strong>膝盖和肩膀也有类似敏感度</strong> ✓</li>
-</ol>
-<h3 id="重要条件："><a href="#重要条件：" class="headerlink" title="重要条件："></a><strong>重要条件：</strong></h3><ul>
-<li>⚠️ <strong>必须蒙眼</strong>：不蒙眼时这种能力就消失</li>
-<li>⚠️ <strong>手必须干燥</strong>：手湿了能力就失效</li>
-</ul>
-<hr>
-<h2 id="📝-关键词汇解释"><a href="#📝-关键词汇解释" class="headerlink" title="📝 关键词汇解释"></a>📝 <strong>关键词汇解释</strong></h2><table>
-<thead>
-<tr>
-<th>单词</th>
-<th>含义</th>
-<th>在文中的用法</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><strong>vision</strong></td>
-<td>视力</td>
-<td>正常视力</td>
-</tr>
-<tr>
-<td><strong>perceive</strong></td>
-<td>感知、察觉</td>
-<td>用皮肤感知事物</td>
-</tr>
-<tr>
-<td><strong>bundles</strong></td>
-<td>捆、束</td>
-<td>报纸捆扎的方式</td>
-</tr>
-<tr>
-<td><strong>institute</strong></td>
-<td>研究所</td>
-<td>科研机构</td>
-</tr>
-<tr>
-<td><strong>Ministry</strong></td>
-<td>部（政府部门）</td>
-<td>卫生部</td>
-</tr>
-<tr>
-<td><strong>opaque</strong></td>
-<td>不透明的</td>
-<td>不透明的屏幕</td>
-</tr>
-<tr>
-<td><strong>slippers</strong></td>
-<td>拖鞋</td>
-<td>穿着拖鞋测试</td>
-</tr>
-<tr>
-<td><strong>carpet</strong></td>
-<td>地毯</td>
-<td>地毯下藏着图片</td>
-</tr>
-<tr>
-<td><strong>blindfold</strong></td>
-<td>蒙眼的</td>
-<td>测试时必须蒙眼</td>
-</tr>
-</tbody></table>
-<hr>
-<h2 id="💡-文章主题"><a href="#💡-文章主题" class="headerlink" title="💡 文章主题"></a>💡 <strong>文章主题</strong></h2><p>这是一篇<strong>科学报道类文章</strong>，探讨了：</p>
-<ul>
-<li>超感官知觉（ESP）现象</li>
-<li>人体潜在的未知能力</li>
-<li>科学验证超自然现象的尝试</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
     <a class="extend prev" rel="prev" href="/page/5/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/7/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
@@ -1085,13 +971,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">301k</span>
+    <span title="Symbols count total">314k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">4:33</span>
+    <span title="Reading time total">4:46</span>
   </span>
 </div>
 <div class="busuanzi-count">
