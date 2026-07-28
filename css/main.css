@@ -1146,8 +1146,9 @@ header.header {
 .site-title {
   font-family: Lato, 'PingFang SC', 'Microsoft YaHei', sans-serif;
   font-size: 1.6em;
-  font-weight: normal;
-  line-height: 1.5;
+  font-weight: 1200;
+  letter-spacing: 1px;
+  line-height: 1.2;
   margin: 0;
 }
 .site-subtitle {
@@ -2674,7 +2675,7 @@ hr {
   vertical-align: middle;
 }
 .links-of-author a::before {
-  background: #256eff;
+  background: #788783;
   display: inline-block;
   margin-right: 3px;
   transform: translateY(-2px);
