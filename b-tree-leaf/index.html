@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic,900&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"eazow.com","root":"/","images":"/images","scheme":"Mist","darkmode":false,"version":"8.12.2","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"flat"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":"giscus","storage":true,"lazyload":true,"nav":null,"activeClass":"giscus"},"stickytabs":false,"motion":{"enable":false,"async":true,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+
+
+<link rel="canonical" href="http://eazow.com/b-tree-leaf/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en-US","comments":true,"permalink":"http://eazow.com/b-tree-leaf/","path":"b-tree-leaf/","title":"[译]B-Tree叶节点格式"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>[译]B-Tree叶节点格式 | Eazow</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-NHS1WWDHJE"></script>
+  <script class="next-config" data-name="google_analytics" type="application/json">{"tracking_id":"G-NHS1WWDHJE","only_pageview":false}</script>
+  <script src="/js/third-party/analytics/google-analytics.js"></script>
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <p class="site-title">Eazow</p>
+    </a>
+      <p class="site-subtitle" itemprop="description">Stay kind and positive</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner sidebar-toc-active">
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9B%BF%E4%BB%A3%E8%A1%A8%E6%A0%BC%E6%A0%BC%E5%BC%8F"><span class="nav-text">替代表格格式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%8A%82%E7%82%B9%E5%A4%B4%E6%A0%BC%E5%BC%8F"><span class="nav-text">节点头格式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%B6%E8%8A%82%E7%82%B9%E6%A0%BC%E5%BC%8F"><span class="nav-text">叶节点格式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%BF%E9%97%AE%E5%8F%B6%E8%8A%82%E7%82%B9%E5%AD%97%E6%AE%B5"><span class="nav-text">访问叶节点字段</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%B9Pager%E5%92%8C%E8%A1%A8%E7%9A%84%E6%9B%B4%E6%94%B9"><span class="nav-text">对Pager和表的更改</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%89%E6%A0%87%E5%AF%B9%E8%B1%A1%E7%9A%84%E6%9B%B4%E6%94%B9"><span class="nav-text">光标对象的更改</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BD%AC"><span class="nav-text">转</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en-US">
+    <link itemprop="mainEntityOfPage" href="http://eazow.com/b-tree-leaf/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Eazow">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Eazow">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="[译]B-Tree叶节点格式 | Eazow">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          [译]B-Tree叶节点格式
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2023-09-20 23:57:20" itemprop="dateCreated datePublished" datetime="2023-09-20T23:57:20+08:00">2023-09-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Coding/" itemprop="url" rel="index"><span itemprop="name">Coding</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>6 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>我们将表的格式从未排序的行数组更改为 B 树。这是一个很大的改动，需要多篇文章来实现。在本文的结尾，我们将定义叶节点的布局，并支持将键&#x2F;值对插入到单节点树中。但首先，让我们回顾一下切换到树结构的原因。</p>
+<h3 id="替代表格格式"><a href="#替代表格格式" class="headerlink" title="替代表格格式"></a>替代表格格式</h3><p>使用当前格式，每个页面仅存储行（无元数据），因此非常节省空间。插入也很快速，因为我们只需追加到末尾即可。但是，只能通过扫描整个表来查找特定行。如果要删除一行，则必须通过移动其后的每一行来填补该空缺。</p>
+<p>如果我们将表存储为数组，但按 id 对行进行排序，则可以使用二分查找来查找特定 id。但是，插入会很慢，因为我们必须移动很多行来腾出空间。</p>
+<p>相反，我们采用树结构。树中的每个节点可以包含可变数量的行，因此我们必须在每个节点中存储一些信息以跟踪其包含的行数。此外，还有所有不存储任何行的内部节点的存储开销。作为交换，虽然数据库文件变大了，但我们获得了快速的插入、删除和查找功能。</p>
+<table>
+<thead>
+<tr>
+<th align="left"></th>
+<th align="left">未排序的行数组</th>
+<th align="left">已排序的行数组</th>
+<th align="left">节点树</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">页面包含</td>
+<td align="left">仅数据</td>
+<td align="left">仅数据</td>
+<td align="left">元数据、主键和数据</td>
+</tr>
+<tr>
+<td align="left">每页行数</td>
+<td align="left">更多的</td>
+<td align="left">更多的</td>
+<td align="left">更少</td>
+</tr>
+<tr>
+<td align="left">插入</td>
+<td align="left">O(1)</td>
+<td align="left">O(n)</td>
+<td align="left">O(log(n))</td>
+</tr>
+<tr>
+<td align="left">删除</td>
+<td align="left">O(n)</td>
+<td align="left">O(n)</td>
+<td align="left">O(log(n))</td>
+</tr>
+<tr>
+<td align="left">通过id查找</td>
+<td align="left">O(n)</td>
+<td align="left">O(log(n))</td>
+<td align="left">O(log(n))</td>
+</tr>
+</tbody></table>
+<span id="more"></span>
+
+<h3 id="节点头格式"><a href="#节点头格式" class="headerlink" title="节点头格式"></a>节点头格式</h3><p>叶节点和内部节点具有不同的布局。让我们创建一个枚举来跟踪节点类型：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">typedef enum &#123; NODE_INTERNAL, NODE_LEAF &#125; NodeType;</span><br></pre></td></tr></table></figure>
+
+<p>每个节点将对应一个页面。内部节点将通过存储存储子节点的页号来指向其子节点。B 树向分页器询问特定页号，并从页面缓存中获取回一个指针。页面按页号顺序一个接一个地存储在数据库文件中。</p>
+<p>节点需要在页面的开头存储一些元数据作为头。每个节点将存储其节点类型、是否为根节点以及指向其父节点的指针（以便查找节点的兄弟节点）。我为每个头字段的大小和偏移量定义常量：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">/*</span><br><span class="line"> * Common Node Header Layout</span><br><span class="line"> */</span><br><span class="line">const uint32_t NODE_TYPE_SIZE = sizeof(uint8_t);</span><br><span class="line">const uint32_t NODE_TYPE_OFFSET = 0;</span><br><span class="line">const uint32_t IS_ROOT_SIZE = sizeof(uint8_t);</span><br><span class="line">const uint32_t IS_ROOT_OFFSET = NODE_TYPE_SIZE;</span><br><span class="line">const uint32_t PARENT_POINTER_SIZE = sizeof(uint32_t);</span><br><span class="line">const uint32_t PARENT_POINTER_OFFSET = IS_ROOT_OFFSET + IS_ROOT_SIZE;</span><br><span class="line">const uint8_t COMMON_NODE_HEADER_SIZE = NODE_TYPE_SIZE + IS_ROOT_SIZE + PARENT_POINTER_SIZE;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="叶节点格式"><a href="#叶节点格式" class="headerlink" title="叶节点格式"></a>叶节点格式</h3><p>除了这些常见的头字段外，叶节点还需要存储它们包含多少个“单元格”。单元格是键&#x2F;值对。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">/*</span><br><span class="line"> * Leaf Node Header Layout</span><br><span class="line"> */</span><br><span class="line">const uint32_t LEAF_NODE_NUM_CELLS_SIZE = sizeof(uint32_t);</span><br><span class="line">const uint32_t LEAF_NODE_NUM_CELLS_OFFSET = COMMON_NODE_HEADER_SIZE;</span><br><span class="line">const uint32_t LEAF_NODE_HEADER_SIZE = COMMON_NODE_HEADER_SIZE + LEAF_NODE_NUM_CELLS_SIZE;</span><br></pre></td></tr></table></figure>
+
+<p>叶节点的主体是一个单元格数组。每个单元格都是一个键，后跟一个值（序列化的行）。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">/*</span><br><span class="line"> * Leaf Node Body Layout</span><br><span class="line"> */</span><br><span class="line">const uint32_t LEAF_NODE_KEY_SIZE = sizeof(uint32_t);</span><br><span class="line">const uint32_t LEAF_NODE_KEY_OFFSET = 0;</span><br><span class="line">const uint32_t LEAF_NODE_VALUE_SIZE = ROW_SIZE;</span><br><span class="line">const uint32_t LEAF_NODE_VALUE_OFFSET = LEAF_NODE_KEY_OFFSET + LEAF_NODE_KEY_SIZE;</span><br><span class="line">const uint32_t LEAF_NODE_CELL_SIZE = LEAF_NODE_KEY_SIZE + LEAF_NODE_VALUE_SIZE;</span><br><span class="line">const uint32_t LEAF_NODE_SPACE_FOR_CELLS = PAGE_SIZE - LEAF_NODE_HEADER_SIZE;</span><br><span class="line">const uint32_t LEAF_NODE_MAX_CELLS = LEAF_NODE_SPACE_FOR_CELLS / LEAF_NODE_CELL_SIZE;</span><br></pre></td></tr></table></figure>
+
+<p>基于这些常量，叶节点的布局当前如下所示：</p>
+<p><img data-src="https://cstack.github.io/db_tutorial/assets/images/leaf-node-format.png" alt="Our leaf node format"></p>
+<p>在标头中每个布尔值使用整个字节的空间效率有点低，但这使得编写代码来访问这些值变得更容易。</p>
+<p>另请注意，末尾有一些浪费的空间。我们在标题后存储尽可能多的单元格，但剩余空间无法容纳整个单元格。我们将其留空以避免节点之间的单元格分裂。</p>
+<h3 id="访问叶节点字段"><a href="#访问叶节点字段" class="headerlink" title="访问叶节点字段"></a>访问叶节点字段</h3><p>访问键、值和元数据的代码都涉及使用我们刚刚定义的常量进行指针算术。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">+uint32_t* leaf_node_num_cells(void* node) &#123;</span><br><span class="line">+  return node + LEAF_NODE_NUM_CELLS_OFFSET;</span><br><span class="line">+&#125;</span><br><span class="line">+</span><br><span class="line">+void* leaf_node_cell(void* node, uint32_t cell_num) &#123;</span><br><span class="line">+  return node + LEAF_NODE_HEADER_SIZE + cell_num * LEAF_NODE_CELL_SIZE;</span><br><span class="line">+&#125;</span><br><span class="line">+</span><br><span class="line">+uint32_t* leaf_node_key(void* node, uint32_t cell_num) &#123;</span><br><span class="line">+  return leaf_node_cell(node, cell_num);</span><br><span class="line">+&#125;</span><br><span class="line">+</span><br><span class="line">+void* leaf_node_value(void* node, uint32_t cell_num) &#123;</span><br><span class="line">+  return leaf_node_cell(node, cell_num) + LEAF_NODE_KEY_SIZE;</span><br><span class="line">+&#125;</span><br><span class="line">+</span><br><span class="line">+void initialize_leaf_node(void* node) &#123; *leaf_node_num_cells(node) = 0; &#125;</span><br></pre></td></tr></table></figure>
+
+<p>这些方法返回指向相关值的指针，因此它们既可以用作 getter 也可以用作 setter。</p>
+<h3 id="对Pager和表的更改"><a href="#对Pager和表的更改" class="headerlink" title="对Pager和表的更改"></a>对Pager和表的更改</h3><p>每个节点都将恰好占用一页，即使它未满。这意味着我们的Pager不再需要支持读&#x2F;写部分页面。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">-void pager_flush(Pager* pager, uint32_t page_num, uint32_t size) &#123;</span><br><span class="line">+void pager_flush(Pager* pager, uint32_t page_num) &#123;</span><br><span class="line">   if (pager-&gt;pages[page_num] == NULL) &#123;</span><br><span class="line">     printf(&quot;Tried to flush null page\n&quot;);</span><br><span class="line">     exit(EXIT_FAILURE);</span><br><span class="line">@@ -242,7 +337,7 @@ void pager_flush(Pager* pager, uint32_t page_num, uint32_t size) &#123;</span><br><span class="line">   &#125;</span><br><span class="line"> </span><br><span class="line">   ssize_t bytes_written =</span><br><span class="line">-      write(pager-&gt;file_descriptor, pager-&gt;pages[page_num], size);</span><br><span class="line">+      write(pager-&gt;file_descriptor, pager-&gt;pages[page_num], PAGE_SIZE);</span><br><span class="line"> </span><br><span class="line">   if (bytes_written == -1) &#123;</span><br><span class="line">     printf(&quot;Error writing: %d\n&quot;, errno);</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">void db_close(Table* table) &#123;</span><br><span class="line">   Pager* pager = table-&gt;pager;</span><br><span class="line">-  uint32_t num_full_pages = table-&gt;num_rows / ROWS_PER_PAGE;</span><br><span class="line"> </span><br><span class="line">-  for (uint32_t i = 0; i &lt; num_full_pages; i++) &#123;</span><br><span class="line">+  for (uint32_t i = 0; i &lt; pager-&gt;num_pages; i++) &#123;</span><br><span class="line">     if (pager-&gt;pages[i] == NULL) &#123;</span><br><span class="line">       continue;</span><br><span class="line">     &#125;</span><br><span class="line">-    pager_flush(pager, i, PAGE_SIZE);</span><br><span class="line">+    pager_flush(pager, i);</span><br><span class="line">     free(pager-&gt;pages[i]);</span><br><span class="line">     pager-&gt;pages[i] = NULL;</span><br><span class="line">   &#125;</span><br><span class="line"> </span><br><span class="line">-  // There may be a partial page to write to the end of the file</span><br><span class="line">-  // This should not be needed after we switch to a B-tree</span><br><span class="line">-  uint32_t num_additional_rows = table-&gt;num_rows % ROWS_PER_PAGE;</span><br><span class="line">-  if (num_additional_rows &gt; 0) &#123;</span><br><span class="line">-    uint32_t page_num = num_full_pages;</span><br><span class="line">-    if (pager-&gt;pages[page_num] != NULL) &#123;</span><br><span class="line">-      pager_flush(pager, page_num, num_additional_rows * ROW_SIZE);</span><br><span class="line">-      free(pager-&gt;pages[page_num]);</span><br><span class="line">-      pager-&gt;pages[page_num] = NULL;</span><br><span class="line">-    &#125;</span><br><span class="line">-  &#125;</span><br><span class="line">-</span><br><span class="line">   int result = close(pager-&gt;file_descriptor);</span><br><span class="line">   if (result == -1) &#123;</span><br><span class="line">     printf(&quot;Error closing db file.\n&quot;);</span><br></pre></td></tr></table></figure>
+
+<p>现在，在数据库中存储页数而不是行数更有意义。页数应该与分页器对象相关联，而不是与表相关联，因为它是数据库使用的页数，而不是特定的表。 B 树由其根节点页码标识，因此表对象需要跟踪它。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"> const uint32_t PAGE_SIZE = 4096;</span><br><span class="line"> const uint32_t TABLE_MAX_PAGES = 100;</span><br><span class="line">-const uint32_t ROWS_PER_PAGE = PAGE_SIZE / ROW_SIZE;</span><br><span class="line">-const uint32_t TABLE_MAX_ROWS = ROWS_PER_PAGE * TABLE_MAX_PAGES;</span><br><span class="line"> </span><br><span class="line"> typedef struct &#123;</span><br><span class="line">   int file_descriptor;</span><br><span class="line">   uint32_t file_length;</span><br><span class="line">+  uint32_t num_pages;</span><br><span class="line">   void* pages[TABLE_MAX_PAGES];</span><br><span class="line"> &#125; Pager;</span><br><span class="line"> </span><br><span class="line"> typedef struct &#123;</span><br><span class="line">   Pager* pager;</span><br><span class="line">-  uint32_t num_rows;</span><br><span class="line">+  uint32_t root_page_num;</span><br><span class="line"> &#125; Table;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">@@ -127,6 +200,10 @@ void* get_page(Pager* pager, uint32_t page_num) &#123;</span><br><span class="line">     &#125;</span><br><span class="line"> </span><br><span class="line">     pager-&gt;pages[page_num] = page;</span><br><span class="line">+</span><br><span class="line">+    if (page_num &gt;= pager-&gt;num_pages) &#123;</span><br><span class="line">+      pager-&gt;num_pages = page_num + 1;</span><br><span class="line">+    &#125;</span><br><span class="line">   &#125;</span><br><span class="line"> </span><br><span class="line">   return pager-&gt;pages[page_num];</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">@@ -184,6 +269,12 @@ Pager* pager_open(const char* filename) &#123;</span><br><span class="line">   Pager* pager = malloc(sizeof(Pager));</span><br><span class="line">   pager-&gt;file_descriptor = fd;</span><br><span class="line">   pager-&gt;file_length = file_length;</span><br><span class="line">+  pager-&gt;num_pages = (file_length / PAGE_SIZE);</span><br><span class="line">+</span><br><span class="line">+  if (file_length % PAGE_SIZE != 0) &#123;</span><br><span class="line">+    printf(&quot;Db file is not a whole number of pages. Corrupt file.\n&quot;);</span><br><span class="line">+    exit(EXIT_FAILURE);</span><br><span class="line">+  &#125;</span><br><span class="line"> </span><br><span class="line">   for (uint32_t i = 0; i &lt; TABLE_MAX_PAGES; i++) &#123;</span><br><span class="line">     pager-&gt;pages[i] = NULL;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="光标对象的更改"><a href="#光标对象的更改" class="headerlink" title="光标对象的更改"></a>光标对象的更改</h3><p>光标代表表中的位置。当我们的表是一个简单的行数组时，我们可以仅通过行号来访问行。现在它是一棵树，我们通过节点的页码以及该节点内的单元格编号来标识位置。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"> typedef struct &#123;</span><br><span class="line">   Table* table;</span><br><span class="line">-  uint32_t row_num;</span><br><span class="line">+  uint32_t page_num;</span><br><span class="line">+  uint32_t cell_num;</span><br><span class="line">   bool end_of_table;  // Indicates a position one past the last element</span><br><span class="line"> &#125; Cursor;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"> Cursor* table_start(Table* table) &#123;</span><br><span class="line">   Cursor* cursor = malloc(sizeof(Cursor));</span><br><span class="line">   cursor-&gt;table = table;</span><br><span class="line">-  cursor-&gt;row_num = 0;</span><br><span class="line">-  cursor-&gt;end_of_table = (table-&gt;num_rows == 0);</span><br><span class="line">+  cursor-&gt;page_num = table-&gt;root_page_num;</span><br><span class="line">+  cursor-&gt;cell_num = 0;</span><br><span class="line">+</span><br><span class="line">+  void* root_node = get_page(table-&gt;pager, table-&gt;root_page_num);</span><br><span class="line">+  uint32_t num_cells = *leaf_node_num_cells(root_node);</span><br><span class="line">+  cursor-&gt;end_of_table = (num_cells == 0);</span><br><span class="line"> </span><br><span class="line">   return cursor;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h3 id="转"><a href="#转" class="headerlink" title="转"></a>转</h3><p><a target="_blank" rel="noopener" href="https://cstack.github.io/db_tutorial/parts/part8.html">https://cstack.github.io/db_tutorial/parts/part8.html</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Coding/" rel="tag"><i class="fa fa-tag"></i> Coding</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/b-tree/" rel="prev" title="[译]B-Tree">
+                  <i class="fa fa-chevron-left"></i> [译]B-Tree
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/tao-te-ching/" rel="next" title="《道德经》读书笔记">
+                  《道德经》读书笔记 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  
+  <div class="comments giscus-container">
+  </div>
+  
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2008 – 
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Eazow</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Symbols count total">316k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">4:47</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+<script>
+(function () {
+  var numberOfBanners = 10;
+  var intervalMs = 5000;
+
+  var layerA = document.querySelector('.banner-layer-a');
+  var layerB = document.querySelector('.banner-layer-b');
+  if (!layerA || !layerB) return;
+
+  var urls = [];
+  for (var i = 0; i < numberOfBanners; i++) {
+    urls.push('/images/banner' + i + '.webp');
+  }
+  // shuffle so the slideshow order differs between visits
+  for (var i = urls.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var tmp = urls[i];
+    urls[i] = urls[j];
+    urls[j] = tmp;
+  }
+
+  // preload every banner once so the browser caches them up front;
+  // later switches then read from cache instead of firing new requests
+  urls.forEach(function (url) {
+    var img = new Image();
+    img.src = url;
+  });
+
+  var layers = [layerA, layerB];
+  var current = 0;
+  var index = 0;
+
+  function setLayer(layer, url) {
+    layer.style.backgroundImage = "url('" + url + "')";
+  }
+
+  setLayer(layers[current], urls[index]);
+  layers[current].classList.add('is-active');
+
+  if (urls.length <= 1) return;
+
+  setInterval(function () {
+    var next = current === 0 ? 1 : 0;
+    index = (index + 1) % urls.length;
+    setLayer(layers[next], urls[index]);
+    layers[next].classList.add('is-active');
+    layers[current].classList.remove('is-active');
+    current = next;
+  }, intervalMs);
+})();
+</script>
+
+
+    </div>
+  </footer>
+
+  
+  <script size="200" alpha="0.2" zIndex="-1" src="https://cdnjs.cloudflare.com/ajax/libs/ribbon.js/1.0.2/ribbon.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/9.1.3/mermaid.min.js","integrity":"sha256-TIYL00Rhw/8WaoUhYTLX9SKIEFdXxg+yMWSLVUbhiLg="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  <!--script async src="https://cdn.jsdelivr.net/gh/sukkaw/busuanzi@2.3/bsz.pure.mini.js"></script-->
+
+
+
+
+<script class="next-config" data-name="giscus" type="application/json">{"enable":true,"repo":"eazow/hexo","repo_id":"MDEwOlJlcG9zaXRvcnkxNjI1NTM4Nzk=","category":"Announcements","category_id":"DIC_kwDOCbBgF84CQl0J","mapping":"pathname","strict":0,"reactions_enabled":1,"emit_metadata":0,"theme":"light","lang":"en","crossorigin":"anonymous","input_position":"top","loading":"lazy"}</script>
+
+<script>
+document.addEventListener('page:loaded', () => {
+  if (!CONFIG.page.comments) return;
+
+  NexT.utils.loadComments('.giscus-container')
+    .then(() => NexT.utils.getScript('https://giscus.app/client.js', {
+      attributes: {
+        async                   : true,
+        crossOrigin             : 'anonymous',
+        'data-repo'             : CONFIG.giscus.repo,
+        'data-repo-id'          : CONFIG.giscus.repo_id,
+        'data-category'         : CONFIG.giscus.category,
+        'data-category-id'      : CONFIG.giscus.category_id,
+        'data-mapping'          : CONFIG.giscus.mapping,
+        'data-strict'           : CONFIG.giscus.strict,
+        'data-reactions-enabled': CONFIG.giscus.reactions_enabled,
+        'data-emit-metadata'    : CONFIG.giscus.emit_metadata,
+        'data-theme'            : CONFIG.giscus.theme,
+        'data-lang'             : CONFIG.giscus.lang,
+        'data-input-position'   : CONFIG.giscus.input_position,
+        'data-loading'          : CONFIG.giscus.loading
+      },
+      parentNode: document.querySelector('.giscus-container')
+    }));
+});
+</script>
+<script>
+document.querySelectorAll('figure.highlight').forEach(function (el) {
+  var lang = el.className.replace('highlight', '').trim().split(/\s+/)[0];
+  if (lang) el.setAttribute('data-lang', lang);
+});
+</script>
+
+</body>
+</html>

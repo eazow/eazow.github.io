@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic,900&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"eazow.com","root":"/","images":"/images","scheme":"Mist","darkmode":false,"version":"8.12.2","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"flat"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":"giscus","storage":true,"lazyload":true,"nav":null,"activeClass":"giscus"},"stickytabs":false,"motion":{"enable":false,"async":true,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+
+
+<link rel="canonical" href="http://eazow.com/tomcat/ch01-a-simple-web-server">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":false,"lang":"en-US","comments":true,"permalink":"http://eazow.com/tomcat/ch01-a-simple-web-server.html","path":"tomcat/ch01-a-simple-web-server.html","title":"A Simple Web Server"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>A Simple Web Server | Eazow
+</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-NHS1WWDHJE"></script>
+  <script class="next-config" data-name="google_analytics" type="application/json">{"tracking_id":"G-NHS1WWDHJE","only_pageview":false}</script>
+  <script src="/js/third-party/analytics/google-analytics.js"></script>
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <p class="site-title">Eazow</p>
+    </a>
+      <p class="site-subtitle" itemprop="description">Stay kind and positive</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner sidebar-toc-active">
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#The-Hypertext-Transfer-Protocol-HTTP"><span class="nav-text">The Hypertext Transfer Protocol (HTTP)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#HTTP-Requests"><span class="nav-text">HTTP Requests</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#HTTP-Responses"><span class="nav-text">HTTP Responses</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#The-Socket-Class"><span class="nav-text">The Socket Class</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#The-ServerSocket-Class"><span class="nav-text">The ServerSocket Class</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#The-Application"><span class="nav-text">The Application</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#The-HttpServer-Class"><span class="nav-text">The HttpServer Class</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#The-Request-Class"><span class="nav-text">The Request Class</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#The-Response-Class"><span class="nav-text">The Response Class</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Running-the-Application"><span class="nav-text">Running the Application</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Summary"><span class="nav-text">Summary</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner page posts-expand">
+
+
+    
+    
+    
+    <div class="post-block" lang="en-US"><header class="post-header">
+
+<h1 class="post-title" itemprop="name headline">A Simple Web Server
+</h1>
+
+<div class="post-meta-container">
+</div>
+
+</header>
+
+      
+      
+      <div class="post-body">
+          <p>This chapter explains how Java web servers work. A web server is also called a Hypertext Transfer Protocol (HTTP) server because it uses HTTP to communicate with its clients, which are usually web browsers. A Java-based web server uses two important classes: java.net.Socket and java.net.ServerSocket, and communications are done through HTTP messages. It is therefore natural to start this chapter with a discussion of HTTP and the two classes. Afterwards, it goes on to explain the simple web server application that accompanies this chapter.</p>
+<h4 id="The-Hypertext-Transfer-Protocol-HTTP"><a href="#The-Hypertext-Transfer-Protocol-HTTP" class="headerlink" title="The Hypertext Transfer Protocol (HTTP)"></a>The Hypertext Transfer Protocol (HTTP)</h4><p>HTTP is the protocol that allows web servers and browsers to send and receive data over the Internet. It is a request and response protocol. The client requests a file and the server responds to the request. HTTP uses reliable TCP connections—by default on TCP port 80. The first version of HTTP was HTTP&#x2F;0.9, which was then overridden by HTTP&#x2F;1.0. Replacing HTTP&#x2F;1.0 is the current version of HTTP&#x2F;1.1, which is defined in Request for Comments (RFC) 2616 and downloadable from <a target="_blank" rel="noopener" href="http://www.w3.org/Protocols/HTTP/1.1/rfc2616.pdf">http://www.w3.org/Protocols/HTTP/1.1/rfc2616.pdf</a>.</p>
+<p><em>Note This section covers HTTP 1.1 only briefly and is intended to help you understand the messages sent by web server applications. If you are interested in more details, read RFC 2616</em></p>
+<p>In HTTP, it is always the client who initiates a transaction by establishing a connection and sending an HTTP request. The web server is in no position to contact a client or make a callback connection to the client. Either the client or the server can prematurely terminate a connection. For example, when using a web browser you can click the Stop button on your browser to stop the download process of a file, effectively closing the HTTP connection with the web server.</p>
+<h4 id="HTTP-Requests"><a href="#HTTP-Requests" class="headerlink" title="HTTP Requests"></a>HTTP Requests</h4><p>An HTTP request consists of three components:</p>
+<ul>
+<li>Method—Uniform Resource Identifier (URI)—Protocol&#x2F;Version</li>
+<li>Request headers</li>
+<li>Entity body</li>
+</ul>
+<p>An example of an HTTP request is the following:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">POST /examples/default.jsp HTTP/1.1Accept: text/plain; text/html</span><br><span class="line">Accept-Language: en-gb</span><br><span class="line">Connection: Keep-Alive</span><br><span class="line">Host: localhost</span><br><span class="line">User-Agent: Mozilla/4.0 (compatible; MSIE 4.01; Windows 98)</span><br><span class="line">Content-Length: 33</span><br><span class="line">Content-Type: application/x-www-form-urlencoded</span><br><span class="line">Accept-Encoding: gzip, deflate</span><br><span class="line"></span><br><span class="line">lastName=Franks&amp;firstName=Michael</span><br></pre></td></tr></table></figure>
+
+<p>The method—URI—protocol version appears as the first line of the request.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">POST /examples/default.jsp HTTP/1.1</span><br></pre></td></tr></table></figure>
+
+<p>where POST is the request method, &#x2F;examples&#x2F;default.jsp represents the URI and HTTP&#x2F;1.1 the Protocol&#x2F;Version section.</p>
+<p>Each HTTP request can use one of the many request methods as specified in the HTTP standards. The HTTP 1.1 supports seven types of request: GET, POST, HEAD, OPTIONS, PUT, DELETE, and TRACE. GET and POST are the most commonly used in Internet applications.</p>
+<p>The URI specifies an Internet resource completely. A URI is usually interpreted as being relative to the server’s root directory. Thus, it should always begin with a forward slash &#x2F;. A Uniform Resource Locator (URL) is actually a type of URI (see <a target="_blank" rel="noopener" href="http://www.ietf.org/rfc/rfc2396.txt">http://www.ietf.org/rfc/rfc2396.txt</a>). The protocol version represents the version of the HTTP protocol being used.</p>
+<p>The request header contains useful information about the client environment and the entity body of the request. For example, it could contain the language the browser is set for, the length of the entity body, and so on. Each header is separated by a carriage return&#x2F;linefeed (CRLF) sequence.</p>
+<p>Between the headers and the entity body, there is a blank line (CRLF) that is important to the HTTP request format. The CRLF tells the HTTP server where the entity body begins. In some Internet programming books, this CRLF is considered the fourth component of an HTTP request.</p>
+<p>In the previous HTTP request, the entity body is simply the following line:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lastName=Franks&amp;firstName=Michael</span><br></pre></td></tr></table></figure>
+
+<p>The entity body can easily become much longer in a typical HTTP request.</p>
+<h4 id="HTTP-Responses"><a href="#HTTP-Responses" class="headerlink" title="HTTP Responses"></a>HTTP Responses</h4><p>Similar to an HTTP request, an HTTP response also consists of three parts:</p>
+<ul>
+<li>Protocol—Status code—Description</li>
+<li>Response headers</li>
+<li>Entity body</li>
+</ul>
+<p>The following is an example of an HTTP response:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">HTTP/1.1 200 OK</span><br><span class="line">Server: Microsoft-IIS/4.0</span><br><span class="line">Date: Mon, 5 Jan 2004 13:13:33 GMT</span><br><span class="line">Content-Type: text/html</span><br><span class="line">Last-Modified: Mon, 5 Jan 2004 13:13:12 GMT</span><br><span class="line">Content-Length: 112</span><br><span class="line">&lt;html&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">&lt;title&gt;HTTP Response Example&lt;/title&gt;</span><br><span class="line">&lt;/head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">Welcome to Brainy Software</span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
+
+<p>The first line of the response header is similar to the first line of the request header. The first line tells you that the protocol used is HTTP version 1.1, the request succeeded (200 &#x3D; success), and that everything went okay.</p>
+<p>The response headers contain useful information similar to the headers in the request. The entity body of the response is the HTML content of the response itself. The headers and the entity body are separated by a sequence of CRLFs.</p>
+<h4 id="The-Socket-Class"><a href="#The-Socket-Class" class="headerlink" title="The Socket Class"></a>The Socket Class</h4><p>A socket is an endpoint of a network connection. A socket enables an application to read from and write to the network. Two software applications residing on two different computers can communicate with each other by sending and receiving byte streams over a connection. To send a message from your application to another application, you need to know the IP address as well as the port number of the socket of the other application. In Java, a socket is represented by the java.net.Socket class.</p>
+<p>To create a socket, you can use one of the many constructors of the Socket class. One of these constructors accepts the host name and the port number:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public Socket (java.lang.String host, int port)</span><br></pre></td></tr></table></figure>
+
+<p>where <code>host</code> is the remote machine name or IP address and <code>port</code> is the port number of the remote application. For example, to connect to yahoo.com at port 80, you would construct the following Socket object:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">new Socket (&quot;yahoo.com&quot;, 80);</span><br></pre></td></tr></table></figure>
+
+<p>Once you create an instance of the Socket class successfully, you can use it to send and receive streams of bytes. To send byte streams, you must first call the Socket class’s getOutputStream method to obtain a <code>java.io.OutputStream</code> object. To send text to a remote application, you often want to construct a <code>java.io.PrintWriter</code> object from the OutputStream object returned. To receive byte streams from the other end of the connection, you call the Socket class’s <code>getInputStream</code> method that returns a <code>java.io.InputStream</code>.</p>
+<p>The following code snippet creates a socket that can communicate with a local HTTP server (127.0.0.1 denotes a local host), sends an HTTP request, and receives the response from the server. It creates a StringBuffer object to hold the response and prints it on the console.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">Socket socket = new Socket(&quot;127.0.0.1&quot;, &quot;8080&quot;);</span><br><span class="line">OutputStream os = socket.getOutputStream();</span><br><span class="line">boolean autoflush = true;</span><br><span class="line">PrintWriter out = new PrintWriter(</span><br><span class="line">	socket.getOutputStream(), autoflush);</span><br><span class="line">BufferedReader in = new BufferedReader(</span><br><span class="line">	new InputStreamReader( socket.getInputstream() ));</span><br><span class="line">// send an HTTP request to the web server</span><br><span class="line">out.println(&quot;GET /index.jsp HTTP/1.1&quot;);</span><br><span class="line">out.println(&quot;Host: localhost:8080&quot;);</span><br><span class="line">out.println(&quot;Connection: Close&quot;);</span><br><span class="line">out.println();</span><br><span class="line">// read the response</span><br><span class="line">boolean loop = true;</span><br><span class="line">StringBuffer sb = new StringBuffer(8096);</span><br><span class="line">while (loop) &#123;</span><br><span class="line">	if ( in.ready() ) &#123;</span><br><span class="line">		int i=0;</span><br><span class="line">		while (i!=-1) &#123;</span><br><span class="line">			i = in.read();</span><br><span class="line">			sb.append((char) i);</span><br><span class="line">		&#125;</span><br><span class="line">		loop = false;</span><br><span class="line">	&#125;</span><br><span class="line">	Thread.currentThread().sleep(50);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// display the response to the out console</span><br><span class="line">System.out.println(sb.toString());</span><br><span class="line">socket.close();</span><br></pre></td></tr></table></figure>
+
+<p>Note that to get a proper response from the web server, you need to send an HTTP request that complies with the HTTP protocol. If you have read the previous section, The Hypertext Transfer Protocol (HTTP), you should be able to understand the HTTP request in the code above.</p>
+<p><strong>Note</strong> <em>You can use the com.brainy software.pyrmont.util.HttpSniffer class included with this book to send an HTTP request and display the response. To use this Java program, you must be connected to the Internet. Be warned, though, that it may not work if you are behind a firewall.</em></p>
+<h4 id="The-ServerSocket-Class"><a href="#The-ServerSocket-Class" class="headerlink" title="The ServerSocket Class"></a>The ServerSocket Class</h4><p>The Socket class represents a “client” socket, i.e. a socket that you construct whenever you want to connect to a remote server application. Now, if you want to implement a server application, such as an HTTP server or an FTP server, you need a different approach. This is because your server must stand by all the time as it does not know when a client application will try to connect to it. In order for your application to be able to stand by all the time, you need to use the <code>java.net.ServerSocket</code> class. This is an implementation of a server socket.</p>
+<p><code>ServerSocket</code> is different from Socket. The role of a server socket is to wait for connection requests from clients. Once the server socket gets a connection request, it creates a Socket instance to handle the communication with the client.</p>
+<p>To create a server socket, you need to use one of the four constructors the <code>ServerSocket</code> class provides. You need to specify the IP address and port number the server socket will be listening on. Typically, the IP address will be 127.0.0.1, meaning that the server socket will be listening on the local machine. The IP address the server socket is listening on is referred to as the binding address. Another important property of a server socket is its backlog, which is the maximum queue length of incoming connection requests before the server socket starts to refuse the incoming requests.</p>
+<p>One of the constructors of the ServerSocket class has the following signature:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public ServerSocket(int port, int backLog, InetAddress bindingAddress);</span><br></pre></td></tr></table></figure>
+
+<p>Notice that for this constructor, the binding address must be an instance of <code>java.net.InetAddress</code>. An easy way to construct an InetAddress object is by calling its static method <code>getByName</code>, passing a String containing the host name, such as in the following code.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">InetAddress.getByName(&quot;127.0.0.1&quot;);</span><br></pre></td></tr></table></figure>
+
+<p>The following line of code constructs a ServerSocket that listens on port 8080 of the local machine. The ServerSocket has a backlog of 1.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">new ServerSocket(8080, 1, InetAddress.getByName(&quot;127.0.0.1&quot;));</span><br></pre></td></tr></table></figure>
+
+<p>Once you have a <code>ServerSocket</code> instance, you can tell it to wait for an incoming connection request to the binding address at the port the server socket is listening on. You do this by calling the <code>ServerSocket</code> class’s accept method. This method will only return when there is a connection request and its return value is an instance of the Socket class. This Socket object can then be used to send and receive byte streams from the client application, as explained in the previous section, “The Socket Class”. Practically, the accept method is the only method used in the application accompanying this chapter.</p>
+<h4 id="The-Application"><a href="#The-Application" class="headerlink" title="The Application"></a>The Application</h4><p>Our web server application is part of the ex01.pyrmont package and consists of three classes:</p>
+<ul>
+<li>HttpServer</li>
+<li>Request</li>
+<li>Response</li>
+</ul>
+<p>The entry point of this application (the static main method) can be found in the <code>HttpServer</code> class. The main method creates an instance of HttpServer and calls its await method. The await method, as the name implies, waits for HTTP requests on a designated port, processes them, and sends responses back to the clients. It keeps waiting until a shutdown command is received.</p>
+<p>The application cannot do more than sending static resources, such as HTML files and image files, residing in a certain directory. It also displays the incoming HTTP request byte streams on the console. However, it does not send any header, such as dates or cookies, to the browser.</p>
+<p>We will now take a look at the three classes in the following subsections.</p>
+<h4 id="The-HttpServer-Class"><a href="#The-HttpServer-Class" class="headerlink" title="The HttpServer Class"></a>The HttpServer Class</h4><p>The HttpServer class represents a web server and is presented in Listing 1.1. Note that the await method is given in Listing 1.2 and is not repeated in Listing 1.1 to save space.</p>
+<p>Listing 1.1: The HttpServer Class</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">package ex01.pyrmont;</span><br><span class="line">import java.net.Socket;</span><br><span class="line">import java.net.ServerSocket;</span><br><span class="line">import java.net.InetAddress;</span><br><span class="line">import java.io.InputStream;</span><br><span class="line">import java.io.OutputStream;</span><br><span class="line">import java.io.IOException;</span><br><span class="line">import java.io.File;</span><br><span class="line">public class HttpServer &#123;</span><br><span class="line">    /** WEB_ROOT is the directory where our HTML and other files reside.</span><br><span class="line">    * For this package, WEB_ROOT is the &quot;webroot&quot; directory under the</span><br><span class="line">    * working directory.</span><br><span class="line">    * The working directory is the location in the file system</span><br><span class="line">    * from where the java command was invoked.</span><br><span class="line">    */</span><br><span class="line">    public static final String WEB_ROOT =</span><br><span class="line">        System.getProperty(&quot;user.dir&quot;) + File.separator + &quot;webroot&quot;;</span><br><span class="line">    // shutdown command</span><br><span class="line">    private static final String SHUTDOWN_COMMAND = &quot;/SHUTDOWN&quot;;</span><br><span class="line"></span><br><span class="line">    // the shutdown command received</span><br><span class="line">    private boolean shutdown = false;</span><br><span class="line"></span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        HttpServer server = new HttpServer();</span><br><span class="line"></span><br><span class="line">        server.await();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void await() &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>Listing 1.2: The HttpServer class’s await method</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">public void await() &#123;</span><br><span class="line">    ServerSocket serverSocket = null;</span><br><span class="line">    int port = 8081;</span><br><span class="line">    try &#123;</span><br><span class="line">        serverSocket = new ServerSocket(port, 1, InetAddress</span><br><span class="line">                .getByName(&quot;127.0.0.1&quot;));</span><br><span class="line">    &#125; catch (IOException e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">        System.exit(1);</span><br><span class="line">    &#125;</span><br><span class="line">    // Loop waiting for a request</span><br><span class="line">    while (!shutdown) &#123;</span><br><span class="line">        Socket socket = null;</span><br><span class="line">        InputStream input = null;</span><br><span class="line">        OutputStream output = null;</span><br><span class="line"></span><br><span class="line">        try &#123;</span><br><span class="line">            socket = serverSocket.accept();</span><br><span class="line">            input = socket.getInputStream();</span><br><span class="line">            output = socket.getOutputStream();</span><br><span class="line">            // create Request object and parse</span><br><span class="line">            Request request = new Request(input);</span><br><span class="line">            request.parse();</span><br><span class="line"></span><br><span class="line">            // create Response object</span><br><span class="line">            Response response = new Response(output);</span><br><span class="line">            response.setRequest(request);</span><br><span class="line">            response.sendStaticResource();</span><br><span class="line"></span><br><span class="line">            // Close the socket</span><br><span class="line">            socket.close();</span><br><span class="line">            // check if the previous URI is a shutdown command</span><br><span class="line">            shutdown = request.getUri().equals(SHUTDOWN_COMMAND);</span><br><span class="line">        &#125; catch (Exception e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">            continue;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>This web server can serve static resources found in the directory indicated by the public static final WEB_ROOT and all subdirectories under it. WEB_ROOT is initialized as follows:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">public static final String WEB_ROOT =</span><br><span class="line">    System.getProperty(&quot;user.dir&quot;) + File.separator + &quot;webroot&quot;;</span><br></pre></td></tr></table></figure>
+
+<p>The code listings include a directory called webroot that contains some static resources that you can use for testing this application. You can also find several servlets in the same directory for testing applications in the next chapters.</p>
+<p>To request for a static resource, you type the following URL in your browser’s Address or URL box:</p>
+<p><a href="http://machineName:port/staticResource">http://machineName:port/staticResource</a></p>
+<p>If you are sending a request from a different machine from the one running your application, machineName is the name or IP address of the computer running this application. If your browser is on the same machine, you can use localhost for the machineName.port is 8080 and staticResource is the name of the file requested and must reside in WEB_ROOT.</p>
+<p>For instance, if you are using the same computer to test the application and you want to ask the HttpServer object to send the index.html file, you use the following URL:</p>
+<p><a target="_blank" rel="noopener" href="http://localhost:8080/index.html">http://localhost:8080/index.html</a></p>
+<p>To stop the server, you send a shutdown command from a web browser by typing the pre-defined string in the browser’s Address or URL box, after the host:port section of the URL. The shutdown command is defined by the SHUTDOWN static final variable in the HttpServer class:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">private static final String SHUTDOWN_COMMAND = &quot;/SHUTDOWN&quot;;</span><br></pre></td></tr></table></figure>
+
+<p>Therefore, to stop the server, you use the following URL:</p>
+<p><a target="_blank" rel="noopener" href="http://localhost:8080/SHUTDOWN">http://localhost:8080/SHUTDOWN</a></p>
+<p>Now, let’s look at the await method printed in Listing 1.2.</p>
+<p>The method name await is used instead of wait because wait is an important method in the java.lang.Object class for working with threads.</p>
+<p>The await method starts by creating an instance of ServerSocket and then going into a while loop.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">serverSocket = new ServerSocket(port, 1, InetAddress.getByName(&quot;127.0.0.1&quot;));</span><br><span class="line">...</span><br><span class="line">// Loop waiting for a request</span><br><span class="line">while (!shutdown) &#123;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>The code inside the while loop stops at the accept method of ServerSocket, which returns only when an HTTP request is received on port 8080:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">socket = serverSocket.accept();</span><br></pre></td></tr></table></figure>
+
+<p>Upon receiving a request, the await method obtains java.io.InputStream and java.io.OutputStream objects from the Socket instance returned by the accept method.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">input = socket.getInputStream();</span><br><span class="line">output = socket.getOutputStream();</span><br></pre></td></tr></table></figure>
+
+<p>The await method then creates an ex01.pyrmont.Request object and calls its parse method to parse the HTTP request raw data.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">// create Request object and parse</span><br><span class="line">Request request = new Request(input);</span><br><span class="line">request.parse ();</span><br></pre></td></tr></table></figure>
+
+<p>Afterwards, the await method creates a Response object, sets the Request object to it, and calls its sendStaticResource method.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">// create Response object</span><br><span class="line">Response response = new Response(output);</span><br><span class="line">response.setRequest(request);</span><br><span class="line">response.sendStaticResource();</span><br></pre></td></tr></table></figure>
+
+<p>Finally, the await method closes the Socket and calls the getUri method of Request to check if the URI of the HTTP request is a shutdown command. If it is, the shutdown variable is set to true and the program exits the while loop.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">// Close the socket</span><br><span class="line">socket.close();</span><br><span class="line"></span><br><span class="line">//check if the previous URI is a shutdown command</span><br><span class="line">shutdown = request.getUri().equals(SHUTDOWN_COMMAND);</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="The-Request-Class"><a href="#The-Request-Class" class="headerlink" title="The Request Class"></a>The Request Class</h4><p>The ex01.pyrmont.Request class represents an HTTP request. An instance of this class is constructed by passing the InputStream object obtained from a Socket that handles the communication with the client. You call one of the read methods of the InputStream object to obtain the HTTP request raw data.</p>
+<p>The Request class is offered in Listing 1.3. The Request class has two public methods, parse and getUri, which are given in Listings 1.4 and 1.5, respectively.</p>
+<p>Listing 1.3: The Request class</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">package ex01.pyrmont;</span><br><span class="line"></span><br><span class="line">import java.io.InputStream;</span><br><span class="line">import java.io.IOException;</span><br><span class="line"></span><br><span class="line">public class Request &#123;</span><br><span class="line">		private InputStream input;</span><br><span class="line">		private String uri;</span><br><span class="line">		</span><br><span class="line">		public Request(InputStream input) &#123;</span><br><span class="line">				this.input = input;</span><br><span class="line">		&#125;</span><br><span class="line">    public void parse() &#123;</span><br><span class="line">    		...</span><br><span class="line">    &#125;</span><br><span class="line">    private String parseUri(String requestString) &#123;...</span><br><span class="line">    &#125;</span><br><span class="line">    public String getUri() &#123;</span><br><span class="line">		    return uri;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Listing 1.4: The Request class’s parse method</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">public void parse() &#123;</span><br><span class="line">    // Read a set of characters from the socket</span><br><span class="line">    StringBuffer request = new StringBuffer(2048);</span><br><span class="line">    int i;</span><br><span class="line">    byte[] buffer = new byte[2048];</span><br><span class="line">    try &#123;</span><br><span class="line">        i = input.read(buffer);</span><br><span class="line">    &#125;</span><br><span class="line">    catch (IOException e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">        i = -1;</span><br><span class="line">    &#125;</span><br><span class="line">    for (int j=0; j&lt;i; j++) &#123;</span><br><span class="line">   			request.append((char) buffer[j]);</span><br><span class="line">    &#125;</span><br><span class="line">		System.out.print(request.toString());</span><br><span class="line">    uri = parseUri(request.toString());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>Listing 1.5: the Request class’s parseUri method</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">private String parseUri(String requestString) &#123;</span><br><span class="line">		int index1, index2;</span><br><span class="line">		index1 = requestString.indexOf(&#x27; &#x27;);</span><br><span class="line">  	if (index1 != -1) &#123;</span><br><span class="line">			  index2 = requestString.indexOf(&#x27; &#x27;, index1 + 1);</span><br><span class="line">  			if (index2 &gt; index1)</span><br><span class="line">  				return requestString.substring(index1 + 1, index2);</span><br><span class="line">  	&#125;</span><br><span class="line">	  return null;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>The parse method parses the raw data in the HTTP request. Not much is done by this method. The only information it makes available is the URI of the HTTP request that it obtains by calling the private method parseUri. The parseUri method stores the URI in the uri variable. The public getUri method is invoked to return the URI of the HTTP request.</p>
+<p><em>Note More processing of the HTTP request raw data will be done in the applications</em><br><em>accompanying Chapter 3 and the subsequent chapters.</em></p>
+<p>To understand how the parse and parseUri methods work, you need to know the structure of an HTTP request, discussed in the previous section, “The Hypertext Transfer Protocol (HTTP)”. In this chapter, we are only interested in the first part of the HTTP request, the request line. A request line begins with a method token, followed by the request URI and the protocol version, and ends with carriage-return linefeed (CRLF) characters. Elements in a request line are separated by a space character. For instance, the request line for a request for the index.html file using the GET method is as follows.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">GET /index.html HTTP/1.1</span><br></pre></td></tr></table></figure>
+
+<p>The parse method reads the whole byte stream from the socket’s InputStream that is passed to the Request object and stores the byte array in a buffer. It then populates a StringBuffer object called request using the bytes in the buffer byte array, and passes the String representation of the StringBuffer to the parseUri method.</p>
+<p>The parse method is given in Listing 1.4.</p>
+<p>The parseUri method then obtains the URI from the request line. Listing 1.5 presents the parseUri method. The parseUri method searches for the first and the second spaces in the request and obtains the URI from it.</p>
+<h4 id="The-Response-Class"><a href="#The-Response-Class" class="headerlink" title="The Response Class"></a>The Response Class</h4><p>The ex01.pyrmont.Response class represents an HTTP response and is given in Listing 1.6.</p>
+<p>Listing 1.6: The Response class</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line">package ex01.pyrmont;</span><br><span class="line">import java.io.OutputStream;import java.io.IOException;</span><br><span class="line">import java.io.FileInputStream;</span><br><span class="line">import java.io.File;</span><br><span class="line">/*</span><br><span class="line">HTTP Response = Status-Line</span><br><span class="line">*(( general-header | response-header | entity-header ) CRLF)</span><br><span class="line">CRLF</span><br><span class="line">[ message-body ]</span><br><span class="line">Status-Line = HTTP-Version SP Status-Code SP Reason-Phrase CRLF</span><br><span class="line">*/</span><br><span class="line">public class Response &#123;</span><br><span class="line">    private static final int BUFFER_SIZE = 1024;</span><br><span class="line">    Request request;</span><br><span class="line">    OutputStream output;</span><br><span class="line">    public Response(OutputStream output) &#123;</span><br><span class="line">        this.output = output;</span><br><span class="line">    &#125;</span><br><span class="line">    public void setRequest(Request request) &#123;</span><br><span class="line">        this.request = request;</span><br><span class="line">    &#125;</span><br><span class="line">    public void sendStaticResource() throws IOException &#123;</span><br><span class="line">        byte[] bytes = new byte[BUFFER_SIZE];</span><br><span class="line">        FileInputStream fis = null;</span><br><span class="line">        try &#123;</span><br><span class="line">            File file = new File(HttpServer.WEB_ROOT, request.getUri());</span><br><span class="line">            if (file.exists()) &#123;</span><br><span class="line">                fis = new FileInputStream(file);</span><br><span class="line">                int ch = fis.read(bytes, 0, BUFFER_SIZE);</span><br><span class="line">                while (ch!=-1) &#123;</span><br><span class="line">                    output.write(bytes, 0, ch);</span><br><span class="line">                    ch = fis.read(bytes, 0, BUFFER_SIZE);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            else &#123;</span><br><span class="line">                // file not found</span><br><span class="line">                String errorMessage = &quot;HTTP/1.1 404 File Not Found\r\n&quot; +</span><br><span class="line">                &quot;Content-Type: text/html\r\n&quot; +</span><br><span class="line">                &quot;Content-Length: 23\r\n&quot; +&quot;\r\n&quot; +</span><br><span class="line">                &quot;&lt;h1&gt;File Not Found&lt;/h1&gt;&quot;;</span><br><span class="line">                output.write(errorMessage.getBytes());</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        catch (Exception e) &#123;</span><br><span class="line">            // thrown if cannot instantiate a File object</span><br><span class="line">            System.out.println(e.toString() );</span><br><span class="line">        &#125;</span><br><span class="line">        finally &#123;</span><br><span class="line">            if (fis!=null)</span><br><span class="line">            fis.close();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>First note that its constructor accepts a java.io.OutputStream object, such as the following.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">public Response(OutputStream output) &#123;</span><br><span class="line">    this.output = output;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>A Response object is constructed by the HttpServer class’s await method by passing the OutputStream object obtained from the socket.</p>
+<p>The Response class has two public methods: setRequest and sendStaticResource method. The setRequest method is used to pass a Request object to the Response object.</p>
+<p>The sendStaticResource method is used to send a static resource, such as an HTML file. It first instantiates the java.io.File class by passing the parent path and child path to the File class’s constructor.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">File file = new File(HttpServer.WEB_ROOT, request.getUri());</span><br></pre></td></tr></table></figure>
+
+<p>It then checks if the file exists. If it does, sendStaticResource constructs a <code>java.io.FileInputStream</code> object by passing the File object. Then, it invokes the read method of the FileInputStream and writes the byte array to the OutputStream output. Note that in this case the content of the static resource is sent to the browser as raw data.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">if (file.exists()) &#123;</span><br><span class="line">    fis = new FileInputstream(file);</span><br><span class="line">    int ch = fis.read(bytes, 0, BUFFER_SIZE);</span><br><span class="line">    while (ch!=-1) &#123;</span><br><span class="line">        output.write(bytes, 0, ch);</span><br><span class="line">        ch = fis.read(bytes, 0, BUFFER_SIZE);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>If the file does not exist, the sendStaticResource method sends an error message to the browser.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">String errorMessage = &quot;HTTP/1.1 404 File Not Found\r\n&quot; +</span><br><span class="line">    &quot;Content-Type: text/html\r\n&quot; +</span><br><span class="line">    &quot;Content-Length: 23\r\n&quot; +</span><br><span class="line">    &quot;\r\n&quot; +</span><br><span class="line">    &quot;&lt;h1&gt;File Not Found&lt;/h1&gt;&quot;;</span><br><span class="line">output.write(errorMessage.getBytes())</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="Running-the-Application"><a href="#Running-the-Application" class="headerlink" title="Running the Application"></a>Running the Application</h4><p>To run the application, from the working directory, type the following:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ java ex01.pyront.HttpServer</span><br></pre></td></tr></table></figure>
+
+<p>To test the application, open your browser and type the following in the URL or<br>Address box:</p>
+<p><a target="_blank" rel="noopener" href="http://localhost:8080/index.html">http://localhost:8080/index.html</a></p>
+<p>You will see the index.html page displayed in your browser, as in Figure 1.1</p>
+<img data-src="imgs/figure1-1.png" alt="image-20220917231611295" style="zoom: 50%;" />
+
+<p>Figure 1.1: The output from the web server</p>
+<p>On the console, you can see the HTTP request similar to the following:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">GET /index.html HTTP/1.1</span><br><span class="line">Accept: image/gif, image/x-xbitmap, image/jpeg, image/pjpeg,</span><br><span class="line">application/vnd.ms-excel, application/msword, application/vnd.mspowerpoint, application/x-shockwave-flash, application/pdf, */*</span><br><span class="line">Accept-Language: en-us</span><br><span class="line">Accept-Encoding: gzip, deflate</span><br><span class="line">User-Agent: Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; .NET CLR</span><br><span class="line">1.1.4322)</span><br><span class="line">Host: localhost:8080</span><br><span class="line">Connection: Keep-Alive</span><br><span class="line">GET /images/logo.gif HTTP/1.1</span><br><span class="line">Accept: */*</span><br><span class="line">Referer: http://localhost:8080/index.html</span><br><span class="line">Accept-Language: en-us</span><br><span class="line">Accept-Encoding: gzip, deflate</span><br><span class="line">User-Agent: Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; .NET CLR</span><br><span class="line">1.1.4322)</span><br><span class="line">Host: localhost:8080</span><br><span class="line">Connection: Keep-Alive</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="Summary"><a href="#Summary" class="headerlink" title="Summary"></a>Summary</h4><p>In this chapter you have seen how a simple web server works. The application accompanying this chapter consists of only three classes and is not fully functional. Nevertheless, it serves as a good learning tool. The next chapter will discuss the processing of dynamic contents.</p>
+
+      </div>
+      
+      
+      
+    </div>
+
+    
+    
+
+
+    
+  
+  <div class="comments giscus-container">
+  </div>
+  
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2008 – 
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Eazow</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Symbols count total">316k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">4:47</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+<script>
+(function () {
+  var numberOfBanners = 10;
+  var intervalMs = 5000;
+
+  var layerA = document.querySelector('.banner-layer-a');
+  var layerB = document.querySelector('.banner-layer-b');
+  if (!layerA || !layerB) return;
+
+  var urls = [];
+  for (var i = 0; i < numberOfBanners; i++) {
+    urls.push('/images/banner' + i + '.webp');
+  }
+  // shuffle so the slideshow order differs between visits
+  for (var i = urls.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var tmp = urls[i];
+    urls[i] = urls[j];
+    urls[j] = tmp;
+  }
+
+  // preload every banner once so the browser caches them up front;
+  // later switches then read from cache instead of firing new requests
+  urls.forEach(function (url) {
+    var img = new Image();
+    img.src = url;
+  });
+
+  var layers = [layerA, layerB];
+  var current = 0;
+  var index = 0;
+
+  function setLayer(layer, url) {
+    layer.style.backgroundImage = "url('" + url + "')";
+  }
+
+  setLayer(layers[current], urls[index]);
+  layers[current].classList.add('is-active');
+
+  if (urls.length <= 1) return;
+
+  setInterval(function () {
+    var next = current === 0 ? 1 : 0;
+    index = (index + 1) % urls.length;
+    setLayer(layers[next], urls[index]);
+    layers[next].classList.add('is-active');
+    layers[current].classList.remove('is-active');
+    current = next;
+  }, intervalMs);
+})();
+</script>
+
+
+    </div>
+  </footer>
+
+  
+  <script size="200" alpha="0.2" zIndex="-1" src="https://cdnjs.cloudflare.com/ajax/libs/ribbon.js/1.0.2/ribbon.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/9.1.3/mermaid.min.js","integrity":"sha256-TIYL00Rhw/8WaoUhYTLX9SKIEFdXxg+yMWSLVUbhiLg="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  <!--script async src="https://cdn.jsdelivr.net/gh/sukkaw/busuanzi@2.3/bsz.pure.mini.js"></script-->
+
+
+
+
+<script class="next-config" data-name="giscus" type="application/json">{"enable":true,"repo":"eazow/hexo","repo_id":"MDEwOlJlcG9zaXRvcnkxNjI1NTM4Nzk=","category":"Announcements","category_id":"DIC_kwDOCbBgF84CQl0J","mapping":"pathname","strict":0,"reactions_enabled":1,"emit_metadata":0,"theme":"light","lang":"en","crossorigin":"anonymous","input_position":"top","loading":"lazy"}</script>
+
+<script>
+document.addEventListener('page:loaded', () => {
+  if (!CONFIG.page.comments) return;
+
+  NexT.utils.loadComments('.giscus-container')
+    .then(() => NexT.utils.getScript('https://giscus.app/client.js', {
+      attributes: {
+        async                   : true,
+        crossOrigin             : 'anonymous',
+        'data-repo'             : CONFIG.giscus.repo,
+        'data-repo-id'          : CONFIG.giscus.repo_id,
+        'data-category'         : CONFIG.giscus.category,
+        'data-category-id'      : CONFIG.giscus.category_id,
+        'data-mapping'          : CONFIG.giscus.mapping,
+        'data-strict'           : CONFIG.giscus.strict,
+        'data-reactions-enabled': CONFIG.giscus.reactions_enabled,
+        'data-emit-metadata'    : CONFIG.giscus.emit_metadata,
+        'data-theme'            : CONFIG.giscus.theme,
+        'data-lang'             : CONFIG.giscus.lang,
+        'data-input-position'   : CONFIG.giscus.input_position,
+        'data-loading'          : CONFIG.giscus.loading
+      },
+      parentNode: document.querySelector('.giscus-container')
+    }));
+});
+</script>
+<script>
+document.querySelectorAll('figure.highlight').forEach(function (el) {
+  var lang = el.className.replace('highlight', '').trim().split(/\s+/)[0];
+  if (lang) el.setAttribute('data-lang', lang);
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic,900&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"eazow.com","root":"/","images":"/images","scheme":"Mist","darkmode":false,"version":"8.12.2","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"flat"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":"giscus","storage":true,"lazyload":true,"nav":null,"activeClass":"giscus"},"stickytabs":false,"motion":{"enable":false,"async":true,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+
+
+<link rel="canonical" href="http://eazow.com/tomcat/introduction">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":false,"lang":"en-US","comments":true,"permalink":"http://eazow.com/tomcat/introduction.html","path":"tomcat/introduction.html","title":"Tomcat Introduction"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Tomcat Introduction | Eazow
+</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-NHS1WWDHJE"></script>
+  <script class="next-config" data-name="google_analytics" type="application/json">{"tracking_id":"G-NHS1WWDHJE","only_pageview":false}</script>
+  <script src="/js/third-party/analytics/google-analytics.js"></script>
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <p class="site-title">Eazow</p>
+    </a>
+      <p class="site-subtitle" itemprop="description">Stay kind and positive</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner sidebar-toc-active">
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#OverView"><span class="nav-text">OverView</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Who-This-Book-Is-for"><span class="nav-text">Who This Book Is for</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#How-A-Servlet-Container-Works"><span class="nav-text">How A Servlet Container Works</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Catalina-Block-Diagram"><span class="nav-text">Catalina Block Diagram</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Tomcat-4-and-5"><span class="nav-text">Tomcat 4 and 5</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Overview-of-Each-Chapter"><span class="nav-text">Overview of Each Chapter</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#The-Application-for-Each-Chapter"><span class="nav-text">The Application for Each Chapter</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Preparing-the-Prerequisite-Software"><span class="nav-text">Preparing the Prerequisite Software</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner page posts-expand">
+
+
+    
+    
+    
+    <div class="post-block" lang="en-US"><header class="post-header">
+
+<h1 class="post-title" itemprop="name headline">Tomcat Introduction
+</h1>
+
+<div class="post-meta-container">
+</div>
+
+</header>
+
+      
+      
+      <div class="post-body">
+          <h4 id="OverView"><a href="#OverView" class="headerlink" title="OverView"></a>OverView</h4><p>Welcome to How Tomcat Works. This book dissects Tomcat 4.1.12 and 5.0.18 and explains the internal workings of its free, open source, and most popular servlet container code-named Catalina. Tomcat is a complex system, consisting of many different components. Those who want to learn how Tomcat works often do know where to start. What this book does is provide the big picture and then build a simpler version of each component to make understanding that component easier. Only after that will the real component be explained.</p>
+<p>You should start by reading this Introduction as it explains the structure of the book and gives you the brief outline of the applications built. The section “Preparing the Prerequisite Software” gives you instructions on what software you need to download, how to make a directory structure for your code, etc.</p>
+<h4 id="Who-This-Book-Is-for"><a href="#Who-This-Book-Is-for" class="headerlink" title="Who This Book Is for"></a>Who This Book Is for</h4><p>This book is for anyone working with the Java technology.</p>
+<ul>
+<li>This book is for you if you are a servlet&#x2F;JSP programmer or a Tomcat user and you are interested in knowing how a servlet container works.</li>
+<li>It is for you if you want to join the Tomcat development team because you need to first learn how the existing code works.</li>
+<li>If you have never been involved in web development but you have interest in software development in general, then you can learn from this book how a large application such as Tomcat was designed and developed.</li>
+<li>If you need to configure and customize Tomcat, you should read this book.</li>
+</ul>
+<p>To understand the discussion in this book, you need to understand object-oriented programming in Java as well as servlet programming. If you are not familiar with the latter, there are a plethora of books on sendets, including Budi’s Java for the Web with Servlets, JSP, and EJB. To make the material easier to understand, each chapter starts with background information that will be required to understand the topic in discussion.</p>
+<h4 id="How-A-Servlet-Container-Works"><a href="#How-A-Servlet-Container-Works" class="headerlink" title="How A Servlet Container Works"></a>How A Servlet Container Works</h4><p>A servlet container is a complex system. However, basically there are three things that a servlet container does to service a request for a servlet:</p>
+<ul>
+<li>Creating a request object and populate it with information that may be used by the invoked servlet, such as parameters, headers, cookies, query string, URI, etc. A request object is an instance of the javax.servlet.ServletRequest interface or the javax.servlet.http.ServletRequest interface.</li>
+<li>Creating a response object that the invoked servlet uses to send the response to the web client. A response object is an instance of the javax.servlet.ServletResponse interface or the javax.servlet.http.ServletResponse interface.</li>
+<li>Invoking the service method of the servlet, passing the request and response objects. Here the servlet reads the values from the request object and writes to the response object.</li>
+</ul>
+<p>As you read the chapters, you will find detailed discussions of Catalina servlet container.</p>
+<h4 id="Catalina-Block-Diagram"><a href="#Catalina-Block-Diagram" class="headerlink" title="Catalina Block Diagram"></a>Catalina Block Diagram</h4><p>Catalina is a very sophisticated piece of software, which was elegantly designed and developed. It is also modular too. Based on the tasks mentioned in the section “How A Servlet Container Works”, you can view Catalina as consisting of two main modules: the connector and the container.</p>
+<p>The block diagram in Figure I.1 is, of course, simplistic. Later in the following chapters you will unveil all smaller components one by one.</p>
+<img data-src="imgs/figure0-1.png" alt="image-20220830173407730" style="zoom:50%;" />
+
+<p><em>Figure I.1: Catalina’s main modules</em></p>
+<p>Now, back to Figure I.1, the connector is there to connect a request with the container. Its job is to construct a request object and a response object for each HTTP request it receives. It then passes processing to the container. The container receives the request and response objects from the connector and is responsible for invoking the servlet’s service method.</p>
+<p>Bear in mind though, that the description above is only the tip of the iceberg. There are a lot of things that a container does. For example, before it can invoke a servlet’s service method, it must load the servlet, authenticate the user (if required), update the session for that user, etc. It’s not surprising then that a container uses many ￼￼￼￼￼different modules for processing. For example, the manager module is for processing user sessions, the loader is for loading servlet classess, etc.</p>
+<h4 id="Tomcat-4-and-5"><a href="#Tomcat-4-and-5" class="headerlink" title="Tomcat 4 and 5"></a>Tomcat 4 and 5</h4><p>This book covers both Tomcat 4 and 5. Here are some of the differences between the two:</p>
+<ul>
+<li>Tomcat 5 supports Servlet 2.4 and JSP 2.0 specifications, Tomcat 4 supports Servlet 2.3 and JSP 1.2.</li>
+<li>Tomcat 5 has a more efficient default connector than Tomcat 4.</li>
+<li>Tomcat 5 shares a thread for background processing whereas Tomcat 4’s</li>
+<li>components all have their own threads for background processing. Therefore, Tomcat 5 uses less resources in this regard.</li>
+<li>Tomcat 5 does not need a mapper component to find a child component, therefore simplifying the code.</li>
+</ul>
+<h4 id="Overview-of-Each-Chapter"><a href="#Overview-of-Each-Chapter" class="headerlink" title="Overview of Each Chapter"></a>Overview of Each Chapter</h4><p>There are 20 chapters in this book. The first two chapters serve as an introduction. Chapter 1 explains how an HTTP server works and Chapter 2 features a simple servlet container. The next two chapters focus on the connector and Chapters 5 to 20 cover each of the components in the container. The following is the summary of each of the chapters.</p>
+<p>Note For each chapter, there is an accompanying application similar to the component being explained.</p>
+<p><strong>Chapter 1</strong> starts this book by presenting a simple HTTP server. To build a working HTTP server, you need to know the internal workings of two classes in the java.net package: Socket and ServerSocket. There is sufficient background information in this chapter about these two classes for you to understand how the accompanying application works.</p>
+<p><strong>Chapter 2</strong> explains how simple servlet containers work. This chapter comes with two servlet container applications that can service requests for static resources as well as very simple servlets. In particular, you will learn how you can create request and response objects and pass them to the requested servlet’s service method. There is also a servlet that can be run inside the servlet containers and that you can invoke from a web browser.</p>
+<p><strong>Chapter 3</strong> presents a simplified version of Tomcat 4’s default connector. The application built in this chapter serves as a learning tool to understand the connector discussed in Chapter 4.</p>
+<p><strong>Chapter 4</strong> presents Tomcat 4’s default connector. This connector has been deprecated in favor of a faster connector called Coyote. Nevertheless, the default connector is simpler and easier to understand.</p>
+<p><strong>Chapter 5</strong> discusses the container module. A container is represented by the org.apache.catalina.Container interface and there are four types of containers: engine, host, context, and wrapper. This chapter offers two applications that work with contexts and wrappers.</p>
+<p><strong>Chapter 6</strong> explains the Lifecycle interface. This interface defines the lifecycle of a Catalina component and provides an elegant way of notifying other components of events that occur in that component. In addition, the Lifecycle interface provides an elegant mechanism for starting and stopping all the components in Catalina by one single start&#x2F;stop.</p>
+<p><strong>Chapter 7</strong> covers loggers, which are components used for recording error messages and other messages.</p>
+<p><strong>Chapter 8</strong> explains about loaders. A loader is an important Catalina module responsible for loading servlet and other classes that a web application uses. This chapter also shows how application reloading is achieved.</p>
+<p><strong>Chapter 9</strong> discusses the manager, the component that manages sessions in session management. It explains the various types of managers and how a manager can persist session objects into a store. At the end of the chapter, you will learn how to build an application that uses a StandardManager instance to run a servlet that uses session objects to store values.</p>
+<p><strong>Chapter 10</strong> covers web application security constraints for restricting access to certain contents. You will learn entities related to security such as principals, roles, login config, authenticators, etc. You will also write two applications that install an authenticator valve in the StandardContext object and uses basic authentication to authenticate users.</p>
+<p><strong>Chapter 11</strong> explains in detail the org.apache.catalina.core.StandardWrapper class that represents a servlet in a web application. In particular, this chapter explains how filters and a servlet’s service method are invoked. The application accompanying this chapter uses StandardWrapper instances to represents servlets.</p>
+<p><strong>Chapter 12</strong> covers the org.apache.catalina.core.StandardContext class that represents a web application. In particular this chapter discusses how a ￼￼￼￼￼￼￼￼￼￼StandardContext object is configured, what happens in it for each incoming HTTP request, how it supports automatic reloading, and how Tomcat 5 shares a thread that executes periodic tasks in its associated components.</p>
+<p><strong>Chapter 13</strong> presents the two other containers: host and engine. You can also find the standard implementation of these two containers:</p>
+<ul>
+<li>org.apache.catalina.core.StandardHost</li>
+<li>org.apache.catalina.core.StandardEngine</li>
+</ul>
+<p><strong>Chapter 14</strong> offers the server and service components. A server provides an elegant start and stop mechanism for the whole servlet container, a service serves as a holder for a container and one or more connectors. The application accompanying this chapter shows how to use a server and a service.</p>
+<p><strong>Chapters 15</strong> explains the configuration of a web application through Digester, an exciting open source project from the Apache Software Foundation. For those not initiated, this chapter presents a section that gently introduces the digester library and how to use it to convert the nodes in an XML document to Java objects. It then explains the ContextConfig object that configures a StandardContext instance.</p>
+<p><strong>Chapter 16</strong> explains the shutdown hook that Tomcat uses to always get a chance to do clean-up regardless how the user stops it (i.e. either appropriately by sending a shutdown command or inappropriately by simply closing the console.)</p>
+<p><strong>Chapter 17</strong> discusses the starting and stopping of Tomcat through the use of batch files and shell scripts.</p>
+<p><strong>Chapter 18</strong> presents the deployer, the component responsible for deploying and installing web applications.</p>
+<p><strong>Chapter 19</strong> discusses a special interface, ContainerServlet, to give a servlet access to the Catalina internal objects. In particular, it discusses the Manager application that you can use to manage deployed applications.</p>
+<p><strong>Chapter 20</strong> discusses JMX and how Tomcat make its internal objects manageable by creating MBeans for those objects.</p>
+<h4 id="The-Application-for-Each-Chapter"><a href="#The-Application-for-Each-Chapter" class="headerlink" title="The Application for Each Chapter"></a>The Application for Each Chapter</h4><p>Each chapter comes with one or more applications that focus on a specific component in Catalina. Normally you’ll find the simplified version of the component being explained or code that explains how to use a Catalina component. All classes and interfaces in the chapters’ applications reside in the ex[chapter ￼￼￼￼￼￼￼￼number].pyrmont package or its subpackages. For example, the classes in the application in <strong>Chapter 1</strong> are part of the ex01.pyrmont package.</p>
+<h4 id="Preparing-the-Prerequisite-Software"><a href="#Preparing-the-Prerequisite-Software" class="headerlink" title="Preparing the Prerequisite Software"></a>Preparing the Prerequisite Software</h4><p>The applications accompanying this book run with J2SE version 1.4. The zipped source files can be downloaded from the authors’ web site <a target="_blank" rel="noopener" href="http://www.brainysoftware.com/">www.brainysoftware.com</a>. It contains the source code for Tomcat 4.1.12 and the applications used in this book. Assuming you have installed J2SE 1.4 and your path environment variable includes the location of the JDK, follow these steps:</p>
+<ol>
+<li>Extractthezipfiles.Allextractedfileswillresideinanewdirectorycalled <strong>HowTomcatWorks</strong>. HowTomcatWorks is your working directory. There will be several subdirectories under HowTomcatWorks, including <strong>lib</strong> (containing all needed libraries), <strong>src</strong> (containing the source files), <strong>webroot</strong> (containing an HTML file and three sample servlets), and <strong>webapps</strong> (containing sample applications).</li>
+<li>Changedirectorytotheworkingdirectoryandcompilethejavafiles.Ifyou are using Windows, run the <strong>win-compile.bat</strong> file. If your computer is a Linux machine, type the following: (don’t forget to chmod the file if necessary)</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./linux-compile.sh</span><br></pre></td></tr></table></figure>
+
+<p>Note More information can be found in the Readme.txt file included in the ZIP file.</p>
+
+      </div>
+      
+      
+      
+    </div>
+
+    
+    
+
+
+    
+  
+  <div class="comments giscus-container">
+  </div>
+  
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2008 – 
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Eazow</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Symbols count total">316k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">4:47</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+<script>
+(function () {
+  var numberOfBanners = 10;
+  var intervalMs = 5000;
+
+  var layerA = document.querySelector('.banner-layer-a');
+  var layerB = document.querySelector('.banner-layer-b');
+  if (!layerA || !layerB) return;
+
+  var urls = [];
+  for (var i = 0; i < numberOfBanners; i++) {
+    urls.push('/images/banner' + i + '.webp');
+  }
+  // shuffle so the slideshow order differs between visits
+  for (var i = urls.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var tmp = urls[i];
+    urls[i] = urls[j];
+    urls[j] = tmp;
+  }
+
+  // preload every banner once so the browser caches them up front;
+  // later switches then read from cache instead of firing new requests
+  urls.forEach(function (url) {
+    var img = new Image();
+    img.src = url;
+  });
+
+  var layers = [layerA, layerB];
+  var current = 0;
+  var index = 0;
+
+  function setLayer(layer, url) {
+    layer.style.backgroundImage = "url('" + url + "')";
+  }
+
+  setLayer(layers[current], urls[index]);
+  layers[current].classList.add('is-active');
+
+  if (urls.length <= 1) return;
+
+  setInterval(function () {
+    var next = current === 0 ? 1 : 0;
+    index = (index + 1) % urls.length;
+    setLayer(layers[next], urls[index]);
+    layers[next].classList.add('is-active');
+    layers[current].classList.remove('is-active');
+    current = next;
+  }, intervalMs);
+})();
+</script>
+
+
+    </div>
+  </footer>
+
+  
+  <script size="200" alpha="0.2" zIndex="-1" src="https://cdnjs.cloudflare.com/ajax/libs/ribbon.js/1.0.2/ribbon.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/9.1.3/mermaid.min.js","integrity":"sha256-TIYL00Rhw/8WaoUhYTLX9SKIEFdXxg+yMWSLVUbhiLg="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  <!--script async src="https://cdn.jsdelivr.net/gh/sukkaw/busuanzi@2.3/bsz.pure.mini.js"></script-->
+
+
+
+
+<script class="next-config" data-name="giscus" type="application/json">{"enable":true,"repo":"eazow/hexo","repo_id":"MDEwOlJlcG9zaXRvcnkxNjI1NTM4Nzk=","category":"Announcements","category_id":"DIC_kwDOCbBgF84CQl0J","mapping":"pathname","strict":0,"reactions_enabled":1,"emit_metadata":0,"theme":"light","lang":"en","crossorigin":"anonymous","input_position":"top","loading":"lazy"}</script>
+
+<script>
+document.addEventListener('page:loaded', () => {
+  if (!CONFIG.page.comments) return;
+
+  NexT.utils.loadComments('.giscus-container')
+    .then(() => NexT.utils.getScript('https://giscus.app/client.js', {
+      attributes: {
+        async                   : true,
+        crossOrigin             : 'anonymous',
+        'data-repo'             : CONFIG.giscus.repo,
+        'data-repo-id'          : CONFIG.giscus.repo_id,
+        'data-category'         : CONFIG.giscus.category,
+        'data-category-id'      : CONFIG.giscus.category_id,
+        'data-mapping'          : CONFIG.giscus.mapping,
+        'data-strict'           : CONFIG.giscus.strict,
+        'data-reactions-enabled': CONFIG.giscus.reactions_enabled,
+        'data-emit-metadata'    : CONFIG.giscus.emit_metadata,
+        'data-theme'            : CONFIG.giscus.theme,
+        'data-lang'             : CONFIG.giscus.lang,
+        'data-input-position'   : CONFIG.giscus.input_position,
+        'data-loading'          : CONFIG.giscus.loading
+      },
+      parentNode: document.querySelector('.giscus-container')
+    }));
+});
+</script>
+<script>
+document.querySelectorAll('figure.highlight').forEach(function (el) {
+  var lang = el.className.replace('highlight', '').trim().split(/\s+/)[0];
+  if (lang) el.setAttribute('data-lang', lang);
+});
+</script>
+
+</body>
+</html>

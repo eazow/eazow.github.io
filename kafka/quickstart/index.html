@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic,900&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"eazow.com","root":"/","images":"/images","scheme":"Mist","darkmode":false,"version":"8.12.2","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"flat"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":"giscus","storage":true,"lazyload":true,"nav":null,"activeClass":"giscus"},"stickytabs":false,"motion":{"enable":false,"async":true,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+
+
+<link rel="canonical" href="http://eazow.com/kafka/quickstart/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en-US","comments":true,"permalink":"http://eazow.com/kafka/quickstart/","path":"kafka/quickstart/","title":"Kafka Quickstart"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Kafka Quickstart | Eazow</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-NHS1WWDHJE"></script>
+  <script class="next-config" data-name="google_analytics" type="application/json">{"tracking_id":"G-NHS1WWDHJE","only_pageview":false}</script>
+  <script src="/js/third-party/analytics/google-analytics.js"></script>
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <p class="site-title">Eazow</p>
+    </a>
+      <p class="site-subtitle" itemprop="description">Stay kind and positive</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner sidebar-toc-active">
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-GET-KAFKA"><span class="nav-text">1. GET KAFKA</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-START-THE-KAFKA-ENVIRONMENT"><span class="nav-text">2.START THE KAFKA ENVIRONMENT</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-CREATE-A-TOPIC-TO-STORE-YOUR-EVENTS"><span class="nav-text">3. CREATE A TOPIC TO STORE YOUR EVENTS</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-WRITE-SOME-EVENTS-INTO-THE-TOPIC"><span class="nav-text">4. WRITE SOME EVENTS INTO THE TOPIC</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-READ-THE-EVENTS"><span class="nav-text">5. READ THE EVENTS</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-IMPORT-EXPORT-YOUR-DATA-AS-STREAMS-OF-EVENTS-WITH-KAFKA-CONNECT"><span class="nav-text">6. IMPORT&#x2F;EXPORT YOUR DATA AS STREAMS OF EVENTS WITH KAFKA CONNECT</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-PROCESS-YOUR-EVENTS-WITH-KAFKA-STREAMS"><span class="nav-text">7. PROCESS YOUR EVENTS WITH KAFKA STREAMS</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#8-TERMINATE-THE-KAFKA-ENVIRONMENT"><span class="nav-text">8. TERMINATE THE KAFKA ENVIRONMENT</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#CONGRATULATIONS"><span class="nav-text">CONGRATULATIONS</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en-US">
+    <link itemprop="mainEntityOfPage" href="http://eazow.com/kafka/quickstart/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Eazow">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Eazow">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Kafka Quickstart | Eazow">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Kafka Quickstart
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2019-09-10 00:00:00" itemprop="dateCreated datePublished" datetime="2019-09-10T00:00:00+08:00">2019-09-10</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Kafka/" itemprop="url" rel="index"><span itemprop="name">Kafka</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>9 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h4 id="1-GET-KAFKA"><a href="#1-GET-KAFKA" class="headerlink" title="1. GET KAFKA"></a>1. GET KAFKA</h4><p><a target="_blank" rel="noopener" href="https://www.apache.org/dyn/closer.cgi?path=/kafka/3.2.1/kafka_2.13-3.2.1.tgz">Download</a> the latest Kafka release and extract it:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ tar -xzf kafka_2.13-3.2.1.tgz</span><br><span class="line">$ <span class="built_in">cd</span> kafka_2.13-3.2.1</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="2-START-THE-KAFKA-ENVIRONMENT"><a href="#2-START-THE-KAFKA-ENVIRONMENT" class="headerlink" title="2.START THE KAFKA ENVIRONMENT"></a>2.START THE KAFKA ENVIRONMENT</h4><p><em>NOTE: Your local environment must have Java 8+ installed.</em></p>
+<p>Run the following commands in order to start all services in the correct order:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Start the ZooKeeper service</span></span><br><span class="line"><span class="comment"># Note: Soon, ZooKeeper will no longer be required by Apache Kafka.</span></span><br><span class="line">$ bin/zookeeper-server-start.sh config/zookeeper.properties</span><br></pre></td></tr></table></figure>
+
+<p>Open another terminal session and run:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Start the Kafka broker service</span></span><br><span class="line">$ bin/kafka-server-start.sh config/server.properties</span><br></pre></td></tr></table></figure>
+
+<p>Once all services have successfully launched, you will have a basic Kafka environment running and ready to use.</p>
+<span id="more"></span>
+
+
+<h4 id="3-CREATE-A-TOPIC-TO-STORE-YOUR-EVENTS"><a href="#3-CREATE-A-TOPIC-TO-STORE-YOUR-EVENTS" class="headerlink" title="3. CREATE A TOPIC TO STORE YOUR EVENTS"></a>3. CREATE A TOPIC TO STORE YOUR EVENTS</h4><p>Kafka is a distributed <em>event streaming platform</em> that lets you read, write, store, and process <a target="_blank" rel="noopener" href="https://kafka.apache.org/documentation/#messages"><em>events</em></a> (also called <em>records</em> or <em>messages</em> in the documentation) across many machines.</p>
+<p>Example events are payment transactions, geolocation updates from mobile phones, shipping orders, sensor measurements from IoT devices or medical equipment, and much more. These events are organized and stored in <a target="_blank" rel="noopener" href="https://kafka.apache.org/documentation/#intro_concepts_and_terms"><em>topics</em></a>. Very simplified, a topic is similar to a folder in a filesystem, and the events are the files in that folder.</p>
+<p>So before you can write your first events, you must create a topic. Open another terminal session and run:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ bin/kafka-topics.sh --create --topic quickstart-events --bootstrap-server localhost:9092</span><br></pre></td></tr></table></figure>
+
+<p>All of Kafka’s command line tools have additional options: run the <code>kafka-topics.sh</code> command without any arguments to display usage information. For example, it can also show you <a target="_blank" rel="noopener" href="https://kafka.apache.org/documentation/#intro_concepts_and_terms">details such as the partition count</a> of the new topic:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ bin/kafka-topics.sh --describe --topic quickstart-events --bootstrap-server localhost:9092</span><br><span class="line">Topic:quickstart-events  PartitionCount:1    ReplicationFactor:1 Configs:</span><br><span class="line">    Topic: quickstart-events Partition: 0    Leader: 0   Replicas: 0 Isr: 0</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="4-WRITE-SOME-EVENTS-INTO-THE-TOPIC"><a href="#4-WRITE-SOME-EVENTS-INTO-THE-TOPIC" class="headerlink" title="4. WRITE SOME EVENTS INTO THE TOPIC"></a>4. WRITE SOME EVENTS INTO THE TOPIC</h4><p>A Kafka client communicates with the Kafka brokers via the network for writing (or reading) events. Once received, the brokers will store the events in a durable and fault-tolerant manner for as long as you need—even forever.</p>
+<p>Run the console producer client to write a few events into your topic. By default, each line you enter will result in a separate event being written to the topic.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ bin/kafka-console-producer.sh --topic quickstart-events --bootstrap-server localhost:9092</span><br><span class="line">This is my first event</span><br><span class="line">This is my second event</span><br></pre></td></tr></table></figure>
+
+<p>You can stop the producer client with <code>Ctrl-C</code> at any time.</p>
+<h4 id="5-READ-THE-EVENTS"><a href="#5-READ-THE-EVENTS" class="headerlink" title="5. READ THE EVENTS"></a>5. READ THE EVENTS</h4><p>Open another terminal session and run the console consumer client to read the events you just created:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ bin/kafka-console-consumer.sh --topic quickstart-events --from-beginning --bootstrap-server localhost:9092</span><br><span class="line">This is my first event</span><br><span class="line">This is my second event</span><br></pre></td></tr></table></figure>
+
+<p>You can stop the consumer client with <code>Ctrl-C</code> at any time.</p>
+<p>Feel free to experiment: for example, switch back to your producer terminal (previous step) to write additional events, and see how the events immediately show up in your consumer terminal.</p>
+<p>Because events are durably stored in Kafka, they can be read as many times and by as many consumers as you want. You can easily verify this by opening yet another terminal session and re-running the previous command again.</p>
+<h4 id="6-IMPORT-EXPORT-YOUR-DATA-AS-STREAMS-OF-EVENTS-WITH-KAFKA-CONNECT"><a href="#6-IMPORT-EXPORT-YOUR-DATA-AS-STREAMS-OF-EVENTS-WITH-KAFKA-CONNECT" class="headerlink" title="6. IMPORT&#x2F;EXPORT YOUR DATA AS STREAMS OF EVENTS WITH KAFKA CONNECT"></a>6. IMPORT&#x2F;EXPORT YOUR DATA AS STREAMS OF EVENTS WITH KAFKA CONNECT</h4><p>You probably have lots of data in existing systems like relational databases or traditional messaging systems, along with many applications that already use these systems. <a target="_blank" rel="noopener" href="https://kafka.apache.org/documentation/#connect">Kafka Connect</a> allows you to continuously ingest data from external systems into Kafka, and vice versa. It is an extensible tool that runs <em>connectors</em>, which implement the custom logic for interacting with an external system. It is thus very easy to integrate existing systems with Kafka. To make this process even easier, there are hundreds of such connectors readily available.</p>
+<p>In this quickstart we’ll see how to run Kafka Connect with simple connectors that import data from a file to a Kafka topic and export data from a Kafka topic to a file.</p>
+<p>First, make sure to add <code>connect-file-3.2.1.jar</code> to the <code>plugin.path</code> property in the Connect worker’s configuration. For the purpose of this quickstart we’ll use a relative path and consider the connectors’ package as an uber jar, which works when the quickstart commands are run from the installation directory. However, it’s worth noting that for production deployments using absolute paths is always preferable. See <a target="_blank" rel="noopener" href="https://kafka.apache.org/quickstart#connectconfigs_plugin.path">plugin.path</a> for a detailed description of how to set this config.</p>
+<p>Edit the <code>config/connect-standalone.properties</code> file, add or change the <code>plugin.path</code> configuration property match the following, and save the file:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt; echo &quot;plugin.path=libs/connect-file-3.2.1.jar&quot;</span><br></pre></td></tr></table></figure>
+
+<p>Then, start by creating some seed data to test with:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt; echo -e &quot;foo\nbar&quot; &gt; test.txt</span><br></pre></td></tr></table></figure>
+
+<p>Or on Windows:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; echo foo&gt; test.txt</span><br><span class="line">&gt; echo bar&gt;&gt; test.txt</span><br></pre></td></tr></table></figure>
+
+<p>Next, we’ll start two connectors running in <em>standalone</em> mode, which means they run in a single, local, dedicated process. We provide three configuration files as parameters. The first is always the configuration for the Kafka Connect process, containing common configuration such as the Kafka brokers to connect to and the serialization format for data. The remaining configuration files each specify a connector to create. These files include a unique connector name, the connector class to instantiate, and any other configuration required by the connector.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt; bin/connect-standalone.sh config/connect-standalone.properties config/connect-file-source.properties config/connect-file-sink.properties</span><br></pre></td></tr></table></figure>
+
+<p>These sample configuration files, included with Kafka, use the default local cluster configuration you started earlier and create two connectors: the first is a source connector that reads lines from an input file and produces each to a Kafka topic and the second is a sink connector that reads messages from a Kafka topic and produces each as a line in an output file.</p>
+<p>During startup you’ll see a number of log messages, including some indicating that the connectors are being instantiated. Once the Kafka Connect process has started, the source connector should start reading lines from <code>test.txt</code> and producing them to the topic <code>connect-test</code>, and the sink connector should start reading messages from the topic <code>connect-test</code> and write them to the file <code>test.sink.txt</code>. We can verify the data has been delivered through the entire pipeline by examining the contents of the output file:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt; more test.sink.txt</span><br><span class="line">foo</span><br><span class="line">bar</span><br></pre></td></tr></table></figure>
+
+<p>Note that the data is being stored in the Kafka topic <code>connect-test</code>, so we can also run a console consumer to see the data in the topic (or use custom consumer code to process it):</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt; bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic connect-test --from-beginning</span><br><span class="line">&#123;&quot;schema&quot;:&#123;&quot;type&quot;:&quot;string&quot;,&quot;optional&quot;:false&#125;,&quot;payload&quot;:&quot;foo&quot;&#125;</span><br><span class="line">&#123;&quot;schema&quot;:&#123;&quot;type&quot;:&quot;string&quot;,&quot;optional&quot;:false&#125;,&quot;payload&quot;:&quot;bar&quot;&#125;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<p>The connectors continue to process data, so we can add data to the file and see it move through the pipeline:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt; echo Another line&gt;&gt; test.txt</span><br></pre></td></tr></table></figure>
+
+<p>You should see the line appear in the console consumer output and in the sink file.</p>
+<h4 id="7-PROCESS-YOUR-EVENTS-WITH-KAFKA-STREAMS"><a href="#7-PROCESS-YOUR-EVENTS-WITH-KAFKA-STREAMS" class="headerlink" title="7. PROCESS YOUR EVENTS WITH KAFKA STREAMS"></a>7. PROCESS YOUR EVENTS WITH KAFKA STREAMS</h4><p>Once your data is stored in Kafka as events, you can process the data with the <a target="_blank" rel="noopener" href="https://kafka.apache.org/documentation/streams">Kafka Streams</a> client library for Java&#x2F;Scala. It allows you to implement mission-critical real-time applications and microservices, where the input and&#x2F;or output data is stored in Kafka topics. Kafka Streams combines the simplicity of writing and deploying standard Java and Scala applications on the client side with the benefits of Kafka’s server-side cluster technology to make these applications highly scalable, elastic, fault-tolerant, and distributed. The library supports exactly-once processing, stateful operations and aggregations, windowing, joins, processing based on event-time, and much more.</p>
+<p>To give you a first taste, here’s how one would implement the popular <code>WordCount</code> algorithm:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">KStream&lt;String, String&gt; textLines = builder.stream(<span class="string">&quot;quickstart-events&quot;</span>);</span><br><span class="line"></span><br><span class="line">KTable&lt;String, Long&gt; wordCounts = textLines</span><br><span class="line">            .flatMapValues(line -&gt; Arrays.asList(line.toLowerCase().<span class="built_in">split</span>(<span class="string">&quot; &quot;</span>)))</span><br><span class="line">            .groupBy((keyIgnored, word) -&gt; word)</span><br><span class="line">            .count();</span><br><span class="line"></span><br><span class="line">wordCounts.toStream().to(&quot;output-topic&quot;, Produced.with(Serdes.String(), Serdes.Long()));</span><br></pre></td></tr></table></figure>
+
+<p>The <a target="_blank" rel="noopener" href="https://kafka.apache.org/documentation/streams/quickstart">Kafka Streams demo</a> and the <a target="_blank" rel="noopener" href="https://kafka.apache.org/documentation/streams/tutorial">app development tutorial</a> demonstrate how to code and run such a streaming application from start to finish.</p>
+<h4 id="8-TERMINATE-THE-KAFKA-ENVIRONMENT"><a href="#8-TERMINATE-THE-KAFKA-ENVIRONMENT" class="headerlink" title="8. TERMINATE THE KAFKA ENVIRONMENT"></a>8. TERMINATE THE KAFKA ENVIRONMENT</h4><p>Now that you reached the end of the quickstart, feel free to tear down the Kafka environment—or continue playing around.</p>
+<ol>
+<li>Stop the producer and consumer clients with <code>Ctrl-C</code>, if you haven’t done so already.</li>
+<li>Stop the Kafka broker with <code>Ctrl-C</code>.</li>
+<li>Lastly, stop the ZooKeeper server with <code>Ctrl-C</code>.</li>
+</ol>
+<p>If you also want to delete any data of your local Kafka environment including any events you have created along the way, run the command:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">rm</span> -rf /tmp/kafka-logs /tmp/zookeeper</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="CONGRATULATIONS"><a href="#CONGRATULATIONS" class="headerlink" title="CONGRATULATIONS"></a>CONGRATULATIONS</h4><p>You have successfully finished the Apache Kafka quickstart.</p>
+<p>To learn more, we suggest the following next steps:</p>
+<ul>
+<li>Read through the brief <a target="_blank" rel="noopener" href="https://kafka.apache.org/intro">Introduction</a> to learn how Kafka works at a high level, its main concepts, and how it compares to other technologies. To understand Kafka in more detail, head over to the <a target="_blank" rel="noopener" href="https://kafka.apache.org/documentation/">Documentation</a>.</li>
+<li>Browse through the <a target="_blank" rel="noopener" href="https://kafka.apache.org/powered-by">Use Cases</a> to learn how other users in our world-wide community are getting value out of Kafka.</li>
+<li>Join a <a target="_blank" rel="noopener" href="https://kafka.apache.org/events">local Kafka meetup group</a> and <a target="_blank" rel="noopener" href="https://kafka-summit.org/past-events/">watch talks from Kafka Summit</a>, the main conference of the Kafka community.</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Kafka/" rel="tag"><i class="fa fa-tag"></i> Kafka</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/kafka/introduction/" rel="prev" title="Kafka Introduction">
+                  <i class="fa fa-chevron-left"></i> Kafka Introduction
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/pragmatic-programmer/" rel="next" title="The Pragmatic Programmer">
+                  The Pragmatic Programmer <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  
+  <div class="comments giscus-container">
+  </div>
+  
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2008 – 
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Eazow</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Symbols count total">316k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">4:47</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+<script>
+(function () {
+  var numberOfBanners = 10;
+  var intervalMs = 5000;
+
+  var layerA = document.querySelector('.banner-layer-a');
+  var layerB = document.querySelector('.banner-layer-b');
+  if (!layerA || !layerB) return;
+
+  var urls = [];
+  for (var i = 0; i < numberOfBanners; i++) {
+    urls.push('/images/banner' + i + '.webp');
+  }
+  // shuffle so the slideshow order differs between visits
+  for (var i = urls.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var tmp = urls[i];
+    urls[i] = urls[j];
+    urls[j] = tmp;
+  }
+
+  // preload every banner once so the browser caches them up front;
+  // later switches then read from cache instead of firing new requests
+  urls.forEach(function (url) {
+    var img = new Image();
+    img.src = url;
+  });
+
+  var layers = [layerA, layerB];
+  var current = 0;
+  var index = 0;
+
+  function setLayer(layer, url) {
+    layer.style.backgroundImage = "url('" + url + "')";
+  }
+
+  setLayer(layers[current], urls[index]);
+  layers[current].classList.add('is-active');
+
+  if (urls.length <= 1) return;
+
+  setInterval(function () {
+    var next = current === 0 ? 1 : 0;
+    index = (index + 1) % urls.length;
+    setLayer(layers[next], urls[index]);
+    layers[next].classList.add('is-active');
+    layers[current].classList.remove('is-active');
+    current = next;
+  }, intervalMs);
+})();
+</script>
+
+
+    </div>
+  </footer>
+
+  
+  <script size="200" alpha="0.2" zIndex="-1" src="https://cdnjs.cloudflare.com/ajax/libs/ribbon.js/1.0.2/ribbon.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/9.1.3/mermaid.min.js","integrity":"sha256-TIYL00Rhw/8WaoUhYTLX9SKIEFdXxg+yMWSLVUbhiLg="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  <!--script async src="https://cdn.jsdelivr.net/gh/sukkaw/busuanzi@2.3/bsz.pure.mini.js"></script-->
+
+
+
+
+<script class="next-config" data-name="giscus" type="application/json">{"enable":true,"repo":"eazow/hexo","repo_id":"MDEwOlJlcG9zaXRvcnkxNjI1NTM4Nzk=","category":"Announcements","category_id":"DIC_kwDOCbBgF84CQl0J","mapping":"pathname","strict":0,"reactions_enabled":1,"emit_metadata":0,"theme":"light","lang":"en","crossorigin":"anonymous","input_position":"top","loading":"lazy"}</script>
+
+<script>
+document.addEventListener('page:loaded', () => {
+  if (!CONFIG.page.comments) return;
+
+  NexT.utils.loadComments('.giscus-container')
+    .then(() => NexT.utils.getScript('https://giscus.app/client.js', {
+      attributes: {
+        async                   : true,
+        crossOrigin             : 'anonymous',
+        'data-repo'             : CONFIG.giscus.repo,
+        'data-repo-id'          : CONFIG.giscus.repo_id,
+        'data-category'         : CONFIG.giscus.category,
+        'data-category-id'      : CONFIG.giscus.category_id,
+        'data-mapping'          : CONFIG.giscus.mapping,
+        'data-strict'           : CONFIG.giscus.strict,
+        'data-reactions-enabled': CONFIG.giscus.reactions_enabled,
+        'data-emit-metadata'    : CONFIG.giscus.emit_metadata,
+        'data-theme'            : CONFIG.giscus.theme,
+        'data-lang'             : CONFIG.giscus.lang,
+        'data-input-position'   : CONFIG.giscus.input_position,
+        'data-loading'          : CONFIG.giscus.loading
+      },
+      parentNode: document.querySelector('.giscus-container')
+    }));
+});
+</script>
+<script>
+document.querySelectorAll('figure.highlight').forEach(function (el) {
+  var lang = el.className.replace('highlight', '').trim().split(/\s+/)[0];
+  if (lang) el.setAttribute('data-lang', lang);
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic,900&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"eazow.com","root":"/","images":"/images","scheme":"Mist","darkmode":false,"version":"8.12.2","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"flat"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":"giscus","storage":true,"lazyload":true,"nav":null,"activeClass":"giscus"},"stickytabs":false,"motion":{"enable":false,"async":true,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+
+
+<link rel="canonical" href="http://eazow.com/tomcat/ch02-a-simple-servlet-container">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":false,"lang":"en-US","comments":true,"permalink":"http://eazow.com/tomcat/ch02-a-simple-servlet-container.html","path":"tomcat/ch02-a-simple-servlet-container.html","title":"A Simple Servlet Container"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>A Simple Servlet Container | Eazow
+</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-NHS1WWDHJE"></script>
+  <script class="next-config" data-name="google_analytics" type="application/json">{"tracking_id":"G-NHS1WWDHJE","only_pageview":false}</script>
+  <script src="/js/third-party/analytics/google-analytics.js"></script>
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <p class="site-title">Eazow</p>
+    </a>
+      <p class="site-subtitle" itemprop="description">Stay kind and positive</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner sidebar-toc-active">
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#Overview"><span class="nav-text">Overview</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#The-javax-servlet-Servlet-Interface"><span class="nav-text">The javax.servlet.Servlet Interface</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Application-1"><span class="nav-text">Application 1</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#The-HttpServer1-Class"><span class="nav-text">The HttpServer1 Class</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#The-Request-Class"><span class="nav-text">The Request Class</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#The-Response-Class"><span class="nav-text">The Response Class</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#The-StaticResourceProcessor-Class"><span class="nav-text">The StaticResourceProcessor Class</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#The-ServletProcessor1-Class"><span class="nav-text">The ServletProcessor1 Class</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Running-the-Application"><span class="nav-text">Running the Application</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Application-2"><span class="nav-text">Application 2</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner page posts-expand">
+
+
+    
+    
+    
+    <div class="post-block" lang="en-US"><header class="post-header">
+
+<h1 class="post-title" itemprop="name headline">A Simple Servlet Container
+</h1>
+
+<div class="post-meta-container">
+</div>
+
+</header>
+
+      
+      
+      <div class="post-body">
+          <h4 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h4><p>This chapter explains how you can develop your own servlet container by presenting two applications. The first application has been designed to be as simple as possible to make it easy for you to understand how a servlet container works. It then evolves into the second servlet container, which is slightly more complex.</p>
+<p>Note Every servlet container application in each chapter gradually evolves from the application in the previous chapter, until a fully-functional Tomcat servlet container is built in Chapter 17.</p>
+<p>Both servlet containers can process simple servlets as well as static resources. You can use PrimitiveServlet to test this container. PrimitiveServlet is given in Listing 2.1 and its class file can be found in the webroot directory. More complex servlets are beyond the capabilities of these containers, but you will learn how to build more sophisticated servlet containers in the next chapters.</p>
+<p>Listing 2.1: PrimitiveServlet.java</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">import javax.servlet.*;</span><br><span class="line">import java.io.IOException;</span><br><span class="line">import java.io.PrintWriter;</span><br><span class="line"></span><br><span class="line">public class PrimitiveServlet implements Servlet &#123;</span><br><span class="line">    public void init(ServletConfig config) throws ServletException &#123;</span><br><span class="line">        System.out.println(&quot;init&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">    public void service(ServletRequest request, ServletResponse response)</span><br><span class="line">            throws ServletException, IOException &#123;</span><br><span class="line">        System.out.println(&quot;from service&quot;);</span><br><span class="line">        PrintWriter out = response.getWriter();</span><br><span class="line">        out.println(&quot;Hello. Roses are red.&quot;);</span><br><span class="line">        out.print(&quot;Violets are blue.&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">    public void destroy() &#123;</span><br><span class="line">        System.out.println(&quot;destroy&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public String getServletInfo() &#123;</span><br><span class="line">        return null;</span><br><span class="line">    &#125;</span><br><span class="line">    public ServletConfig getServletConfig() &#123;</span><br><span class="line">        return null;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>The classes for both applications are part of the ex02.pyrmont package. To understand how the applications work, you need to be familiar with the javax.servlet.Servlet interface. To refresh your memory, this interface is discussed in the first section of this chapter. After that, you will learn what a servlet container has to do to serve HTTP requests for a servlet.</p>
+<h4 id="The-javax-servlet-Servlet-Interface"><a href="#The-javax-servlet-Servlet-Interface" class="headerlink" title="The javax.servlet.Servlet Interface"></a>The javax.servlet.Servlet Interface</h4><p>Servlet programming is made possible through the classes and interfaces in two packages: javax.servlet and javax.servlet.http. Of those classes and interfaces, the <code>javax.servlet.Servlet</code> interface is of the utmost importance. All servlets must implement this interface or extend a class that does.</p>
+<p>The Servlet interface has five methods whose signatures are as follows.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">public void init(ServletConfig config) throws ServletException</span><br><span class="line">public void service(ServletRequest request, ServletResponse response)</span><br><span class="line">    throws ServletException, java.io.IOException</span><br><span class="line">public void destroy()</span><br><span class="line">public ServletConfig getServletConfig()</span><br><span class="line">public java.lang.String getServletInfo()</span><br></pre></td></tr></table></figure>
+
+<p>Of the five methods in Servlet, the init, service, and destroy methods are the servlet’s life cycle methods. The init method is called by the servlet container after the servlet class has been instantiated. The servlet container calls this method exactly once to indicate to the servlet that the servlet is being placed into service. The init method must complete successfully before the servlet can receive any requests. A servlet programmer can override this method to write initialization code that needs to run only once, such as loading a database driver, initializing values, and so on. In other cases, this method is normally left blank.</p>
+<p>The servlet container calls the service method of a servlet whenever there is a request for the servlet. The servlet container passes a javax.servlet.ServletRequest object and a javax.servlet.ServletResponse object. The ServletRequest objectcontains the client’s HTTP request information and the ServletResponse object encapsulates the servlet’s response. The service method is invoked many times during the life of the servlet.</p>
+<p>The servlet container calls the destroy method before removing a servlet instance from service. This normally happens when the servlet container is shut down or the servlet container needs some free memory. This method is called only after all threads within the servlet’s service method have exited or after a timeout period has passed. After the servlet container has called the destroy method, it will not call the service method again on the same servlet. The destroy method gives the servlet an opportunity to clean up any resources that are being held, such as memory, file handles, and threads, and make sure that any persistent state is synchronized with the servlet’s current state in memory.</p>
+<p>Listing 2.1 presents the code for a servlet named PrimitiveServlet, which is a very simple servlet that you can use to test the servlet container applications in this chapter. The PrimitiveServlet class implements javax.servlet.Servlet (as all servlets must) and provides implementations for all the five methods of Servlet. What PrimitiveServlet does is very simple. Each time any of the init, service, or destroy methods is called, the servlet writes the method’s name to the standard console. In addition, the service method obtains the java.io.PrintWriter object from the ServletResponse object and sends strings to the browser.</p>
+<h4 id="Application-1"><a href="#Application-1" class="headerlink" title="Application 1"></a>Application 1</h4><p>Now, let’s examine servlet programming from a servlet container’s perspective. In a nutshell, a fully-functional servlet container does the following for each HTTP request for a servlet:</p>
+<ul>
+<li>When the servlet is called for the first time, load the servlet class and call the servlet’s init method (once only)</li>
+<li>For each request, construct an instance of javax.servlet.ServletRequest and an instance of javax.servlet.ServletResponse.</li>
+<li>Invoke the servlet’s service method, passing the ServletRequest and ServletResponse objects.</li>
+<li>When the servlet class is shut down, call the servlet’s destroy method and unload the servlet class.</li>
+</ul>
+<p>The first servlet container for this chapter is not fully functional. Therefore, it cannot run other than very simple servlets and does not call the servlets’ init and destroy methods. Instead, it does the following:</p>
+<ul>
+<li>Wait for HTTP requests.</li>
+<li>Construct a ServletRequest object and a ServletResponse object.</li>
+<li>If the request is for a static resource, invoke the process method of the StaticResourceProcessor instance, passing the ServletRequest and ServletResponse objects.</li>
+<li>If the request is for a servlet, load the servlet class and invoke the service method of the servlet, passing the ServletRequest and ServletResponse objects.</li>
+</ul>
+<p>Note In this servlet container, the servlet class is loaded every time the servlet is requested.</p>
+<p>The first application consists of six classes:</p>
+<ul>
+<li>HttpServer1</li>
+<li>Request</li>
+<li>Response</li>
+<li>StaticResourceProcessor</li>
+<li>ServletProcessor1</li>
+<li>Constants</li>
+</ul>
+<p>Figure 2.1 displays the UML diagram of the first servlet container.</p>
+<p><img data-src="/imgs/figure2-1.png"><br>Figure 2.1: The UML diagram of the first servlet container</p>
+<p>The entry point of this application (the static main method) is in the HttpServer1 class. The main method creates an instance of HttpServer1 and calls its await method. The await method waits for HTTP requests, creates a Request object and a Response object for every request, and dispatch them either to a StaticResourceProcessor instance or a ServletProcessor instance, depending on whether the request is for a static resource or a servlet.</p>
+<p>The Constants class contains the static final WEB_ROOT that is referenced from other classes. WEB_ROOT indicates the location of PrimitiveServlet and the static resource that can be served by this container.</p>
+<p>The HttpServer1 instance keeps waiting for HTTP requests until a shutdown command is received. You issue a shutdown command the same way as you did it in Chapter 1.</p>
+<p>Each of the classes in the application is discussed in the following sections.</p>
+<h4 id="The-HttpServer1-Class"><a href="#The-HttpServer1-Class" class="headerlink" title="The HttpServer1 Class"></a>The HttpServer1 Class</h4><p>The HttpServer1 class in this application is similar to the HttpServer class in the simple web server application in Chapter 1. However, in this application the HttpServer1 class can serve both static resources and servlets. To request a static resource, you type a URL in the following format in your browser’s Address or URL box:</p>
+<p><a href="http://machineName:port/staticResource">http://machineName:port/staticResource</a></p>
+<p>This is exactly how you requested a static resource in the web server application in Chapter 1.</p>
+<p>To request a servlet, you use the following URL:</p>
+<p><a href="http://machineName:port/servlet/servletClass">http://machineName:port/servlet/servletClass</a></p>
+<p>Therefore, if you are using a browser locally to request a servlet called PrimitiveServlet, you enter the following URL in the browser’s Address or URL box:</p>
+<p><a target="_blank" rel="noopener" href="http://localhost:8080/servlet/PrimitiveServlet">http://localhost:8080/servlet/PrimitiveServlet</a></p>
+<p>This servlet container can serve PrimitiveServlet. However, if you invoke the other servlet, ModernServlet, the servlet container will throw an exception. At the later chapters, you will build applications that can process both.</p>
+<p>The HttpServer1 class is presented in Listing 2.2.</p>
+<p>Listing 2.2: The HttpServer1 Class’s await method</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br></pre></td><td class="code"><pre><span class="line">package ex02.pyrmont;</span><br><span class="line"></span><br><span class="line">import java.net.Socket; </span><br><span class="line">import java.net.ServerSocket; </span><br><span class="line">import java.net.InetAddress;</span><br><span class="line">import java.io.InputStream; </span><br><span class="line">import java.io.OutputStream; </span><br><span class="line">import java.io.IOException;</span><br><span class="line"></span><br><span class="line">public class HttpServer1 &#123;</span><br><span class="line">    /** WEB_ROOT is the directory where our HTML and other files reside.</span><br><span class="line">    * For this package, WEB_ROOT is the &quot;webroot&quot; directory under the</span><br><span class="line">    * working directory.</span><br><span class="line">    * The working directory is the location in the file system</span><br><span class="line">    * from where the java command was invoked.</span><br><span class="line">    */</span><br><span class="line">    // shutdown command</span><br><span class="line">    private static final String SHUTDOWN_COMMAND = &quot;/SHUTDOWN&quot;;</span><br><span class="line">    // the shutdown command received private boolean shutdown = false;</span><br><span class="line">    public static void main(String[] args) &#123; </span><br><span class="line">        HttpServer1 server = new HttpServer1(); </span><br><span class="line">        server.await();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void await() &#123;</span><br><span class="line">        ServerSocket serverSocket = null; int port = 8080;</span><br><span class="line">        try &#123;</span><br><span class="line">            serverSocket = new ServerSocket(port, 1, InetAddress.getByName(&quot;127.0.0.1&quot;));</span><br><span class="line">        &#125;</span><br><span class="line">        catch (IOException e) &#123; </span><br><span class="line">            e.printStackTrace(); </span><br><span class="line">            System.exit(1);</span><br><span class="line">        &#125;</span><br><span class="line">        // Loop waiting for a request </span><br><span class="line">        while (!shutdown) &#123;</span><br><span class="line">            Socket socket = null; </span><br><span class="line">            InputStream input = null; </span><br><span class="line">            OutputStream output = null; </span><br><span class="line">            try &#123;</span><br><span class="line">                socket = serverSocket.accept(); </span><br><span class="line">                input = socket.getInputstream();</span><br><span class="line">                output = socket.getOutputStream();</span><br><span class="line"></span><br><span class="line">                // create Request object and parse </span><br><span class="line">                Request request = new Request(input); </span><br><span class="line">                request.parse();</span><br><span class="line"></span><br><span class="line">                // create Response object</span><br><span class="line">                Response response = new Response(output); </span><br><span class="line">                response.setRequest(request);</span><br><span class="line"></span><br><span class="line">                // check if this is a request for a servlet or</span><br><span class="line">                // a static resource</span><br><span class="line">                // a request for a servlet begins with &quot;/servlet/&quot;</span><br><span class="line">                if (request.getUri().startsWith(&quot;/servlet/&quot;)) &#123;</span><br><span class="line">                    ServletProcessor1 processor = new ServletProcessor1();</span><br><span class="line">                    processor.process(request, response);</span><br><span class="line">                &#125;</span><br><span class="line">                else &#123;</span><br><span class="line">                    StaticResoureProcessor processor = new StaticResourceProcessor();</span><br><span class="line">                    processor.process(request, response);</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                // Close the socket</span><br><span class="line">                socket.close();</span><br><span class="line">                </span><br><span class="line">                //check if the previous URI is a shutdown command</span><br><span class="line">                shutdown = request.getUri().equals(SHUTDOWN_COMMAND);</span><br><span class="line">            &#125;</span><br><span class="line">            catch (Exception e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">                System.exit(1); </span><br><span class="line">            &#125;</span><br><span class="line">        &#125; </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>The class’s await method waits for HTTP requests until a shutdown command is issued, and reminds you of the await method in Chapter 1. The difference between the await method in Listing 2.2 and the one in Chapter 1 is that in Listing 2.2 the request can be dispatched to either a StaticResourceProcessor or a ServletProcessor. The request is forwarded to the latter if the URI contains the string &#x2F;servlet&#x2F;.</p>
+<p>Otherwise, the request is passed to the StaticResourceProcessor instance. Notice that that part is greyed in Listing 2.2.</p>
+<h4 id="The-Request-Class"><a href="#The-Request-Class" class="headerlink" title="The Request Class"></a>The Request Class</h4><p>A servlet’s service method receives a javax.servlet.ServletRequest instance and a javax.servlet.ServletResponse instance from the servlet container. This is to say that for every HTTP request, a servlet container must construct a ServletRequest object and a ServletResponse object and pass them to the service method of the servlet it is serving.</p>
+<p>The ex02.pyrmont.Request class represents a request object to be passed to the servlet’s service method. As such, it must implement the javax.servlet.ServletRequest interface. This class has to provide implementations for all methods in the interface. However, we would like to make it very simple and provide the implementations of some of the methods only we leave the full method implementations for the chapters to come. In order to compile the Request class, you sneed to provide “blank” implementations for those methods. If you look at the Request class in Listing 2.3, you will see that all methods whose signatures return an object instance return a null.</p>
+<p>Listing 2.3: The Request class</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br></pre></td><td class="code"><pre><span class="line">package ex02.pyrmont;</span><br><span class="line">import java.io.InputStream;</span><br><span class="line">import java.io.IOException;</span><br><span class="line">import java.io.BufferedReader;</span><br><span class="line">import java.io.UnsupportedEncodingException;</span><br><span class="line">import java.util.Enumeration;</span><br><span class="line">import java.util.Locale;</span><br><span class="line">import java.util.Map;</span><br><span class="line">import javax.servlet.RequestDispatcher;</span><br><span class="line">import javax.servlet.ServletInputStream;</span><br><span class="line">import javax.servlet.ServletRequest;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">public class Request implements ServletRequest &#123;</span><br><span class="line">    private InputStream input;</span><br><span class="line">    private String uri;</span><br><span class="line"></span><br><span class="line">    public Request(InputStream input)&#123;</span><br><span class="line">        this.input = input;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public String getUri() &#123;</span><br><span class="line">        return uri;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    private String parseUri(String requestString) &#123;</span><br><span class="line">        int index1, index2;</span><br><span class="line">        index1 = requestString.indexOf(&#x27; &#x27;);</span><br><span class="line">        if (index1 != -1) &#123;</span><br><span class="line">            index2 = requestString.indexOf(&#x27; &#x27;, index1 + 1);</span><br><span class="line">            if (index2 &gt; index1)</span><br><span class="line">                return requestString.substring(index1 + 1, index2);</span><br><span class="line">        &#125;</span><br><span class="line">        return null;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void parse() &#123;</span><br><span class="line">        // Read a set of characters from the socket</span><br><span class="line">        StringBuffer request = new StringBuffer(2048);</span><br><span class="line">        int i;</span><br><span class="line">        byte[] buffer = new byte[2048];</span><br><span class="line">        try &#123;</span><br><span class="line">        i = input.read(buffer);</span><br><span class="line">        &#125;</span><br><span class="line">        catch (IOException e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">        i = -1;</span><br><span class="line">        &#125;</span><br><span class="line">        for (int j=0; j&lt;i; j++) &#123;</span><br><span class="line">            request.append((char) buffer(j));</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.print(request.toString());</span><br><span class="line">        uri = parseUri(request.toString());</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    /* implementation of ServletRequest */</span><br><span class="line">    public Object getAttribute(String attribute) &#123;</span><br><span class="line">        return null;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public Enumeration getAttributeNames() &#123;</span><br><span class="line">        return null;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public String getRealPath(String path) &#123;</span><br><span class="line">        return null;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public RequestDispatcher getRequestDispatcher(String path) &#123;</span><br><span class="line">        return null;</span><br><span class="line">    &#125;</span><br><span class="line">    public boolean isSecure() &#123;</span><br><span class="line">        return false;</span><br><span class="line">    &#125;</span><br><span class="line">    public String getCharacterEncoding() &#123;</span><br><span class="line">        return null;</span><br><span class="line">    &#125;</span><br><span class="line">    public int getContentLength() &#123;</span><br><span class="line">        return 0;</span><br><span class="line">    &#125;</span><br><span class="line">    public String getContentType() &#123;</span><br><span class="line">        return null;</span><br><span class="line">    &#125;</span><br><span class="line">    public ServletInputStream getInputStream() throws IOException &#123;</span><br><span class="line">        return null;</span><br><span class="line">    &#125;</span><br><span class="line">    public Locale getLocale() &#123;</span><br><span class="line">        return null;</span><br><span class="line">    &#125;</span><br><span class="line">    public Enumeration getLocales() &#123;</span><br><span class="line">        return null;</span><br><span class="line">    &#125;</span><br><span class="line">    public String getParameter(String name) &#123;</span><br><span class="line">        return null;</span><br><span class="line">    &#125;</span><br><span class="line">    public Map getParameterMap() &#123;</span><br><span class="line">        return null;</span><br><span class="line">    &#125;</span><br><span class="line">    public Enumeration getParameterNames() &#123;</span><br><span class="line">        return null;</span><br><span class="line">    &#125;</span><br><span class="line">    public String[] getParameterValues(String parameter) &#123;</span><br><span class="line">        return null;</span><br><span class="line">    &#125;</span><br><span class="line">    public String getProtocol() &#123;</span><br><span class="line">        return null;</span><br><span class="line">    &#125;</span><br><span class="line">    public BufferedReader getReader() throws IOException &#123;</span><br><span class="line">        return null;</span><br><span class="line">    &#125;</span><br><span class="line">    public String getRemoteAddr() &#123;</span><br><span class="line">        return null;</span><br><span class="line">    &#125;</span><br><span class="line">    public String getRemoteHost() &#123;</span><br><span class="line">        return null;</span><br><span class="line">    &#125;</span><br><span class="line">    public String getScheme() &#123;</span><br><span class="line">        return null;</span><br><span class="line">    &#125;</span><br><span class="line">    public String getServerName() &#123;</span><br><span class="line">        return null;</span><br><span class="line">    &#125;</span><br><span class="line">    public int getServerPort() &#123;</span><br><span class="line">        return 0;</span><br><span class="line">    &#125;</span><br><span class="line">    public void removeAttribute(String attribute) &#123; &#125;</span><br><span class="line">    public void setAttribute(String key, Object value) &#123; &#125;</span><br><span class="line">    public void setCharacterEncoding(String encoding)</span><br><span class="line">        throws UnsupportedEncodingException &#123; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>In addition, the Request class still has the parse and the getUri methods which were discussed in Chapter 1.</p>
+<h4 id="The-Response-Class"><a href="#The-Response-Class" class="headerlink" title="The Response Class"></a>The Response Class</h4><p>The ex02.pyrmont.Response class, given in Listing 2.4, implements javax.servlet.ServletResponse. As such, the class must provide implementations for all the methods in the interface. Similar to the Request class, we leave the implementations of all methods “blank”, except for the getWriter method.</p>
+<p>Listing 2.4: The Response class</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br></pre></td><td class="code"><pre><span class="line">package ex02.pyrmont;</span><br><span class="line"></span><br><span class="line">import java.io.OutputStream;</span><br><span class="line">import java.io.IOException;</span><br><span class="line">import java.io.FileInputStream;</span><br><span class="line">import java.io.FileNotFoundException;</span><br><span class="line">import java.io.File;</span><br><span class="line">import java.io.PrintWriter;import java.util.Locale;</span><br><span class="line">import javax.servlet.ServletResponse;</span><br><span class="line">import javax.servlet.ServletOutputStream;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">public class Response implements ServletResponse &#123;</span><br><span class="line">    private static final int BUFFER_SIZE = 1024;</span><br><span class="line">    Request request;</span><br><span class="line">    OutputStream output;</span><br><span class="line">    PrintWriter writer;</span><br><span class="line">    </span><br><span class="line">    public Response(OutputStream output) &#123;</span><br><span class="line">        this.output = output;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void setRequest(Request request) &#123;</span><br><span class="line">        this.request = request;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /* This method is used to serve static pages */</span><br><span class="line">    public void sendStaticResource() throws IOException &#123;</span><br><span class="line">        byte[] bytes = new byte[BUFFER_SIZE];</span><br><span class="line">        FileInputstream fis = null;</span><br><span class="line">        try &#123;</span><br><span class="line">            /* request.getUri has been replaced by request.getRequestURI */</span><br><span class="line">            File file = new File(Constants.WEB_ROOT, request.getUri());</span><br><span class="line">            fis = new FileInputstream(file);</span><br><span class="line">            /*</span><br><span class="line">            HTTP Response = Status-Line</span><br><span class="line">            *(( general-header | response-header | entity-header ) CRLF)</span><br><span class="line">            CRLF</span><br><span class="line">            [ message-body ]</span><br><span class="line">            Status-Line = HTTP-Version SP Status-Code SP Reason-Phrase CRLF</span><br><span class="line">            */</span><br><span class="line">            int ch = fis.read(bytes, 0, BUFFER_SIZE);</span><br><span class="line">            while (ch!=-1) &#123;</span><br><span class="line">                output.write(bytes, 0, ch);</span><br><span class="line">                ch = fis.read(bytes, 0, BUFFER_SIZE);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        catch (FileNotFoundException e) &#123;</span><br><span class="line">            String errorMessage = &quot;HTTP/1.1 404 File Not Found\r\n&quot; +</span><br><span class="line">            &quot;Content-Type: text/html\r\n&quot; +&quot;Content-Length: 23\r\n&quot; +</span><br><span class="line">            &quot;\r\n&quot; +</span><br><span class="line">            &quot;&lt;h1&gt;File Not Found&lt;/h1&gt;&quot;;</span><br><span class="line">            output.write(errorMessage.getBytes());</span><br><span class="line">        &#125;</span><br><span class="line">        finally &#123;</span><br><span class="line">            if (fis!=null)</span><br><span class="line">            fis.close();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    /** implementation of ServletResponse */</span><br><span class="line">    public void flushBuffer() throws IOException ( &#125;</span><br><span class="line">    public int getBufferSize() &#123;</span><br><span class="line">        return 0;</span><br><span class="line">    &#125;</span><br><span class="line">    public String getCharacterEncoding() &#123;</span><br><span class="line">        return null;</span><br><span class="line">    &#125;</span><br><span class="line">    public Locale getLocale() &#123;</span><br><span class="line">        return null;</span><br><span class="line">    &#125;</span><br><span class="line">    public ServletOutputStream getOutputStream() throws IOException &#123;</span><br><span class="line">        return null;</span><br><span class="line">    &#125;</span><br><span class="line">    public PrintWriter getWriter() throws IOException &#123;</span><br><span class="line">        // autoflush is true, println() will flush,</span><br><span class="line">        // but print() will not.</span><br><span class="line">        writer = new PrintWriter(output, true);</span><br><span class="line">        return writer;</span><br><span class="line">    &#125;</span><br><span class="line">    public boolean isCommitted() &#123;</span><br><span class="line">        return false;</span><br><span class="line">    &#125;</span><br><span class="line">    public void reset() &#123; &#125;</span><br><span class="line">    public void resetBuffer() &#123; &#125;</span><br><span class="line">    public void setBufferSize(int size) &#123; &#125;</span><br><span class="line">    public void setContentLength(int length) &#123; &#125;</span><br><span class="line">    public void setContentType(String type) &#123; &#125;</span><br><span class="line">    public void setLocale(Locale locale) &#123; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>In the getWriter method, the second argument to the PrintWriter class’s constructor is a boolean indicating whether or not autoflush is enabled. Passing true as the second argument will make any call to a println method flush the output. However, a print method does not flush the output.</p>
+<p>Therefore, if a call to a print method happens to be the last line in a servlet’s service method, the output will not be sent to the browser. This imperfection will be fixed in the later applications.</p>
+<p>The Response class still has the sendStaticResource method discussed in Chapter 1.</p>
+<h4 id="The-StaticResourceProcessor-Class"><a href="#The-StaticResourceProcessor-Class" class="headerlink" title="The StaticResourceProcessor Class"></a>The StaticResourceProcessor Class</h4><p>The ex02.pyrmont.StaticResourceProcessor class is used to serve requests for static resources. The only method it has is the process method. Listing 2.5 offers the StaticResourceProcessor class.</p>
+<p>Listing 2.5: The StaticResourceProcessor class</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">package ex02.pyrmont;</span><br><span class="line"></span><br><span class="line">import java.io.IOException;</span><br><span class="line"></span><br><span class="line">public class StaticResourceProcessor &#123;</span><br><span class="line">    public void process(Request request, Response response) &#123;</span><br><span class="line">        try &#123;</span><br><span class="line">            response.sendStaticResource();</span><br><span class="line">        &#125;</span><br><span class="line">        catch (IOException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p>The process method receives two arguments: an ex02.pyrmont.Request instance and an ex02.pyrmont.Response instance. This method simply calls the<br>sendStaticResource method on the Response object.</p>
+<h4 id="The-ServletProcessor1-Class"><a href="#The-ServletProcessor1-Class" class="headerlink" title="The ServletProcessor1 Class"></a>The ServletProcessor1 Class</h4><p>The ex02.pyrmont.ServletProcessor1 class in Listing 2.6 is there to process HTTP requests for servlets.</p>
+<p>Listing 2.6: The ServletProcessor1 class</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line">package ex02.pyrmont;</span><br><span class="line"></span><br><span class="line">import java.net.URL;</span><br><span class="line">import java.net.URLClassLoader;</span><br><span class="line">import java.net.URLStreamHandler;</span><br><span class="line">import java.io.File;</span><br><span class="line">import java.io.IOException;</span><br><span class="line">import javax.servlet.Servlet;</span><br><span class="line">import javax.servlet.ServletRequest;</span><br><span class="line">import javax.servlet.ServletResponse;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">public class ServletProcessor1 &#123;</span><br><span class="line">    public void process(Request request, Response response) &#123;</span><br><span class="line">        String uri = request.getUri();</span><br><span class="line">        String servletName = uri.substring(uri.lastIndexOf(&quot;/&quot;) + 1);</span><br><span class="line">        URLClassLoader loader = null;</span><br><span class="line">        </span><br><span class="line">        try &#123;</span><br><span class="line">            // create a URLClassLoader</span><br><span class="line">            URL[] urls = new URL[1];</span><br><span class="line">            URLStreamHandler streamHandler = null;</span><br><span class="line">            File classPath = new File(Constants.WEB_ROOT);</span><br><span class="line">            // the forming of repository is taken from the</span><br><span class="line">            // createClassLoader method in</span><br><span class="line">            // org.apache.catalina.startup.ClassLoaderFactory</span><br><span class="line">            String repository = (new URL(&quot;file&quot;, null, classPath.getCanonicalPath() + File.separator)).toString();</span><br><span class="line">            // the code for forming the URL is taken from</span><br><span class="line">            // the addRepository method in</span><br><span class="line">            // org.apache.catalina.loader.StandardClassLoader.</span><br><span class="line">            urls[0] = new URL(null, repository, streamHandler);</span><br><span class="line">            loader = new URLClassLoader(urls);</span><br><span class="line">        &#125;</span><br><span class="line">        catch (IOException e) &#123;</span><br><span class="line">            System.out.println(e.toString());</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        Class myClass = null;</span><br><span class="line">        try &#123;</span><br><span class="line">            myClass = loader.loadClass(servletName);</span><br><span class="line">        &#125;</span><br><span class="line">        catch (ClassNotFoundException e) &#123;</span><br><span class="line">            System.out.println(e.toString());</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        Servlet servlet = null;</span><br><span class="line">        try &#123;</span><br><span class="line">            servlet = (Servlet) myClass.newInstance();</span><br><span class="line">            servlet.service((ServletRequest) request,</span><br><span class="line">            (ServletResponse) response);</span><br><span class="line">        &#125;</span><br><span class="line">        catch (Exception e) &#123;</span><br><span class="line">            System.out.println(e.toString());</span><br><span class="line">        &#125;</span><br><span class="line">        catch (Throwable e) &#123;</span><br><span class="line">            System.out.println(e.toString());</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>The ServletProcessor1 class is surprisingly simple, consisting only of one method: process. This method accepts two arguments: an instance of<br>javax.servlet.ServletRequest and an instance of javax.servlet.ServletResponse. From the ServletRequest, the method obtains the URI by calling the getRequestUri method:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">String uri = request.getUri();</span><br></pre></td></tr></table></figure>
+
+<p>Remember that the URI is in the following format:</p>
+<p>&#x2F;servlet&#x2F;servletName</p>
+<p>where servletName is the name of the servlet class.</p>
+<p>To load the servlet class, we need to know the servlet name from the URI. We can get the servlet name using the next line of the process method:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">String servletName = uri.substring(uri.lastIndexOf(&quot;/&quot;) + 1);</span><br></pre></td></tr></table></figure>
+
+<p>Next, the process method loads the servlet. To do this, you need to create a class loader and tell this class loader the location to look for the class to be loaded. For this servlet container, the class loader is directed to look in the directory pointed by Constants.WEB_ROOT, which points to the webroot directory under the working directory.</p>
+<p>Note Class loaders are discussed in detail in Chapter 8.</p>
+<p>To load a servlet, you use the java.net.URLClassLoader class, which is an indirect child class of the java.lang.ClassLoader class. Once you have an instance of URLClassLoader, you use its loadClass method to load a servlet class. Instantiating the URLClassLoader class is straightforward. This class has three constructors, the simplest of which being:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public URLClassLoader(URL[] urls);</span><br></pre></td></tr></table></figure>
+
+<p>where urls is an array of java.net.URL objects pointing to the locations on which searches will be conducted when loading a class. Any URL that ends with a &#x2F; is assumed to refer to a directory. Otherwise, the URL is assumed to refer to a JAR file, which will be downloaded and opened as needed.</p>
+<p>Note In a servlet container, the location where a class loader can find servlet classes is called a repository.</p>
+<p>In our application, there is only one location that the class loader must look, i.e. the webroot directory under the working directory. Therefore, we start by creating an array of a single URL. The URL class provides a number of constructors, so there are many ways of constructing a URL object. For this application, we used the same constructor used in another class in Tomcat. The constructor has the following signature.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public URL(URL context, java.lang.String spec, URLStreamHandler hander) throws MalformedURLException</span><br></pre></td></tr></table></figure>
+
+<p>You can use this constructor by passing a specification for the second argument and null for both the first and the third arguments. However, there is another constructor that accepts three arguments:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public URL(java.lang.String protocol, java.lang.String host, java.lang.String file) throws MalformedURLException</span><br></pre></td></tr></table></figure>
+
+<p>Therefore, the compiler will not know which constructor you mean if you simply write the following code:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">new URL(null, aString, null);</span><br></pre></td></tr></table></figure>
+
+<p>You can get around this by telling the compiler the type of the third argument, like this.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">URLStreamHandler streamHandler = null;</span><br><span class="line">new URL(null, aString, streamHandler);</span><br></pre></td></tr></table></figure>
+
+<p>For the second argument, you pass a String containing the repository (the directory where servlet classes can be found), which you form by using the following code:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">String repository = (new URL(&quot;file&quot;, null, classPath.getCanonicalPath() + File.separator)).toString();</span><br></pre></td></tr></table></figure>
+
+<p>Combining all the pieces together, here is the part of the process method that constructs the appropriate URLClassLoader instance:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">// create a URLClassLoader</span><br><span class="line">URL[] urls = new URL[1];</span><br><span class="line">URLStreamHandler streamHandler = null;</span><br><span class="line">File classPath = new File(Constants.WEB_ROOT);</span><br><span class="line">String repository = (new URL(&quot;file&quot;, null, classPath.getCanonicalPath() + File.separator)).toString();</span><br><span class="line">urls[0] = new URL(null, repository, streamHandler);</span><br><span class="line">loader = new URLClassLoader(urls);</span><br></pre></td></tr></table></figure>
+
+<p>Note The code that forms the repository is taken from the createClassLoader method in org.apache.catalina.startup.ClassLoaderFactory and the code for forming the URL is taken from the addRepository method in org.apache.catalina.loader.StandardClassLoader. However, you don’t have to<br>worry about these classes until the later chapters.</p>
+<p>Having a class loader, you can load a servlet class using the loadClass method:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Class myClass = null;</span><br><span class="line">try &#123;</span><br><span class="line">    myClass = loader.loadClass(servletName);</span><br><span class="line">&#125;</span><br><span class="line">catch (ClassNotFoundException e) &#123;</span><br><span class="line">    System.out.println(e.toString());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Next, the process method creates an instance of the servlet class loaded, downcasts it to javax.servlet.Servlet, and invokes the servlet’s service method:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Servlet servlet = null;</span><br><span class="line">try &#123;</span><br><span class="line">    servlet = (Servlet) myClass.newInstance();</span><br><span class="line">    servlet.service((ServletRequest) request, (ServletResponse) response);</span><br><span class="line">&#125;</span><br><span class="line">catch (Exception e) &#123;</span><br><span class="line">    System.out.println(e.toString());</span><br><span class="line">&#125;</span><br><span class="line">catch (Throwable e) &#123;</span><br><span class="line">    System.out.println(e.toString());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="Running-the-Application"><a href="#Running-the-Application" class="headerlink" title="Running the Application"></a>Running the Application</h4><p>To run the application on Windows, type the following command from the working directory:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java -classpath ./lib/servlet.jar;./ ex02.pyrmont.HttpServer1</span><br></pre></td></tr></table></figure>
+
+<p>In Linux, you use a colon to separate two libraries:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java -classpath ./lib/servlet.jar:./ ex02.pyrmont.HttpServer1</span><br></pre></td></tr></table></figure>
+
+<p>To test the application, type the following in your URL or Address box of your browser:<br><a target="_blank" rel="noopener" href="http://localhost:8080/index.html">http://localhost:8080/index.html</a><br>or<br><a target="_blank" rel="noopener" href="http://localhost:8080/servlet/PrimitiveServlet">http://localhost:8080/servlet/PrimitiveServlet</a></p>
+<p>When invoking PrimitiveServlet, you will see the following text in your browser:<br>Hello. Roses are red.</p>
+<p>Note that you cannot see the second string Violets are blue, because only the first string is flushed to the browser. We will fix this problem in Chapter 3, though.</p>
+<h4 id="Application-2"><a href="#Application-2" class="headerlink" title="Application 2"></a>Application 2</h4><p>There is a serious problem in the first application. In the ServletProcessor1 class’s process method, you upcast the instance of ex02.pyrmont.Request to javax.servlet.ServletRequest and pass it as the first argument to the servlet’s service method. You also upcast the instance of ex02.pyrmont.Response to javax.servlet.ServletResponse and pass it as the second argument to the servlet’s service method.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">try &#123;</span><br><span class="line">    servlet = (Servlet) myClass.newInstance();</span><br><span class="line">    servlet.service((ServletRequest) request, (ServletResponse) response);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>This compromises security. Servlet programmers who know the internal workings of this servlet container can downcast the ServletRequest and ServletResponse instances back to ex02.pyrmont.Request and ex02.pyrmont.Response respectively and call their public methods. Having a Request instance, they can call its parse method. Having a Response instance, they can call its sendStaticResource method.</p>
+<p>You cannot make the parse and sendStaticResource methods private because they will be called from other classes. However, these two methods are not supposed to be available from inside a servlet. One solution is to make both Request and Response classes have default access modifier, so that they cannot be used from outside the ex02.pyrmont package. However, there is a more elegant solution: by using facade classes. See the UML diagram in Figure 2.2.</p>
+<p>In this second application, we add two façade classes: RequestFacade and ResponseFacade. RequestFacade implements the ServletRequest interface and is instantiated by passing a Request instance that it assigns to a ServletRequest object reference in its constructor. Implementation of each method in the ServletRequest interface invokes the corresponding method of the Request object. However, the ServletRequest object itself is private and cannot be accessed from outside the class. Instead of upcasting the Request object to ServletRequest and passing it to theservice method, we construct a RequestFacade object and pass it to the service method. Servlet programmers can still downcast the ServletRequest instance back to RequestFacade, however they can only access the methods available in the ServletRequest interface. Now, the parseUri method is safe.</p>
+<p>Listing 2.7 shows an incomplete RequestFacade class.</p>
+
+      </div>
+      
+      
+      
+    </div>
+
+    
+    
+
+
+    
+  
+  <div class="comments giscus-container">
+  </div>
+  
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2008 – 
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Eazow</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Symbols count total">316k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">4:47</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+<script>
+(function () {
+  var numberOfBanners = 10;
+  var intervalMs = 5000;
+
+  var layerA = document.querySelector('.banner-layer-a');
+  var layerB = document.querySelector('.banner-layer-b');
+  if (!layerA || !layerB) return;
+
+  var urls = [];
+  for (var i = 0; i < numberOfBanners; i++) {
+    urls.push('/images/banner' + i + '.webp');
+  }
+  // shuffle so the slideshow order differs between visits
+  for (var i = urls.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var tmp = urls[i];
+    urls[i] = urls[j];
+    urls[j] = tmp;
+  }
+
+  // preload every banner once so the browser caches them up front;
+  // later switches then read from cache instead of firing new requests
+  urls.forEach(function (url) {
+    var img = new Image();
+    img.src = url;
+  });
+
+  var layers = [layerA, layerB];
+  var current = 0;
+  var index = 0;
+
+  function setLayer(layer, url) {
+    layer.style.backgroundImage = "url('" + url + "')";
+  }
+
+  setLayer(layers[current], urls[index]);
+  layers[current].classList.add('is-active');
+
+  if (urls.length <= 1) return;
+
+  setInterval(function () {
+    var next = current === 0 ? 1 : 0;
+    index = (index + 1) % urls.length;
+    setLayer(layers[next], urls[index]);
+    layers[next].classList.add('is-active');
+    layers[current].classList.remove('is-active');
+    current = next;
+  }, intervalMs);
+})();
+</script>
+
+
+    </div>
+  </footer>
+
+  
+  <script size="200" alpha="0.2" zIndex="-1" src="https://cdnjs.cloudflare.com/ajax/libs/ribbon.js/1.0.2/ribbon.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/9.1.3/mermaid.min.js","integrity":"sha256-TIYL00Rhw/8WaoUhYTLX9SKIEFdXxg+yMWSLVUbhiLg="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  <!--script async src="https://cdn.jsdelivr.net/gh/sukkaw/busuanzi@2.3/bsz.pure.mini.js"></script-->
+
+
+
+
+<script class="next-config" data-name="giscus" type="application/json">{"enable":true,"repo":"eazow/hexo","repo_id":"MDEwOlJlcG9zaXRvcnkxNjI1NTM4Nzk=","category":"Announcements","category_id":"DIC_kwDOCbBgF84CQl0J","mapping":"pathname","strict":0,"reactions_enabled":1,"emit_metadata":0,"theme":"light","lang":"en","crossorigin":"anonymous","input_position":"top","loading":"lazy"}</script>
+
+<script>
+document.addEventListener('page:loaded', () => {
+  if (!CONFIG.page.comments) return;
+
+  NexT.utils.loadComments('.giscus-container')
+    .then(() => NexT.utils.getScript('https://giscus.app/client.js', {
+      attributes: {
+        async                   : true,
+        crossOrigin             : 'anonymous',
+        'data-repo'             : CONFIG.giscus.repo,
+        'data-repo-id'          : CONFIG.giscus.repo_id,
+        'data-category'         : CONFIG.giscus.category,
+        'data-category-id'      : CONFIG.giscus.category_id,
+        'data-mapping'          : CONFIG.giscus.mapping,
+        'data-strict'           : CONFIG.giscus.strict,
+        'data-reactions-enabled': CONFIG.giscus.reactions_enabled,
+        'data-emit-metadata'    : CONFIG.giscus.emit_metadata,
+        'data-theme'            : CONFIG.giscus.theme,
+        'data-lang'             : CONFIG.giscus.lang,
+        'data-input-position'   : CONFIG.giscus.input_position,
+        'data-loading'          : CONFIG.giscus.loading
+      },
+      parentNode: document.querySelector('.giscus-container')
+    }));
+});
+</script>
+<script>
+document.querySelectorAll('figure.highlight').forEach(function (el) {
+  var lang = el.className.replace('highlight', '').trim().split(/\s+/)[0];
+  if (lang) el.setAttribute('data-lang', lang);
+});
+</script>
+
+</body>
+</html>
