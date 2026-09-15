@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic,900&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"eazow.com","root":"/","images":"/images","scheme":"Mist","darkmode":false,"version":"8.12.2","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":"flat"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":"giscus","storage":true,"lazyload":true,"nav":null,"activeClass":"giscus"},"stickytabs":false,"motion":{"enable":false,"async":true,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+
+
+<link rel="canonical" href="http://eazow.com/suricata/01-startup-and-architecture/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en-US","comments":true,"permalink":"http://eazow.com/suricata/01-startup-and-architecture/","path":"suricata/01-startup-and-architecture/","title":"启动一个 Suricata 进程，到底要经过多少步？"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>启动一个 Suricata 进程，到底要经过多少步？ | Eazow</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-NHS1WWDHJE"></script>
+  <script class="next-config" data-name="google_analytics" type="application/json">{"tracking_id":"G-NHS1WWDHJE","only_pageview":false}</script>
+  <script src="/js/third-party/analytics/google-analytics.js"></script>
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <p class="site-title">Eazow</p>
+    </a>
+      <p class="site-subtitle" itemprop="description">Stay kind and positive</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner sidebar-toc-active">
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E5%85%88%E7%9C%8B%E4%B8%80%E7%9C%BC-%E8%BF%99%E4%B8%AA%E5%BC%95%E6%93%8E%E5%87%86%E5%A4%87%E6%80%8E%E4%B9%88%E5%B7%A5%E4%BD%9C"><span class="nav-text">1. 先看一眼:这个引擎准备怎么工作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E7%AC%AC%E4%B8%80%E4%B8%AA%E9%97%AE%E9%A2%98-%E8%BF%99%E4%B9%88%E5%A4%A7%E7%9A%84%E4%BB%93%E5%BA%93%EF%BC%8C%E4%BB%8E%E5%93%AA%E9%87%8C%E4%B8%8B%E6%89%8B%EF%BC%9F"><span class="nav-text">2. 第一个问题:这么大的仓库，从哪里下手？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E4%BB%8E-main-%E5%BC%80%E5%A7%8B%EF%BC%8C%E6%8A%8A%E5%90%AF%E5%8A%A8%E8%BF%87%E7%A8%8B%E8%B5%B0%E4%B8%80%E9%81%8D"><span class="nav-text">3. 从 main() 开始，把启动过程走一遍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-RunModeDispatch-%E6%B5%81%E6%B0%B4%E7%BA%BF%E7%9C%9F%E6%AD%A3%E8%A2%AB%E7%84%8A%E8%B5%B7%E6%9D%A5%E7%9A%84%E5%9C%B0%E6%96%B9"><span class="nav-text">4. RunModeDispatch:流水线真正被焊起来的地方</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-%E4%B8%BB%E5%BE%AA%E7%8E%AF%E5%9C%A8%E5%B9%B2%E5%98%9B"><span class="nav-text">5. 主循环在干嘛</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-%E4%B8%80%E5%BC%A0%E5%9B%BE%E6%94%B6%E5%B0%BE"><span class="nav-text">6. 一张图收尾</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en-US">
+    <link itemprop="mainEntityOfPage" href="http://eazow.com/suricata/01-startup-and-architecture/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Eazow">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Eazow">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="启动一个 Suricata 进程，到底要经过多少步？ | Eazow">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          启动一个 Suricata 进程，到底要经过多少步？
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2026-06-23 00:00:00" itemprop="dateCreated datePublished" datetime="2026-06-23T00:00:00+08:00">2026-06-23</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Suricata/" itemprop="url" rel="index"><span itemprop="name">Suricata</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>6 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <blockquote>
+<p>这是系列第 1 篇。我们先不急着钻进某个协议解析器，也不急着看规则是怎么匹配的。先跟着 Suricata 启动一遍，看看它如何从命令行参数和配置文件，一路走到真正可以接收数据包的状态。后面每篇文章，都会回到这张地图上的某个位置继续往下挖。</p>
+</blockquote>
+<h2 id="1-先看一眼-这个引擎准备怎么工作"><a href="#1-先看一眼-这个引擎准备怎么工作" class="headerlink" title="1. 先看一眼:这个引擎准备怎么工作"></a>1. 先看一眼:这个引擎准备怎么工作</h2><p>把 Suricata 想象成一条工厂流水线:网卡或者 pcap 文件是原料入口，每一个包从这里进来，依次经过一道道工位——捕获 → 解码 → 流跟踪 → TCP 重组 → 应用层解析 → 规则检测 → 输出，最后变成一条告警从流水线尽头掉出来。每道工位是一个可插拔的模块，若干个工位串成一条线，挂在一个或多个线程(也就是”工人”)身上跑。</p>
+<span id="more"></span>
+
+<p>这个比喻值得记住，因为它决定了我们接下来读源码的姿势。看到一个函数，先问它站在流水线的哪个工位上;看到一个线程，再问它身兼几道工位。这样读下去，<code>src/</code> 里几百个文件就不再是名字的乱码，而是一张可以顺着走的车间地图。</p>
+<p>对应到源码里，这条流水线靠两个核心概念撑起来:</p>
+<ul>
+<li><strong>TmModule</strong>(Thread Module):一个工位的抽象，定义在 <code>src/tm-modules.h:47</code>。本质是一组函数指针(<code>ThreadInit</code>&#x2F;<code>Func</code>&#x2F;<code>ThreadDeinit</code>&#x2F;<code>PktAcqLoop</code> 等)，”Decode””StreamTcp””Detect”都是某个 TmModule 的名字——你可以把它理解成”这道工位该怎么上岗、怎么干活、怎么下岗”的标准作业流程。</li>
+<li><strong>RunMode</strong>:决定这些工位怎么排布、分给几个工人。同样是”捕获→解码→检测→输出”这条线，可以让一个工人从头干到尾(workers 模式)，也可以拆成两组工人接力、中间用传送带(队列)交接(autofp 模式)。RunMode 的注册与调度在 <code>src/runmodes.c</code>。</li>
+</ul>
+<p>这两个概念先记在这里就够了。等启动流程走到 <code>RunModeDispatch()</code>，车间才真正开工，第 2 篇会专门拆开讲工位是怎么排布、工人是怎么分配的。</p>
+<h2 id="2-第一个问题-这么大的仓库，从哪里下手？"><a href="#2-第一个问题-这么大的仓库，从哪里下手？" class="headerlink" title="2. 第一个问题:这么大的仓库，从哪里下手？"></a>2. 第一个问题:这么大的仓库，从哪里下手？</h2><p>Suricata 的仓库看起来吓人，但和”引擎本体”直接相关的顶层目录其实只有这几个:</p>
+<ul>
+<li><code>src/</code> —— C 语言写的核心引擎，本系列关注的主体。</li>
+<li><code>rust/</code> —— 部分应用层协议解析器(如 DNS、NFS、SMB 等)用 Rust 重写，通过 FFI 和 <code>src/</code> 里的 C 代码互调。</li>
+<li><code>rules/</code>、<code>etc/</code>、<code>suricata.yaml.in</code> —— 默认规则和配置模板，运行期行为参数，不是本系列重点。</li>
+<li><code>doc/</code> —— 官方用户文档(用法向)，和本系列(源码阅读向)是两回事，别搞混了。</li>
+</ul>
+<p><code>src/</code> 目录下有上千个文件，第一次打开确实容易失去方向。好在它们基本都按前缀归类，摸清楚这些前缀，就相当于拿到了车间地图的图例:</p>
+<table>
+<thead>
+<tr>
+<th>前缀&#x2F;文件</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>suricata.c</code>，<code>main.c</code></td>
+<td>程序入口与生命周期管理</td>
+</tr>
+<tr>
+<td><code>tm-threads*.c</code>，<code>tm-modules.c</code>，<code>tm-queues.c</code></td>
+<td>线程模型:TmModule、线程创建、模块间队列</td>
+</tr>
+<tr>
+<td><code>runmode*.c</code></td>
+<td>各种运行模式(af-packet&#x2F;pcap&#x2F;nfq&#x2F;workers&#x2F;autofp…)的流水线组装</td>
+</tr>
+<tr>
+<td><code>source-*.c</code></td>
+<td>各类抓包后端(<code>source-af-packet.c</code>、<code>source-pcap.c</code>、<code>source-nfq.c</code>…)</td>
+</tr>
+<tr>
+<td><code>decode*.c</code></td>
+<td>各层协议的解码(以太网、IP、TCP、UDP、ICMP…)</td>
+</tr>
+<tr>
+<td><code>flow*.c</code></td>
+<td>Flow(流)引擎:哈希表、超时、状态管理</td>
+</tr>
+<tr>
+<td><code>stream-tcp*.c</code></td>
+<td>TCP 重组与状态机</td>
+</tr>
+<tr>
+<td><code>app-layer*.c</code></td>
+<td>应用层协议解析框架及各协议解析器(HTTP、TLS、DNS…)</td>
+</tr>
+<tr>
+<td><code>detect*.c</code></td>
+<td>检测引擎:规则解析、匹配、签名分组</td>
+</tr>
+<tr>
+<td><code>output*.c</code>，<code>log-*.c</code>，<code>alert-*.c</code>，<code>eve-log*</code></td>
+<td>日志&#x2F;告警输出</td>
+</tr>
+<tr>
+<td><code>util-*.c</code></td>
+<td>通用工具(哈希表、内存池、原子操作、字符串处理…)</td>
+</tr>
+</tbody></table>
+<p>这也解释了本系列为什么从启动流程开始:先知道这些模块在什么时候被接上，再去看包如何被抓进来、解码、入流表，最后走到检测和输出。否则一上来就读某个局部函数，很容易知道”它做了什么”，却不知道”它为什么在这里做”。</p>
+<h2 id="3-从-main-开始，把启动过程走一遍"><a href="#3-从-main-开始，把启动过程走一遍" class="headerlink" title="3. 从 main() 开始，把启动过程走一遍"></a>3. 从 <code>main()</code> 开始，把启动过程走一遍</h2><p>入口在 <code>src/main.c:20</code>。<code>main()</code> 只有十几行，却像一张折叠起来的路线图:参数从这里进来，配置从这里落地，线程也从这里被组织起来。把调用顺序贴出来，很多事情会比想象中清楚:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span> **argv)</span></span><br><span class="line">&#123;</span><br><span class="line">    SuricataPreInit(argv[<span class="number">0</span>]);                 <span class="comment">// 早期初始化(日志系统等)</span></span><br><span class="line">    SCParseCommandLine(argc, argv);            <span class="comment">// 解析命令行参数到 SCInstance</span></span><br><span class="line">    SCFinalizeRunMode(argc);                   <span class="comment">// 根据参数确定 run_mode</span></span><br><span class="line">    SCStartInternalRunMode(argc, argv);        <span class="comment">// 处理 --list-* 之类&quot;跑完就退出&quot;的模式</span></span><br><span class="line">    SCLoadYamlConfig();                        <span class="comment">// 加载 suricata.yaml</span></span><br><span class="line">    SCEnableDefaultSignalHandlers();</span><br><span class="line">    SuricataInit();                            <span class="comment">// 真正的初始化重头戏</span></span><br><span class="line">    SuricataPostInit();                        <span class="comment">// 等待所有线程 init 完成</span></span><br><span class="line">    SuricataMainLoop();                        <span class="comment">// 主线程的事件循环</span></span><br><span class="line">    SuricataShutdown();</span><br><span class="line">    GlobalsDestroy();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这十几个调用里，有两处值得停下来看看。</p>
+<p><strong>第一，全局状态被收敛到了一个结构体里。</strong> 命令行参数、运行模式、用户&#x2F;组 ID 等等，统统塞进一个全局的 <code>SCInstance suricata</code>(定义见 <code>src/suricata.h</code>，实例在 <code>src/suricata.c</code>)——可以把它想成挂在车间墙上的一块总仪表盘，谁想知道”现在该怎么跑”，看这块牌子就行，不用满车间去问。<code>SCParseCommandLine</code> 把 argv 解析进这块牌子，后面几乎所有初始化函数都在读写它。这是典型的”C 语言用全局单例代替面向对象里的 this”写法，以后在代码里看到 <code>suricata.xxx</code>，把它当成”整个进程当前的配置快照”来读就对了。</p>
+<p><strong>第二，初始化被拆成了”配置加载前&#x2F;后”两段。</strong> <code>SuricataInit()</code>(<code>src/suricata.c:3107</code>)是这一段的重头戏，内部顺序大致是:</p>
+<ol>
+<li><code>GlobalsInitPreConfig()</code> —— 不依赖配置文件的全局初始化(内存分配器、随机数种子等)。</li>
+<li>读取一批 yaml 配置项(vlan&#x2F;livedev tracking 开关等)，配置日志系统 <code>SCLogLoadConfig</code>。</li>
+<li><code>RunModeInitializeThreadSettings()</code> —— 确定每个 runmode 用几个线程、CPU 亲和性怎么设。</li>
+<li><code>ParseInterfacesList()</code> —— 解析要监听的网卡&#x2F;pcap 列表。</li>
+<li><code>PostConfLoadedSetup()</code> —— 配置加载完成后的收尾(magic 库、GeoIP、检测引擎的预分配等等，细节多且杂，不用一次记住)。</li>
+<li><code>SCDropMainThreadCaps()</code> —— 权限收敛，drop 掉不需要的 capabilities&#x2F;root 权限。这是一个网络安全软件的常规操作:尽早放弃不必要的特权。</li>
+<li><code>PostConfLoadedDetectSetup()</code> —— 检测引擎相关的收尾(规则加载在这之后触发)。</li>
+<li>最后调用 <code>RunModeDispatch()</code>，把控制权交给某个具体的 RunMode。</li>
+</ol>
+<p>这里能看出一个贯穿全码库的惯例:<strong>Suricata 大量使用”名字即文档”的函数命名</strong>。<code>XxxPreConfig</code>&#x2F;<code>PostConfLoadedXxx</code>&#x2F;<code>ThreadInit</code>&#x2F;<code>ThreadDeinit</code> 这类命名一以贯之，读源码时基本可以靠名字做时间线定位，不用每个都跳进去看实现——这是这个代码库对读者最友好的地方之一。</p>
+<h2 id="4-RunModeDispatch-流水线真正被焊起来的地方"><a href="#4-RunModeDispatch-流水线真正被焊起来的地方" class="headerlink" title="4. RunModeDispatch:流水线真正被焊起来的地方"></a>4. <code>RunModeDispatch</code>:流水线真正被焊起来的地方</h2><p>前面铺垫的都是”备料”——读配置、建仪表盘、drop 权限。真正动手焊流水线、招工人上岗的，是 <code>RunModeDispatch()</code>(<code>src/runmodes.c:405</code>):</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">RunMode *mode = RunModeGetCustomMode(runmode, custom_mode);</span><br><span class="line">...</span><br><span class="line">mode-&gt;RunModeFunc();          <span class="comment">// 真正组装并启动&quot;捕获+解码+检测+输出&quot;这条流水线</span></span><br><span class="line">...</span><br><span class="line">TmValidateQueueState();       <span class="comment">// 校验模块间队列都至少有一个读者一个写者</span></span><br><span class="line">FlowManagerThreadSpawn();     <span class="comment">// 再拉起几个&quot;管理类&quot;线程</span></span><br><span class="line">FlowRecyclerThreadSpawn();</span><br><span class="line">StatsSpawnThreads();</span><br><span class="line">LogMaintenanceThreadSpawn();</span><br><span class="line">TmThreadsSealThreads();       <span class="comment">// 封口:之后不再允许创建新线程</span></span><br></pre></td></tr></table></figure>
+
+<p><code>mode-&gt;RunModeFunc</code> 是一个函数指针，指向类似 <code>RunModeIdsAFPAutoFp()</code>(<code>src/runmode-af-packet.c:808</code> 附近)这样的函数。每种抓包后端(af-packet&#x2F;pcap&#x2F;nfq&#x2F;dpdk&#x2F;…)乘以每种线程编排方式(single&#x2F;autofp&#x2F;workers)，就组合出一个这样的函数，内部再调用 <code>RunModeSetLiveCaptureAutoFp()</code> &#x2F; <code>RunModeSetLiveCaptureWorkers()</code> 这类公共辅助函数，把 <code>&quot;ReceiveAFP&quot;</code>、<code>&quot;DecodeAFP&quot;</code>、<code>&quot;FlowWorker&quot;</code>、<code>&quot;Detect&quot;</code>、<code>&quot;RespondReject&quot;</code> 这一串工位的名字，按 workers&#x2F;autofp 的拓扑接成一条真正的产线，再把工人(线程)派上去。</p>
+<p>这条流水线具体怎么焊、工位之间传递包用的队列(<code>Tmq</code>)怎么工作，留到第 2 篇拆开细看。</p>
+<h2 id="5-主循环在干嘛"><a href="#5-主循环在干嘛" class="headerlink" title="5. 主循环在干嘛"></a>5. 主循环在干嘛</h2><p>流水线一开工，主线程反而成了最闲的那个人——包的处理全丢给车间里的专职工人，自己退到门口，只做一件事:盯着外面有没有动静。<code>SuricataMainLoop()</code>(<code>src/suricata.c:3017</code>)就是这样一个很轻的轮询循环，守着几件”外部信号”相关的事:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span> (<span class="number">1</span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (sigterm_count || sigint_count) suricata_ctl_flags |= SURICATA_STOP;</span><br><span class="line">    <span class="keyword">if</span> (suricata_ctl_flags &amp; SURICATA_STOP) <span class="keyword">break</span>;      <span class="comment">// 收到停止信号就退出循环</span></span><br><span class="line"></span><br><span class="line">    TmThreadCheckThreadState();                          <span class="comment">// 检查各线程是否还活着</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (sighup_count &gt; <span class="number">0</span>) OutputNotifyFileRotation();    <span class="comment">// SIGHUP: 日志轮转</span></span><br><span class="line">    <span class="keyword">if</span> (sigusr2_count &gt; <span class="number">0</span>) DetectEngineReload(suri);      <span class="comment">// SIGUSR2: 热加载规则</span></span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>抓包、解码、检测这些”重活”全部跑在 <code>RunModeDispatch</code> 拉起来的工作线程里，主线程只剩信号响应和健康检查两件事，活得挺清闲。跳出循环后依次调用 <code>SuricataShutdown()</code>(叫停所有线程)和 <code>GlobalsDestroy()</code>(收拾场地)，进程结束。</p>
+<h2 id="6-一张图收尾"><a href="#6-一张图收尾" class="headerlink" title="6. 一张图收尾"></a>6. 一张图收尾</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">main()</span><br><span class="line"> ├─ SCParseCommandLine / SCLoadYamlConfig     读参数、读配置</span><br><span class="line"> ├─ SuricataInit()</span><br><span class="line"> │   ├─ RunModeInitializeThreadSettings()     线程数/亲和性</span><br><span class="line"> │   ├─ ParseInterfacesList()                 监听哪些网卡</span><br><span class="line"> │   ├─ PostConfLoadedSetup()                 各子系统初始化</span><br><span class="line"> │   ├─ SCDropMainThreadCaps()                权限收敛</span><br><span class="line"> │   └─ RunModeDispatch()</span><br><span class="line"> │        ├─ mode-&gt;RunModeFunc()              组装 TmModule 流水线,创建工作线程</span><br><span class="line"> │        │     Receive → Decode → FlowWorker(Stream+Detect) → Output</span><br><span class="line"> │        ├─ FlowManagerThreadSpawn() 等       管理类线程</span><br><span class="line"> │        └─ TmThreadsSealThreads()            封口</span><br><span class="line"> ├─ SuricataPostInit()                        等所有线程 init 完成</span><br><span class="line"> ├─ SuricataMainLoop()                        主线程:信号响应 + 健康检查</span><br><span class="line"> └─ SuricataShutdown()                        杀线程、收尾</span><br></pre></td></tr></table></figure>
+
+<p>到这里，启动流程的主线就走完了。下一篇从最关键、也最容易让人困惑的地方开始:<code>TmModule</code> 和 <code>RunMode</code> 到底怎样把一组函数变成一条正在工作的流水线？ <code>ThreadVars</code>、<code>TmSlot</code> 和模块间的队列(<code>Tmq</code>)，会把这个问题继续往下展开。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Suricata/" rel="tag"><i class="fa fa-tag"></i> Suricata</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/suricata/00-packet-journey/" rel="prev" title="一个数据包如何穿过 Suricata">
+                  <i class="fa fa-chevron-left"></i> 一个数据包如何穿过 Suricata
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  
+  <div class="comments giscus-container">
+  </div>
+  
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2008 – 
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Eazow</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Symbols count total">322k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">4:53</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+<script>
+(function () {
+  var numberOfBanners = 10;
+  var intervalMs = 5000;
+
+  var layerA = document.querySelector('.banner-layer-a');
+  var layerB = document.querySelector('.banner-layer-b');
+  if (!layerA || !layerB) return;
+
+  var urls = [];
+  for (var i = 0; i < numberOfBanners; i++) {
+    urls.push('/images/banner' + i + '.webp');
+  }
+  // shuffle so the slideshow order differs between visits
+  for (var i = urls.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var tmp = urls[i];
+    urls[i] = urls[j];
+    urls[j] = tmp;
+  }
+
+  // preload every banner once so the browser caches them up front;
+  // later switches then read from cache instead of firing new requests
+  urls.forEach(function (url) {
+    var img = new Image();
+    img.src = url;
+  });
+
+  var layers = [layerA, layerB];
+  var current = 0;
+  var index = 0;
+
+  function setLayer(layer, url) {
+    layer.style.backgroundImage = "url('" + url + "')";
+  }
+
+  setLayer(layers[current], urls[index]);
+  layers[current].classList.add('is-active');
+
+  if (urls.length <= 1) return;
+
+  setInterval(function () {
+    var next = current === 0 ? 1 : 0;
+    index = (index + 1) % urls.length;
+    setLayer(layers[next], urls[index]);
+    layers[next].classList.add('is-active');
+    layers[current].classList.remove('is-active');
+    current = next;
+  }, intervalMs);
+})();
+</script>
+
+
+    </div>
+  </footer>
+
+  
+  <script size="200" alpha="0.2" zIndex="-1" src="https://cdnjs.cloudflare.com/ajax/libs/ribbon.js/1.0.2/ribbon.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/9.1.3/mermaid.min.js","integrity":"sha256-TIYL00Rhw/8WaoUhYTLX9SKIEFdXxg+yMWSLVUbhiLg="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  <!--script async src="https://cdn.jsdelivr.net/gh/sukkaw/busuanzi@2.3/bsz.pure.mini.js"></script-->
+
+
+
+
+<script class="next-config" data-name="giscus" type="application/json">{"enable":true,"repo":"eazow/hexo","repo_id":"MDEwOlJlcG9zaXRvcnkxNjI1NTM4Nzk=","category":"Announcements","category_id":"DIC_kwDOCbBgF84CQl0J","mapping":"pathname","strict":0,"reactions_enabled":1,"emit_metadata":0,"theme":"light","lang":"en","crossorigin":"anonymous","input_position":"top","loading":"lazy"}</script>
+
+<script>
+document.addEventListener('page:loaded', () => {
+  if (!CONFIG.page.comments) return;
+
+  NexT.utils.loadComments('.giscus-container')
+    .then(() => NexT.utils.getScript('https://giscus.app/client.js', {
+      attributes: {
+        async                   : true,
+        crossOrigin             : 'anonymous',
+        'data-repo'             : CONFIG.giscus.repo,
+        'data-repo-id'          : CONFIG.giscus.repo_id,
+        'data-category'         : CONFIG.giscus.category,
+        'data-category-id'      : CONFIG.giscus.category_id,
+        'data-mapping'          : CONFIG.giscus.mapping,
+        'data-strict'           : CONFIG.giscus.strict,
+        'data-reactions-enabled': CONFIG.giscus.reactions_enabled,
+        'data-emit-metadata'    : CONFIG.giscus.emit_metadata,
+        'data-theme'            : CONFIG.giscus.theme,
+        'data-lang'             : CONFIG.giscus.lang,
+        'data-input-position'   : CONFIG.giscus.input_position,
+        'data-loading'          : CONFIG.giscus.loading
+      },
+      parentNode: document.querySelector('.giscus-container')
+    }));
+});
+</script>
+<script>
+document.querySelectorAll('figure.highlight').forEach(function (el) {
+  var lang = el.className.replace('highlight', '').trim().split(/\s+/)[0];
+  if (lang && lang !== 'plaintext') el.setAttribute('data-lang', lang);
+});
+</script>
+
+</body>
+</html>
