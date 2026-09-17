@@ -22,6 +22,15 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"eazow.com","root":"/","images":"/images","scheme":"Mist","darkmode":false,"version":"8.12.2","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":"flat"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":"giscus","storage":true,"lazyload":true,"nav":null,"activeClass":"giscus"},"stickytabs":false,"motion":{"enable":false,"async":true,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
 
+    <meta property="og:type" content="website">
+<meta property="og:title" content="Eazow">
+<meta property="og:url" content="http://eazow.com/index.html">
+<meta property="og:site_name" content="Eazow">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://eazow.com/images/logo.png">
+<meta property="article:author" content="Eazow">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://eazow.com/images/logo.png">
 
 
 <link rel="canonical" href="http://eazow.com/">
@@ -259,7 +268,7 @@ mjx-container[display="true"] + br {
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2026-06-23 00:00:00" itemprop="dateCreated datePublished" datetime="2026-06-23T00:00:00+08:00">2026-06-23</time>
+      <time title="Created: 2026-06-22 00:00:00" itemprop="dateCreated datePublished" datetime="2026-06-22T00:00:00+08:00">2026-06-22</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -372,7 +381,7 @@ mjx-container[display="true"] + br {
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>3 mins.</span>
+      <span>2 mins.</span>
     </span>
 </div>
 
@@ -386,41 +395,7 @@ mjx-container[display="true"] + br {
           <p>Suricata 得名于非洲草原上的猫鼬(学名 <em>Suricata suricatta</em>)——猫鼬群居，总有几只直立放哨，一有风吹草动就尖声报警。2009 年 OISF(Open Information Security Foundation)用这个名字做了一个开源、多线程的下一代 IDS&#x2F;IPS 引擎，想在当时近乎单线程的 Snort 之外给出另一个选择。名字挑得很贴切:这个引擎干的也是同一件事——盯着每一个包，一有可疑动静就吼一声。</p>
 <p>具体是怎么盯的？跟着一个包走一遍就知道了。它从网卡钻进 Suricata 的那一刻开始，会经过哪些地方，又是怎么一步步变成一条 EVE JSON 告警的？它会被谁接住，在哪一步变成 <code>Packet</code>，什么时候和别的包组成 <code>Flow</code>，TCP 重组又是谁负责的？规则看起来只是一行文本，为什么加载之后却能参与几万次匹配？这些问题，光看配置手册很难得到答案——手册告诉你怎么用这台机器，不告诉你机器里齿轮怎么咬合。真正的答案藏在 Suricata 的线程、队列、状态机和那些名字并不总是直观的 C 结构体里。</p>
 <p>把 Suricata 想象成一条工厂流水线:包从网卡或 pcap 文件进来，依次经过捕获、解码、Flow、Stream、应用层解析、规则检测这几道工位，才走到终点。先给这条产线画一张图，后面每一篇都是在往图里的某一格添细节:</p>
-<pre class="mermaid">
-
-%%{init: {&quot;flowchart&quot;: {&quot;nodeSpacing&quot;: 25, &quot;rankSpacing&quot;: 45, &quot;padding&quot;: 5, &quot;useMaxWidth&quot;: true}}}%%
-flowchart LR
-    A[&quot;网卡 &#x2F; PCAP 文件&quot;] --&gt; B
-    subgraph B[&quot;第3篇:捕获&quot;]
-        B1[&quot;AF_PACKET &#x2F; PCAP &#x2F; NFQ&quot;]
-    end
-    subgraph C[&quot;第4篇:解码&quot;]
-        C1[&quot;Ether &#x2F; IP &#x2F; TCP&quot;]
-    end
-    subgraph D[&quot;第5篇:Flow&quot;]
-        D1[&quot;查找 &#x2F; 建立&quot;]
-    end
-    B --&gt; C --&gt; D
-</pre>
-
-<pre class="mermaid">
-
-%%{init: {&quot;flowchart&quot;: {&quot;nodeSpacing&quot;: 25, &quot;rankSpacing&quot;: 45, &quot;padding&quot;: 5, &quot;useMaxWidth&quot;: true}}}%%
-flowchart LR
-    subgraph E[&quot;第6篇:Stream&quot;]
-        E1[&quot;TCP 重组&quot;]
-    end
-    subgraph F[&quot;第7篇:应用层解析&quot;]
-        F1[&quot;HTTP &#x2F; TLS ...&quot;]
-    end
-    subgraph G[&quot;第8-9篇:规则检测&quot;]
-        G1[&quot;MPM + SGH&quot;]
-    end
-    subgraph H[&quot;第10篇:输出&#x2F;告警&quot;]
-        H1[&quot;EVE JSON&quot;]
-    end
-    E --&gt; F --&gt; G --&gt; H
-</pre>
+<p><img data-src="/images/suricata/suricata-pipeline.svg" alt="Suricata 数据包流水线总览"></p>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/suricata/00-packet-journey/#more" rel="contents">
@@ -1299,13 +1274,13 @@ flowchart LR
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">322k</span>
+    <span title="Symbols count total">321k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">4:53</span>
+    <span title="Reading time total">4:52</span>
   </span>
 </div>
 <div class="busuanzi-count">

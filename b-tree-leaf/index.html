@@ -22,6 +22,20 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"eazow.com","root":"/","images":"/images","scheme":"Mist","darkmode":false,"version":"8.12.2","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":"flat"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":"giscus","storage":true,"lazyload":true,"nav":null,"activeClass":"giscus"},"stickytabs":false,"motion":{"enable":false,"async":true,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
 
+    <meta name="description" content="我们将表的格式从未排序的行数组更改为 B 树。这是一个很大的改动，需要多篇文章来实现。在本文的结尾，我们将定义叶节点的布局，并支持将键&#x2F;值对插入到单节点树中。但首先，让我们回顾一下切换到树结构的原因。 替代表格格式使用当前格式，每个页面仅存储行（无元数据），因此非常节省空间。插入也很快速，因为我们只需追加到末尾即可。但是，只能通过扫描整个表来查找特定行。如果要删除一行，则必须通过移动其后">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[译]B-Tree叶节点格式">
+<meta property="og:url" content="http://eazow.com/b-tree-leaf/index.html">
+<meta property="og:site_name" content="Eazow">
+<meta property="og:description" content="我们将表的格式从未排序的行数组更改为 B 树。这是一个很大的改动，需要多篇文章来实现。在本文的结尾，我们将定义叶节点的布局，并支持将键&#x2F;值对插入到单节点树中。但首先，让我们回顾一下切换到树结构的原因。 替代表格格式使用当前格式，每个页面仅存储行（无元数据），因此非常节省空间。插入也很快速，因为我们只需追加到末尾即可。但是，只能通过扫描整个表来查找特定行。如果要删除一行，则必须通过移动其后">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://eazow.com/images/logo.png">
+<meta property="article:published_time" content="2023-09-20T15:57:20.000Z">
+<meta property="article:modified_time" content="2024-07-17T13:52:49.479Z">
+<meta property="article:author" content="Eazow">
+<meta property="article:tag" content="Coding">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://eazow.com/images/logo.png">
 
 
 <link rel="canonical" href="http://eazow.com/b-tree-leaf/">
@@ -353,13 +367,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">322k</span>
+    <span title="Symbols count total">321k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">4:53</span>
+    <span title="Reading time total">4:52</span>
   </span>
 </div>
 <div class="busuanzi-count">

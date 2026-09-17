@@ -22,6 +22,20 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"eazow.com","root":"/","images":"/images","scheme":"Mist","darkmode":false,"version":"8.12.2","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":"flat"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":"giscus","storage":true,"lazyload":true,"nav":null,"activeClass":"giscus"},"stickytabs":false,"motion":{"enable":false,"async":true,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
 
+    <meta name="description" content="实验环境：Ubuntu 7.10 + Linux Kernel 2.6.23.12耗时：约 2-3 小时（主要是编译时间）难度：⭐⭐⭐  经过一两天的摸索，终于在 Ubuntu 虚拟机中成功完成了内核编译和系统调用添加实验。期间踩了不少坑，换了几个内核版本，重新编译了多次。现将完整步骤整理如下，希望能有所帮助！ 📋 准备工作系统要求 Ubuntu 7.10 或更高版本 至少 20GB 磁盘空间">
+<meta property="og:type" content="article">
+<meta property="og:title" content="编译Linux内核增加系统调用">
+<meta property="og:url" content="http://eazow.com/linux-kernel-custom-syscall/index.html">
+<meta property="og:site_name" content="Eazow">
+<meta property="og:description" content="实验环境：Ubuntu 7.10 + Linux Kernel 2.6.23.12耗时：约 2-3 小时（主要是编译时间）难度：⭐⭐⭐  经过一两天的摸索，终于在 Ubuntu 虚拟机中成功完成了内核编译和系统调用添加实验。期间踩了不少坑，换了几个内核版本，重新编译了多次。现将完整步骤整理如下，希望能有所帮助！ 📋 准备工作系统要求 Ubuntu 7.10 或更高版本 至少 20GB 磁盘空间">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://eazow.com/images/logo.png">
+<meta property="article:published_time" content="2008-02-29T10:50:36.000Z">
+<meta property="article:modified_time" content="2025-12-12T09:35:56.737Z">
+<meta property="article:author" content="Eazow">
+<meta property="article:tag" content="Linux">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://eazow.com/images/logo.png">
 
 
 <link rel="canonical" href="http://eazow.com/linux-kernel-custom-syscall/">
@@ -408,13 +422,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">322k</span>
+    <span title="Symbols count total">321k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">4:53</span>
+    <span title="Reading time total">4:52</span>
   </span>
 </div>
 <div class="busuanzi-count">

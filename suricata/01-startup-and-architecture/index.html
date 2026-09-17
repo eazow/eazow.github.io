@@ -22,6 +22,20 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"eazow.com","root":"/","images":"/images","scheme":"Mist","darkmode":false,"version":"8.12.2","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":"flat"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":"giscus","storage":true,"lazyload":true,"nav":null,"activeClass":"giscus"},"stickytabs":false,"motion":{"enable":false,"async":true,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
 
+    <meta name="description" content="这是系列第 1 篇。我们先不急着钻进某个协议解析器，也不急着看规则是怎么匹配的。先跟着 Suricata 启动一遍，看看它如何从命令行参数和配置文件，一路走到真正可以接收数据包的状态。后面每篇文章，都会回到这张地图上的某个位置继续往下挖。  1. 先看一眼:这个引擎准备怎么工作把 Suricata 想象成一条工厂流水线:网卡或者 pcap 文件是原料入口，每一个包从这里进来，依次经过一道道工位—">
+<meta property="og:type" content="article">
+<meta property="og:title" content="启动一个 Suricata 进程，到底要经过多少步？">
+<meta property="og:url" content="http://eazow.com/suricata/01-startup-and-architecture/index.html">
+<meta property="og:site_name" content="Eazow">
+<meta property="og:description" content="这是系列第 1 篇。我们先不急着钻进某个协议解析器，也不急着看规则是怎么匹配的。先跟着 Suricata 启动一遍，看看它如何从命令行参数和配置文件，一路走到真正可以接收数据包的状态。后面每篇文章，都会回到这张地图上的某个位置继续往下挖。  1. 先看一眼:这个引擎准备怎么工作把 Suricata 想象成一条工厂流水线:网卡或者 pcap 文件是原料入口，每一个包从这里进来，依次经过一道道工位—">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://eazow.com/images/logo.png">
+<meta property="article:published_time" content="2026-06-21T16:00:00.000Z">
+<meta property="article:modified_time" content="2026-09-16T08:53:37.373Z">
+<meta property="article:author" content="Eazow">
+<meta property="article:tag" content="Suricata">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://eazow.com/images/logo.png">
 
 
 <link rel="canonical" href="http://eazow.com/suricata/01-startup-and-architecture/">
@@ -163,7 +177,7 @@
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2026-06-23 00:00:00" itemprop="dateCreated datePublished" datetime="2026-06-23T00:00:00+08:00">2026-06-23</time>
+      <time title="Created: 2026-06-22 00:00:00" itemprop="dateCreated datePublished" datetime="2026-06-22T00:00:00+08:00">2026-06-22</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -360,13 +374,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">322k</span>
+    <span title="Symbols count total">321k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">4:53</span>
+    <span title="Reading time total">4:52</span>
   </span>
 </div>
 <div class="busuanzi-count">
