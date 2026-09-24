@@ -286,7 +286,7 @@ mjx-container[display="true"] + br {
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>6 mins.</span>
+      <span>5 mins.</span>
     </span>
 </div>
 
@@ -392,7 +392,11 @@ mjx-container[display="true"] + br {
     
     
     <div class="post-body" itemprop="articleBody">
-          <p>Suricata 得名于非洲草原上的猫鼬(学名 <em>Suricata suricatta</em>)——猫鼬群居，总有几只直立放哨，一有风吹草动就尖声报警。2009 年 OISF(Open Information Security Foundation)用这个名字做了一个开源、多线程的下一代 IDS&#x2F;IPS 引擎，想在当时近乎单线程的 Snort 之外给出另一个选择。名字挑得很贴切:这个引擎干的也是同一件事——盯着每一个包，一有可疑动静就吼一声。</p>
+          <p>简单说，Suricata 是一个开源的网络威胁检测引擎——实时读网络流量，按规则库做匹配，可以当 IDS 用(只告警不拦截)，也可以内联部署当 IPS 用(直接拦截恶意流量)，或者单纯做 NSM(把协议元数据和文件记下来，供事后分析)。</p>
+<p>不过这个系列不是使用手册，不讲规则怎么写、<code>suricata.yaml</code> 参数怎么调、怎么部署上线——网上这类教程已经很多。这里想讲的是原理：这套引擎自己是怎么实现的，一个包在源码里究竟经过了哪些函数、数据结构和状态机。</p>
+<p>在拆开每一块之前，先看一眼整个引擎长什么样，之后每一篇只是把其中一块拆开来细看：</p>
+<p><img data-src="/images/suricata/suricata-architecture-poster.svg" alt="Suricata 架构总览：六层流水线 + 四个配套子系统"></p>
+<p>Suricata 得名于非洲草原上的猫鼬(学名 <em>Suricata suricatta</em>)——猫鼬群居，总有几只直立放哨，一有风吹草动就尖声报警。2009 年 OISF(Open Information Security Foundation)用这个名字做了一个开源、多线程的下一代 IDS&#x2F;IPS 引擎，想在当时近乎单线程的 Snort 之外给出另一个选择。名字挑得很贴切:这个引擎干的也是同一件事——盯着每一个包，一有可疑动静就吼一声。</p>
 <p>具体是怎么盯的？跟着一个包走一遍就知道了。它从网卡钻进 Suricata 的那一刻开始，会经过哪些地方，又是怎么一步步变成一条 EVE JSON 告警的？它会被谁接住，在哪一步变成 <code>Packet</code>，什么时候和别的包组成 <code>Flow</code>，TCP 重组又是谁负责的？规则看起来只是一行文本，为什么加载之后却能参与几万次匹配？这些问题，光看配置手册很难得到答案——手册告诉你怎么用这台机器，不告诉你机器里齿轮怎么咬合。真正的答案藏在 Suricata 的线程、队列、状态机和那些名字并不总是直观的 C 结构体里。</p>
 <p>把 Suricata 想象成一条工厂流水线:包从网卡或 pcap 文件进来，依次经过捕获、解码、Flow、Stream、应用层解析、规则检测这几道工位，才走到终点。先给这条产线画一张图，后面每一篇都是在往图里的某一格添细节:</p>
 <p><img data-src="/images/suricata/suricata-pipeline.svg" alt="Suricata 数据包流水线总览"></p>
@@ -476,7 +480,7 @@ mjx-container[display="true"] + br {
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>4 mins.</span>
+      <span>5 mins.</span>
     </span>
 </div>
 
@@ -487,11 +491,11 @@ mjx-container[display="true"] + br {
     
     
     <div class="post-body" itemprop="articleBody">
-          <h2 id="第一部分：逻辑学入门"><a href="#第一部分：逻辑学入门" class="headerlink" title="第一部分：逻辑学入门"></a>第一部分：逻辑学入门</h2><blockquote>
+          <blockquote>
 <p><em>“逻辑是思维的语法。”</em></p>
 </blockquote>
-<p>你有没有遇到过这种情况：和别人争论了半天，最后发现根本说不清谁对谁错？或者听一段话觉得很有道理，但总觉得哪里不对劲，又说不出问题出在哪。</p>
-<p>这多半是缺乏逻辑训练。逻辑学做的事情，就是把这种”说不清楚的感觉”变成”能讲明白的判断”。</p>
+<p>你一定有过这样的时刻：和人争了半天，面红耳赤，最后谁也说服不了谁；或者听完一段话，句句都像有道理，心里却总有根刺，说不出扎在哪儿。</p>
+<p>逻辑学要做的，就是把那根刺拔出来，放到灯下看清楚。</p>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/logic-101/#more" rel="contents">
@@ -1274,13 +1278,13 @@ mjx-container[display="true"] + br {
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">321k</span>
+    <span title="Symbols count total">322k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">4:52</span>
+    <span title="Reading time total">4:53</span>
   </span>
 </div>
 <div class="busuanzi-count">
@@ -1353,6 +1357,7 @@ mjx-container[display="true"] + br {
   }, intervalMs);
 })();
 </script>
+<div class="footer-quote"><span>Stay kind and positive.</span></div>
 
 
     </div>
