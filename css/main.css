@@ -2703,7 +2703,7 @@ hr {
   vertical-align: middle;
 }
 .links-of-author a::before {
-  background: #b5c987;
+  background: #7e66fc;
   display: inline-block;
   margin-right: 3px;
   transform: translateY(-2px);
@@ -2734,7 +2734,7 @@ hr {
   box-sizing: border-box;
 }
 .site-title {
-  background: linear-gradient(90deg, #a78bfa, #60a5fa, #f472b6, #a78bfa);
+  background: linear-gradient(90deg, #60a5fa, #38bdf8, #2563eb, #60a5fa);
   background-size: 300% 100%;
   -webkit-background-clip: text;
   background-clip: text;
@@ -2796,8 +2796,8 @@ figure.highlight .copy-btn {
   margin-top: 28px;
 }
 .tag-cloud .tag-cloud-tags a {
-  --accent: #a78bfa;
-  --accent-bg: #f3eeff;
+  --accent: #60a5fa;
+  --accent-bg: #eff6ff;
   margin: 0;
   padding: 0.3em 0.9em;
   border: 1px solid transparent;
@@ -2809,12 +2809,12 @@ figure.highlight .copy-btn {
   transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
 }
 .tag-cloud .tag-cloud-tags a:nth-child(3n+2) {
-  --accent: #60a5fa;
-  --accent-bg: #eaf3ff;
+  --accent: #38bdf8;
+  --accent-bg: #e0f2fe;
 }
 .tag-cloud .tag-cloud-tags a:nth-child(3n) {
-  --accent: #f472b6;
-  --accent-bg: #fdeef6;
+  --accent: #2563eb;
+  --accent-bg: #dbeafe;
 }
 .tag-cloud .tag-cloud-tags a::before {
   content: '#';
@@ -2835,8 +2835,8 @@ figure.highlight .copy-btn {
   gap: 16px;
 }
 .category-all-page .category-list-item {
-  --accent: #a78bfa;
-  --accent-bg: #f3eeff;
+  --accent: #60a5fa;
+  --accent-bg: #eff6ff;
   position: relative;
   display: flex;
   align-items: center;
@@ -2851,12 +2851,12 @@ figure.highlight .copy-btn {
   transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
 }
 .category-all-page .category-list-item:nth-child(3n+2) {
-  --accent: #60a5fa;
-  --accent-bg: #eaf3ff;
+  --accent: #38bdf8;
+  --accent-bg: #e0f2fe;
 }
 .category-all-page .category-list-item:nth-child(3n) {
-  --accent: #f472b6;
-  --accent-bg: #fdeef6;
+  --accent: #2563eb;
+  --accent-bg: #dbeafe;
 }
 .category-all-page .category-list-item::before {
   content: '';
@@ -2904,12 +2904,12 @@ figure.highlight .copy-btn {
   width: 3px;
   margin-left: -1.5px;
   border-radius: 3px;
-  background: linear-gradient(180deg, #a78bfa, #60a5fa 50%, #f472b6);
+  background: linear-gradient(180deg, #60a5fa, #38bdf8 50%, #2563eb);
   opacity: 0.35;
 }
 .posts-collapse .post-content .collection-title::before {
-  background: #a78bfa;
-  box-shadow: 0 0 0 4px #f3eeff;
+  background: #60a5fa;
+  box-shadow: 0 0 0 4px #eff6ff;
 }
 .posts-collapse .post-content .collection-title .collection-header {
   color: #999;
@@ -2922,12 +2922,12 @@ figure.highlight .copy-btn {
   height: 12px;
   margin-left: -6px;
   margin-top: -6px;
-  background: linear-gradient(135deg, #a78bfa, #f472b6);
+  background: linear-gradient(135deg, #60a5fa, #2563eb);
   box-shadow: 0 0 0 4px #fff;
 }
 .posts-collapse .post-content .collection-year .collection-header {
   display: inline-block;
-  background: linear-gradient(90deg, #a78bfa, #60a5fa, #f472b6);
+  background: linear-gradient(90deg, #60a5fa, #38bdf8, #2563eb);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -2945,13 +2945,13 @@ figure.highlight .copy-btn {
   margin-top: -4px;
 }
 .posts-collapse .post-content .post-header:hover {
-  background: rgba(167,139,250,0.08);
+  background: rgba(96,165,250,0.08);
 }
 .posts-collapse .post-content .post-header:hover::before {
-  background: #a78bfa;
+  background: #60a5fa;
 }
 .posts-collapse .post-content .post-header:hover .post-title a {
-  color: #7c3aed;
+  color: #2563eb;
 }
 .posts-collapse .post-content .post-meta-container time {
   padding: 2px 8px;
@@ -2966,11 +2966,11 @@ figure.highlight .copy-btn {
 .archive.posts-collapse .post-content .collection-title .collection-header {
   display: inline-block;
   padding: 12px 22px;
-  border: 1px solid rgba(167,139,250,0.25);
+  border: 1px solid rgba(96,165,250,0.25);
   border-radius: 14px;
-  background: linear-gradient(135deg, #f3eeff, #eaf3ff 50%, #fdeef6);
-  box-shadow: 0 6px 18px rgba(167,139,250,0.15);
-  color: #6d28d9;
+  background: linear-gradient(135deg, #eff6ff, #e0f2fe 50%, #dbeafe);
+  box-shadow: 0 6px 18px rgba(96,165,250,0.15);
+  color: #1d4ed8;
   font-size: 1.1em;
   font-weight: 700;
   line-height: 1.5;
@@ -3015,16 +3015,16 @@ figure.highlight .copy-btn {
 .pagination .next:hover,
 .pagination .page-number:hover {
   transform: translateY(-2px);
-  border-color: #c4b5fd;
-  background: #f3eeff;
-  color: #7c3aed;
-  box-shadow: 0 6px 14px rgba(167,139,250,0.2);
+  border-color: #93c5fd;
+  background: #eff6ff;
+  color: #2563eb;
+  box-shadow: 0 6px 14px rgba(96,165,250,0.2);
 }
 .pagination .page-number.current {
   border-color: transparent;
-  background: linear-gradient(135deg, #a78bfa, #f472b6);
+  background: linear-gradient(135deg, #60a5fa, #2563eb);
   color: #fff;
-  box-shadow: 0 6px 14px rgba(244,114,182,0.3);
+  box-shadow: 0 6px 14px rgba(37,99,235,0.3);
 }
 .pagination .space {
   color: #bbb;
@@ -3047,7 +3047,7 @@ figure.highlight .copy-btn {
   margin: 0 -20px 40px;
   padding: 40px 24px 32px;
   border-radius: 20px;
-  background: linear-gradient(135deg, #f3eeff, #eaf3ff 50%, #fdeef6);
+  background: linear-gradient(135deg, #eff6ff, #e0f2fe 50%, #dbeafe);
   text-align: center;
 }
 .about-hero .about-avatar {
@@ -3059,8 +3059,8 @@ figure.highlight .copy-btn {
   margin: 0 auto 16px;
   border: 4px solid #fff;
   border-radius: 50%;
-  background: linear-gradient(135deg, #a78bfa, #60a5fa, #f472b6);
-  box-shadow: 0 10px 28px rgba(167,139,250,0.35);
+  background: linear-gradient(135deg, #60a5fa, #38bdf8, #2563eb);
+  box-shadow: 0 10px 28px rgba(96,165,250,0.35);
   font-size: 48px;
 }
 .about-hero .about-glider {
@@ -3103,16 +3103,16 @@ figure.highlight .copy-btn {
 }
 .about-hero .about-links a {
   padding: 6px 18px;
-  border: 1px solid rgba(167,139,250,0.35);
+  border: 1px solid rgba(96,165,250,0.35);
   border-radius: 999px;
   background: #fff;
-  color: #6d28d9;
+  color: #1d4ed8;
   font-weight: 600;
   transition: transform 0.2s, box-shadow 0.2s;
 }
 .about-hero .about-links a:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 14px rgba(167,139,250,0.25);
+  box-shadow: 0 6px 14px rgba(96,165,250,0.25);
 }
 .about-terminal {
   margin: 0 0 48px;
@@ -3159,10 +3159,10 @@ figure.highlight .copy-btn {
   line-height: 1.8;
 }
 .about-terminal pre b {
-  color: #f472b6;
+  color: #2563eb;
 }
 .about-terminal pre i {
-  color: #a78bfa;
+  color: #60a5fa;
   font-style: normal;
   font-weight: 700;
 }
@@ -3182,7 +3182,7 @@ figure.highlight .copy-btn {
   height: 3px;
   margin-top: 8px;
   border-radius: 3px;
-  background: linear-gradient(90deg, #a78bfa, #f472b6);
+  background: linear-gradient(90deg, #60a5fa, #2563eb);
 }
 .about-section h3.about-subtitle {
   margin: 24px 0 12px;
@@ -3229,8 +3229,8 @@ figure.highlight .copy-btn {
   margin: 4px 0;
 }
 .about-card-highlight {
-  border-color: rgba(167,139,250,0.35);
-  background: linear-gradient(135deg, #f3eeff, #fdeef6);
+  border-color: rgba(96,165,250,0.35);
+  background: linear-gradient(135deg, #eff6ff, #dbeafe);
 }
 .about-card-highlight ul {
   padding-left: 0;
@@ -3238,9 +3238,9 @@ figure.highlight .copy-btn {
 }
 .about-quote {
   padding: 26px 30px;
-  border-left: 4px solid #a78bfa;
+  border-left: 4px solid #60a5fa;
   border-radius: 0 14px 14px 0;
-  background: linear-gradient(90deg, #f3eeff, rgba(243,238,255,0));
+  background: linear-gradient(90deg, #eff6ff, rgba(239,246,255,0));
   font-family: Georgia, serif;
   font-size: 1.05em;
   font-style: italic;
@@ -3249,7 +3249,7 @@ figure.highlight .copy-btn {
   margin: 6px 0;
 }
 .about-quote b {
-  color: #7c3aed;
+  color: #2563eb;
 }
 .about-skills {
   display: grid;
@@ -3267,7 +3267,7 @@ figure.highlight .copy-btn {
   margin-left: 6px;
   padding: 1px 8px;
   border-radius: 999px;
-  background: #fdeef6;
+  background: #dbeafe;
   color: #db2777;
   font-size: 0.75em;
 }
@@ -3287,7 +3287,7 @@ figure.highlight .copy-btn {
   display: block;
   height: 100%;
   border-radius: 999px;
-  background: linear-gradient(90deg, #a78bfa, #60a5fa, #f472b6);
+  background: linear-gradient(90deg, #60a5fa, #38bdf8, #2563eb);
 }
 .post-body a.about-icons {
   display: block;
@@ -3313,13 +3313,13 @@ figure.highlight .copy-btn {
 }
 .about-fortune {
   padding: 20px 24px;
-  border: 1px dashed #c4b5fd;
+  border: 1px dashed #93c5fd;
   border-radius: 14px;
   text-align: center;
 }
 .about-fortune code {
   background: none;
-  color: #a78bfa;
+  color: #60a5fa;
 }
 .about-fortune p {
   margin: 8px 0 0;
@@ -3376,17 +3376,17 @@ figure.highlight .copy-btn {
   transition: background 0.2s, color 0.2s, box-shadow 0.2s;
 }
 .site-nav .menu .menu-item a i {
-  color: #a78bfa;
+  color: #60a5fa;
   transition: color 0.2s;
 }
 .site-nav .menu .menu-item a:hover {
-  background: #f3eeff;
-  color: #7c3aed;
+  background: #eff6ff;
+  color: #2563eb;
 }
 .site-nav .menu .menu-item a.menu-item-active {
-  background: linear-gradient(135deg, #a78bfa, #f472b6);
+  background: linear-gradient(135deg, #60a5fa, #2563eb);
   color: #fff;
-  box-shadow: 0 4px 12px rgba(244,114,182,0.3);
+  box-shadow: 0 4px 12px rgba(37,99,235,0.3);
 }
 .site-nav .menu .menu-item a.menu-item-active i {
   color: #fff;
@@ -3426,8 +3426,8 @@ figure.highlight .copy-btn {
   width: 36px;
   height: 36px;
   border-radius: 10px;
-  background: linear-gradient(135deg, #a78bfa, #60a5fa, #f472b6);
-  box-shadow: 0 4px 12px rgba(167,139,250,0.35);
+  background: linear-gradient(135deg, #60a5fa, #38bdf8, #2563eb);
+  box-shadow: 0 4px 12px rgba(96,165,250,0.35);
   color: #fff;
   font-family: consolas, Menlo, monospace, 'PingFang SC', 'Microsoft YaHei';
   font-size: 15px;
@@ -3455,10 +3455,10 @@ figure.highlight .copy-btn {
 }
 .post-button a.btn {
   padding: 6px 20px;
-  border: 1px solid rgba(167,139,250,0.4);
+  border: 1px solid rgba(96,165,250,0.4);
   border-radius: 999px;
-  background: #f3eeff;
-  color: #7c3aed;
+  background: #eff6ff;
+  color: #2563eb;
   font-weight: 600;
   line-height: 1.6;
   transition: background 0.2s, color 0.2s, box-shadow 0.2s, transform 0.2s, border-color 0.2s;
@@ -3466,17 +3466,17 @@ figure.highlight .copy-btn {
 .post-button a.btn:hover {
   transform: translateY(-2px);
   border-color: transparent;
-  background: linear-gradient(135deg, #a78bfa, #f472b6);
+  background: linear-gradient(135deg, #60a5fa, #2563eb);
   color: #fff;
-  box-shadow: 0 6px 14px rgba(244,114,182,0.3);
+  box-shadow: 0 6px 14px rgba(37,99,235,0.3);
 }
 .back-to-top {
   height: 40px;
   min-width: 40px;
   padding: 0 14px;
   border-radius: 999px;
-  background: linear-gradient(135deg, #a78bfa, #f472b6);
-  box-shadow: 0 6px 16px rgba(167,139,250,0.4);
+  background: linear-gradient(135deg, #60a5fa, #2563eb);
+  box-shadow: 0 6px 16px rgba(96,165,250,0.4);
   opacity: 1;
   font-weight: 600;
   transition: bottom 0.2s ease-in-out, transform 0.2s, box-shadow 0.2s;
@@ -3484,7 +3484,7 @@ figure.highlight .copy-btn {
 .back-to-top:hover {
   transform: translateY(-3px);
   color: #fff;
-  box-shadow: 0 10px 22px rgba(244,114,182,0.45);
+  box-shadow: 0 10px 22px rgba(37,99,235,0.45);
 }
 .footer-inner {
   display: flex;
@@ -3530,7 +3530,7 @@ figure.highlight .copy-btn {
   font-style: italic;
 }
 .footer-inner .footer-quote span {
-  background: linear-gradient(90deg, #a78bfa, #60a5fa, #f472b6);
+  background: linear-gradient(90deg, #60a5fa, #38bdf8, #2563eb);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -3548,10 +3548,10 @@ figure.highlight .copy-btn {
 .posts-expand .post-title-link::before {
   height: 3px;
   border-radius: 3px;
-  background: linear-gradient(90deg, #a78bfa, #f472b6);
+  background: linear-gradient(90deg, #60a5fa, #2563eb);
 }
 .posts-expand .post-title-link:hover {
-  color: #7c3aed;
+  color: #2563eb;
 }
 .main-inner.post .post-header {
   text-align: left;
@@ -3566,7 +3566,7 @@ figure.highlight .copy-btn {
   height: 4px;
   margin: 14px 0 4px;
   border-radius: 4px;
-  background: linear-gradient(90deg, #a78bfa, #60a5fa, #f472b6);
+  background: linear-gradient(90deg, #60a5fa, #38bdf8, #2563eb);
 }
 .main-inner.post .post-header .post-meta {
   justify-content: flex-start;
@@ -3605,13 +3605,13 @@ figure.highlight .copy-btn {
 }
 .post-toc .nav .active > a,
 .post-toc .nav .active-current > a {
-  border-bottom-color: #a78bfa;
-  color: #7c3aed;
+  border-bottom-color: #60a5fa;
+  color: #2563eb;
 }
 .sidebar-toggle {
   border-radius: 12px;
-  background: linear-gradient(135deg, #a78bfa, #f472b6);
-  box-shadow: 0 6px 16px rgba(167,139,250,0.4);
+  background: linear-gradient(135deg, #60a5fa, #2563eb);
+  box-shadow: 0 6px 16px rgba(96,165,250,0.4);
   opacity: 1;
 }
 .posts-expand .post-meta-container .post-meta {
@@ -3632,7 +3632,7 @@ figure.highlight .copy-btn {
 }
 .posts-expand .post-meta-container .post-meta .post-meta-item-icon {
   margin-right: 0;
-  color: #a78bfa;
+  color: #60a5fa;
 }
 .posts-expand .post-meta-container .post-meta .post-meta-item-text {
   display: none;
@@ -3642,7 +3642,7 @@ figure.highlight .copy-btn {
 }
 .posts-expand .post-meta-container .post-meta a {
   border-bottom: none;
-  color: #7c3aed;
+  color: #2563eb;
 }
 .main-inner.post .post-body h1,
 .main-inner.index .post-body h1,
@@ -3679,7 +3679,7 @@ figure.highlight .copy-btn {
   width: 32px;
   height: 2px;
   border-radius: 2px;
-  background: linear-gradient(90deg, #a78bfa, #60a5fa, #f472b6);
+  background: linear-gradient(90deg, #60a5fa, #38bdf8, #2563eb);
 }
 .main-inner.post .post-body h3,
 .main-inner.index .post-body h3 {
@@ -3698,11 +3698,11 @@ figure.highlight .copy-btn {
   bottom: 0.2em;
   width: 4px;
   border-radius: 4px;
-  background: linear-gradient(180deg, #a78bfa, #f472b6);
+  background: linear-gradient(180deg, #60a5fa, #2563eb);
 }
 .main-inner.post .post-body h4,
 .main-inner.index .post-body h4 {
-  color: #7c3aed;
+  color: #2563eb;
   font-size: 1.05em;
 }
 .main-inner.post .post-body h5,

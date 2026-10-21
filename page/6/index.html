@@ -86,7 +86,7 @@
 
 
 <nav class="site-nav">
-  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li>
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-series"><a href="/series/" rel="section"><i class="fa fa-layer-group fa-fw"></i>Series</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li>
   </ul>
 </nav>
 
@@ -127,7 +127,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://eazow.com/LeetCode-409-Longest-Palindrome/">
+    <link itemprop="mainEntityOfPage" href="http://eazow.com/LeetCode-671-Second-Minimum-Node-In-a-Binary-Tree/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -145,7 +145,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/LeetCode-409-Longest-Palindrome/" class="post-title-link" itemprop="url">[LeetCode]409. Longest Palindrome</a>
+          <a href="/LeetCode-671-Second-Minimum-Node-In-a-Binary-Tree/" class="post-title-link" itemprop="url">[LeetCode]671. Second Minimum Node In a Binary Tree</a>
         </h2>
 
         <div class="post-meta-container">
@@ -156,171 +156,7 @@
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2017-08-14 17:02:28" itemprop="dateCreated datePublished" datetime="2017-08-14T17:02:28+08:00">2017-08-14</time>
-    </span>
-
-  
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h3 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h3><p>Given a string which consists of lowercase or uppercase letters, find the length of the longest palindromes that can be built with those letters.</p>
-<p>This is case sensitive, for example “Aa” is not considered a palindrome here.</p>
-<p><strong>Note:</strong><br>Assume the length of given string will not exceed 1,010.</p>
-<p><strong>Example:</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Input:</span><br><span class="line">&quot;abccccdd&quot;</span><br><span class="line"></span><br><span class="line">Output:</span><br><span class="line">7</span><br><span class="line"></span><br><span class="line">Explanation:</span><br><span class="line">One longest palindrome that can be built is &quot;dccaccd&quot;, whose length is 7.</span><br></pre></td></tr></table></figure>
-
-<h3 id="难度"><a href="#难度" class="headerlink" title="难度"></a>难度</h3><p>Easy</p>
-<h3 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h3><p>先统计每个字符出现的次数，对于出现偶数次的字符，能全部用于组成回文。对于出现基数次n的字符，能用n-1个字符。如果有出现基数次的字符，最后能单独用一个该字符</p>
-<h3 id="python代码"><a href="#python代码" class="headerlink" title="python代码"></a>python代码</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">longestPalindrome</span>(<span class="params">self, s</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        :type s: str</span></span><br><span class="line"><span class="string">        :rtype: int</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        counter = &#123;&#125;</span><br><span class="line">        <span class="keyword">for</span> c <span class="keyword">in</span> s:</span><br><span class="line">            <span class="keyword">if</span> counter.has_key(c):</span><br><span class="line">                counter[c] += <span class="number">1</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                counter[c] = <span class="number">1</span></span><br><span class="line"></span><br><span class="line">        palindrome_length = <span class="number">0</span></span><br><span class="line">        single = <span class="literal">False</span></span><br><span class="line">        <span class="keyword">for</span> key <span class="keyword">in</span> counter:</span><br><span class="line">            <span class="keyword">if</span> counter[key] % <span class="number">2</span> == <span class="number">0</span>:</span><br><span class="line">                palindrome_length += counter[key]</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                palindrome_length += counter[key] - <span class="number">1</span></span><br><span class="line">                single = <span class="literal">True</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> single:</span><br><span class="line">            palindrome_length += <span class="number">1</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> palindrome_length</span><br><span class="line"></span><br><span class="line"><span class="keyword">assert</span> Solution().longestPalindrome(<span class="string">&quot;abccccdd&quot;</span>) == <span class="number">7</span></span><br></pre></td></tr></table></figure>
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://eazow.com/LeetCode-387-First-Unique-Character-in-a-String/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Eazow">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Eazow">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Eazow">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/LeetCode-387-First-Unique-Character-in-a-String/" class="post-title-link" itemprop="url">[LeetCode]387. First Unique Character in a String</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2017-08-14 14:39:15" itemprop="dateCreated datePublished" datetime="2017-08-14T14:39:15+08:00">2017-08-14</time>
-    </span>
-
-  
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h3 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h3><p>Given a string, find the first non-repeating character in it and return it’s index. If it doesn’t exist, return -1.</p>
-<p><strong>Examples:</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">s = &quot;leetcode&quot;</span><br><span class="line">return 0.</span><br><span class="line"></span><br><span class="line">s = &quot;loveleetcode&quot;,</span><br><span class="line">return 2.</span><br></pre></td></tr></table></figure>
-<p><strong>Note:</strong> You may assume the string contain only lowercase letters.</p>
-<h3 id="难度"><a href="#难度" class="headerlink" title="难度"></a>难度</h3><p>Easy</p>
-<h3 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h3><p>先用一个dict统计每个单词出现的次数，然后从头开始检查<code>s</code>的字符，如果字符出现次数为<code>1</code>，则返回该字符的位置; 如果所有字符出现字数都不为<code>1</code>，则返回<code>-1</code></p>
-<h3 id="python代码"><a href="#python代码" class="headerlink" title="python代码"></a>python代码</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">firstUniqChar</span>(<span class="params">self, s</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        :type s: str</span></span><br><span class="line"><span class="string">        :rtype: int</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        counter = &#123;&#125;</span><br><span class="line">        <span class="keyword">for</span> c <span class="keyword">in</span> s:</span><br><span class="line">            <span class="keyword">if</span> counter.has_key(c):</span><br><span class="line">                counter[c] += <span class="number">1</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                counter[c] = <span class="number">1</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(s)):</span><br><span class="line">            <span class="keyword">if</span> counter[s[i]] == <span class="number">1</span>:</span><br><span class="line">                <span class="keyword">return</span> i</span><br><span class="line">        <span class="keyword">return</span> -<span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">assert</span> Solution().firstUniqChar(<span class="string">&quot;leetcode&quot;</span>) == <span class="number">0</span></span><br><span class="line"><span class="keyword">assert</span> Solution().firstUniqChar(<span class="string">&quot;leveleetcode&quot;</span>) == <span class="number">2</span></span><br></pre></td></tr></table></figure>
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://eazow.com/LeetCode-506-Relative-Ranks/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Eazow">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Eazow">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Eazow">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/LeetCode-506-Relative-Ranks/" class="post-title-link" itemprop="url">[LeetCode]506. Relative Ranks</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2017-08-11 23:10:01" itemprop="dateCreated datePublished" datetime="2017-08-11T23:10:01+08:00">2017-08-11</time>
+      <time title="Created: 2017-09-06 16:24:10" itemprop="dateCreated datePublished" datetime="2017-09-06T16:24:10+08:00">2017-09-06</time>
     </span>
 
   
@@ -340,17 +176,17 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h3 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h3><p>Given scores of <strong>N</strong> athletes, find their relative ranks and the people with the top three highest scores, who will be awarded medals: “Gold Medal”, “Silver Medal” and “Bronze Medal”.</p>
+          <h3 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h3><p>Given a non-empty special binary tree consisting of nodes with the non-negative value, where each node in this tree has exactly two or zero sub-node. If the node has two sub-nodes, then this node’s value is the smaller value among its two sub-nodes.</p>
+<p>Given such a binary tree, you need to output the <strong>second minimum</strong> value in the set made of all the nodes’ value in the whole tree.</p>
+<p>If no such second minimum value exists, output -1 instead.</p>
 <p><strong>Example 1:</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Input: [5, 4, 3, 2, 1]</span><br><span class="line">Output: [&quot;Gold Medal&quot;, &quot;Silver Medal&quot;, &quot;Bronze Medal&quot;, &quot;4&quot;, &quot;5&quot;]</span><br><span class="line">Explanation: The first three athletes got the top three highest scores, so they got &quot;Gold Medal&quot;, </span><br><span class="line">&quot;Silver Medal&quot; and &quot;Bronze Medal&quot;. </span><br><span class="line">For the left two athletes, you just need to output their relative ranks according to their scores.</span><br></pre></td></tr></table></figure>
-<p><strong>Note:</strong></p>
-<ol>
-<li>N is a positive integer and won’t exceed 10,000.</li>
-<li>All the scores of athletes are guaranteed to be unique.</li>
-</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Input: </span><br><span class="line">    2</span><br><span class="line">   / \</span><br><span class="line">  2   5</span><br><span class="line">     / \</span><br><span class="line">    5   7</span><br><span class="line"></span><br><span class="line">Output: 5</span><br><span class="line">Explanation: The smallest value is 2, the second smallest value is 5.</span><br></pre></td></tr></table></figure>
+<p><strong>Example 2:</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Input: </span><br><span class="line">    2</span><br><span class="line">   / \</span><br><span class="line">  2   2</span><br><span class="line"></span><br><span class="line">Output: -1</span><br><span class="line">Explanation: The smallest value is 2, but there isn&#x27;t any second smallest value.</span><br></pre></td></tr></table></figure>
+
 <h3 id="难度"><a href="#难度" class="headerlink" title="难度"></a>难度</h3><p>Easy</p>
-<h3 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h3><p>对数组排序，同时对其索引也排序，即排序后元素之前的索引被记录。排序后的元素对应的rank位置分别为<code>Gold Medal, Silver Medal, Bronze Medal, 4, 5...</code>，然后将该rank赋值给排序前索引对应的位置即可</p>
-<h3 id="python代码"><a href="#python代码" class="headerlink" title="python代码"></a>python代码</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">class Solution(object):</span><br><span class="line">    def findRelativeRanks(self, nums):</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        :type nums: List[int]</span><br><span class="line">        :rtype: List[str]</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        numsStrs = []</span><br><span class="line">        for i in range(len(nums)):</span><br><span class="line">            numsStrs.append(str(nums[i])+&#x27;-&#x27;+str(i))</span><br><span class="line"></span><br><span class="line">        numsStrs = sorted(numsStrs, lambda x,y: cmp(int(x.split(&quot;-&quot;)[0]), int(y.split(&quot;-&quot;)[0])))[::-1]</span><br><span class="line">        ranks = [&#x27;&#x27;] * len(nums)</span><br><span class="line">        for i in range(len(numsStrs)):</span><br><span class="line">            index = int(numsStrs[i].split(&quot;-&quot;)[1])</span><br><span class="line">            if i == 0:</span><br><span class="line">                ranks[index] = &quot;Gold Medal&quot;</span><br><span class="line">            elif i == 1:</span><br><span class="line">                ranks[index] = &quot;Silver Medal&quot;</span><br><span class="line">            elif i == 2:</span><br><span class="line">                ranks[index] = &quot;Bronze Medal&quot;</span><br><span class="line">            else:</span><br><span class="line">                ranks[index] = str(i+1)</span><br><span class="line">        return ranks</span><br><span class="line"></span><br><span class="line">assert Solution().findRelativeRanks([1, 2, 3, 4, 5]) == [&quot;5&quot;, &quot;4&quot;, &quot;Bronze Medal&quot;, &quot;Silver Medal&quot;, &quot;Gold Medal&quot;]</span><br><span class="line">assert Solution().findRelativeRanks([10, 3, 8, 9, 4]) == [&quot;Gold Medal&quot;, &quot;5&quot;, &quot;Bronze Medal&quot;, &quot;Silver Medal&quot;, &quot;4&quot;]</span><br></pre></td></tr></table></figure>
+<h3 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h3><p>首先将最小值<code>minimum</code>和第二小值<code>second_minimum</code>置为<code>maxint</code>，递归遍历二叉树，如果节点值比最小值小，则将最小值赋给第二小值，然后将最小值更新为节点值；如果节点值比最小值大，并且节点值小于第二小值，则将第二小值更新为节点值。节点遍历后如果第二小值<code>==maxint</code>，即没有第二小值，则返回<code>-1</code></p>
+<h3 id="python代码"><a href="#python代码" class="headerlink" title="python代码"></a>python代码</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">TreeNode</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, x</span>):</span><br><span class="line">        self.val = x</span><br><span class="line">        self.left = <span class="literal">None</span></span><br><span class="line">        self.right = <span class="literal">None</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">findSecondMinimumValue</span>(<span class="params">self, root</span>):</span><br><span class="line">        self.<span class="built_in">min</span> = sys.maxint</span><br><span class="line">        self.second_min = sys.maxint</span><br><span class="line">        <span class="keyword">def</span> <span class="title function_">traverse</span>(<span class="params">node</span>):</span><br><span class="line">            <span class="keyword">if</span> node:</span><br><span class="line">                <span class="keyword">if</span> node.val &lt; self.<span class="built_in">min</span>:</span><br><span class="line">                    self.second_min = self.<span class="built_in">min</span></span><br><span class="line">                    self.<span class="built_in">min</span> = node.val</span><br><span class="line">                <span class="keyword">elif</span> node.val &lt; self.second_min <span class="keyword">and</span> node.val != self.<span class="built_in">min</span>:</span><br><span class="line">                    self.second_min = node.val</span><br><span class="line"></span><br><span class="line">                traverse(node.left)</span><br><span class="line">                traverse(node.right)</span><br><span class="line"></span><br><span class="line">        traverse(root)</span><br><span class="line">        <span class="keyword">if</span> self.second_min != sys.maxint:</span><br><span class="line">            <span class="keyword">return</span> self.second_min</span><br><span class="line">        <span class="keyword">return</span> -<span class="number">1</span></span><br><span class="line"></span><br><span class="line">root = TreeNode(<span class="number">2</span>)</span><br><span class="line">root.left = TreeNode(<span class="number">2</span>)</span><br><span class="line">root.right = TreeNode(<span class="number">5</span>)</span><br><span class="line">root.right.left = TreeNode(<span class="number">5</span>)</span><br><span class="line">root.right.right = TreeNode(<span class="number">7</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">assert</span> Solution().findSecondMinimumValue(root) == <span class="number">5</span></span><br></pre></td></tr></table></figure>
       
     </div>
 
@@ -376,7 +212,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://eazow.com/LeetCode-563-Binary-Tree-Tilt/">
+    <link itemprop="mainEntityOfPage" href="http://eazow.com/LeetCode-594-Longest-Harmonious-Subsequence/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -394,7 +230,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/LeetCode-563-Binary-Tree-Tilt/" class="post-title-link" itemprop="url">[LeetCode]563. Binary Tree Tilt</a>
+          <a href="/LeetCode-594-Longest-Harmonious-Subsequence/" class="post-title-link" itemprop="url">[LeetCode]594. Longest Harmonious Subsequence</a>
         </h2>
 
         <div class="post-meta-container">
@@ -405,94 +241,7 @@
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2017-08-09 17:31:12" itemprop="dateCreated datePublished" datetime="2017-08-09T17:31:12+08:00">2017-08-09</time>
-    </span>
-
-  
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>2 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h3 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h3><p>Given a binary tree, return the tilt of the whole tree.</p>
-<p>The tilt of a tree node is defined as the absolute difference between the sum of all left subtree node values and the sum of all right subtree node values. Null node has tilt 0.</p>
-<p>The tilt of the whole tree is defined as the sum of all nodes’ tilt.</p>
-<p><strong>Example:</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Input: </span><br><span class="line">         1</span><br><span class="line">       /   \</span><br><span class="line">      2     3</span><br><span class="line">Output: 1</span><br><span class="line">Explanation: </span><br><span class="line">Tilt of node 2 : 0</span><br><span class="line">Tilt of node 3 : 0</span><br><span class="line">Tilt of node 1 : |2-3| = 1</span><br><span class="line">Tilt of binary tree : 0 + 0 + 1 = 1</span><br></pre></td></tr></table></figure>
-<p><strong>Note:</strong></p>
-<ol>
-<li>The sum of node values in any subtree won’t exceed the range of 32-bit integer.</li>
-<li>All the tilt values won’t exceed the range of 32-bit integer.</li>
-</ol>
-<h3 id="难度"><a href="#难度" class="headerlink" title="难度"></a>难度</h3><p>Easy</p>
-<h3 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h3><p>对该二叉树进行后续遍历，算出每个节点的左右子树之和的差的绝对值，累加到最后的result中。然后将节点值替换为左右子树节点值之和。</p>
-<h3 id="python代码"><a href="#python代码" class="headerlink" title="python代码"></a>python代码</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">TreeNode</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, x</span>):</span><br><span class="line">        self.val = x</span><br><span class="line">        self.left = <span class="literal">None</span></span><br><span class="line">        self.right = <span class="literal">None</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">findTilt</span>(<span class="params">self, root</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        :type root: TreeNode</span></span><br><span class="line"><span class="string">        :rtype: int</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        self.result = <span class="number">0</span></span><br><span class="line">        self.traverse(root)</span><br><span class="line">        <span class="keyword">return</span> self.result</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">traverse</span>(<span class="params">self, node</span>):</span><br><span class="line">        <span class="keyword">if</span> node:</span><br><span class="line">            self.traverse(node.left)</span><br><span class="line">            self.traverse(node.right)</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> node.left <span class="keyword">and</span> node.right:</span><br><span class="line">                self.result += <span class="built_in">abs</span>(node.right.val - node.left.val)</span><br><span class="line">                node.val += node.right.val + node.left.val</span><br><span class="line">            <span class="keyword">elif</span> node.left:</span><br><span class="line">                self.result += <span class="built_in">abs</span>(node.left.val)</span><br><span class="line">                node.val += node.left.val</span><br><span class="line">            <span class="keyword">elif</span> node.right:</span><br><span class="line">                self.result += <span class="built_in">abs</span>(node.right.val)</span><br><span class="line">                node.val += node.right.val</span><br><span class="line"></span><br><span class="line">root = TreeNode(<span class="number">1</span>)</span><br><span class="line">root.left = TreeNode(<span class="number">2</span>)</span><br><span class="line">root.right = TreeNode(<span class="number">3</span>)</span><br><span class="line">root.left.left = TreeNode(<span class="number">4</span>)</span><br><span class="line"><span class="keyword">assert</span> Solution().findTilt(root) == <span class="number">7</span></span><br><span class="line"></span><br><span class="line">root = TreeNode(-<span class="number">8</span>)</span><br><span class="line">root.left = TreeNode(<span class="number">3</span>)</span><br><span class="line">root.right = TreeNode(<span class="number">0</span>)</span><br><span class="line">root.left.left = TreeNode(-<span class="number">8</span>)</span><br><span class="line">root.left.left.right = TreeNode(-<span class="number">1</span>)</span><br><span class="line">root.left.left.right.right = TreeNode(<span class="number">8</span>)</span><br><span class="line"><span class="keyword">assert</span> Solution().findTilt(root) == <span class="number">18</span></span><br></pre></td></tr></table></figure>
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://eazow.com/LeetCode-404-Sum-of-Left-Leaves/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Eazow">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Eazow">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Eazow">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/LeetCode-404-Sum-of-Left-Leaves/" class="post-title-link" itemprop="url">[LeetCode]404. Sum of Left Leaves</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2017-08-08 15:12:54" itemprop="dateCreated datePublished" datetime="2017-08-08T15:12:54+08:00">2017-08-08</time>
+      <time title="Created: 2017-09-04 16:26:33" itemprop="dateCreated datePublished" datetime="2017-09-04T16:26:33+08:00">2017-09-04</time>
     </span>
 
   
@@ -512,12 +261,12 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h3 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h3><p>Find the sum of all left leaves in a given binary tree.</p>
-<p><strong>Example:</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">    3</span><br><span class="line">   / \</span><br><span class="line">  9  20</span><br><span class="line">    /  \</span><br><span class="line">   15   7</span><br><span class="line"></span><br><span class="line">There are two left leaves in the binary tree, with values 9 and 15 respectively. Return 24.</span><br></pre></td></tr></table></figure>
-
-<h3 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h3><p>递归遍历，如果为左节点，则打上标记<code>isLeft</code>，如果该节点没有左右子节点，则将该节点值累加到最后的结果中</p>
-<h3 id="python代码"><a href="#python代码" class="headerlink" title="python代码"></a>python代码</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">TreeNode</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, x</span>):</span><br><span class="line">        self.val = x</span><br><span class="line">        self.left = <span class="literal">None</span></span><br><span class="line">        self.right = <span class="literal">None</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">sumOfLeftLeaves</span>(<span class="params">self, root</span>):</span><br><span class="line">        self.result = <span class="number">0</span></span><br><span class="line">        self.traverse(root)</span><br><span class="line">        <span class="keyword">return</span> self.result</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">traverse</span>(<span class="params">self, node, isLeft=<span class="literal">False</span></span>):</span><br><span class="line">        <span class="keyword">if</span> node <span class="keyword">and</span> node.left == <span class="literal">None</span> <span class="keyword">and</span> node.right == <span class="literal">None</span> <span class="keyword">and</span> isLeft:</span><br><span class="line">            self.result += node.val</span><br><span class="line">        <span class="keyword">if</span> node:</span><br><span class="line">            self.traverse(node.left, <span class="literal">True</span>)</span><br><span class="line">            self.traverse(node.right)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">root = TreeNode(<span class="number">3</span>)</span><br><span class="line">root.left = TreeNode(<span class="number">9</span>)</span><br><span class="line">root.right = TreeNode(<span class="number">20</span>)</span><br><span class="line">root.right.left = TreeNode(<span class="number">15</span>)</span><br><span class="line">root.right.right = TreeNode(<span class="number">7</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">assert</span> Solution().sumOfLeftLeaves(root) == <span class="number">24</span></span><br></pre></td></tr></table></figure>
+          <h3 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h3><p>We define a harmonious array is an array where the difference between its maximum value and its minimum value is <strong>exactly</strong> 1.<br>Now, given an integer array, you need to find the length of its longest harmonious subsequence among all its possible <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Subsequence">subsequences</a>.<br><strong>Example 1:</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">**Input:** [1,3,2,2,5,2,3,7]</span><br><span class="line">**Output:** 5**</span><br><span class="line">Explanation:** The longest harmonious subsequence is [3,2,2,2,3].</span><br></pre></td></tr></table></figure>
+<p><strong>Note:</strong> The length of the input array will not exceed 20,000.</p>
+<h3 id="难度"><a href="#难度" class="headerlink" title="难度"></a>难度</h3><p>Easy</p>
+<h3 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h3><p>用一个<code>map</code>存放所有值出现的次数，对于<code>map</code>中的每个<code>num</code>，求出<code>num</code>和<code>num+1</code>出现的次数之和，找出最大值即可</p>
+<h3 id="python代码"><a href="#python代码" class="headerlink" title="python代码"></a>python代码</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">findLHS</span>(<span class="params">self, nums</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        :type nums: List[int]</span></span><br><span class="line"><span class="string">        :rtype: int</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        nums_count = &#123;&#125;</span><br><span class="line">        <span class="keyword">for</span> num <span class="keyword">in</span> nums:</span><br><span class="line">            nums_count[num] = nums_count.get(num, <span class="number">0</span>) + <span class="number">1</span></span><br><span class="line"></span><br><span class="line">        result = <span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> num <span class="keyword">in</span> nums_count:</span><br><span class="line">            count = nums_count[num]</span><br><span class="line">            <span class="keyword">if</span> nums_count.get(num+<span class="number">1</span>):</span><br><span class="line">                result = <span class="built_in">max</span>(result, count + nums_count[num+<span class="number">1</span>])</span><br><span class="line">        <span class="keyword">return</span> result</span><br><span class="line"></span><br><span class="line"><span class="keyword">assert</span> Solution().findLHS([<span class="number">1</span>,<span class="number">3</span>,<span class="number">2</span>,<span class="number">2</span>,<span class="number">5</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">7</span>]) == <span class="number">5</span></span><br></pre></td></tr></table></figure>
       
     </div>
 
@@ -543,7 +292,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://eazow.com/LeetCode-383-Ransom-Note/">
+    <link itemprop="mainEntityOfPage" href="http://eazow.com/LeetCode-405-Convert-a-Number-to-Hexadecimal/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -561,7 +310,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/LeetCode-383-Ransom-Note/" class="post-title-link" itemprop="url">[LeetCode]383. Ransom Note</a>
+          <a href="/LeetCode-405-Convert-a-Number-to-Hexadecimal/" class="post-title-link" itemprop="url">[LeetCode]405. Convert a Number to Hexadecimal</a>
         </h2>
 
         <div class="post-meta-container">
@@ -572,7 +321,7 @@
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2017-08-02 17:18:47" itemprop="dateCreated datePublished" datetime="2017-08-02T17:18:47+08:00">2017-08-02</time>
+      <time title="Created: 2017-09-02 16:44:55" itemprop="dateCreated datePublished" datetime="2017-09-02T16:44:55+08:00">2017-09-02</time>
     </span>
 
   
@@ -592,99 +341,22 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h3 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h3><p>Given an arbitrary ransom note string and another string containing letters from all the magazines, write a function that will return true if the ransom note can be constructed from the magazines ; otherwise, it will return false.</p>
-<p>Each letter in the magazine string can only be used once in your ransom note.</p>
-<p><strong>Note:</strong><br>You may assume that both strings contain only lowercase letters.</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">canConstruct(&quot;a&quot;, &quot;b&quot;) -&gt; false</span><br><span class="line">canConstruct(&quot;aa&quot;, &quot;ab&quot;) -&gt; false</span><br><span class="line">canConstruct(&quot;aa&quot;, &quot;aab&quot;) -&gt; true</span><br></pre></td></tr></table></figure>
-
-<h3 id="难度"><a href="#难度" class="headerlink" title="难度"></a>难度</h3><p>Easy</p>
-<h3 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h3><p>遍历2个字符串，索引分别为<code>i</code>, <code>j</code>，如果<code>ransomNote[i] == magazine[j]</code>，则<code>i++</code>, <code>j++</code>，否则<code>j++</code>。如果<code>i == len(ransomNote)</code>，则表示能够用<code>magazine</code>的字符组成<code>ransomNote</code>，否则则不能</p>
-<h3 id="python代码"><a href="#python代码" class="headerlink" title="python代码"></a>python代码</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">canConstruct</span>(<span class="params">self, ransomNote, magazine</span>):</span><br><span class="line">        ransomNote = <span class="built_in">sorted</span>(ransomNote)</span><br><span class="line">        magazine = <span class="built_in">sorted</span>(magazine)</span><br><span class="line"></span><br><span class="line">        i = <span class="number">0</span></span><br><span class="line">        j = <span class="number">0</span></span><br><span class="line">        <span class="keyword">while</span> i &lt; <span class="built_in">len</span>(ransomNote) <span class="keyword">and</span> j &lt; <span class="built_in">len</span>(magazine):</span><br><span class="line">            <span class="keyword">if</span> ransomNote[i] == magazine[j]:</span><br><span class="line">                j += <span class="number">1</span></span><br><span class="line">                i += <span class="number">1</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                j += <span class="number">1</span></span><br><span class="line">   </span><br><span class="line">        <span class="keyword">if</span> i == <span class="built_in">len</span>(ransomNote):</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">assert</span> Solution().canConstruct(<span class="string">&quot;a&quot;</span>, <span class="string">&quot;b&quot;</span>) == <span class="literal">False</span></span><br><span class="line"><span class="keyword">assert</span> Solution().canConstruct(<span class="string">&quot;aa&quot;</span>, <span class="string">&quot;ab&quot;</span>) == <span class="literal">False</span></span><br><span class="line"><span class="keyword">assert</span> Solution().canConstruct(<span class="string">&quot;aa&quot;</span>, <span class="string">&quot;aab&quot;</span>) == <span class="literal">True</span></span><br><span class="line"><span class="keyword">assert</span> Solution().canConstruct(<span class="string">&quot;djfjfhjf&quot;</span>, <span class="string">&quot;aaigcbiafifghhdihcfdjjej&quot;</span>) == <span class="literal">True</span></span><br></pre></td></tr></table></figure>
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://eazow.com/LeetCode-455-Assign-Cookies/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Eazow">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Eazow">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Eazow">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/LeetCode-455-Assign-Cookies/" class="post-title-link" itemprop="url">[LeetCode]455. Assign Cookies</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2017-08-01 15:17:56" itemprop="dateCreated datePublished" datetime="2017-08-01T15:17:56+08:00">2017-08-01</time>
-    </span>
-
-  
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>2 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h3 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h3><p>Assume you are an awesome parent and want to give your children some cookies. But, you should give each child at most one cookie. Each child i has a greed factor gi, which is the minimum size of a cookie that the child will be content with; and each cookie j has a size s<del>j</del>. If s<del>j</del> &gt;&#x3D; g<del>i</del>, we can assign the cookie j to the child i, and the child i will be content. Your goal is to maximize the number of your content children and output the maximum number.</p>
-<p><strong>Note:</strong><br>You may assume the greed factor is always positive.<br>You cannot assign more than one cookie to one child.</p>
+          <h3 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h3><p>Given an integer, write an algorithm to convert it to hexadecimal. For negative integer, <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Two%27s_complement">two’s complement</a> method is used.<br><strong>Note:</strong></p>
+<ol>
+<li>All letters in hexadecimal (a-f) must be in lowercase.</li>
+<li>The hexadecimal string must not contain extra leading 0s. If the number is zero, it is represented by a single zero character ‘0’; otherwise, the first character in the hexadecimal string will not be the zero character.</li>
+<li>The given number is guaranteed to fit within the range of a 32-bit signed integer.</li>
+<li>You <strong>must not use <em>any</em> method provided by the library</strong> which converts&#x2F;formats the number to hex directly.</li>
+</ol>
 <p><strong>Example 1:</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Input: [1,2,3], [1,1]</span><br><span class="line"></span><br><span class="line">Output: 1</span><br><span class="line"></span><br><span class="line">Explanation: You have 3 children and 2 cookies. The greed factors of 3 children are 1, 2, 3. </span><br><span class="line">And even though you have 2 cookies, since their size is both 1, </span><br><span class="line">you could only make the child whose greed factor is 1 content.</span><br><span class="line">You need to output 1.</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Input:</span><br><span class="line">26</span><br><span class="line">Output:</span><br><span class="line">&quot;1a&quot;</span><br></pre></td></tr></table></figure>
 
 <p><strong>Example 2:</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Input: [1,2], [1,2,3]</span><br><span class="line"></span><br><span class="line">Output: 2</span><br><span class="line"></span><br><span class="line">Explanation: You have 2 children and 3 cookies. The greed factors of 2 children are 1, 2. </span><br><span class="line">You have 3 cookies and their sizes are big enough to gratify all of the children, </span><br><span class="line">You need to output 2.</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Input:</span><br><span class="line">-1</span><br><span class="line">Output:</span><br><span class="line">&quot;ffffffff&quot;</span><br></pre></td></tr></table></figure>
 
 <h3 id="难度"><a href="#难度" class="headerlink" title="难度"></a>难度</h3><p>Easy</p>
-<h3 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h3><p>首先对<code>s</code>和<code>g</code>排序，如果<code>s~j~=gi</code>，则<code>content_count++,j++,i++</code>；否则<code>j++</code>，直到<code>s~j~&gt;=g~i~</code>。注意<code>i</code>和<code>j</code>边界的处理</p>
-<h3 id="python代码"><a href="#python代码" class="headerlink" title="python代码"></a>python代码</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">findContentChildren</span>(<span class="params">self, g, s</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        :type g: List[int]</span></span><br><span class="line"><span class="string">        :type s: List[int]</span></span><br><span class="line"><span class="string">        :rtype: int</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        g = <span class="built_in">sorted</span>(g)</span><br><span class="line">        s = <span class="built_in">sorted</span>(s)</span><br><span class="line">        i = <span class="number">0</span></span><br><span class="line">        content_count = <span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> greed <span class="keyword">in</span> g:</span><br><span class="line">            <span class="keyword">while</span> i &lt; <span class="built_in">len</span>(s):</span><br><span class="line">                <span class="keyword">if</span> s[i] &gt;= greed:</span><br><span class="line">                    content_count += <span class="number">1</span></span><br><span class="line">                    i += <span class="number">1</span></span><br><span class="line">                    <span class="keyword">break</span></span><br><span class="line">                i += <span class="number">1</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> content_count</span><br><span class="line"></span><br><span class="line"><span class="keyword">assert</span> Solution().findContentChildren([<span class="number">1</span>, <span class="number">2</span> ,<span class="number">3</span>], [<span class="number">1</span>, <span class="number">1</span>]) == <span class="number">1</span></span><br><span class="line"><span class="keyword">assert</span> Solution().findContentChildren([<span class="number">1</span>, <span class="number">2</span>], [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]) == <span class="number">2</span></span><br><span class="line"><span class="keyword">assert</span> Solution().findContentChildren([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>], []) == <span class="number">0</span></span><br><span class="line"><span class="keyword">assert</span> Solution().findContentChildren([<span class="number">10</span>, <span class="number">9</span>, <span class="number">8</span>, <span class="number">7</span>], [<span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>]) == <span class="number">2</span></span><br><span class="line"><span class="keyword">assert</span> Solution().findContentChildren([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>], [<span class="number">3</span>]) == <span class="number">1</span></span><br></pre></td></tr></table></figure>
+<h3 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h3><p>对于<code>num</code>，每次<code>num&amp;15</code>便可取到最右的4个bit位，然后<code>num&gt;&gt;4</code>循环处理即可将<code>num</code>转换为16进制。因为<code>num</code>范围为32bit位，因此最多右移8次，每次右移<code>4</code>个bit位。当<code>num</code>不为<code>0</code>时，转换为16进制后，前面有<code>0</code>需去除。</p>
+<h3 id="python代码"><a href="#python代码" class="headerlink" title="python代码"></a>python代码</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">toHex</span>(<span class="params">self, num</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        :type num: int</span></span><br><span class="line"><span class="string">        :rtype: str</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">if</span> num == <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="string">&quot;0&quot;</span></span><br><span class="line">        <span class="built_in">map</span> = [<span class="string">&quot;0&quot;</span>,<span class="string">&quot;1&quot;</span>,<span class="string">&quot;2&quot;</span>,<span class="string">&quot;3&quot;</span>,<span class="string">&quot;4&quot;</span>,<span class="string">&quot;5&quot;</span>,<span class="string">&quot;6&quot;</span>,<span class="string">&quot;7&quot;</span>,<span class="string">&quot;8&quot;</span>,<span class="string">&quot;9&quot;</span>,<span class="string">&quot;a&quot;</span>,<span class="string">&quot;b&quot;</span>,<span class="string">&quot;c&quot;</span>,<span class="string">&quot;d&quot;</span>,<span class="string">&quot;e&quot;</span>,<span class="string">&quot;f&quot;</span>]</span><br><span class="line">        <span class="built_in">hex</span> = <span class="string">&quot;&quot;</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">8</span>):</span><br><span class="line">            <span class="built_in">hex</span> = <span class="built_in">map</span>[num &amp; <span class="number">0xf</span>] + <span class="built_in">hex</span></span><br><span class="line">            num = num &gt;&gt; <span class="number">4</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">hex</span>.lstrip(<span class="string">&quot;0&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">assert</span> Solution().toHex(-<span class="number">1</span>) == <span class="string">&quot;ffffffff&quot;</span></span><br><span class="line"><span class="keyword">assert</span> Solution().toHex(<span class="number">26</span>) == <span class="string">&quot;1a&quot;</span></span><br></pre></td></tr></table></figure>
       
     </div>
 
@@ -710,7 +382,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://eazow.com/LeetCode-453-Minimum-Moves-to-Equal-Array-Elements/">
+    <link itemprop="mainEntityOfPage" href="http://eazow.com/LeetCode-415-Add-Strings/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -728,7 +400,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/LeetCode-453-Minimum-Moves-to-Equal-Array-Elements/" class="post-title-link" itemprop="url">[LeetCode]453. Minimum Moves to Equal Array Elements</a>
+          <a href="/LeetCode-415-Add-Strings/" class="post-title-link" itemprop="url">[LeetCode]415. Add Strings</a>
         </h2>
 
         <div class="post-meta-container">
@@ -739,7 +411,7 @@
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2017-07-31 18:25:32" itemprop="dateCreated datePublished" datetime="2017-07-31T18:25:32+08:00">2017-07-31</time>
+      <time title="Created: 2017-09-01 15:48:15" itemprop="dateCreated datePublished" datetime="2017-09-01T15:48:15+08:00">2017-09-01</time>
     </span>
 
   
@@ -759,100 +431,17 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h3 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h3><p>Given a non-empty integer array of size n, find the minimum number of moves required to make all array elements equal, where a move is incrementing n - 1 elements by 1.</p>
-<p><strong>Example:</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Input:</span><br><span class="line">[1,2,3]</span><br><span class="line"></span><br><span class="line">Output:</span><br><span class="line">3</span><br><span class="line"></span><br><span class="line">Explanation:</span><br><span class="line">Only three moves are needed (remember each move increments two elements):</span><br><span class="line"></span><br><span class="line">[1,2,3]  =&gt;  [2,3,3]  =&gt;  [3,4,3]  =&gt;  [4,4,4]</span><br></pre></td></tr></table></figure>
-
-<h3 id="难度"><a href="#难度" class="headerlink" title="难度"></a>难度</h3><p>Easy</p>
-<h3 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h3><p>这是一个数学题，假设数组中最小的数为<code>min</code>，需要移动<code>x</code>次，最后数组中的数都为<code>m</code>，则其实是一个求<code>x</code>的方法</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">(n - 1) * x + sum = n * m</span><br><span class="line">min + x = m</span><br><span class="line">nx - x + sum = n * (min + x)</span><br><span class="line">nx - x + sum = n * min + nx</span><br><span class="line">sum - x = n * min</span><br><span class="line">x = sum - n * min</span><br></pre></td></tr></table></figure>
-
-<h3 id="python代码"><a href="#python代码" class="headerlink" title="python代码"></a>python代码</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">class Solution(object):</span><br><span class="line">    def minMoves(self, nums):</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        :type nums: List[int]</span><br><span class="line">        :rtype: int</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        nums = sorted(nums)</span><br><span class="line">        return sum(nums) - len(nums) * nums[0]</span><br><span class="line"></span><br><span class="line">assert Solution().minMoves([1,2,3]) == 3</span><br><span class="line">assert Solution().minMoves([1,1,3]) == 2</span><br></pre></td></tr></table></figure>
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://eazow.com/LeetCode-637-Average-of-Levels-in-Binary-Tree/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Eazow">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Eazow">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Eazow">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/LeetCode-637-Average-of-Levels-in-Binary-Tree/" class="post-title-link" itemprop="url">[LeetCode]637. Average of Levels in Binary Tree</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2017-07-31 15:34:04" itemprop="dateCreated datePublished" datetime="2017-07-31T15:34:04+08:00">2017-07-31</time>
-    </span>
-
-  
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h5 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h5><p>Given a non-empty binary tree, return the average value of the nodes on each level in the form of an array.</p>
-<p><strong>Example 1:</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Input:</span><br><span class="line">    3</span><br><span class="line">   / \</span><br><span class="line">  9  20</span><br><span class="line">    /  \</span><br><span class="line">   15   7</span><br><span class="line">Output: [3, 14.5, 11]</span><br><span class="line">Explanation:</span><br><span class="line">The average value of nodes on level 0 is 3,  on level 1 is 14.5, and on level 2 is 11. </span><br><span class="line">Hence return [3, 14.5, 11].</span><br></pre></td></tr></table></figure>
-
+          <h3 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h3><p>Given two non-negative integers <code>num1</code> and <code>num2</code> represented as string, return the sum of <code>num1</code> and <code>num2</code>.</p>
 <p><strong>Note:</strong></p>
 <ol>
-<li>The range of node’s value is in the range of 32-bit signed integer.</li>
+<li>The length of both num1 and num2 is &lt; 5100.</li>
+<li>Both num1 and num2 contains only digits 0-9.</li>
+<li>Both num1 and num2 does not contain any leading zero.</li>
+<li>You <strong>must not use any built-in BigInteger library or convert the inputs to integer</strong> directly.</li>
 </ol>
-<h5 id="难度"><a href="#难度" class="headerlink" title="难度"></a>难度</h5><p>Easy</p>
-<h5 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h5><p>对二叉树进行深度遍历，将深度level作为参数传递，记录每一级的sum和个数n，最后将sum&#x2F;n保存到结果列表中即可</p>
-<h5 id="python代码"><a href="#python代码" class="headerlink" title="python代码"></a>python代码</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">TreeNode</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, x</span>):</span><br><span class="line">        self.val = x</span><br><span class="line">        self.left = <span class="literal">None</span></span><br><span class="line">        self.right = <span class="literal">None</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">averageOfLevels</span>(<span class="params">self, root</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        :type root: TreeNode</span></span><br><span class="line"><span class="string">        :rtype: List[float]</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        sums = []</span><br><span class="line">        nums = []</span><br><span class="line">        <span class="keyword">def</span> <span class="title function_">dfs</span>(<span class="params">node, level</span>):</span><br><span class="line">            <span class="keyword">if</span> node:</span><br><span class="line">                <span class="keyword">if</span> <span class="built_in">len</span>(sums) &lt;= level:</span><br><span class="line">                    sums.append(<span class="number">0</span>)</span><br><span class="line">                    nums.append(<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">                sums[level] += node.val</span><br><span class="line">                nums[level] += <span class="number">1</span></span><br><span class="line"></span><br><span class="line">                dfs(node.left, level+<span class="number">1</span>)</span><br><span class="line">                dfs(node.right, level+<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">        dfs(root, <span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">        result = []</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(sums)):</span><br><span class="line">            result.append(sums[i]/<span class="built_in">float</span>(nums[i]))</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> result</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">root = TreeNode(<span class="number">3</span>)</span><br><span class="line">root.left = TreeNode(<span class="number">9</span>)</span><br><span class="line">root.right = TreeNode(<span class="number">20</span>)</span><br><span class="line">root.right.left = TreeNode(<span class="number">15</span>)</span><br><span class="line">root.right.right = TreeNode(<span class="number">7</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">assert</span> Solution().averageOfLevels(root) == [<span class="number">3</span>, <span class="number">14.5</span>, <span class="number">11</span>]</span><br></pre></td></tr></table></figure>
+<h3 id="难度"><a href="#难度" class="headerlink" title="难度"></a>难度</h3><p>Easy</p>
+<h3 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h3><p>从低位到高位相加，每一位的结果为除10取余，如果有进位1，则在下一位求和的时候需要+1，循环处理即可。注意最高位相加后如果有进位，需要在结果的最前面补1</p>
+<h3 id="python代码"><a href="#python代码" class="headerlink" title="python代码"></a>python代码</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">addStrings</span>(<span class="params">self, num1, num2</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        :type num1: str</span></span><br><span class="line"><span class="string">        :type num2: str</span></span><br><span class="line"><span class="string">        :rtype: str</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        i = <span class="built_in">len</span>(num1) - <span class="number">1</span></span><br><span class="line">        j = <span class="built_in">len</span>(num2) - <span class="number">1</span></span><br><span class="line">        num = <span class="string">&quot;&quot;</span></span><br><span class="line">        carry = <span class="number">0</span></span><br><span class="line">        <span class="keyword">while</span> i &gt;= <span class="number">0</span> <span class="keyword">or</span> j &gt;= <span class="number">0</span>:</span><br><span class="line">            result = carry</span><br><span class="line">            <span class="keyword">if</span> i &gt;= <span class="number">0</span>:</span><br><span class="line">                result += <span class="built_in">int</span>(num1[i])</span><br><span class="line">            <span class="keyword">if</span> j &gt;= <span class="number">0</span>:</span><br><span class="line">                result += <span class="built_in">int</span>(num2[j])</span><br><span class="line">            <span class="keyword">if</span> result &gt;= <span class="number">10</span>:</span><br><span class="line">                carry = <span class="number">1</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                carry = <span class="number">0</span></span><br><span class="line">            num = <span class="built_in">str</span>(result % <span class="number">10</span>) + num</span><br><span class="line">            i -= <span class="number">1</span></span><br><span class="line">            j -= <span class="number">1</span></span><br><span class="line">        <span class="keyword">if</span> carry == <span class="number">1</span>:</span><br><span class="line">            num = <span class="string">&quot;1&quot;</span> + num</span><br><span class="line">        <span class="keyword">return</span> num</span><br><span class="line"></span><br><span class="line"><span class="keyword">assert</span> Solution().addStrings(<span class="string">&quot;111&quot;</span>, <span class="string">&quot;234965&quot;</span>) == <span class="string">&quot;235076&quot;</span></span><br><span class="line"><span class="keyword">assert</span> Solution().addStrings(<span class="string">&quot;999&quot;</span>, <span class="string">&quot;1&quot;</span>) == <span class="string">&quot;1000&quot;</span></span><br></pre></td></tr></table></figure>
       
     </div>
 
@@ -878,7 +467,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://eazow.com/LeetCode-620-Not-Boring-Movies/">
+    <link itemprop="mainEntityOfPage" href="http://eazow.com/LeetCode-543-Diameter-of-Binary-Tree/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -896,7 +485,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/LeetCode-620-Not-Boring-Movies/" class="post-title-link" itemprop="url">[LeetCode]620. Not Boring Movies</a>
+          <a href="/LeetCode-543-Diameter-of-Binary-Tree/" class="post-title-link" itemprop="url">[LeetCode]543. Diameter of Binary Tree</a>
         </h2>
 
         <div class="post-meta-container">
@@ -907,7 +496,7 @@
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2017-07-31 11:56:34" itemprop="dateCreated datePublished" datetime="2017-07-31T11:56:34+08:00">2017-07-31</time>
+      <time title="Created: 2017-08-28 17:11:27" itemprop="dateCreated datePublished" datetime="2017-08-28T17:11:27+08:00">2017-08-28</time>
     </span>
 
   
@@ -927,15 +516,438 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h5 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h5><p>X city opened a new cinema, many people would like to go to this cinema. The cinema also gives out a poster indicating the movies’ ratings and descriptions.</p>
-<p>Please write a SQL query to output movies with an odd numbered ID and a description that is not ‘boring’. Order the result by rating.</p>
-<p>For example, table cinema:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">+---------+-----------+--------------+-----------+</span><br><span class="line">|   id    | movie     |  description |  rating   |</span><br><span class="line">+---------+-----------+--------------+-----------+</span><br><span class="line">|   1     | War       |   great 3D   |   8.9     |</span><br><span class="line">|   2     | Science   |   fiction    |   8.5     |</span><br><span class="line">|   3     | irish     |   boring     |   6.2     |</span><br><span class="line">|   4     | Ice song  |   Fantacy    |   8.6     |</span><br><span class="line">|   5     | House card|   Interesting|   9.1     |</span><br><span class="line">+---------+-----------+--------------+-----------+</span><br></pre></td></tr></table></figure>
-<p>For the example above, the output should be:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">+---------+-----------+--------------+-----------+</span><br><span class="line">|   id    | movie     |  description |  rating   |</span><br><span class="line">+---------+-----------+--------------+-----------+</span><br><span class="line">|   5     | House card|   Interesting|   9.1     |</span><br><span class="line">|   1     | War       |   great 3D   |   8.9     |</span><br><span class="line">+---------+-----------+--------------+-----------+</span><br></pre></td></tr></table></figure>
+          <h3 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h3><p>Given a binary tree, you need to compute the length of the diameter of the tree. The diameter of a binary tree is the length of the <strong>longest</strong> path between any two nodes in a tree. This path may or may not pass through the root.</p>
+<p><strong>Example:</strong><br>Given a binary tree </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">    1</span><br><span class="line">   / \</span><br><span class="line">  2   3</span><br><span class="line"> / \     </span><br><span class="line">4   5</span><br></pre></td></tr></table></figure>
+<p>Return 3, which is the length of the path [4,2,1,3] or [5,2,1,3].</p>
+<p><strong>Note:</strong> The length of path between two nodes is represented by the number of edges between them.</p>
+<h3 id="难度"><a href="#难度" class="headerlink" title="难度"></a>难度</h3><p>Easy</p>
+<h3 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h3><p>求出每个节点左右子树的深度，相加即为该节点对应的diameter，最后取最大的diameter即可</p>
+<h3 id="python代码"><a href="#python代码" class="headerlink" title="python代码"></a>python代码</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">TreeNode</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, x</span>):</span><br><span class="line">        self.val = x</span><br><span class="line">        self.left = <span class="literal">None</span></span><br><span class="line">        self.right = <span class="literal">None</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">diameterOfBinaryTree</span>(<span class="params">self, root</span>):</span><br><span class="line">        self.diameter = <span class="number">0</span></span><br><span class="line">        <span class="keyword">def</span> <span class="title function_">depth</span>(<span class="params">node</span>):</span><br><span class="line">            <span class="keyword">if</span> node:</span><br><span class="line">                l_depth = depth(node.left)</span><br><span class="line">                r_depth = depth(node.right)</span><br><span class="line">                self.diameter = <span class="built_in">max</span>(self.diameter, l_depth + r_depth)</span><br><span class="line">                <span class="keyword">return</span> <span class="built_in">max</span>(l_depth, r_depth) + <span class="number">1</span></span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line"></span><br><span class="line">        depth(root)</span><br><span class="line">        <span class="keyword">return</span> self.diameter</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">root = TreeNode(<span class="number">1</span>)</span><br><span class="line">root.left = TreeNode(<span class="number">2</span>)</span><br><span class="line">root.right = TreeNode(<span class="number">3</span>)</span><br><span class="line">root.left.left = TreeNode(<span class="number">4</span>)</span><br><span class="line">root.left.right = TreeNode(<span class="number">5</span>)</span><br><span class="line"><span class="keyword">assert</span> Solution().diameterOfBinaryTree(root) == <span class="number">3</span></span><br></pre></td></tr></table></figure>
+      
+    </div>
 
-<h5 id="难度"><a href="#难度" class="headerlink" title="难度"></a>难度</h5><p>Easy</p>
-<h5 id="sql"><a href="#sql" class="headerlink" title="sql"></a>sql</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># Write your MySQL query statement below</span><br><span class="line">select * from cinema where id%2 and description != &#x27;boring&#x27; order by rating desc;</span><br></pre></td></tr></table></figure>
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://eazow.com/LeetCode-541-Reverse-String-II/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Eazow">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Eazow">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Eazow">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/LeetCode-541-Reverse-String-II/" class="post-title-link" itemprop="url">[LeetCode]541. Reverse String II</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2017-08-23 15:05:03" itemprop="dateCreated datePublished" datetime="2017-08-23T15:05:03+08:00">2017-08-23</time>
+    </span>
+
+  
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h3 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h3><p>Given a string and an integer k, you need to reverse the first k characters for every 2k characters counting from the start of the string. If there are less than k characters left, reverse all of them. If there are less than 2k but greater than or equal to k characters, then reverse the first k characters and left the other as original.<br><strong>Example:</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Input: s = &quot;abcdefg&quot;, k = 2</span><br><span class="line">Output: &quot;bacdfeg&quot;</span><br></pre></td></tr></table></figure>
+<p><strong>Restrictions:</strong></p>
+<ol>
+<li>The string consists of lower English letters only.</li>
+<li>Length of the given string and k will in the range [1, 10000]</li>
+</ol>
+<h3 id="难度"><a href="#难度" class="headerlink" title="难度"></a>难度</h3><p>Easy</p>
+<h3 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h3><p>每次处理s[0:2k]，将s[0:k]逆序后拼接s[k:2k]，然后将s[2k:]赋值给s，循环处理直至s为空即可</p>
+<h3 id="python代码"><a href="#python代码" class="headerlink" title="python代码"></a>python代码</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">reverseStr</span>(<span class="params">self, s, k</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        :type s: str</span></span><br><span class="line"><span class="string">        :type k: int</span></span><br><span class="line"><span class="string">        :rtype: str</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        result = <span class="string">&quot;&quot;</span></span><br><span class="line">        <span class="keyword">while</span> s:</span><br><span class="line">            temp = s[<span class="number">0</span>:k]</span><br><span class="line">            result += temp[::-<span class="number">1</span>] + s[k:<span class="number">2</span>*k]</span><br><span class="line">            s = s[<span class="number">2</span>*k:]</span><br><span class="line">        <span class="keyword">return</span> result</span><br><span class="line"></span><br><span class="line"><span class="keyword">assert</span> Solution().reverseStr(<span class="string">&quot;abcdefg&quot;</span>, <span class="number">2</span>) == <span class="string">&quot;bacdfeg&quot;</span></span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://eazow.com/LeetCode-551-Student-Attendance-Record-I/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Eazow">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Eazow">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Eazow">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/LeetCode-551-Student-Attendance-Record-I/" class="post-title-link" itemprop="url">[LeetCode]551. Student Attendance Record I</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2017-08-22 18:39:11" itemprop="dateCreated datePublished" datetime="2017-08-22T18:39:11+08:00">2017-08-22</time>
+    </span>
+
+  
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h3 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h3><p>You are given a string representing an attendance record for a student. The record only contains the following three characters:</p>
+<ol>
+<li><strong>‘A’</strong> : Absent.</li>
+<li><strong>‘L’</strong> : Late.</li>
+<li><strong>‘P’</strong> : Present.</li>
+</ol>
+<p>A student could be rewarded if his attendance record doesn’t contain <strong>more than one ‘A’ (absent) or more than two continuous ‘L’ (late)</strong>.</p>
+<p>You need to return whether the student could be rewarded according to his attendance record.</p>
+<p><strong>Example 1:</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Input: &quot;PPALLP&quot;</span><br><span class="line">Output: True</span><br></pre></td></tr></table></figure>
+<p><strong>Example 2:</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Input: &quot;PPALLL&quot;</span><br><span class="line">Output: False</span><br></pre></td></tr></table></figure>
+
+<h3 id="难度"><a href="#难度" class="headerlink" title="难度"></a>难度</h3><p>Easy</p>
+<h3 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h3><p>对<code>&#39;A&#39;</code>和<code>&#39;L&#39;</code>计数，如果<code>&#39;A&#39;</code>出现的次数<code>&gt;1</code>，返回<code>False</code>；如果<code>&#39;L&#39;</code>连续出现的次数<code>&gt;2</code>，则返回<code>False</code>；其他情况返回<code>True</code></p>
+<h3 id="python代码"><a href="#python代码" class="headerlink" title="python代码"></a>python代码</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">checkRecord</span>(<span class="params">self, s</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        :type s: str</span></span><br><span class="line"><span class="string">        :rtype: bool</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        a_count = <span class="number">0</span></span><br><span class="line">        l_count = <span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> c <span class="keyword">in</span> s:</span><br><span class="line">            <span class="keyword">if</span> c == <span class="string">&quot;A&quot;</span>:</span><br><span class="line">                a_count += <span class="number">1</span></span><br><span class="line">                l_count = <span class="number">0</span></span><br><span class="line">                <span class="keyword">if</span> a_count &gt; <span class="number">1</span>:</span><br><span class="line">                    <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">            <span class="keyword">elif</span> c == <span class="string">&quot;L&quot;</span>:</span><br><span class="line">                l_count += <span class="number">1</span></span><br><span class="line">                <span class="keyword">if</span> l_count &gt; <span class="number">2</span>:</span><br><span class="line">                    <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                l_count = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">assert</span> Solution().checkRecord(<span class="string">&quot;PPALLP&quot;</span>) == <span class="literal">True</span></span><br><span class="line"><span class="keyword">assert</span> Solution().checkRecord(<span class="string">&quot;PPALLL&quot;</span>) == <span class="literal">False</span></span><br><span class="line"><span class="keyword">assert</span> Solution().checkRecord(<span class="string">&quot;ALPP&quot;</span>) == <span class="literal">True</span></span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://eazow.com/LeetCode-504-Base-7/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Eazow">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Eazow">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Eazow">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/LeetCode-504-Base-7/" class="post-title-link" itemprop="url">[LeetCode]504. Base 7</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2017-08-22 18:23:23" itemprop="dateCreated datePublished" datetime="2017-08-22T18:23:23+08:00">2017-08-22</time>
+    </span>
+
+  
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h3 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h3><p>Given an integer, return its base 7 string representation.</p>
+<p><strong>Example 1:</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Input: 100</span><br><span class="line">Output: &quot;202&quot;</span><br></pre></td></tr></table></figure>
+<p><strong>Example 2:</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Input: -7</span><br><span class="line">Output: &quot;-10&quot;</span><br></pre></td></tr></table></figure>
+<p><strong>Note:</strong> The input will be in range of [-1e7, 1e7].</p>
+<h3 id="难度"><a href="#难度" class="headerlink" title="难度"></a>难度</h3><p>Easy</p>
+<h3 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h3><p>对<code>num</code>取除以<code>7</code>的余数，即为最低位的数，然后将<code>num/7</code>赋值给<code>num</code>，继续取<code>num</code>除以<code>7</code>的余数即为倒数第二位的数，依次类推。注意<code>num</code>为<code>0</code>时需要返回<code>&quot;0&quot;</code></p>
+<h3 id="python代码"><a href="#python代码" class="headerlink" title="python代码"></a>python代码</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">class Solution(object):</span><br><span class="line">    def convertToBase7(self, num):</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        :type num: int</span><br><span class="line">        :rtype: str</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        if num == 0:</span><br><span class="line">            return &quot;0&quot;</span><br><span class="line">        symbol = &quot;&quot;</span><br><span class="line">        if num &lt; 0:</span><br><span class="line">            num = 0 - num</span><br><span class="line">            symbol = &quot;-&quot;</span><br><span class="line"></span><br><span class="line">        result = &quot;&quot;</span><br><span class="line">        while num &gt; 0:</span><br><span class="line">            result += str(num % 7)</span><br><span class="line">            num = num / 7</span><br><span class="line"></span><br><span class="line">        return symbol + result[::-1]</span><br><span class="line"></span><br><span class="line">assert Solution().convertToBase7(100) == &quot;202&quot;</span><br><span class="line">assert Solution().convertToBase7(-7) == &quot;-10&quot;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://eazow.com/LeetCode-401-Binary-Watch/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Eazow">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Eazow">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Eazow">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/LeetCode-401-Binary-Watch/" class="post-title-link" itemprop="url">[LeetCode]401. Binary Watch</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2017-08-17 11:36:40" itemprop="dateCreated datePublished" datetime="2017-08-17T11:36:40+08:00">2017-08-17</time>
+    </span>
+
+  
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h3 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h3><p>A binary watch has 4 LEDs on the top which represent the <strong>hours</strong> (<strong>0-11</strong>), and the 6 LEDs on the bottom represent the <strong>minutes</strong> (<strong>0-59</strong>).<br>Each LED represents a zero or one, with the least significant bit on the right.<br><img data-src="http://upload-images.jianshu.io/upload_images/1425939-95b4dcdac5372438.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/320"><br>For example, the above binary watch reads “3:25”.<br>Given a non-negative integer <em>n</em> which represents the number of LEDs that are currently on, return all possible times the watch could represent.<br><strong>Example:</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Input: n = 1</span><br><span class="line">Return: [&quot;1:00&quot;, &quot;2:00&quot;, &quot;4:00&quot;, &quot;8:00&quot;, &quot;0:01&quot;, &quot;0:02&quot;, &quot;0:04&quot;, &quot;0:08&quot;, &quot;0:16&quot;, &quot;0:32&quot;]</span><br></pre></td></tr></table></figure>
+<p><strong>Note:</strong></p>
+<ul>
+<li>The order of output does not matter.</li>
+<li>The hour must not contain a leading zero, for example “01:00” is not valid, it should be “1:00”.</li>
+<li>The minute must be consist of two digits and may contain a leading zero, for example “10:2” is not valid, it should be “10:02”.</li>
+</ul>
+<h3 id="难度"><a href="#难度" class="headerlink" title="难度"></a>难度</h3><p>Easy</p>
+<h3 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h3><p>遍历所有可能的时间，如果其中1的个数等于n，则将该时间加入返回的结果列表中</p>
+<h3 id="python代码"><a href="#python代码" class="headerlink" title="python代码"></a>python代码</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">readBinaryWatch</span>(<span class="params">self, num</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        :type num: int</span></span><br><span class="line"><span class="string">        :rtype: List[str]</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        result = []</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">12</span>):</span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">60</span>):</span><br><span class="line">                <span class="keyword">if</span> <span class="built_in">bin</span>(i).count(<span class="string">&quot;1&quot;</span>) + <span class="built_in">bin</span>(j).count(<span class="string">&quot;1&quot;</span>) == num:</span><br><span class="line">                    result.append(<span class="string">&quot;%d:%02d&quot;</span> % (i, j))</span><br><span class="line">        <span class="keyword">return</span> result</span><br><span class="line"></span><br><span class="line"><span class="keyword">assert</span> Solution().readBinaryWatch(<span class="number">1</span>) == [<span class="string">&quot;0:01&quot;</span>, <span class="string">&quot;0:02&quot;</span>, <span class="string">&quot;0:04&quot;</span>, <span class="string">&quot;0:08&quot;</span>, <span class="string">&quot;0:16&quot;</span>, <span class="string">&quot;0:32&quot;</span>, <span class="string">&quot;1:00&quot;</span>, <span class="string">&quot;2:00&quot;</span>, <span class="string">&quot;4:00&quot;</span>, <span class="string">&quot;8:00&quot;</span>]</span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://eazow.com/LeetCode-447-Number-of-Boomerangs/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Eazow">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Eazow">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Eazow">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/LeetCode-447-Number-of-Boomerangs/" class="post-title-link" itemprop="url">[LeetCode]447. Number of Boomerangs</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2017-08-16 11:02:21" itemprop="dateCreated datePublished" datetime="2017-08-16T11:02:21+08:00">2017-08-16</time>
+    </span>
+
+  
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h3 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h3><p>Given <code>n</code> points in the plane that are all pairwise distinct, a “boomerang” is a tuple of points <code>(i, j, k)</code> such that the distance between <code>i</code> and <code>j</code> equals the distance between <code>i</code> and <code>k</code> <strong>(the order of the tuple matters).</strong></p>
+<p>Find the number of boomerangs. You may assume that n will be at most 500 and coordinates of points are all in the range <strong>[-10000, 10000]</strong> (inclusive).</p>
+<p><strong>Example:</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Input:</span><br><span class="line">[[0,0],[1,0],[2,0]]</span><br><span class="line"></span><br><span class="line">Output:</span><br><span class="line">2</span><br><span class="line"></span><br><span class="line">Explanation:</span><br><span class="line">The two boomerangs are [[1,0],[0,0],[2,0]] and [[1,0],[2,0],[0,0]]</span><br></pre></td></tr></table></figure>
+
+<h3 id="难度"><a href="#难度" class="headerlink" title="难度"></a>难度</h3><p>Easy</p>
+<h3 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h3><p>对于每个<code>point</code>，用一个<code>map</code>统计各个距离<code>d</code>下对应的其他<code>point</code>的个数<code>n</code>，即<code>map</code>的<code>key</code>为距离<code>d</code>，<code>value</code>为距离该<code>point</code>为<code>d</code>的其他<code>point</code>的个数<code>n</code>。然后<code>An</code>取<code>2</code>，即<code>n*(n-1)</code>。最后将各个<code>point</code>对应的<code>n*(n-1)</code>累加即可</p>
+<h3 id="python代码"><a href="#python代码" class="headerlink" title="python代码"></a>python代码</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">numberOfBoomerangs</span>(<span class="params">self, points</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        :type points: List[List[int]]</span></span><br><span class="line"><span class="string">        :rtype: int</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        result = <span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> point_i <span class="keyword">in</span> points:</span><br><span class="line">            distance_map = &#123;&#125;</span><br><span class="line">            <span class="keyword">for</span> point_j <span class="keyword">in</span> points:</span><br><span class="line">                distance = (point_i[<span class="number">0</span>] - point_j[<span class="number">0</span>]) * (point_i[<span class="number">0</span>] - point_j[<span class="number">0</span>]) + \</span><br><span class="line">                           (point_i[<span class="number">1</span>] - point_j[<span class="number">1</span>]) * (point_i[<span class="number">1</span>] - point_j[<span class="number">1</span>])</span><br><span class="line">                distance_map[distance] = distance_map.get(distance, <span class="number">0</span>) + <span class="number">1</span></span><br><span class="line"></span><br><span class="line">            <span class="keyword">for</span> distance <span class="keyword">in</span> distance_map:</span><br><span class="line">                count = distance_map[distance]</span><br><span class="line">                result += count * (count - <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> result</span><br><span class="line"></span><br><span class="line"><span class="keyword">assert</span> Solution().numberOfBoomerangs([[<span class="number">0</span>,<span class="number">0</span>], [<span class="number">1</span>,<span class="number">0</span>], [<span class="number">2</span>,<span class="number">0</span>]]) == <span class="number">2</span></span><br></pre></td></tr></table></figure>
       
     </div>
 
@@ -954,7 +966,7 @@
 
 
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/5/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/7/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+    <a class="extend prev" rel="prev" href="/page/5/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/7/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 </div>
@@ -977,13 +989,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">325k</span>
+    <span title="Symbols count total">409k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">4:55</span>
+    <span title="Reading time total">6:12</span>
   </span>
 </div>
 <div class="busuanzi-count">

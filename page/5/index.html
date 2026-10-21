@@ -86,7 +86,7 @@
 
 
 <nav class="site-nav">
-  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li>
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-series"><a href="/series/" rel="section"><i class="fa fa-layer-group fa-fw"></i>Series</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li>
   </ul>
 </nav>
 
@@ -127,7 +127,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://eazow.com/LeetCode-594-Longest-Harmonious-Subsequence/">
+    <link itemprop="mainEntityOfPage" href="http://eazow.com/zen-of-python/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -145,7 +145,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/LeetCode-594-Longest-Harmonious-Subsequence/" class="post-title-link" itemprop="url">[LeetCode]594. Longest Harmonious Subsequence</a>
+          <a href="/zen-of-python/" class="post-title-link" itemprop="url">The Zen of Python</a>
         </h2>
 
         <div class="post-meta-container">
@@ -156,7 +156,16 @@
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2017-09-04 16:26:33" itemprop="dateCreated datePublished" datetime="2017-09-04T16:26:33+08:00">2017-09-04</time>
+      <time title="Created: 2018-05-20 11:52:50" itemprop="dateCreated datePublished" datetime="2018-05-20T11:52:50+08:00">2018-05-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Coding/" itemprop="url" rel="index"><span itemprop="name">Coding</span></a>
+        </span>
     </span>
 
   
@@ -176,12 +185,10 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h3 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h3><p>We define a harmonious array is an array where the difference between its maximum value and its minimum value is <strong>exactly</strong> 1.<br>Now, given an integer array, you need to find the length of its longest harmonious subsequence among all its possible <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Subsequence">subsequences</a>.<br><strong>Example 1:</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">**Input:** [1,3,2,2,5,2,3,7]</span><br><span class="line">**Output:** 5**</span><br><span class="line">Explanation:** The longest harmonious subsequence is [3,2,2,2,3].</span><br></pre></td></tr></table></figure>
-<p><strong>Note:</strong> The length of the input array will not exceed 20,000.</p>
-<h3 id="难度"><a href="#难度" class="headerlink" title="难度"></a>难度</h3><p>Easy</p>
-<h3 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h3><p>用一个<code>map</code>存放所有值出现的次数，对于<code>map</code>中的每个<code>num</code>，求出<code>num</code>和<code>num+1</code>出现的次数之和，找出最大值即可</p>
-<h3 id="python代码"><a href="#python代码" class="headerlink" title="python代码"></a>python代码</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">findLHS</span>(<span class="params">self, nums</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        :type nums: List[int]</span></span><br><span class="line"><span class="string">        :rtype: int</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        nums_count = &#123;&#125;</span><br><span class="line">        <span class="keyword">for</span> num <span class="keyword">in</span> nums:</span><br><span class="line">            nums_count[num] = nums_count.get(num, <span class="number">0</span>) + <span class="number">1</span></span><br><span class="line"></span><br><span class="line">        result = <span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> num <span class="keyword">in</span> nums_count:</span><br><span class="line">            count = nums_count[num]</span><br><span class="line">            <span class="keyword">if</span> nums_count.get(num+<span class="number">1</span>):</span><br><span class="line">                result = <span class="built_in">max</span>(result, count + nums_count[num+<span class="number">1</span>])</span><br><span class="line">        <span class="keyword">return</span> result</span><br><span class="line"></span><br><span class="line"><span class="keyword">assert</span> Solution().findLHS([<span class="number">1</span>,<span class="number">3</span>,<span class="number">2</span>,<span class="number">2</span>,<span class="number">5</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">7</span>]) == <span class="number">5</span></span><br></pre></td></tr></table></figure>
+          <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">Beautiful is better than ugly.</span><br><span class="line">Explicit is better than implicit.</span><br><span class="line">Simple is better than complex.</span><br><span class="line">Complex is better than complicated.</span><br><span class="line">Flat is better than nested.</span><br><span class="line">Sparse is better than dense.</span><br><span class="line">Readability counts.</span><br><span class="line">Special cases aren&#x27;t special enough to break the rules.</span><br><span class="line">Although practicality beats purity.</span><br><span class="line">Errors should never pass silently.</span><br><span class="line">Unless explicitly silenced.</span><br><span class="line">In the face of ambiguity, refuse the temptation to guess.</span><br><span class="line">There should be one-- and preferably only one --obvious way to do it.</span><br><span class="line">Although that way may not be obvious at first unless you&#x27;re Dutch.</span><br><span class="line">Now is better than never.</span><br><span class="line">Although never is often better than *right* now.</span><br><span class="line">If the implementation is hard to explain, it&#x27;s a bad idea.</span><br><span class="line">If the implementation is easy to explain, it may be a good idea.</span><br><span class="line">Namespaces are one honking great idea -- let&#x27;s do more of those!</span><br></pre></td></tr></table></figure>
+
+<h5 id="Easter-Egg"><a href="#Easter-Egg" class="headerlink" title="Easter Egg"></a>Easter Egg</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; import this</span><br></pre></td></tr></table></figure>
+
       
     </div>
 
@@ -207,7 +214,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://eazow.com/LeetCode-405-Convert-a-Number-to-Hexadecimal/">
+    <link itemprop="mainEntityOfPage" href="http://eazow.com/nce/4/10-silicon-valley/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -225,7 +232,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/LeetCode-405-Convert-a-Number-to-Hexadecimal/" class="post-title-link" itemprop="url">[LeetCode]405. Convert a Number to Hexadecimal</a>
+          <a href="/nce/4/10-silicon-valley/" class="post-title-link" itemprop="url">Lesson 10 Silicon Valley</a>
         </h2>
 
         <div class="post-meta-container">
@@ -236,97 +243,16 @@
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2017-09-02 16:44:55" itemprop="dateCreated datePublished" datetime="2017-09-02T16:44:55+08:00">2017-09-02</time>
+      <time title="Created: 2018-02-26 00:00:00" itemprop="dateCreated datePublished" datetime="2018-02-26T00:00:00+08:00">2018-02-26</time>
     </span>
-
-  
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h3 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h3><p>Given an integer, write an algorithm to convert it to hexadecimal. For negative integer, <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Two%27s_complement">two’s complement</a> method is used.<br><strong>Note:</strong></p>
-<ol>
-<li>All letters in hexadecimal (a-f) must be in lowercase.</li>
-<li>The hexadecimal string must not contain extra leading 0s. If the number is zero, it is represented by a single zero character ‘0’; otherwise, the first character in the hexadecimal string will not be the zero character.</li>
-<li>The given number is guaranteed to fit within the range of a 32-bit signed integer.</li>
-<li>You <strong>must not use <em>any</em> method provided by the library</strong> which converts&#x2F;formats the number to hex directly.</li>
-</ol>
-<p><strong>Example 1:</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Input:</span><br><span class="line">26</span><br><span class="line">Output:</span><br><span class="line">&quot;1a&quot;</span><br></pre></td></tr></table></figure>
-
-<p><strong>Example 2:</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Input:</span><br><span class="line">-1</span><br><span class="line">Output:</span><br><span class="line">&quot;ffffffff&quot;</span><br></pre></td></tr></table></figure>
-
-<h3 id="难度"><a href="#难度" class="headerlink" title="难度"></a>难度</h3><p>Easy</p>
-<h3 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h3><p>对于<code>num</code>，每次<code>num&amp;15</code>便可取到最右的4个bit位，然后<code>num&gt;&gt;4</code>循环处理即可将<code>num</code>转换为16进制。因为<code>num</code>范围为32bit位，因此最多右移8次，每次右移<code>4</code>个bit位。当<code>num</code>不为<code>0</code>时，转换为16进制后，前面有<code>0</code>需去除。</p>
-<h3 id="python代码"><a href="#python代码" class="headerlink" title="python代码"></a>python代码</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">toHex</span>(<span class="params">self, num</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        :type num: int</span></span><br><span class="line"><span class="string">        :rtype: str</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">if</span> num == <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="string">&quot;0&quot;</span></span><br><span class="line">        <span class="built_in">map</span> = [<span class="string">&quot;0&quot;</span>,<span class="string">&quot;1&quot;</span>,<span class="string">&quot;2&quot;</span>,<span class="string">&quot;3&quot;</span>,<span class="string">&quot;4&quot;</span>,<span class="string">&quot;5&quot;</span>,<span class="string">&quot;6&quot;</span>,<span class="string">&quot;7&quot;</span>,<span class="string">&quot;8&quot;</span>,<span class="string">&quot;9&quot;</span>,<span class="string">&quot;a&quot;</span>,<span class="string">&quot;b&quot;</span>,<span class="string">&quot;c&quot;</span>,<span class="string">&quot;d&quot;</span>,<span class="string">&quot;e&quot;</span>,<span class="string">&quot;f&quot;</span>]</span><br><span class="line">        <span class="built_in">hex</span> = <span class="string">&quot;&quot;</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">8</span>):</span><br><span class="line">            <span class="built_in">hex</span> = <span class="built_in">map</span>[num &amp; <span class="number">0xf</span>] + <span class="built_in">hex</span></span><br><span class="line">            num = num &gt;&gt; <span class="number">4</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">hex</span>.lstrip(<span class="string">&quot;0&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">assert</span> Solution().toHex(-<span class="number">1</span>) == <span class="string">&quot;ffffffff&quot;</span></span><br><span class="line"><span class="keyword">assert</span> Solution().toHex(<span class="number">26</span>) == <span class="string">&quot;1a&quot;</span></span><br></pre></td></tr></table></figure>
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://eazow.com/LeetCode-415-Add-Strings/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Eazow">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Eazow">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Eazow">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/LeetCode-415-Add-Strings/" class="post-title-link" itemprop="url">[LeetCode]415. Add Strings</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
+        <i class="far fa-folder"></i>
       </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2017-09-01 15:48:15" itemprop="dateCreated datePublished" datetime="2017-09-01T15:48:15+08:00">2017-09-01</time>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/English/" itemprop="url" rel="index"><span itemprop="name">English</span></a>
+        </span>
     </span>
 
   
@@ -335,7 +261,7 @@
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
+      <span>5 mins.</span>
     </span>
 </div>
 
@@ -346,441 +272,95 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h3 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h3><p>Given two non-negative integers <code>num1</code> and <code>num2</code> represented as string, return the sum of <code>num1</code> and <code>num2</code>.</p>
-<p><strong>Note:</strong></p>
-<ol>
-<li>The length of both num1 and num2 is &lt; 5100.</li>
-<li>Both num1 and num2 contains only digits 0-9.</li>
-<li>Both num1 and num2 does not contain any leading zero.</li>
-<li>You <strong>must not use any built-in BigInteger library or convert the inputs to integer</strong> directly.</li>
-</ol>
-<h3 id="难度"><a href="#难度" class="headerlink" title="难度"></a>难度</h3><p>Easy</p>
-<h3 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h3><p>从低位到高位相加，每一位的结果为除10取余，如果有进位1，则在下一位求和的时候需要+1，循环处理即可。注意最高位相加后如果有进位，需要在结果的最前面补1</p>
-<h3 id="python代码"><a href="#python代码" class="headerlink" title="python代码"></a>python代码</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">addStrings</span>(<span class="params">self, num1, num2</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        :type num1: str</span></span><br><span class="line"><span class="string">        :type num2: str</span></span><br><span class="line"><span class="string">        :rtype: str</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        i = <span class="built_in">len</span>(num1) - <span class="number">1</span></span><br><span class="line">        j = <span class="built_in">len</span>(num2) - <span class="number">1</span></span><br><span class="line">        num = <span class="string">&quot;&quot;</span></span><br><span class="line">        carry = <span class="number">0</span></span><br><span class="line">        <span class="keyword">while</span> i &gt;= <span class="number">0</span> <span class="keyword">or</span> j &gt;= <span class="number">0</span>:</span><br><span class="line">            result = carry</span><br><span class="line">            <span class="keyword">if</span> i &gt;= <span class="number">0</span>:</span><br><span class="line">                result += <span class="built_in">int</span>(num1[i])</span><br><span class="line">            <span class="keyword">if</span> j &gt;= <span class="number">0</span>:</span><br><span class="line">                result += <span class="built_in">int</span>(num2[j])</span><br><span class="line">            <span class="keyword">if</span> result &gt;= <span class="number">10</span>:</span><br><span class="line">                carry = <span class="number">1</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                carry = <span class="number">0</span></span><br><span class="line">            num = <span class="built_in">str</span>(result % <span class="number">10</span>) + num</span><br><span class="line">            i -= <span class="number">1</span></span><br><span class="line">            j -= <span class="number">1</span></span><br><span class="line">        <span class="keyword">if</span> carry == <span class="number">1</span>:</span><br><span class="line">            num = <span class="string">&quot;1&quot;</span> + num</span><br><span class="line">        <span class="keyword">return</span> num</span><br><span class="line"></span><br><span class="line"><span class="keyword">assert</span> Solution().addStrings(<span class="string">&quot;111&quot;</span>, <span class="string">&quot;234965&quot;</span>) == <span class="string">&quot;235076&quot;</span></span><br><span class="line"><span class="keyword">assert</span> Solution().addStrings(<span class="string">&quot;999&quot;</span>, <span class="string">&quot;1&quot;</span>) == <span class="string">&quot;1000&quot;</span></span><br></pre></td></tr></table></figure>
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://eazow.com/LeetCode-543-Diameter-of-Binary-Tree/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Eazow">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Eazow">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Eazow">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/LeetCode-543-Diameter-of-Binary-Tree/" class="post-title-link" itemprop="url">[LeetCode]543. Diameter of Binary Tree</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2017-08-28 17:11:27" itemprop="dateCreated datePublished" datetime="2017-08-28T17:11:27+08:00">2017-08-28</time>
-    </span>
-
-  
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h3 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h3><p>Given a binary tree, you need to compute the length of the diameter of the tree. The diameter of a binary tree is the length of the <strong>longest</strong> path between any two nodes in a tree. This path may or may not pass through the root.</p>
-<p><strong>Example:</strong><br>Given a binary tree </p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">    1</span><br><span class="line">   / \</span><br><span class="line">  2   3</span><br><span class="line"> / \     </span><br><span class="line">4   5</span><br></pre></td></tr></table></figure>
-<p>Return 3, which is the length of the path [4,2,1,3] or [5,2,1,3].</p>
-<p><strong>Note:</strong> The length of path between two nodes is represented by the number of edges between them.</p>
-<h3 id="难度"><a href="#难度" class="headerlink" title="难度"></a>难度</h3><p>Easy</p>
-<h3 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h3><p>求出每个节点左右子树的深度，相加即为该节点对应的diameter，最后取最大的diameter即可</p>
-<h3 id="python代码"><a href="#python代码" class="headerlink" title="python代码"></a>python代码</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">TreeNode</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, x</span>):</span><br><span class="line">        self.val = x</span><br><span class="line">        self.left = <span class="literal">None</span></span><br><span class="line">        self.right = <span class="literal">None</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">diameterOfBinaryTree</span>(<span class="params">self, root</span>):</span><br><span class="line">        self.diameter = <span class="number">0</span></span><br><span class="line">        <span class="keyword">def</span> <span class="title function_">depth</span>(<span class="params">node</span>):</span><br><span class="line">            <span class="keyword">if</span> node:</span><br><span class="line">                l_depth = depth(node.left)</span><br><span class="line">                r_depth = depth(node.right)</span><br><span class="line">                self.diameter = <span class="built_in">max</span>(self.diameter, l_depth + r_depth)</span><br><span class="line">                <span class="keyword">return</span> <span class="built_in">max</span>(l_depth, r_depth) + <span class="number">1</span></span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line"></span><br><span class="line">        depth(root)</span><br><span class="line">        <span class="keyword">return</span> self.diameter</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">root = TreeNode(<span class="number">1</span>)</span><br><span class="line">root.left = TreeNode(<span class="number">2</span>)</span><br><span class="line">root.right = TreeNode(<span class="number">3</span>)</span><br><span class="line">root.left.left = TreeNode(<span class="number">4</span>)</span><br><span class="line">root.left.right = TreeNode(<span class="number">5</span>)</span><br><span class="line"><span class="keyword">assert</span> Solution().diameterOfBinaryTree(root) == <span class="number">3</span></span><br></pre></td></tr></table></figure>
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://eazow.com/LeetCode-541-Reverse-String-II/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Eazow">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Eazow">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Eazow">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/LeetCode-541-Reverse-String-II/" class="post-title-link" itemprop="url">[LeetCode]541. Reverse String II</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2017-08-23 15:05:03" itemprop="dateCreated datePublished" datetime="2017-08-23T15:05:03+08:00">2017-08-23</time>
-    </span>
-
-  
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h3 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h3><p>Given a string and an integer k, you need to reverse the first k characters for every 2k characters counting from the start of the string. If there are less than k characters left, reverse all of them. If there are less than 2k but greater than or equal to k characters, then reverse the first k characters and left the other as original.<br><strong>Example:</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Input: s = &quot;abcdefg&quot;, k = 2</span><br><span class="line">Output: &quot;bacdfeg&quot;</span><br></pre></td></tr></table></figure>
-<p><strong>Restrictions:</strong></p>
-<ol>
-<li>The string consists of lower English letters only.</li>
-<li>Length of the given string and k will in the range [1, 10000]</li>
-</ol>
-<h3 id="难度"><a href="#难度" class="headerlink" title="难度"></a>难度</h3><p>Easy</p>
-<h3 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h3><p>每次处理s[0:2k]，将s[0:k]逆序后拼接s[k:2k]，然后将s[2k:]赋值给s，循环处理直至s为空即可</p>
-<h3 id="python代码"><a href="#python代码" class="headerlink" title="python代码"></a>python代码</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">reverseStr</span>(<span class="params">self, s, k</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        :type s: str</span></span><br><span class="line"><span class="string">        :type k: int</span></span><br><span class="line"><span class="string">        :rtype: str</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        result = <span class="string">&quot;&quot;</span></span><br><span class="line">        <span class="keyword">while</span> s:</span><br><span class="line">            temp = s[<span class="number">0</span>:k]</span><br><span class="line">            result += temp[::-<span class="number">1</span>] + s[k:<span class="number">2</span>*k]</span><br><span class="line">            s = s[<span class="number">2</span>*k:]</span><br><span class="line">        <span class="keyword">return</span> result</span><br><span class="line"></span><br><span class="line"><span class="keyword">assert</span> Solution().reverseStr(<span class="string">&quot;abcdefg&quot;</span>, <span class="number">2</span>) == <span class="string">&quot;bacdfeg&quot;</span></span><br></pre></td></tr></table></figure>
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://eazow.com/LeetCode-551-Student-Attendance-Record-I/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Eazow">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Eazow">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Eazow">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/LeetCode-551-Student-Attendance-Record-I/" class="post-title-link" itemprop="url">[LeetCode]551. Student Attendance Record I</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2017-08-22 18:39:11" itemprop="dateCreated datePublished" datetime="2017-08-22T18:39:11+08:00">2017-08-22</time>
-    </span>
-
-  
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h3 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h3><p>You are given a string representing an attendance record for a student. The record only contains the following three characters:</p>
-<ol>
-<li><strong>‘A’</strong> : Absent.</li>
-<li><strong>‘L’</strong> : Late.</li>
-<li><strong>‘P’</strong> : Present.</li>
-</ol>
-<p>A student could be rewarded if his attendance record doesn’t contain <strong>more than one ‘A’ (absent) or more than two continuous ‘L’ (late)</strong>.</p>
-<p>You need to return whether the student could be rewarded according to his attendance record.</p>
-<p><strong>Example 1:</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Input: &quot;PPALLP&quot;</span><br><span class="line">Output: True</span><br></pre></td></tr></table></figure>
-<p><strong>Example 2:</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Input: &quot;PPALLL&quot;</span><br><span class="line">Output: False</span><br></pre></td></tr></table></figure>
-
-<h3 id="难度"><a href="#难度" class="headerlink" title="难度"></a>难度</h3><p>Easy</p>
-<h3 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h3><p>对<code>&#39;A&#39;</code>和<code>&#39;L&#39;</code>计数，如果<code>&#39;A&#39;</code>出现的次数<code>&gt;1</code>，返回<code>False</code>；如果<code>&#39;L&#39;</code>连续出现的次数<code>&gt;2</code>，则返回<code>False</code>；其他情况返回<code>True</code></p>
-<h3 id="python代码"><a href="#python代码" class="headerlink" title="python代码"></a>python代码</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">checkRecord</span>(<span class="params">self, s</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        :type s: str</span></span><br><span class="line"><span class="string">        :rtype: bool</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        a_count = <span class="number">0</span></span><br><span class="line">        l_count = <span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> c <span class="keyword">in</span> s:</span><br><span class="line">            <span class="keyword">if</span> c == <span class="string">&quot;A&quot;</span>:</span><br><span class="line">                a_count += <span class="number">1</span></span><br><span class="line">                l_count = <span class="number">0</span></span><br><span class="line">                <span class="keyword">if</span> a_count &gt; <span class="number">1</span>:</span><br><span class="line">                    <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">            <span class="keyword">elif</span> c == <span class="string">&quot;L&quot;</span>:</span><br><span class="line">                l_count += <span class="number">1</span></span><br><span class="line">                <span class="keyword">if</span> l_count &gt; <span class="number">2</span>:</span><br><span class="line">                    <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                l_count = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">assert</span> Solution().checkRecord(<span class="string">&quot;PPALLP&quot;</span>) == <span class="literal">True</span></span><br><span class="line"><span class="keyword">assert</span> Solution().checkRecord(<span class="string">&quot;PPALLL&quot;</span>) == <span class="literal">False</span></span><br><span class="line"><span class="keyword">assert</span> Solution().checkRecord(<span class="string">&quot;ALPP&quot;</span>) == <span class="literal">True</span></span><br></pre></td></tr></table></figure>
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://eazow.com/LeetCode-504-Base-7/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Eazow">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Eazow">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Eazow">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/LeetCode-504-Base-7/" class="post-title-link" itemprop="url">[LeetCode]504. Base 7</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2017-08-22 18:23:23" itemprop="dateCreated datePublished" datetime="2017-08-22T18:23:23+08:00">2017-08-22</time>
-    </span>
-
-  
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h3 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h3><p>Given an integer, return its base 7 string representation.</p>
-<p><strong>Example 1:</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Input: 100</span><br><span class="line">Output: &quot;202&quot;</span><br></pre></td></tr></table></figure>
-<p><strong>Example 2:</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Input: -7</span><br><span class="line">Output: &quot;-10&quot;</span><br></pre></td></tr></table></figure>
-<p><strong>Note:</strong> The input will be in range of [-1e7, 1e7].</p>
-<h3 id="难度"><a href="#难度" class="headerlink" title="难度"></a>难度</h3><p>Easy</p>
-<h3 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h3><p>对<code>num</code>取除以<code>7</code>的余数，即为最低位的数，然后将<code>num/7</code>赋值给<code>num</code>，继续取<code>num</code>除以<code>7</code>的余数即为倒数第二位的数，依次类推。注意<code>num</code>为<code>0</code>时需要返回<code>&quot;0&quot;</code></p>
-<h3 id="python代码"><a href="#python代码" class="headerlink" title="python代码"></a>python代码</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">class Solution(object):</span><br><span class="line">    def convertToBase7(self, num):</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        :type num: int</span><br><span class="line">        :rtype: str</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        if num == 0:</span><br><span class="line">            return &quot;0&quot;</span><br><span class="line">        symbol = &quot;&quot;</span><br><span class="line">        if num &lt; 0:</span><br><span class="line">            num = 0 - num</span><br><span class="line">            symbol = &quot;-&quot;</span><br><span class="line"></span><br><span class="line">        result = &quot;&quot;</span><br><span class="line">        while num &gt; 0:</span><br><span class="line">            result += str(num % 7)</span><br><span class="line">            num = num / 7</span><br><span class="line"></span><br><span class="line">        return symbol + result[::-1]</span><br><span class="line"></span><br><span class="line">assert Solution().convertToBase7(100) == &quot;202&quot;</span><br><span class="line">assert Solution().convertToBase7(-7) == &quot;-10&quot;</span><br></pre></td></tr></table></figure>
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://eazow.com/LeetCode-401-Binary-Watch/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Eazow">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Eazow">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Eazow">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/LeetCode-401-Binary-Watch/" class="post-title-link" itemprop="url">[LeetCode]401. Binary Watch</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2017-08-17 11:36:40" itemprop="dateCreated datePublished" datetime="2017-08-17T11:36:40+08:00">2017-08-17</time>
-    </span>
-
-  
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h3 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h3><p>A binary watch has 4 LEDs on the top which represent the <strong>hours</strong> (<strong>0-11</strong>), and the 6 LEDs on the bottom represent the <strong>minutes</strong> (<strong>0-59</strong>).<br>Each LED represents a zero or one, with the least significant bit on the right.<br><img data-src="http://upload-images.jianshu.io/upload_images/1425939-95b4dcdac5372438.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/320"><br>For example, the above binary watch reads “3:25”.<br>Given a non-negative integer <em>n</em> which represents the number of LEDs that are currently on, return all possible times the watch could represent.<br><strong>Example:</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Input: n = 1</span><br><span class="line">Return: [&quot;1:00&quot;, &quot;2:00&quot;, &quot;4:00&quot;, &quot;8:00&quot;, &quot;0:01&quot;, &quot;0:02&quot;, &quot;0:04&quot;, &quot;0:08&quot;, &quot;0:16&quot;, &quot;0:32&quot;]</span><br></pre></td></tr></table></figure>
-<p><strong>Note:</strong></p>
-<ul>
-<li>The order of output does not matter.</li>
-<li>The hour must not contain a leading zero, for example “01:00” is not valid, it should be “1:00”.</li>
-<li>The minute must be consist of two digits and may contain a leading zero, for example “10:2” is not valid, it should be “10:02”.</li>
+          <blockquote>
+<p> What does the computer industry <strong>thrive</strong> on apart from <strong>anarchy</strong>?</p>
+</blockquote>
+<p>Technology trends may push Silicon Valley back to the future. Carver Mead, a pioneer in integrated <strong>circuits</strong> and a professor of computer science at the California Institute of Technology, notes there are now work-stations that enable engineers to design, test and produce chips right on their desks, much the way an editor creates a newsletter on a Macintosh. As the time and cost of making a chip drop to a few days and a few hundred dollars, engineers may soon be free to let their imaginations <strong>soar</strong> without being <strong>penalized</strong> by expensive failures. Mead predicts that inventors will be able to perfect powerful customized chips over a weekend at the office—<strong>spawning</strong> a new generation of garage start-ups and giving the U.S. a jump on its foreign rivals in getting new products to market fast. ‘We’re got more garages with smart people,’ Mead observes. ‘We really <strong>thrive</strong> on <strong>anarchy</strong>.’</p>
+<p>And on Asians. Already, <strong>orientals</strong> and Asian Americans constitute the majority of the engineering staffs at many Valley firms. And Chinese, Korean, Filipino and Indian engineers are graduating in <strong>droves</strong> from California’s colleges. As the heads of next-generation start-ups, these Asian innovators can draw on customs and languages to forge righter links with <strong>crucial</strong> Pacific Rim markets. For instance, Alex Au, a Stanford Ph. D. from Hong Kong, has set up a Taiwan factory to challenge Japan’s near lock on the memory-chip market. India-born N.Damodar Reddy’s tiny California company reopened an AT &amp; T chip plant in Kansas City last spring with financing from the state of Missouri. Before it becomes a retirement village, Silicon Valley may prove a classroom for building a global business.</p>
+<hr>
+<h3 id="文章结构"><a href="#文章结构" class="headerlink" title="文章结构"></a>文章结构</h3><ul>
+<li><strong>第一段</strong>：低成本的芯片制造技术降低了创业门槛，”车库创业”文化让美国得以快速试错、快速创新。</li>
+<li><strong>第二段</strong>：亚裔工程师成为硅谷工程团队的主力，凭借语言和文化优势连接环太平洋市场，是硅谷的另一大动力来源。</li>
 </ul>
-<h3 id="难度"><a href="#难度" class="headerlink" title="难度"></a>难度</h3><p>Easy</p>
-<h3 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h3><p>遍历所有可能的时间，如果其中1的个数等于n，则将该时间加入返回的结果列表中</p>
-<h3 id="python代码"><a href="#python代码" class="headerlink" title="python代码"></a>python代码</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">readBinaryWatch</span>(<span class="params">self, num</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        :type num: int</span></span><br><span class="line"><span class="string">        :rtype: List[str]</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        result = []</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">12</span>):</span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">60</span>):</span><br><span class="line">                <span class="keyword">if</span> <span class="built_in">bin</span>(i).count(<span class="string">&quot;1&quot;</span>) + <span class="built_in">bin</span>(j).count(<span class="string">&quot;1&quot;</span>) == num:</span><br><span class="line">                    result.append(<span class="string">&quot;%d:%02d&quot;</span> % (i, j))</span><br><span class="line">        <span class="keyword">return</span> result</span><br><span class="line"></span><br><span class="line"><span class="keyword">assert</span> Solution().readBinaryWatch(<span class="number">1</span>) == [<span class="string">&quot;0:01&quot;</span>, <span class="string">&quot;0:02&quot;</span>, <span class="string">&quot;0:04&quot;</span>, <span class="string">&quot;0:08&quot;</span>, <span class="string">&quot;0:16&quot;</span>, <span class="string">&quot;0:32&quot;</span>, <span class="string">&quot;1:00&quot;</span>, <span class="string">&quot;2:00&quot;</span>, <span class="string">&quot;4:00&quot;</span>, <span class="string">&quot;8:00&quot;</span>]</span><br></pre></td></tr></table></figure>
+<p><strong>文化背景</strong>：Garage start-ups（车库创业）是硅谷传奇，苹果、惠普都起源于车库；Pacific Rim（环太平洋）指亚太经济圈；文中提到的内存芯片市场当时由日本主导。这篇文章写于20世纪末，预见了亚裔人才和全球化对硅谷的重要性。</p>
+<hr>
+<h3 id="逐句讲解"><a href="#逐句讲解" class="headerlink" title="逐句讲解"></a>逐句讲解</h3><p><strong>Technology trends may push Silicon Valley back to the future.</strong><br>技术趋势可能会把硅谷推回到未来。—— “back to the future” 是双关，指用未来的技术回归早期车库创业的模式。</p>
+<p><strong>Carver Mead, a pioneer in integrated circuits and a professor of computer science at Caltech, notes there are now work-stations that enable engineers to design, test and produce chips right on their desks, much the way an editor creates a newsletter on a Macintosh.</strong><br>卡弗·米德——集成电路先驱、加州理工计算机科学教授——指出，现在的工作站能让工程师在自己桌上设计、测试、生产芯片，就像编辑在苹果电脑上排版一样。—— enable sb to do sth &#x3D; 使某人能做某事；much the way &#x3D; 就像……的方式一样。</p>
+<p><strong>As the time and cost of making a chip drop to a few days and a few hundred dollars, engineers may soon be free to let their imaginations soar without being penalized by expensive failures.</strong><br>随着造芯片的时间和成本降到几天、几百美元，工程师很快就能自由地放飞想象，而不用为高昂的失败付出代价。—— let imagination soar &#x3D; 让想象力自由驰骋；be penalized by &#x3D; 因……受罚。</p>
+<p><strong>Mead predicts that inventors will be able to perfect powerful customized chips over a weekend at the office—spawning a new generation of garage start-ups and giving the U.S. a jump on its foreign rivals in getting new products to market fast.</strong><br>米德预测，发明家们能利用一个周末在办公室完善强大的定制芯片——催生新一代车库创业公司，让美国在把新产品快速推向市场这件事上领先于外国对手。—— spawning 是分词作结果状语；give sb a jump on &#x3D; 使某人领先于。</p>
+<p><strong>‘We’ve got more garages with smart people,’ Mead observes. ‘We really thrive on anarchy.’</strong><br>“我们有更多藏着聪明人的车库，”米德说，”我们就是靠这种无序状态茁壮成长的。”—— thrive on &#x3D; 依靠……而繁荣；这里 anarchy 指宽松自由、不受束缚的创新环境。</p>
+<p><strong>And on Asians.</strong><br>还依靠亚洲人。—— 省略句，补全是 We also thrive on Asians，承接上一句的 thrive on，简短有力。</p>
+<p><strong>Already, orientals and Asian Americans constitute the majority of the engineering staffs at many Valley firms. And Chinese, Korean, Filipino and Indian engineers are graduating in droves from California’s colleges.</strong><br>东方人和亚裔美国人已经占了硅谷许多公司工程团队的大多数，中、韩、菲、印工程师正成批从加州高校毕业。—— orientals 是较老的说法，现在多用 Asians；in droves &#x3D; 成群结队地。</p>
+<p><strong>As the heads of next-generation start-ups, these Asian innovators can draw on customs and languages to forge tighter links with crucial Pacific Rim markets.</strong><br>作为下一代创业公司的领军人物，这些亚裔创新者能靠共通的习俗和语言，与至关重要的环太平洋市场建立更紧密的联系。—— draw on &#x3D; 凭借、利用。</p>
+<p><strong>For instance, Alex Au, a Stanford Ph.D. from Hong Kong, has set up a Taiwan factory to challenge Japan’s near lock on the memory-chip market.</strong><br>比如来自香港的斯坦福博士 Alex Au，在台湾建厂挑战日本对内存芯片市场近乎垄断的地位。</p>
+<p><strong>India-born N. Damodar Reddy’s tiny California company reopened an AT&amp;T chip plant in Kansas City last spring with financing from the state of Missouri.</strong><br>出生于印度的 N. Damodar Reddy 名下的加州小公司，去年春天靠密苏里州的资助，重新开办了 AT&amp;T 在堪萨斯城的芯片厂。</p>
+<p><strong>Before it becomes a retirement village, Silicon Valley may prove a classroom for building a global business.</strong><br>在变成”退休村”之前，硅谷或许能成为教全世界如何做全球生意的课堂。—— 暗含警示：不把握好人才和全球化机遇，硅谷也会衰落；反之则能成为典范。</p>
+<hr>
+<h3 id="核心词汇"><a href="#核心词汇" class="headerlink" title="核心词汇"></a>核心词汇</h3><table>
+<thead>
+<tr>
+<th>词汇</th>
+<th>词性</th>
+<th>含义</th>
+<th>用法&#x2F;例句</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>thrive &#x2F;θraɪv&#x2F;</td>
+<td>v.</td>
+<td>茁壮成长、兴旺</td>
+<td>thrive on sth（依靠……而繁荣）；Some people thrive on pressure.</td>
+</tr>
+<tr>
+<td>anarchy &#x2F;ˈænərki&#x2F;</td>
+<td>n.</td>
+<td>无政府状态、无序</td>
+<td>文中指宽松自由的创新环境；形容词 anarchic</td>
+</tr>
+<tr>
+<td>circuits &#x2F;ˈsɜːrkɪts&#x2F;</td>
+<td>n.</td>
+<td>电路</td>
+<td>integrated circuits（集成电路）</td>
+</tr>
+<tr>
+<td>soar &#x2F;sɔːr&#x2F;</td>
+<td>v.</td>
+<td>翱翔；激增</td>
+<td>let imagination soar；Prices soared.</td>
+</tr>
+<tr>
+<td>penalized &#x2F;ˈpiːnəlaɪzd&#x2F;</td>
+<td>v. (过去分词)</td>
+<td>惩罚</td>
+<td>be penalized by&#x2F;for</td>
+</tr>
+<tr>
+<td>spawning &#x2F;spɔːnɪŋ&#x2F;</td>
+<td>v. (现在分词)</td>
+<td>催生、大量产生</td>
+<td>原意鱼类产卵，引申为”引发一大批”</td>
+</tr>
+<tr>
+<td>orientals &#x2F;ˌɔːriˈentlz&#x2F;</td>
+<td>n.</td>
+<td>东方人</td>
+<td>现代英语中偏旧，多用 Asians</td>
+</tr>
+<tr>
+<td>droves &#x2F;droʊvz&#x2F;</td>
+<td>n.</td>
+<td>群、大批</td>
+<td>in droves（成群结队地）</td>
+</tr>
+<tr>
+<td>crucial &#x2F;ˈkruːʃl&#x2F;</td>
+<td>adj.</td>
+<td>至关重要的</td>
+<td>同义词 critical, vital, essential</td>
+</tr>
+</tbody></table>
+
       
     </div>
 
@@ -806,7 +386,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://eazow.com/LeetCode-447-Number-of-Boomerangs/">
+    <link itemprop="mainEntityOfPage" href="http://eazow.com/nce/4/09-royal-espionage/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -824,7 +404,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/LeetCode-447-Number-of-Boomerangs/" class="post-title-link" itemprop="url">[LeetCode]447. Number of Boomerangs</a>
+          <a href="/nce/4/09-royal-espionage/" class="post-title-link" itemprop="url">Lesson 09 Royal Espionage</a>
         </h2>
 
         <div class="post-meta-container">
@@ -835,7 +415,16 @@
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2017-08-16 11:02:21" itemprop="dateCreated datePublished" datetime="2017-08-16T11:02:21+08:00">2017-08-16</time>
+      <time title="Created: 2018-02-20 00:00:00" itemprop="dateCreated datePublished" datetime="2018-02-20T00:00:00+08:00">2018-02-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/English/" itemprop="url" rel="index"><span itemprop="name">English</span></a>
+        </span>
     </span>
 
   
@@ -844,7 +433,7 @@
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
+      <span>5 mins.</span>
     </span>
 </div>
 
@@ -855,14 +444,19 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h3 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h3><p>Given <code>n</code> points in the plane that are all pairwise distinct, a “boomerang” is a tuple of points <code>(i, j, k)</code> such that the distance between <code>i</code> and <code>j</code> equals the distance between <code>i</code> and <code>k</code> <strong>(the order of the tuple matters).</strong></p>
-<p>Find the number of boomerangs. You may assume that n will be at most 500 and coordinates of points are all in the range <strong>[-10000, 10000]</strong> (inclusive).</p>
-<p><strong>Example:</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Input:</span><br><span class="line">[[0,0],[1,0],[2,0]]</span><br><span class="line"></span><br><span class="line">Output:</span><br><span class="line">2</span><br><span class="line"></span><br><span class="line">Explanation:</span><br><span class="line">The two boomerangs are [[1,0],[0,0],[2,0]] and [[1,0],[2,0],[0,0]]</span><br></pre></td></tr></table></figure>
-
-<h3 id="难度"><a href="#难度" class="headerlink" title="难度"></a>难度</h3><p>Easy</p>
-<h3 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h3><p>对于每个<code>point</code>，用一个<code>map</code>统计各个距离<code>d</code>下对应的其他<code>point</code>的个数<code>n</code>，即<code>map</code>的<code>key</code>为距离<code>d</code>，<code>value</code>为距离该<code>point</code>为<code>d</code>的其他<code>point</code>的个数<code>n</code>。然后<code>An</code>取<code>2</code>，即<code>n*(n-1)</code>。最后将各个<code>point</code>对应的<code>n*(n-1)</code>累加即可</p>
-<h3 id="python代码"><a href="#python代码" class="headerlink" title="python代码"></a>python代码</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">numberOfBoomerangs</span>(<span class="params">self, points</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        :type points: List[List[int]]</span></span><br><span class="line"><span class="string">        :rtype: int</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        result = <span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> point_i <span class="keyword">in</span> points:</span><br><span class="line">            distance_map = &#123;&#125;</span><br><span class="line">            <span class="keyword">for</span> point_j <span class="keyword">in</span> points:</span><br><span class="line">                distance = (point_i[<span class="number">0</span>] - point_j[<span class="number">0</span>]) * (point_i[<span class="number">0</span>] - point_j[<span class="number">0</span>]) + \</span><br><span class="line">                           (point_i[<span class="number">1</span>] - point_j[<span class="number">1</span>]) * (point_i[<span class="number">1</span>] - point_j[<span class="number">1</span>])</span><br><span class="line">                distance_map[distance] = distance_map.get(distance, <span class="number">0</span>) + <span class="number">1</span></span><br><span class="line"></span><br><span class="line">            <span class="keyword">for</span> distance <span class="keyword">in</span> distance_map:</span><br><span class="line">                count = distance_map[distance]</span><br><span class="line">                result += count * (count - <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> result</span><br><span class="line"></span><br><span class="line"><span class="keyword">assert</span> Solution().numberOfBoomerangs([[<span class="number">0</span>,<span class="number">0</span>], [<span class="number">1</span>,<span class="number">0</span>], [<span class="number">2</span>,<span class="number">0</span>]]) == <span class="number">2</span></span><br></pre></td></tr></table></figure>
+          <blockquote>
+<p>What important thing did King Alfred learn when he <strong>penetrated</strong> the Danish camp of Guthrum?</p>
+</blockquote>
+<p>Alfred the Great acted his own spy, visiting Danish camps <strong>disguised</strong> as a <strong>minstrel</strong>. In those days <strong>wandering</strong> minstrels were welcome everywhere. They were not fighting men, and their <strong>harp</strong> was their passport. Alfred had learned many of their <strong>ballads</strong> in his youth, and could vary his programme with <strong>acrobatic</strong> <strong>tricks</strong> and simple <strong>conjuring</strong>.</p>
+<p>While Alfred’s little army slowly began to gather at Athelney, the king himself set out to <strong>penetrate</strong> the camp of Guthrum, the <strong>commander</strong> of the Danish invaders. There had settled down for the winter at Chippenham: <strong>thither</strong> Alfred went. He noticed at once that discipline was slack: the Danes had the self-confidence of <strong>conquerors</strong>, and their security precautions were <strong>casual</strong>. They lived well, on the proceeds of <strong>raids</strong> on neighbouring regions. There they collected women as well as food and drink, and a life of ease had made them soft.</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/nce/4/09-royal-espionage/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -888,7 +482,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://eazow.com/LeetCode-628-Maximum-Product-of-Three-Numbers/">
+    <link itemprop="mainEntityOfPage" href="http://eazow.com/nce/4/08-trading-standards/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -906,7 +500,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/LeetCode-628-Maximum-Product-of-Three-Numbers/" class="post-title-link" itemprop="url">[LeetCode]628. Maximum Product of  Three Numbers</a>
+          <a href="/nce/4/08-trading-standards/" class="post-title-link" itemprop="url">Lesson 08 Trading Standards</a>
         </h2>
 
         <div class="post-meta-container">
@@ -917,7 +511,16 @@
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2017-08-14 19:03:47" itemprop="dateCreated datePublished" datetime="2017-08-14T19:03:47+08:00">2017-08-14</time>
+      <time title="Created: 2018-02-10 00:00:00" itemprop="dateCreated datePublished" datetime="2018-02-10T00:00:00+08:00">2018-02-10</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/English/" itemprop="url" rel="index"><span itemprop="name">English</span></a>
+        </span>
     </span>
 
   
@@ -926,7 +529,7 @@
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
+      <span>7 mins.</span>
     </span>
 </div>
 
@@ -937,19 +540,880 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h3 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h3><p>Given an integer array, find three numbers whose product is maximum and output the maximum product.</p>
-<p><strong>Example 1:</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Input: [1,2,3]</span><br><span class="line">Output: 6</span><br></pre></td></tr></table></figure>
-<p><strong>Example 2:</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Input: [1,2,3,4]</span><br><span class="line">Output: 24</span><br></pre></td></tr></table></figure>
-<p><strong>Note:</strong></p>
+          <blockquote>
+<p> What makes trading between rich countries difficult?</p>
+</blockquote>
+<p>Chickens <strong>slaughtered</strong> in the United States, claim officials in Brussels, are not fit to grace European tables. No, say the American: our <strong>fowl</strong> are fine, we simply clean them in a different way. These days, it is differences in national regulations, far more than <strong>tariffs</strong>, that put sand in the wheels of trade between rich countries. It is not just farmers who are complaining. An electric <strong>razor</strong> that meets the European Union’s safety standards must be approved by American testers before it can be sold in the United States, and an American-made <strong>dialysis</strong> machine needs the EU’s okay before is hits the market in Europe.</p>
+<p>As it happens, a razor that is safe in Europe is unlikely to <strong>electrocute</strong> Americans. So, ask businesses on both sides of the Atlantic, why have two lots of tests where one would do? Politicians agree, in principle, so America and the EU have been trying to reach a deal which would <strong>eliminate</strong> the need to double-test many products. They hope to finish in time for a trade <strong>summit</strong> between America and the EU on May 28TH. Although <strong>negotiators</strong> are optimistic, the details are complex enough that they may be hard-pressed to get a deal at all.</p>
+<p>Why? One difficulty is to construct the agreements. The Americans would happily reach one accord on standards for medical devices and then <strong>hammer</strong> out different <strong>pacts</strong> covering, say, electronic goods and drug manufacturing. The EU—following fine continental traditions—wants agreement on general principles, which could be applied to many types of products and perhaps extended to other countries.</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/nce/4/08-trading-standards/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://eazow.com/nce/4/07-bats/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Eazow">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Eazow">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Eazow">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/nce/4/07-bats/" class="post-title-link" itemprop="url">Lesson 07 Bats</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2018-01-30 00:00:00" itemprop="dateCreated datePublished" datetime="2018-01-30T00:00:00+08:00">2018-01-30</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/English/" itemprop="url" rel="index"><span itemprop="name">English</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>6 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <blockquote>
+<p>In what way does echo-location in bats play an <strong>utilitarian</strong> role?</p>
+</blockquote>
+<p>Not all sounds made by animals serve as language, and we have only to turn to that extraordinary discovery of echo-location in bats to see a case in which the voice plays a strictly utilitarian role.</p>
+<p>To get a full appreciation of what this means we must turn first to some recent human inventions. Everyone knows that if he shouts in the <strong>vicinity</strong> of a wall or a mountainside, an echo will come back. The further off this solid obstruction, the longer time will elapse for the return of the echo. A sound made by tapping on the <strong>hull</strong> of a ship will be reflected from the sea bottom, and by measuring the time interval between the taps and the receipt of the echoes, the depth of the sea at that point can be calculated. So was born the echo-sounding <strong>apparatus</strong>, now in general use in ships. Every solid object will reflect a sound, varying according to the size and nature of the object. A <strong>shoal</strong> of fish will do this. So it is a comparatively simple step from locating the sea bottom to locating a shoal of fish. With experience, and with improved <strong>apparatus</strong>, it is now possible not only to locate a shoal but to tell if it is <strong>herring</strong>, <strong>cod</strong>, or other well-known fish, by the pattern of its echo.</p>
+<p>It has been found that certain bats emit <strong>squeaks</strong> and by receiving the echoes, they can locate and <strong>steer</strong> clear of obstacles—or locate flying insects on which they feed. This echo-location in bats is often compared with radar, the principle of which is similar.</p>
+<h1 id="重点句子精讲与翻译"><a href="#重点句子精讲与翻译" class="headerlink" title="重点句子精讲与翻译"></a>重点句子精讲与翻译</h1><h2 id="第一段重点句"><a href="#第一段重点句" class="headerlink" title="第一段重点句"></a><strong>第一段重点句</strong></h2><h3 id="句子1️⃣"><a href="#句子1️⃣" class="headerlink" title="句子1️⃣"></a>句子1️⃣</h3><p><strong>原文：</strong></p>
+<blockquote>
+<p>Not all sounds made by animals serve as language, and we have only to turn to that extraordinary discovery of echo-location in bats to see a case in which the voice plays a strictly utilitarian role.</p>
+</blockquote>
+<p><strong>结构分析：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">主句1: Not all sounds ... serve as language</span><br><span class="line">     (部分否定)</span><br><span class="line"></span><br><span class="line">连接词: and</span><br><span class="line"></span><br><span class="line">主句2: we have only to turn to ... to see ...</span><br><span class="line">     (只需要...就能看到...)</span><br><span class="line">     </span><br><span class="line">定语从句: in which the voice plays a strictly utilitarian role</span><br><span class="line">        (修饰 a case)</span><br></pre></td></tr></table></figure>
+
+<p><strong>逐词翻译：</strong></p>
+<ul>
+<li><strong>Not all</strong> &#x3D; 并非所有（部分否定，不是”所有都不”）</li>
+<li><strong>sounds made by animals</strong> &#x3D; 动物发出的声音</li>
+<li><strong>serve as</strong> &#x3D; 充当，作为</li>
+<li><strong>we have only to do sth</strong> &#x3D; 我们只需做某事</li>
+<li><strong>turn to</strong> &#x3D; 转向，查看</li>
+<li><strong>extraordinary discovery</strong> &#x3D; 非凡的发现</li>
+<li><strong>echo-location</strong> &#x3D; 回声定位</li>
+<li><strong>a case in which</strong> &#x3D; 一个…的例子</li>
+<li><strong>strictly utilitarian role</strong> &#x3D; 纯粹实用的角色</li>
+</ul>
+<p><strong>参考译文：</strong><br>并非所有动物发出的声音都具有语言功能，我们只需看看蝙蝠回声定位这一非凡发现，就能明白声音在某些情况下纯粹起着实用性作用。</p>
+<p><strong>翻译要点：</strong></p>
+<ul>
+<li>“Not all” 要译成”并非所有”，不能译成”所有都不”</li>
+<li>“have only to” 强调”只需要”的简单性</li>
+<li>“strictly utilitarian” 强调”纯粹的实用性”</li>
+</ul>
+<hr>
+<h2 id="第二段重点句"><a href="#第二段重点句" class="headerlink" title="第二段重点句"></a><strong>第二段重点句</strong></h2><h3 id="句子2️⃣"><a href="#句子2️⃣" class="headerlink" title="句子2️⃣"></a>句子2️⃣</h3><p><strong>原文：</strong></p>
+<blockquote>
+<p>Everyone knows that if he shouts in the vicinity of a wall or a mountainside, an echo will come back.</p>
+</blockquote>
+<p><strong>结构分析：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">主句: Everyone knows that...</span><br><span class="line">宾语从句: if he shouts..., an echo will come back</span><br><span class="line">         (条件状语从句 + 主句)</span><br></pre></td></tr></table></figure>
+
+<p><strong>逐词翻译：</strong></p>
+<ul>
+<li><strong>in the vicinity of</strong> &#x3D; 在…附近，在…邻近</li>
+<li><strong>mountainside</strong> &#x3D; 山坡，山腰</li>
+<li><strong>echo</strong> &#x3D; 回声</li>
+<li><strong>come back</strong> &#x3D; 返回</li>
+</ul>
+<p><strong>参考译文：</strong><br>每个人都知道，如果在墙壁或山坡附近大喊，就会听到回声返回。</p>
+<hr>
+<h3 id="句子3️⃣-⭐-重点难句"><a href="#句子3️⃣-⭐-重点难句" class="headerlink" title="句子3️⃣ ⭐ 重点难句"></a>句子3️⃣ ⭐ <strong>重点难句</strong></h3><p><strong>原文：</strong></p>
+<blockquote>
+<p>A sound made by tapping on the hull of a ship will be reflected from the sea bottom, and by measuring the time interval between the taps and the receipt of the echoes, the depth of the sea at that point can be calculated.</p>
+</blockquote>
+<p><strong>结构分析：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">第一部分：</span><br><span class="line">主语: A sound (made by tapping on the hull)</span><br><span class="line">      [过去分词短语作定语]</span><br><span class="line">谓语: will be reflected from...</span><br><span class="line"></span><br><span class="line">第二部分：</span><br><span class="line">方式状语: by measuring the time interval...</span><br><span class="line">主语: the depth of the sea</span><br><span class="line">谓语: can be calculated</span><br></pre></td></tr></table></figure>
+
+<p><strong>逐词翻译：</strong></p>
+<ul>
+<li><strong>tap on</strong> &#x3D; 敲击</li>
+<li><strong>hull</strong> &#x3D; 船体</li>
+<li><strong>be reflected from</strong> &#x3D; 从…反射回来</li>
+<li><strong>sea bottom</strong> &#x3D; 海底</li>
+<li><strong>measuring</strong> &#x3D; 测量</li>
+<li><strong>time interval</strong> &#x3D; 时间间隔</li>
+<li><strong>between A and B</strong> &#x3D; 在A和B之间</li>
+<li><strong>the receipt of the echoes</strong> &#x3D; 接收回声</li>
+<li><strong>at that point</strong> &#x3D; 在那个位置</li>
+</ul>
+<p><strong>参考译文：</strong><br>敲击船体发出的声音会从海底反射回来，通过测量敲击声和接收回声之间的时间间隔，就可以计算出该处的海水深度。</p>
+<p><strong>翻译技巧：</strong></p>
+<ul>
+<li>“made by tapping” 后置定语前置翻译：”敲击…发出的”</li>
+<li>“by measuring” 方式状语提前更符合中文习惯</li>
+<li>“at that point” 译为”该处”更简洁</li>
+</ul>
+<hr>
+<h3 id="句子4️⃣"><a href="#句子4️⃣" class="headerlink" title="句子4️⃣"></a>句子4️⃣</h3><p><strong>原文：</strong></p>
+<blockquote>
+<p>So was born the echo-sounding apparatus, now in general use in ships.</p>
+</blockquote>
+<p><strong>结构分析：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">倒装句: So was born the apparatus</span><br><span class="line">正常语序: So the apparatus was born</span><br><span class="line"></span><br><span class="line">插入语: now in general use in ships</span><br><span class="line">       (现在在船上普遍使用)</span><br></pre></td></tr></table></figure>
+
+<p><strong>逐词翻译：</strong></p>
+<ul>
+<li><strong>So was born</strong> &#x3D; 于是…诞生了（倒装强调）</li>
+<li><strong>echo-sounding apparatus</strong> &#x3D; 回声测深仪</li>
+<li><strong>in general use</strong> &#x3D; 普遍使用，广泛应用</li>
+<li><strong>now</strong> &#x3D; 现在</li>
+</ul>
+<p><strong>参考译文：</strong><br>回声测深仪就这样诞生了，现在已在船舶上普遍使用。</p>
+<p><strong>语法点：</strong></p>
+<ul>
+<li>倒装句用于强调”诞生”这个动作</li>
+<li>“now in general use” 是插入语，补充说明现状</li>
+</ul>
+<hr>
+<h3 id="句子5️⃣-⭐-重点难句"><a href="#句子5️⃣-⭐-重点难句" class="headerlink" title="句子5️⃣ ⭐ 重点难句"></a>句子5️⃣ ⭐ <strong>重点难句</strong></h3><p><strong>原文：</strong></p>
+<blockquote>
+<p>Every solid object will reflect a sound, varying according to the size and nature of the object.</p>
+</blockquote>
+<p><strong>结构分析：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">主句: Every solid object will reflect a sound</span><br><span class="line"></span><br><span class="line">现在分词短语作状语: varying according to...</span><br><span class="line">                  (表示伴随情况)</span><br></pre></td></tr></table></figure>
+
+<p><strong>逐词翻译：</strong></p>
+<ul>
+<li><strong>solid object</strong> &#x3D; 固体物体</li>
+<li><strong>reflect</strong> &#x3D; 反射</li>
+<li><strong>varying</strong> &#x3D; 变化（现在分词）</li>
+<li><strong>according to</strong> &#x3D; 根据，按照</li>
+<li><strong>nature</strong> &#x3D; 性质，特性</li>
+</ul>
+<p><strong>参考译文：</strong><br>每个固体物体都会反射声音，反射效果因物体的大小和性质而异。</p>
+<p><strong>翻译技巧：</strong></p>
+<ul>
+<li>“varying according to” 直译是”根据…而变化”</li>
+<li>意译为”因…而异”更地道</li>
+</ul>
+<hr>
+<h3 id="句子6️⃣"><a href="#句子6️⃣" class="headerlink" title="句子6️⃣"></a>句子6️⃣</h3><p><strong>原文：</strong></p>
+<blockquote>
+<p>So it is a comparatively simple step from locating the sea bottom to locating a shoal of fish.</p>
+</blockquote>
+<p><strong>结构分析：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">主语: it (形式主语)</span><br><span class="line">真正主语: from locating... to locating...</span><br><span class="line">         (从...到...)</span><br></pre></td></tr></table></figure>
+
+<p><strong>逐词翻译：</strong></p>
+<ul>
+<li><strong>comparatively</strong> &#x3D; 相对地，比较地</li>
+<li><strong>simple step</strong> &#x3D; 简单的一步</li>
+<li><strong>from A to B</strong> &#x3D; 从A到B</li>
+<li><strong>locate</strong> &#x3D; 定位</li>
+<li><strong>shoal of fish</strong> &#x3D; 鱼群</li>
+</ul>
+<p><strong>参考译文：</strong><br>因此，从定位海底到定位鱼群，这是一个相对简单的进步。</p>
+<hr>
+<h3 id="句子7️⃣-⭐-最难句"><a href="#句子7️⃣-⭐-最难句" class="headerlink" title="句子7️⃣ ⭐ 最难句"></a>句子7️⃣ ⭐ <strong>最难句</strong></h3><p><strong>原文：</strong></p>
+<blockquote>
+<p>With experience, and with improved apparatus, it is now possible not only to locate a shoal but to tell if it is herring, cod, or other well-known fish, by the pattern of its echo.</p>
+</blockquote>
+<p><strong>结构分析：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">状语1: With experience</span><br><span class="line">状语2: with improved apparatus</span><br><span class="line">形式主语: it</span><br><span class="line">真正主语: to locate... but to tell...</span><br><span class="line">         (not only... but (also)... 结构)</span><br><span class="line">方式状语: by the pattern of its echo</span><br></pre></td></tr></table></figure>
+
+<p><strong>逐词翻译：</strong></p>
+<ul>
+<li><strong>with experience</strong> &#x3D; 凭借经验</li>
+<li><strong>improved apparatus</strong> &#x3D; 改进的设备</li>
+<li><strong>it is possible to do</strong> &#x3D; 有可能做某事</li>
+<li><strong>not only… but (also)…</strong> &#x3D; 不仅…而且…</li>
+<li><strong>tell if</strong> &#x3D; 判断是否</li>
+<li><strong>by the pattern of</strong> &#x3D; 通过…的模式</li>
+<li><strong>echo</strong> &#x3D; 回声</li>
+</ul>
+<p><strong>参考译文：</strong><br>凭借经验和改进的设备，现在不仅可以定位鱼群，还可以通过回声的模式来判断是鲱鱼、鳕鱼还是其他常见鱼类。</p>
+<p><strong>翻译难点：</strong></p>
 <ol>
-<li>The length of the given array will be in range [3,104] and all elements are in the range [-1000, 1000].</li>
-<li>Multiplication of any three numbers in the input won’t exceed the range of 32-bit signed integer.</li>
+<li>两个”with”状语的处理</li>
+<li>“not only… but” 结构要完整体现</li>
+<li>“by the pattern” 方式状语的位置调整</li>
 </ol>
+<hr>
+<h2 id="第三段重点句"><a href="#第三段重点句" class="headerlink" title="第三段重点句"></a><strong>第三段重点句</strong></h2><h3 id="句子8️⃣"><a href="#句子8️⃣" class="headerlink" title="句子8️⃣"></a>句子8️⃣</h3><p><strong>原文：</strong></p>
+<blockquote>
+<p>It has been found that certain bats emit squeaks and by receiving the echoes, they can locate and steer clear of obstacles—or locate flying insects on which they feed.</p>
+</blockquote>
+<p><strong>结构分析：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">主句: It has been found that...</span><br><span class="line">宾语从句主干: bats emit squeaks and they can locate...</span><br><span class="line">方式状语: by receiving the echoes</span><br><span class="line">定语从句: on which they feed (修饰 insects)</span><br></pre></td></tr></table></figure>
+
+<p><strong>逐词翻译：</strong></p>
+<ul>
+<li><strong>it has been found that</strong> &#x3D; 已经发现（现在完成时被动）</li>
+<li><strong>certain bats</strong> &#x3D; 某些蝙蝠</li>
+<li><strong>emit</strong> &#x3D; 发出</li>
+<li><strong>squeaks</strong> &#x3D; 尖叫声，吱吱声</li>
+<li><strong>by receiving</strong> &#x3D; 通过接收</li>
+<li><strong>steer clear of</strong> &#x3D; 避开</li>
+<li><strong>obstacles</strong> &#x3D; 障碍物</li>
+<li><strong>on which they feed</strong> &#x3D; 它们以此为食</li>
+</ul>
+<p><strong>参考译文：</strong><br>研究发现，某些蝙蝠会发出尖叫声，通过接收回声，它们可以定位并避开障碍物——或者定位它们捕食的飞行昆虫。</p>
+<p><strong>翻译要点：</strong></p>
+<ul>
+<li>“It has been found” 可译为”研究发现”更自然</li>
+<li>破折号表示补充说明</li>
+<li>“on which they feed” 译为”它们捕食的”</li>
+</ul>
+<hr>
+<h3 id="句子9️⃣"><a href="#句子9️⃣" class="headerlink" title="句子9️⃣"></a>句子9️⃣</h3><p><strong>原文：</strong></p>
+<blockquote>
+<p>This echo-location in bats is often compared with radar, the principle of which is similar.</p>
+</blockquote>
+<p><strong>结构分析：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">主句: This echo-location is compared with radar</span><br><span class="line">非限定性定语从句: the principle of which is similar</span><br><span class="line">                (= whose principle is similar)</span><br></pre></td></tr></table></figure>
+
+<p><strong>逐词翻译：</strong></p>
+<ul>
+<li><strong>be compared with</strong> &#x3D; 被拿来与…比较</li>
+<li><strong>radar</strong> &#x3D; 雷达</li>
+<li><strong>the principle of which</strong> &#x3D; 其原理（&#x3D; whose principle）</li>
+<li><strong>similar</strong> &#x3D; 相似的</li>
+</ul>
+<p><strong>参考译文：</strong><br>蝙蝠的这种回声定位常被拿来与雷达相比较，两者的原理相似。</p>
+<hr>
+<h2 id="核心翻译技巧总结"><a href="#核心翻译技巧总结" class="headerlink" title="核心翻译技巧总结"></a><strong>核心翻译技巧总结</strong></h2><table>
+<thead>
+<tr>
+<th>技巧</th>
+<th>例句</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>部分否定</strong></td>
+<td>Not all sounds</td>
+<td>译为”并非所有”而非”所有都不”</td>
+</tr>
+<tr>
+<td><strong>后置定语前置</strong></td>
+<td>sounds made by animals</td>
+<td>译为”动物发出的声音”</td>
+</tr>
+<tr>
+<td><strong>倒装句还原</strong></td>
+<td>So was born…</td>
+<td>强调”诞生”，译时可还原语序</td>
+</tr>
+<tr>
+<td><strong>分词短语处理</strong></td>
+<td>varying according to</td>
+<td>译为”因…而异”</td>
+</tr>
+<tr>
+<td><strong>形式主语转换</strong></td>
+<td>it is possible to…</td>
+<td>可直接译为”可以…”</td>
+</tr>
+</tbody></table>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://eazow.com/nce/4/06-the-sporting-spirit/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Eazow">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Eazow">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Eazow">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/nce/4/06-the-sporting-spirit/" class="post-title-link" itemprop="url">Lesson 06 The Sporting Spirit</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2018-01-20 00:00:00" itemprop="dateCreated datePublished" datetime="2018-01-20T00:00:00+08:00">2018-01-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/English/" itemprop="url" rel="index"><span itemprop="name">English</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>4 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <blockquote>
+<p>How does the writer describe sport at the international level?</p>
+</blockquote>
+<p>I am always amazed when I hear people saying that sport creates <strong>goodwill</strong> between nations, and that if only the common peoples of the world could meet one another at football or <strong>cricket</strong>, they would have no <strong>inclination</strong> to meet on the battle field. Even if one didn’t know from concrete examples (the 1936 Olympic Games, for instance) that international sporting contests lead to <strong>orgies</strong> of <strong>hatred</strong>, one could deduce it from general principles.</p>
+<p>Nearly all the sports practised nowadays are competitive. You play to win, and the game has little meaning unless you do your utmost to win. On the village green, where you pick up sides and no feeling of local <strong>patriotism</strong> is involved, it is possible to play simply for the fun and exercise: but as soon as the question of <strong>prestige</strong> arises, as soon as you feel that you and some larger unit will be <strong>disgraced</strong> if you lose, the most <strong>savage</strong> <strong>combative</strong> instincts are aroused. Anyone who has played even in a school football match knows this. At the international level, sport is <strong>frankly</strong> <strong>mimic</strong> <strong>warfare</strong>. But the significant thing is not the behavior of the players but the attitude of the <strong>spectators</strong>; and, behind the spectators, of the nations who work themselves into <strong>furies</strong> over these absurd contests, and seriously believe—at any rate for short periods—that running, jumping and kicking a ball are tests of national <strong>virtue</strong>.</p>
+<h2 id="📖-难句解析"><a href="#📖-难句解析" class="headerlink" title="📖 难句解析"></a>📖 <strong>难句解析</strong></h2><h3 id="1-I-am-always-amazed-when-I-hear-people-saying-that-sport-creates-goodwill-between-nations-and-that-if-only-the-common-peoples-of-the-world-could-meet-one-another-at-football-or-cricket-they-would-have-no-inclination-to-meet-on-the-battle-field"><a href="#1-I-am-always-amazed-when-I-hear-people-saying-that-sport-creates-goodwill-between-nations-and-that-if-only-the-common-peoples-of-the-world-could-meet-one-another-at-football-or-cricket-they-would-have-no-inclination-to-meet-on-the-battle-field" class="headerlink" title="1. I am always amazed when I hear people saying that sport creates goodwill between nations, and that if only the common peoples of the world could meet one another at football or cricket, they would have no inclination to meet on the battle field."></a><strong>1. I am always amazed when I hear people saying that sport creates goodwill between nations, and that if only the common peoples of the world could meet one another at football or cricket, they would have no inclination to meet on the battle field.</strong></h3><ul>
+<li><code>hear sb doing</code> &#x3D; 听到某人在说（强调正在说的过程）</li>
+<li>两个并列的 <code>that</code> 宾语从句：<code>that sport creates ...</code> 和 <code>that if only ... they would ...</code></li>
+<li><code>if only</code> &#x3D; 要是……就好了，后接过去式（could meet），第二个从句用 <code>would</code>：对现实的虚拟，作者认为这想法不现实</li>
+<li><code>inclination to do</code> &#x3D; 做某事的意愿，<code>have no inclination to</code> &#x3D; 不想</li>
+<li><code>the common peoples</code> 的 peoples 是”各民族”，common 是”普通的”</li>
+<li><strong>译:</strong> 每当听到有人说体育能增进国与国之间的友好，说只要世界各国的普通人能在足球场或板球场上相见，他们就不会想在战场上相见，我总是感到惊讶。</li>
+</ul>
+<h3 id="2-Even-if-one-didn’t-know-from-concrete-examples-the-1936-Olympic-Games-for-instance-that-international-sporting-contests-lead-to-orgies-of-hatred-one-could-deduce-it-from-general-principles"><a href="#2-Even-if-one-didn’t-know-from-concrete-examples-the-1936-Olympic-Games-for-instance-that-international-sporting-contests-lead-to-orgies-of-hatred-one-could-deduce-it-from-general-principles" class="headerlink" title="2. Even if one didn’t know from concrete examples (the 1936 Olympic Games, for instance) that international sporting contests lead to orgies of hatred, one could deduce it from general principles."></a><strong>2. Even if one didn’t know from concrete examples (the 1936 Olympic Games, for instance) that international sporting contests lead to orgies of hatred, one could deduce it from general principles.</strong></h3><ul>
+<li><code>Even if + 过去式 ..., one could ...</code>：虚拟语气，表示”即使不知道……也能推断出”</li>
+<li><code>one</code> 泛指”人”，正式用法</li>
+<li><code>know from ... that ...</code>：know 后面的 that 从句被插入语和 from 短语隔开了，要把 <code>that international ... hatred</code> 接回 know</li>
+<li><code>it</code> 指代 that 从句的内容；<code>deduce from</code> &#x3D; 从……推断</li>
+<li><code>orgies of hatred</code> &#x3D; 仇恨的狂欢，orgy 本指纵酒狂欢，这里带强烈贬义</li>
+<li><strong>译:</strong> 即使不是从具体事例（比如 1936 年奥运会）中得知国际体育比赛会引发疯狂的仇恨，人们也可以从一般原理推断出来。</li>
+</ul>
+<h3 id="3-…the-game-has-little-meaning-unless-you-do-your-utmost-to-win"><a href="#3-…the-game-has-little-meaning-unless-you-do-your-utmost-to-win" class="headerlink" title="3. …the game has little meaning unless you do your utmost to win."></a><strong>3. …the game has little meaning unless you do your utmost to win.</strong></h3><ul>
+<li><code>little</code> 是否定词，<code>has little meaning</code> &#x3D; 几乎没有意义（a little 才是”有一点”）</li>
+<li><code>unless</code> &#x3D; if not，<code>unless you do your utmost</code> &#x3D; 除非你竭尽全力</li>
+<li><code>do one&#39;s utmost to do</code> &#x3D; 竭尽全力做某事</li>
+<li><strong>译:</strong> 除非你全力以赴去赢，否则比赛几乎没有意义。</li>
+</ul>
+<h3 id="4-On-the-village-green-where-you-pick-up-sides-and-no-feeling-of-local-patriotism-is-involved-it-is-possible-to-play-simply-for-the-fun-and-exercise…"><a href="#4-On-the-village-green-where-you-pick-up-sides-and-no-feeling-of-local-patriotism-is-involved-it-is-possible-to-play-simply-for-the-fun-and-exercise…" class="headerlink" title="4. On the village green, where you pick up sides and no feeling of local patriotism is involved, it is possible to play simply for the fun and exercise…"></a><strong>4. On the village green, where you pick up sides and no feeling of local patriotism is involved, it is possible to play simply for the fun and exercise…</strong></h3><ul>
+<li><code>where</code> 引导非限制性定语从句，修饰 the village green，里面两个分句用 and 连接</li>
+<li><code>pick up sides</code> &#x3D; （随意）分队；<code>involved</code> 是”牵涉其中”</li>
+<li><code>it is possible to play</code> 中 it 是形式主语，真正的主语是 to play</li>
+<li><code>simply for</code> 的 simply &#x3D; 仅仅，注意不是”简单地”</li>
+<li><strong>译:</strong> 在村里的草地上，大家随便分成两队，不涉及任何地方爱国情绪，这时可以只是为了玩乐和锻炼而比赛。</li>
+</ul>
+<h3 id="5-…but-as-soon-as-the-question-of-prestige-arises-as-soon-as-you-feel-that-you-and-some-larger-unit-will-be-disgraced-if-you-lose-the-most-savage-combative-instincts-are-aroused"><a href="#5-…but-as-soon-as-the-question-of-prestige-arises-as-soon-as-you-feel-that-you-and-some-larger-unit-will-be-disgraced-if-you-lose-the-most-savage-combative-instincts-are-aroused" class="headerlink" title="5. …but as soon as the question of prestige arises, as soon as you feel that you and some larger unit will be disgraced if you lose, the most savage combative instincts are aroused."></a><strong>5. …but as soon as the question of prestige arises, as soon as you feel that you and some larger unit will be disgraced if you lose, the most savage combative instincts are aroused.</strong></h3><ul>
+<li><code>as soon as</code> 连用两次，是<strong>排比</strong>，加强”一旦……立刻”的语气</li>
+<li><code>the question of prestige arises</code> 的 arise 是不及物动词，意思是”出现”，不能用被动</li>
+<li><code>some larger unit</code> &#x3D; 某个更大的集体（球队所代表的学校、城市、国家）</li>
+<li><code>will be disgraced if you lose</code>：主句将来时，从句用一般现在时（if 条件句）</li>
+<li><code>the most savage combative instincts</code> 的 the most 表示”最”，是真正的最高级</li>
+<li><code>be aroused</code> 是被动，arouse &#x3D; 唤起、激起</li>
+<li><strong>译:</strong> 但是一旦涉及声誉问题，一旦你觉得输了就会使你和某个更大的集体蒙羞，最野蛮的好斗本能就会被激发出来。</li>
+</ul>
+<h3 id="6-But-the-significant-thing-is-not-the-behavior-of-the-players-but-the-attitude-of-the-spectators-and-behind-the-spectators-of-the-nations-who-work-themselves-into-furies-over-these-absurd-contests-and-seriously-believe-…-that-running-jumping-and-kicking-a-ball-are-tests-of-national-virtue"><a href="#6-But-the-significant-thing-is-not-the-behavior-of-the-players-but-the-attitude-of-the-spectators-and-behind-the-spectators-of-the-nations-who-work-themselves-into-furies-over-these-absurd-contests-and-seriously-believe-…-that-running-jumping-and-kicking-a-ball-are-tests-of-national-virtue" class="headerlink" title="6. But the significant thing is not the behavior of the players but the attitude of the spectators; and, behind the spectators, of the nations who work themselves into furies over these absurd contests, and seriously believe … that running, jumping and kicking a ball are tests of national virtue."></a><strong>6. But the significant thing is not the behavior of the players but the attitude of the spectators; and, behind the spectators, of the nations who work themselves into furies over these absurd contests, and seriously believe … that running, jumping and kicking a ball are tests of national virtue.</strong></h3><ul>
+<li>主干：<code>the significant thing is not A but B</code>（重要的不是 A 而是 B）</li>
+<li>后面的 <code>of the nations ...</code> 与 <code>of the spectators</code> <strong>并列</strong>，都是 <code>the attitude</code> 的修饰语，所以 and 之后 behind the spectators 是插入语</li>
+<li><code>who</code> 引导的定语从句里有两个并列谓语：<code>work themselves into furies</code> 和 <code>seriously believe</code></li>
+<li><code>work oneself into a fury</code> &#x3D; 使自己陷入狂怒；<code>over</code> 表示”为了”</li>
+<li><code>running, jumping and kicking a ball</code> 是三个动名词并列作主语，谓语用复数 <code>are</code></li>
+<li><strong>译:</strong> 但重要的不是运动员的行为，而是观众的态度，以及观众背后那些国家的态度——它们为这些荒唐的比赛大动肝火，并且认真地相信（至少在短时间内）跑、跳、踢球是对民族美德的检验。</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://eazow.com/nce/4/05-youth/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Eazow">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Eazow">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Eazow">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/nce/4/05-youth/" class="post-title-link" itemprop="url">Lesson 05 Youth</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2018-01-10 00:00:00" itemprop="dateCreated datePublished" datetime="2018-01-10T00:00:00+08:00">2018-01-10</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/English/" itemprop="url" rel="index"><span itemprop="name">English</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>4 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <blockquote>
+<p>How does the writer like to treat young people?</p>
+</blockquote>
+<p>People are always talking about ‘the problem of youth’. If there is one — which I <strong>take leave to doubt</strong> — then it is older people who create it, not the young themselves. Let us get down to <strong>fundamentals</strong> and agree that the young are after all human beings — people just like their elders. There is only one difference between an old man and a young one: the young man has a <strong>glorious</strong> future before him and the old one has a <strong>splendid</strong> future behind him: and maybe that is where the <strong>rub</strong> is.</p>
+<p>When I was a teenager, I felt that I was just young and uncertain — that I was a new boy in a huge school, and I would have been very pleased to be regarded as something so interesting as a problem. For one thing, being a problem gives you a certain identity, and that is one of the things the young are busily engaged in seeking.</p>
+<p>I find young people exciting. They have an air of freedom, and they have not a <strong>dreary</strong> commitment to <strong>mean</strong> ambitions or love of comfort. They are not anxious social climbers, and they have no <strong>devotion</strong> to <strong>material</strong> things. All this seems to me to link them with life, and the origins of things. It’s as if they were, in some sense, <strong>cosmic</strong> beings in <strong>violent</strong> and lovely contrast with us <strong>suburban</strong> creatures. All that is in my mind when I meet a young person. He may be <strong>conceited</strong>, ill-mannered, <strong>presumptuous</strong> or <strong>fatuous</strong>, but I do not turn for protection to <strong>dreary</strong> <strong>cliches</strong> about respect for elders — as if mere age were a reason for respect. I accept that we are equals, and I will argue with him, as an equal, if I think he is wrong.</p>
+<h2 id="📖-难句解析"><a href="#📖-难句解析" class="headerlink" title="📖 难句解析"></a>📖 <strong>难句解析</strong></h2><h3 id="1-If-there-is-one-—-which-I-take-leave-to-doubt-—-then-it-is-older-people-who-create-it-not-the-young-themselves"><a href="#1-If-there-is-one-—-which-I-take-leave-to-doubt-—-then-it-is-older-people-who-create-it-not-the-young-themselves" class="headerlink" title="1. If there is one — which I take leave to doubt — then it is older people who create it, not the young themselves."></a><strong>1. If there is one — which I take leave to doubt — then it is older people who create it, not the young themselves.</strong></h3><ul>
+<li><strong>结构:</strong> <code>If there is one</code> 条件句 + 插入语 <code>which I take leave to doubt</code> + 强调句 <code>it is ... who ...</code></li>
+<li><code>one</code> &#x3D; a problem of youth，指代前面的 the problem of youth</li>
+<li><code>which</code> 指代整个 if 从句的内容（”是否真有青年问题”），不是指 one</li>
+<li><code>take leave to doubt</code> &#x3D; 恕我冒昧地怀疑，措辞礼貌，语气其实很坚决</li>
+<li><strong>译:</strong> 如果真有”青年问题”——我可要冒昧表示怀疑——那也是老年人制造出来的，而不是年轻人自己。</li>
+</ul>
+<h3 id="2-…the-young-man-has-a-glorious-future-before-him-and-the-old-one-has-a-splendid-future-behind-him-and-maybe-that-is-where-the-rub-is"><a href="#2-…the-young-man-has-a-glorious-future-before-him-and-the-old-one-has-a-splendid-future-behind-him-and-maybe-that-is-where-the-rub-is" class="headerlink" title="2. …the young man has a glorious future before him and the old one has a splendid future behind him: and maybe that is where the rub is."></a><strong>2. …the young man has a glorious future before him and the old one has a splendid future behind him: and maybe that is where the rub is.</strong></h3><ul>
+<li><strong>结构:</strong> 两个 <code>has a ... future</code> 平行对照，<code>the old one</code> 的 one &#x3D; man</li>
+<li><code>before him</code> &#x2F; <code>behind him</code>：未来在前，未来”在身后”，其实是说老年人的好时光已经过去了</li>
+<li><code>glorious</code> 与 <code>splendid</code> 同样是褒义词，用在 behind 的一边就带上了讽刺</li>
+<li><code>where the rub is</code> &#x3D; 症结所在（出自《哈姆雷特》”there’s the rub”）；<code>that</code> 指上面这个差别，暗示老年人是嫉妒</li>
+<li><strong>译:</strong> 年轻人前面有光辉的未来，老年人身后有辉煌的过去——症结也许就在这里。</li>
+</ul>
+<h3 id="3-…I-would-have-been-very-pleased-to-be-regarded-as-something-so-interesting-as-a-problem"><a href="#3-…I-would-have-been-very-pleased-to-be-regarded-as-something-so-interesting-as-a-problem" class="headerlink" title="3. …I would have been very pleased to be regarded as something so interesting as a problem."></a><strong>3. …I would have been very pleased to be regarded as something so interesting as a problem.</strong></h3><ul>
+<li><strong>结构:</strong> <code>would have been pleased</code> 表示对过去的假设（现实中并没有人这样看他）</li>
+<li><code>be regarded as</code> &#x3D; 被看作；<code>so interesting as a problem</code> 中 <code>so ... as</code> 引出比较内容</li>
+<li>把”问题”称作”有趣的东西”，是<strong>反话</strong>：连被当作问题都求之不得，因为说明有人在意</li>
+<li><strong>译:</strong> 那时要是有人把我看成”问题”这样有意思的东西，我会非常高兴。</li>
+</ul>
+<h3 id="4-For-one-thing-being-a-problem-gives-you-a-certain-identity-and-that-is-one-of-the-things-the-young-are-busily-engaged-in-seeking"><a href="#4-For-one-thing-being-a-problem-gives-you-a-certain-identity-and-that-is-one-of-the-things-the-young-are-busily-engaged-in-seeking" class="headerlink" title="4. For one thing, being a problem gives you a certain identity, and that is one of the things the young are busily engaged in seeking."></a><strong>4. For one thing, being a problem gives you a certain identity, and that is one of the things the young are busily engaged in seeking.</strong></h3><ul>
+<li><code>For one thing</code> &#x3D; 首先（列举理由，后面没有再列）</li>
+<li><code>a certain identity</code> &#x3D; 某种身份、存在感</li>
+<li><code>the things (that) the young are ... seeking</code>：定语从句，省略了关系代词 that</li>
+<li><code>be engaged in doing</code> &#x3D; 忙于做某事</li>
+<li><strong>译:</strong> 首先，成为”问题”会给你一种身份，而寻找身份正是年轻人忙着做的事之一。</li>
+</ul>
+<h3 id="5-…they-have-not-a-dreary-commitment-to-mean-ambitions-or-love-of-comfort"><a href="#5-…they-have-not-a-dreary-commitment-to-mean-ambitions-or-love-of-comfort" class="headerlink" title="5. …they have not a dreary commitment to mean ambitions or love of comfort."></a><strong>5. …they have not a dreary commitment to mean ambitions or love of comfort.</strong></h3><ul>
+<li><strong>结构:</strong> <code>have not a ...</code> 是较老的否定写法，等于 <code>do not have a ...</code></li>
+<li><code>mean</code> 在这里是<strong>卑微的、小气的</strong>（不是”意思”，也不是”刻薄”）</li>
+<li><code>commitment to</code> &#x3D; 对……的执着，to 是介词，后面接名词</li>
+<li><code>mean ambitions or love of comfort</code> 并列，都是 commitment to 的宾语</li>
+<li><strong>译:</strong> 他们不会沉闷乏味地执着于卑微的野心或对安逸的贪恋。</li>
+</ul>
+<h3 id="6-It’s-as-if-they-were-in-some-sense-cosmic-beings-in-violent-and-lovely-contrast-with-us-suburban-creatures"><a href="#6-It’s-as-if-they-were-in-some-sense-cosmic-beings-in-violent-and-lovely-contrast-with-us-suburban-creatures" class="headerlink" title="6. It’s as if they were, in some sense, cosmic beings in violent and lovely contrast with us suburban creatures."></a><strong>6. It’s as if they were, in some sense, cosmic beings in violent and lovely contrast with us suburban creatures.</strong></h3><ul>
+<li><code>as if + 过去式 were</code>：虚拟语气，表示”好像……（其实并不是）”</li>
+<li><code>in some sense</code> &#x3D; 从某种意义上说，是作者的缓和语气</li>
+<li><code>in contrast with</code> &#x3D; 与……形成对照，中间夹了形容词 <code>violent and lovely</code></li>
+<li><code>violent</code> 在此是<strong>强烈的</strong>，并非”暴力”，与 lovely 并列，是褒义</li>
+<li><code>suburban</code> 本指郊区的，这里借指安稳、平庸、缺乏想象力的生活</li>
+<li><strong>译:</strong> 他们仿佛在某种意义上是宇宙中的生灵，与我们这些郊区居民形成强烈而可爱的对比。</li>
+</ul>
+<h3 id="7-…but-I-do-not-turn-for-protection-to-dreary-cliches-about-respect-for-elders-—-as-if-mere-age-were-a-reason-for-respect"><a href="#7-…but-I-do-not-turn-for-protection-to-dreary-cliches-about-respect-for-elders-—-as-if-mere-age-were-a-reason-for-respect" class="headerlink" title="7. …but I do not turn for protection to dreary clichés about respect for elders — as if mere age were a reason for respect."></a><strong>7. …but I do not turn for protection to dreary clichés about respect for elders — as if mere age were a reason for respect.</strong></h3><ul>
+<li><strong>结构:</strong> <code>turn to sth for protection</code> &#x3D; 求助于某物来保护自己，这里把 for protection 提前了</li>
+<li><code>clichés about respect for elders</code>：指”要尊敬长辈”之类的老生常谈</li>
+<li><code>as if mere age were a reason for respect</code>：同第 6 句，虚拟语气，表示作者不认同；<code>mere</code> &#x3D; 仅仅</li>
+<li><strong>译:</strong> 但我不会躲到”要尊敬长辈”这类陈词滥调后面寻求庇护——好像光凭年纪就值得尊敬似的。</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://eazow.com/LeetCode-669-Trim-a-Binary-Search-Tree/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Eazow">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Eazow">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Eazow">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/LeetCode-669-Trim-a-Binary-Search-Tree/" class="post-title-link" itemprop="url">[LeetCode]669. Trim a Binary Search Tree</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2017-09-24 16:55:39" itemprop="dateCreated datePublished" datetime="2017-09-24T16:55:39+08:00">2017-09-24</time>
+    </span>
+
+  
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h3 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h3><blockquote>
+<p>Given a binary search tree and the lowest and highest boundaries as L and R, trim the tree so that all its elements lies in [L, R] (R &gt;&#x3D; L). You might need to change the root of the tree, so the result should return the new root of the trimmed binary search tree.</p>
+</blockquote>
+<p><strong>Example 1:</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">Input: </span><br><span class="line">    1</span><br><span class="line">   / \</span><br><span class="line">  0   2</span><br><span class="line"></span><br><span class="line">  L = 1</span><br><span class="line">  R = 2</span><br><span class="line"></span><br><span class="line">Output: </span><br><span class="line">    1</span><br><span class="line">      \</span><br><span class="line">       2</span><br></pre></td></tr></table></figure>
+<p><strong>Example 2:</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">Input: </span><br><span class="line">    3</span><br><span class="line">   / \</span><br><span class="line">  0   4</span><br><span class="line">   \</span><br><span class="line">    2</span><br><span class="line">   /</span><br><span class="line">  1</span><br><span class="line"></span><br><span class="line">  L = 1</span><br><span class="line">  R = 3</span><br><span class="line"></span><br><span class="line">Output: </span><br><span class="line">      3</span><br><span class="line">     / </span><br><span class="line">   2   </span><br><span class="line">  /</span><br><span class="line"> 1</span><br></pre></td></tr></table></figure>
+
 <h3 id="难度"><a href="#难度" class="headerlink" title="难度"></a>难度</h3><p>Easy</p>
-<h3 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h3><p>注意有负数的情况。对<code>nums</code>排序，取<code>max(nums[-3] * nums[-2] * nums[-1], nums[0] * nums[1] * nums[-1])</code></p>
-<h3 id="python代码"><a href="#python代码" class="headerlink" title="python代码"></a>python代码</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">maximumProduct</span>(<span class="params">self, nums</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        :type nums: List[int]</span></span><br><span class="line"><span class="string">        :rtype: int</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        nums = <span class="built_in">sorted</span>(nums)</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">max</span>(nums[-<span class="number">3</span>] * nums[-<span class="number">2</span>] * nums[-<span class="number">1</span>], nums[<span class="number">0</span>] * nums[<span class="number">1</span>] * nums[-<span class="number">1</span>])</span><br><span class="line"></span><br><span class="line"><span class="keyword">assert</span> Solution().maximumProduct([<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>]) == <span class="number">24</span></span><br><span class="line"><span class="keyword">assert</span> Solution().maximumProduct([-<span class="number">4</span>,-<span class="number">3</span>,-<span class="number">2</span>,-<span class="number">1</span>,<span class="number">60</span>]) == <span class="number">720</span></span><br></pre></td></tr></table></figure>
+<h3 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h3><p>采用递归的方法。如果<code>root</code>为空，则直接返回<code>root</code>; 如果<code>root</code>的值<code>&lt;L</code>，表示<code>root</code>及其左子树所有节点都<code>&lt;L</code>，那么需要改变<code>root</code>节点，从<code>root.right</code>中重新寻找<code>root</code>节点。同理，当<code>root</code>的值<code>&gt;R</code>时，需要从<code>root.left</code>中重新寻找<code>root</code>节点。当<code>L&lt;=root.val&lt;=R</code>时，则递归处理<code>root</code>的左右子树。</p>
+<h3 id="python代码"><a href="#python代码" class="headerlink" title="python代码"></a>python代码</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">TreeNode</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, x</span>):</span><br><span class="line">        self.val = x</span><br><span class="line">        self.left = <span class="literal">None</span></span><br><span class="line">        self.right = <span class="literal">None</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">trimBST</span>(<span class="params">self, root, L, R</span>):</span><br><span class="line">        <span class="keyword">if</span> root == <span class="literal">None</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> root.val &lt; L:</span><br><span class="line">            <span class="keyword">return</span> self.trimBST(root.right, L, R)</span><br><span class="line">        <span class="keyword">if</span> root.val &gt; R:</span><br><span class="line">            <span class="keyword">return</span> self.trimBST(root.left, L, R)</span><br><span class="line"></span><br><span class="line">        root.left = self.trimBST(root.left, L, R)</span><br><span class="line">        root.right = self.trimBST(root.right, L, R)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> root</span><br><span class="line"></span><br><span class="line">root = TreeNode(<span class="number">1</span>)</span><br><span class="line">root.left = TreeNode(<span class="number">0</span>)</span><br><span class="line">root.right = TreeNode(<span class="number">2</span>)</span><br><span class="line"><span class="keyword">assert</span> Solution().trimBST(root, <span class="number">3</span>, <span class="number">4</span>) == <span class="literal">None</span></span><br><span class="line"></span><br><span class="line">root = TreeNode(<span class="number">3</span>)</span><br><span class="line">root.left = TreeNode(<span class="number">0</span>)</span><br><span class="line">root.right = TreeNode(<span class="number">4</span>)</span><br><span class="line">root.left.right = TreeNode(<span class="number">2</span>)</span><br><span class="line">root.left.right.left = TreeNode(<span class="number">1</span>)</span><br><span class="line">root = Solution().trimBST(root, <span class="number">1</span>, <span class="number">3</span>)</span><br><span class="line"><span class="keyword">assert</span> root.val == <span class="number">3</span></span><br><span class="line"><span class="keyword">assert</span> root.left.val == <span class="number">2</span></span><br><span class="line"><span class="keyword">assert</span> root.right == <span class="literal">None</span></span><br><span class="line"><span class="keyword">assert</span> root.left.left.val == <span class="number">1</span></span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://eazow.com/diligent/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Eazow">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Eazow">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Eazow">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/diligent/" class="post-title-link" itemprop="url">[转]早睡早起, 是性价比最高的自律</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2017-09-20 12:09:49" itemprop="dateCreated datePublished" datetime="2017-09-20T12:09:49+08:00">2017-09-20</time>
+    </span>
+
+  
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>2 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <blockquote>
+<p>晚上11点前睡，你能做到吗？</p>
+</blockquote>
+<h3 id="1"><a href="#1" class="headerlink" title="1"></a>1</h3><p>前几天，北京大学法学院2017迎新典礼上，白建军教授给新生的建议火遍全网：“早睡早起+把微信朋友圈控制在10人以内+拒绝以陪读为目的的表白。这个办法能不能把你弄成精英中的精英，我不知道。但试过的，都说好。”</p>
+<p>这3条建议中，我试过“早睡早起”这一条。抓住早睡这个突破点后，早起也能轻松上手，投资小，回报大，性价比高。</p>
+<p>但我观察周围，这大约是个年轻人全民熬夜的年代。有人工作分工没办法，有人夜晚干活效率高，有人单纯性晚睡拖延症。许多人在睡觉方面缺乏自制力，晚上不想睡，手机像长在手上似的；早上起不来，醒来就跟闹钟置气，一天到晚觉得困。</p>
+<p><strong>原来在我们这个时代，早睡早起，真的变成了最知易行难的自律。</strong></p>
+<p>虽然网上不时会曝出因为熬夜导致健康受损甚至猝死的案例，不管当事人如何苦口婆心地劝诫一定要规律作息，千万不要熬夜，可还是有许多人会说，道理我们都知道的，可就是忍不住熬夜啊。</p>
+<h3 id="2"><a href="#2" class="headerlink" title="2"></a>2</h3><p>以前我在深圳工作时，有段时间早上五点多就起床，去附近的荔香公园快走。我发现这个时段公园里老年人的密度极高，他们神采奕奕地进行着做操、跑步、挥鞭等各种锻炼。</p>
+<p>而我看到年轻人密度最高的时段是晚上。我有时加班到晚上十点多，在赶回家睡觉的路上，看到写字楼里还有大片灯光，商场周围还有K歌聚会，便利店里还有人进人出。</p>
+<p><strong>这好像一幕滑稽戏，早睡早起的老年人和晚睡晚起的年轻人，处于不同的时区。结果，老年人状态越来越燃，年轻人却越活越没精神。</strong></p>
+<p>其实，早睡早起，是性价比最高的自律。</p>
+<p>前东家大领导30多岁那年，大病一场之后，作息习惯大换血，他把工作模式从没日没夜改为早睡早起，工作绩效不减反增；</p>
+<p>我婶婶婚后越长越好看，随着年纪增长，她的皮肤却比初见时细腻白嫩了很多，她说因为自己单身时熬的夜，结婚后都戒了；</p>
+<p>我早上五点多去公园的事迹被同事们听说后，都叉着腰笑我过着老年人的生活，可我那时的工作效率和身体状态都处于巅峰级别。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/diligent/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://eazow.com/LeetCode-657-Judge-Route-Circle/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Eazow">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Eazow">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Eazow">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/LeetCode-657-Judge-Route-Circle/" class="post-title-link" itemprop="url">[LeetCode]657. Judge Route Circle</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2017-09-06 17:31:51" itemprop="dateCreated datePublished" datetime="2017-09-06T17:31:51+08:00">2017-09-06</time>
+    </span>
+
+  
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h3 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h3><p>Initially, there is a Robot at position (0, 0). Given a sequence of its moves, judge if this robot makes a circle, which means it moves back to <strong>the original place</strong>.</p>
+<p>The move sequence is represented by a string. And each move is represent by a character. The valid robot moves are <code>R</code>(Right), <code>L</code>(Left), <code>U</code>(Up) and <code>D</code>(down). The output should be true or false representing whether the robot makes a circle.</p>
+<p><strong>Example 1:</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Input: &quot;UD&quot;</span><br><span class="line">Output: true</span><br></pre></td></tr></table></figure>
+<p><strong>Example 2:</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Input: &quot;LL&quot;</span><br><span class="line">Output: false</span><br></pre></td></tr></table></figure>
+
+<h3 id="难度"><a href="#难度" class="headerlink" title="难度"></a>难度</h3><p>Easy</p>
+<h3 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h3><p>对每个方向计数，如果<code>L</code>出现的次数&#x3D;&#x3D;<code>R</code>出现的次数，并且<code>U</code>出现的次数&#x3D;&#x3D;<code>D</code>出现的次数，则robot会回到初始位置，返回<code>True</code>；否则返回<code>False</code></p>
+<h3 id="python代码"><a href="#python代码" class="headerlink" title="python代码"></a>python代码</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">judgeCircle</span>(<span class="params">self, moves</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        :type moves: str</span></span><br><span class="line"><span class="string">        :rtype: bool</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        counter = &#123;&#125;</span><br><span class="line">        <span class="keyword">for</span> c <span class="keyword">in</span> moves:</span><br><span class="line">            counter[c] = counter.get(c, <span class="number">0</span>) + <span class="number">1</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> counter.get(<span class="string">&quot;L&quot;</span>) == counter.get(<span class="string">&quot;R&quot;</span>) <span class="keyword">and</span> counter.get(<span class="string">&quot;U&quot;</span>) == counter.get(<span class="string">&quot;D&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">assert</span> Solution().judgeCircle(<span class="string">&quot;UD&quot;</span>) == <span class="literal">True</span></span><br><span class="line"><span class="keyword">assert</span> Solution().judgeCircle(<span class="string">&quot;LL&quot;</span>) == <span class="literal">False</span></span><br></pre></td></tr></table></figure>
       
     </div>
 
@@ -968,7 +1432,7 @@
 
 
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/4/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/6/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+    <a class="extend prev" rel="prev" href="/page/4/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/6/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 </div>
@@ -991,13 +1455,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">325k</span>
+    <span title="Symbols count total">409k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">4:55</span>
+    <span title="Reading time total">6:12</span>
   </span>
 </div>
 <div class="busuanzi-count">

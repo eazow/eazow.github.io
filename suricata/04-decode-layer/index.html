@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic,900&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"eazow.com","root":"/","images":"/images","scheme":"Mist","darkmode":false,"version":"8.12.2","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":"flat"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":"giscus","storage":true,"lazyload":true,"nav":null,"activeClass":"giscus"},"stickytabs":false,"motion":{"enable":false,"async":true,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="这是系列第 4 篇。上一篇结尾，包已经装进了 Packet，交给了链上的第二道工位 DecodeAFP()。但这时的 Packet 里只有一串从以太网头开始的原始字节，还不知道它是 IPv4 还是 IPv6，是 TCP 还是 UDP，源地址和端口是多少。这一篇看解码层怎么把这串字节一层层剥开，又怎么对付畸形包、隧道和分片。  先给答案，解码层做了三件事：  一层层认出协议。 每一层都看头部里”下">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Suricata 源码阅读(四)：把字节剥成协议——解码层">
+<meta property="og:url" content="http://eazow.com/suricata/04-decode-layer/index.html">
+<meta property="og:site_name" content="Eazow">
+<meta property="og:description" content="这是系列第 4 篇。上一篇结尾，包已经装进了 Packet，交给了链上的第二道工位 DecodeAFP()。但这时的 Packet 里只有一串从以太网头开始的原始字节，还不知道它是 IPv4 还是 IPv6，是 TCP 还是 UDP，源地址和端口是多少。这一篇看解码层怎么把这串字节一层层剥开，又怎么对付畸形包、隧道和分片。  先给答案，解码层做了三件事：  一层层认出协议。 每一层都看头部里”下">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://eazow.com/images/logo.png">
+<meta property="article:published_time" content="2026-07-12T16:00:00.000Z">
+<meta property="article:modified_time" content="2026-10-20T09:24:17.425Z">
+<meta property="article:author" content="Eazow">
+<meta property="article:tag" content="Suricata">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://eazow.com/images/logo.png">
+
+
+<link rel="canonical" href="http://eazow.com/suricata/04-decode-layer/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en-US","comments":true,"permalink":"http://eazow.com/suricata/04-decode-layer/","path":"suricata/04-decode-layer/","title":"Suricata 源码阅读(四)：把字节剥成协议——解码层"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Suricata 源码阅读(四)：把字节剥成协议——解码层 | Eazow</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-NHS1WWDHJE"></script>
+  <script class="next-config" data-name="google_analytics" type="application/json">{"tracking_id":"G-NHS1WWDHJE","only_pageview":false}</script>
+  <script src="/js/third-party/analytics/google-analytics.js"></script>
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <p class="site-title">Eazow</p>
+    </a>
+      <p class="site-subtitle" itemprop="description">Stay kind and positive</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-series"><a href="/series/" rel="section"><i class="fa fa-layer-group fa-fw"></i>Series</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner sidebar-toc-active">
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E5%85%A5%E5%8F%A3%EF%BC%9A%E6%8C%89%E9%93%BE%E8%B7%AF%E7%B1%BB%E5%9E%8B%E5%88%86%E5%8F%91"><span class="nav-text">1. 入口：按链路类型分发</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E6%AF%8F%E4%B8%80%E5%B1%82%E9%83%BD%E6%98%AF%E5%90%8C%E4%B8%80%E4%B8%AA%E5%A5%97%E8%B7%AF"><span class="nav-text">2. 每一层都是同一个套路</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-IPv4%EF%BC%9A%E5%85%88%E8%BF%87%E4%BA%94%E9%81%93%E6%A3%80%E6%9F%A5"><span class="nav-text">3. IPv4：先过五道检查</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-TCP%EF%BC%9A%E6%9C%80%E5%90%8E%E4%B8%80%E5%B1%82%EF%BC%8C%E4%B9%9F%E6%98%AF%E4%BA%A4%E6%8E%A5%E7%82%B9"><span class="nav-text">4. TCP：最后一层，也是交接点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-%E5%9D%8F%E5%8C%85%EF%BC%9A%E8%AE%B0%E4%B8%8B%E6%9D%A5%EF%BC%8C%E4%B8%8D%E4%B8%A2%E6%8E%89"><span class="nav-text">5. 坏包：记下来，不丢掉</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-%E5%8C%85%E9%87%8C%E8%BF%98%E6%9C%89%E5%8C%85%EF%BC%9A%E9%9A%A7%E9%81%93%E5%92%8C%E5%88%86%E7%89%87"><span class="nav-text">6. 包里还有包：隧道和分片</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B0%8F%E7%BB%93"><span class="nav-text">小结</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en-US">
+    <link itemprop="mainEntityOfPage" href="http://eazow.com/suricata/04-decode-layer/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Eazow">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Eazow">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Suricata 源码阅读(四)：把字节剥成协议——解码层 | Eazow">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Suricata 源码阅读(四)：把字节剥成协议——解码层
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2026-07-13 00:00:00" itemprop="dateCreated datePublished" datetime="2026-07-13T00:00:00+08:00">2026-07-13</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Suricata/" itemprop="url" rel="index"><span itemprop="name">Suricata</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>9 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <blockquote>
+<p>这是系列第 4 篇。上一篇结尾，包已经装进了 <code>Packet</code>，交给了链上的第二道工位 <code>DecodeAFP()</code>。但这时的 <code>Packet</code> 里只有一串从以太网头开始的原始字节，还不知道它是 IPv4 还是 IPv6，是 TCP 还是 UDP，源地址和端口是多少。这一篇看解码层怎么把这串字节一层层剥开，又怎么对付畸形包、隧道和分片。</p>
+</blockquote>
+<p>先给答案，解码层做了三件事：</p>
+<ol>
+<li><strong>一层层认出协议。</strong> 每一层都看头部里”下一层是什么”的字段(以太网的 <code>eth_type</code>、IP 的协议号、有时是 UDP 端口)，决定下一层交给哪个解码函数。整个解码层就是一串层层嵌套的 <code>switch</code>。</li>
+<li><strong>只记位置，不拷贝。</strong> 解码不会把头部拷出来，只是把各层头部在原始数据里的位置记进 <code>Packet</code>，顺便填好地址、端口和载荷的位置。</li>
+<li><strong>坏包留痕，不丢掉。</strong> 遇到畸形包不崩溃、也不丢弃，而是记一个解码事件，照样往后送。遇到隧道和分片，则会生出新的 <code>Packet</code>。</li>
+</ol>
+<p>整棵分发树画出来是这样的：</p>
+<p><img data-src="/images/suricata/suricata-decode-tree.svg" alt="解码分发树"></p>
+<span id="more"></span>
+
+<h2 id="1-入口：按链路类型分发"><a href="#1-入口：按链路类型分发" class="headerlink" title="1. 入口：按链路类型分发"></a>1. 入口：按链路类型分发</h2><p><code>DecodeAFP()</code>(<code>src/source-af-packet.c:2771</code>)本身很短：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">TmEcode <span class="title function_">DecodeAFP</span><span class="params">(ThreadVars *tv, Packet *p, <span class="type">void</span> *data)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">const</span> <span class="type">bool</span> afp_vlan_hdr = p-&gt;vlan_idx != <span class="number">0</span>;</span><br><span class="line">    DecodeThreadVars *dtv = (DecodeThreadVars *)data;</span><br><span class="line"></span><br><span class="line">    DecodeUpdatePacketCounters(tv, dtv, p);           <span class="comment">/* decoder.pkts、decoder.bytes 等计数 */</span></span><br><span class="line">    DecodeLinkLayer(tv, dtv, p-&gt;datalink, p, GET_PKT_DATA(p), GET_PKT_LEN(p));</span><br><span class="line">    <span class="keyword">if</span> (afp_vlan_hdr) &#123;</span><br><span class="line">        ...</span><br><span class="line">        UpdateRawDataForVLANHdr(p);                    <span class="comment">/* 解码完，把内核剥掉的 VLAN 头补回原始数据 */</span></span><br><span class="line">    &#125;</span><br><span class="line">    PacketDecodeFinalize(tv, dtv, p);</span><br><span class="line">    SCReturnInt(TM_ECODE_OK);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>DecodeLinkLayer()</code>(<code>src/decode.h:1423</code>)按 <code>p-&gt;datalink</code> 分发。这个值是抓包时填的(上一篇 <code>AFPReadFromRingSetupPacket()</code> 里的 <code>p-&gt;datalink = ptv-&gt;datalink</code>)：普通以太网是 <code>LINKTYPE_ETHERNET</code>，交给 <code>DecodeEthernet()</code>；另外还有 Linux cooked 头、PPP、裸 IP 等几种，各有自己的解码函数。其他抓包方式的解码模块大同小异：<code>DecodePcap()</code> 同样调用 <code>DecodeLinkLayer()</code>；<code>DecodeNFQ()</code> 拿到的是不带链路层头的 IP 包，所以直接从 <code>DecodeIPV4()</code>&#x2F;<code>DecodeIPV6()</code> 开始。</p>
+<h2 id="2-每一层都是同一个套路"><a href="#2-每一层都是同一个套路" class="headerlink" title="2. 每一层都是同一个套路"></a>2. 每一层都是同一个套路</h2><p>以 <code>DecodeEthernet()</code>(<code>src/decode-ethernet.c:42</code>)为例：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">DecodeEthernet</span><span class="params">(ThreadVars *tv, DecodeThreadVars *dtv, Packet *p,</span></span><br><span class="line"><span class="params">                   <span class="type">const</span> <span class="type">uint8_t</span> *pkt, <span class="type">uint32_t</span> len)</span></span><br><span class="line">&#123;</span><br><span class="line">    StatsIncr(tv, dtv-&gt;counter_eth);</span><br><span class="line">    <span class="keyword">if</span> (unlikely(len &lt; ETHERNET_HEADER_LEN)) &#123;                     <span class="comment">/* ① 长度够不够 */</span></span><br><span class="line">        ENGINE_SET_INVALID_EVENT(p, ETHERNET_PKT_TOO_SMALL);</span><br><span class="line">        <span class="keyword">return</span> TM_ECODE_FAILED;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (!PacketIncreaseCheckLayers(p)) &#123;                           <span class="comment">/* ② 层数有没有超限 */</span></span><br><span class="line">        <span class="keyword">return</span> TM_ECODE_FAILED;</span><br><span class="line">    &#125;</span><br><span class="line">    EthernetHdr *ethh = PacketSetEthernet(p, pkt);                 <span class="comment">/* ③ 记下头部位置 */</span></span><br><span class="line">    DecodeNetworkLayer(tv, dtv, SCNtohs(ethh-&gt;eth_type), p,        <span class="comment">/* ④ 按类型交给下一层 */</span></span><br><span class="line">            pkt + ETHERNET_HEADER_LEN, len - ETHERNET_HEADER_LEN);</span><br><span class="line">    <span class="keyword">return</span> TM_ECODE_OK;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>几乎每一层解码函数都是这四步，读懂一个，其他的就好读了。</p>
+<p><strong>① 长度够不够。</strong> 先确认剩下的字节至少装得下这一层的头部。网络上的数据不可信，不检查就读，很容易越界。</p>
+<p><strong>② 层数有没有超限。</strong> <code>PacketIncreaseCheckLayers()</code>(<code>src/decode.h:1335</code>)把 <code>p-&gt;nb_decoded_layers</code> 加一，超过 <code>decoder.max-layers</code>(默认 16，<code>src/decode.h:1332</code>)就记一个 <code>decoder.too_many_layers</code> 事件并停下。VLAN 套 VLAN、隧道套隧道都会让层数增加，这道检查防止有人构造一个嵌套上百层的包，把解码器拖进无休止的递归。</p>
+<p><strong>③ 记下头部位置。</strong> <code>PacketSetEthernet()</code>(<code>src/decode.h:782</code>)只做了一件事：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">p-&gt;l2.type = PACKET_L2_ETHERNET;</span><br><span class="line">p-&gt;l2.hdrs.ethh = (EthernetHdr *)buf;</span><br></pre></td></tr></table></figure>
+
+<p>它没有拷贝以太网头，只是把指向原始数据的指针存进 <code>p-&gt;l2</code>。IP 层存进 <code>p-&gt;l3</code>，TCP&#x2F;UDP 存进 <code>p-&gt;l4</code>。上一篇说 <code>Packet</code> 是整条流水线的工作台，这就是解码往工作台上放的东西：后面的模块想读 TCP 头，直接顺着 <code>p-&gt;l4</code> 里的指针去原始数据里读。</p>
+<p><strong>④ 按类型交给下一层。</strong> <code>DecodeNetworkLayer()</code>(<code>src/decode.h:1460</code>)是一个按 <code>eth_type</code> 分发的 <code>switch</code>：<code>0x0800</code> 交给 <code>DecodeIPV4()</code>，<code>0x86DD</code> 交给 <code>DecodeIPV6()</code>，还有 VLAN、MPLS、PPPoE、ARP 等。VLAN 的解码函数剥掉 4 字节标签后，会再调用一次 <code>DecodeNetworkLayer()</code>，所以多层 VLAN 标签可以一层层剥下去。</p>
+<h2 id="3-IPv4：先过五道检查"><a href="#3-IPv4：先过五道检查" class="headerlink" title="3. IPv4：先过五道检查"></a>3. IPv4：先过五道检查</h2><p><code>DecodeIPV4()</code>(<code>src/decode-ipv4.c:520</code>)先调用 <code>DecodeIPV4Packet()</code>(<code>src/decode-ipv4.c:473</code>)检查 IPv4 头：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (unlikely(len &lt; IPV4_HEADER_LEN)) &#123;                      <span class="comment">/* 连最短的 IPv4 头都装不下 */</span></span><br><span class="line">    ENGINE_SET_INVALID_EVENT(p, IPV4_PKT_TOO_SMALL);</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span> (unlikely(IP_GET_RAW_VER(pkt) != <span class="number">4</span>)) &#123;                    <span class="comment">/* 版本号不是 4 */</span></span><br><span class="line">    ENGINE_SET_INVALID_EVENT(p, IPV4_WRONG_IP_VER);</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="type">const</span> IPV4Hdr *ip4h = PacketSetIPV4(p, pkt);</span><br><span class="line"><span class="keyword">if</span> (unlikely(IPV4_GET_RAW_HLEN(ip4h) &lt; IPV4_HEADER_LEN)) &#123;   <span class="comment">/* 头长字段比 20 字节还小 */</span></span><br><span class="line">    ENGINE_SET_INVALID_EVENT(p, IPV4_HLEN_TOO_SMALL);</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span> (unlikely(IPV4_GET_RAW_IPLEN(ip4h) &lt; IPV4_GET_RAW_HLEN(ip4h))) &#123;   <span class="comment">/* 总长比头长还小 */</span></span><br><span class="line">    ENGINE_SET_INVALID_EVENT(p, IPV4_IPLEN_SMALLER_THAN_HLEN);</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span> (unlikely(len &lt; IPV4_GET_RAW_IPLEN(ip4h))) &#123;              <span class="comment">/* 实际收到的比总长声明的少：被截断了 */</span></span><br><span class="line">    ENGINE_SET_INVALID_EVENT(p, IPV4_TRUNC_PKT);</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">&#125;</span><br><span class="line">SET_IPV4_SRC_ADDR(ip4h, &amp;p-&gt;src);</span><br><span class="line">SET_IPV4_DST_ADDR(ip4h, &amp;p-&gt;dst);</span><br></pre></td></tr></table></figure>
+
+<p>五道检查都过了，才把源、目的地址填进 <code>p-&gt;src</code>、<code>p-&gt;dst</code>；如果有 IP 选项，再逐个解析。每一道检查对应一种真实存在的畸形包，攻击者也常用这类包来试探检测引擎的边界。</p>
+<p>检查通过后，<code>DecodeIPV4()</code> 先看是不是分片(后面第 6 节讲)，不是的话，就按协议号分发：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">switch</span> (p-&gt;proto) &#123;</span><br><span class="line">    <span class="keyword">case</span> IPPROTO_TCP:  DecodeTCP(tv, dtv, p, data, data_len);    <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">case</span> IPPROTO_UDP:  DecodeUDP(tv, dtv, p, data, data_len);    <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">case</span> IPPROTO_ICMP: DecodeICMPV4(tv, dtv, p, data, data_len); <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">case</span> IPPROTO_GRE:  DecodeGRE(tv, dtv, p, data, data_len);    <span class="keyword">break</span>;</span><br><span class="line">    ...</span><br><span class="line">    <span class="keyword">case</span> IPPROTO_IPIP: &#123;                                <span class="comment">/* IP 里套 IP：隧道 */</span></span><br><span class="line">        Packet *tp = PacketTunnelPktSetup(tv, dtv, p, data, data_len, DECODE_TUNNEL_IPV4);</span><br><span class="line">        ...</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="4-TCP：最后一层，也是交接点"><a href="#4-TCP：最后一层，也是交接点" class="headerlink" title="4. TCP：最后一层，也是交接点"></a>4. TCP：最后一层，也是交接点</h2><p><code>DecodeTCPPacket()</code>(<code>src/decode-tcp.c:217</code>)的检查项少一些：长度够不够、头长字段合不合理、选项长度有没有超出上限。之后解析 TCP 选项(MSS、窗口扩大、SACK、时间戳等)，再填好几样后面要用的东西：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">p-&gt;sp = TCP_GET_RAW_SRC_PORT(tcph);</span><br><span class="line">p-&gt;dp = TCP_GET_RAW_DST_PORT(tcph);</span><br><span class="line">p-&gt;proto = IPPROTO_TCP;</span><br><span class="line">p-&gt;payload = (<span class="type">uint8_t</span> *)pkt + hlen;      <span class="comment">/* 载荷：TCP 头之后的位置，同样只是一个指针 */</span></span><br><span class="line">p-&gt;payload_len = len - hlen;</span><br></pre></td></tr></table></figure>
+
+<p>到这里，五元组(源地址、目的地址、源端口、目的端口、协议)就齐了。<code>DecodeTCP()</code>(<code>src/decode-tcp.c:273</code>)最后一步是调用 <code>FlowSetupPacket()</code>(<code>src/flow-hash.c:548</code>)：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">FlowSetupPacket</span><span class="params">(Packet *p)</span></span><br><span class="line">&#123;</span><br><span class="line">    p-&gt;flags |= PKT_WANTS_FLOW;</span><br><span class="line">    p-&gt;flow_hash = FlowGetHash(p);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>它给包打上”需要找流”的标记，并按五元组算好哈希值。这是解码层交给下一站的接头暗号：<code>FlowWorker</code> 只给带 <code>PKT_WANTS_FLOW</code> 的包查流表，拿着 <code>flow_hash</code> 去找对应的 <code>Flow</code>，这是下一篇的内容。autofp 模式下，抓包线程也是用这个 <code>flow_hash</code> 决定把包分给哪个处理线程的(第 2 篇)。</p>
+<p>有一件事解码层<strong>没有做</strong>：计算 TCP 校验和。算校验和要把整个包加一遍，代价不小，而解码阶段并不需要它。真正用到时才算，比如 TCP 重组前的 <code>StreamTcpValidateChecksum()</code>(<code>src/stream-tcp.c:5884</code>)，算过一次的结果会存在 <code>p-&gt;l4.csum</code> 里。如果网卡做了校验和卸载(内核会在帧状态里标出 <code>TP_STATUS_CSUMNOTREADY</code>)，或者配置里关掉了 <code>checksum-checks</code>，抓包时就会给包打上 <code>PKT_IGNORE_CHECKSUM</code>，连这一步也省了(上一篇的 <code>AFPReadFromRingSetupPacket()</code> 里就有这段判断)。</p>
+<h2 id="5-坏包：记下来，不丢掉"><a href="#5-坏包：记下来，不丢掉" class="headerlink" title="5. 坏包：记下来，不丢掉"></a>5. 坏包：记下来，不丢掉</h2><p>前面每一道检查失败时，都调用了 <code>ENGINE_SET_INVALID_EVENT()</code>(<code>src/decode.h:1203</code>)：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> ENGINE_SET_INVALID_EVENT(p, e) do &#123; \</span></span><br><span class="line"><span class="meta">    p-&gt;flags |= PKT_IS_INVALID;             \</span></span><br><span class="line"><span class="meta">    ENGINE_SET_EVENT(p, e);                 \</span></span><br><span class="line"><span class="meta">&#125; while(0)</span></span><br></pre></td></tr></table></figure>
+
+<p><code>ENGINE_SET_EVENT()</code> 把事件编号追加到 <code>p-&gt;events</code> 里，<code>PKT_IS_INVALID</code> 标志则会让 <code>PacketDecodeFinalize()</code> 给 <code>decoder.invalid</code> 计数器加一。</p>
+<p>注意，解码失败的包<strong>并没有被丢掉</strong>。解码函数只是提前返回，包照样交给后面的 <code>FlowWorker</code>。区别在于：它没走到 <code>FlowSetupPacket()</code>，没有 <code>PKT_WANTS_FLOW</code> 标志，所以不会进流表，也不会做 TCP 重组和应用层解析；但 <code>FlowWorker</code> 里的检测和输出对每个包都会执行。</p>
+<p>这样设计，是因为对检测引擎来说，畸形包本身就是值得关注的信号：它可能是有人在试探、在构造绕过检测的包。所以解码事件有三个出口：</p>
+<ul>
+<li><p><strong>统计</strong>：每种事件都有自己的计数器，比如 <code>decoder.event.ipv4.trunc_pkt</code>，在 <code>stats.log</code> 里就能看到哪种畸形包多。</p>
+</li>
+<li><p><strong>规则</strong>：Suricata 自带的 <code>rules/decoder-events.rules</code> 用 <code>decode-event</code> 关键字匹配这些事件，比如：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">alert pkthdr any any -&gt; any any (msg:&quot;SURICATA IPv4 truncated packet&quot;; decode-event:ipv4.trunc_pkt; classtype:protocol-command-decode; sid:2200003; rev:2;)</span><br></pre></td></tr></table></figure>
+
+<p>加载这些规则后，截断的 IPv4 包就会产生一条告警；IPS 模式下，把 <code>alert</code> 改成 <code>drop</code>，就能直接丢掉这类包。</p>
+</li>
+<li><p><strong>日志</strong>：EVE 的 <code>anomaly</code> 事件类型可以把解码事件写进 <code>eve.json</code>。不过默认配置只记应用层异常，要在 <code>anomaly</code> 的 <code>types</code> 里打开 <code>decode: yes</code> 才会记解码事件。</p>
+</li>
+</ul>
+<h2 id="6-包里还有包：隧道和分片"><a href="#6-包里还有包：隧道和分片" class="headerlink" title="6. 包里还有包：隧道和分片"></a>6. 包里还有包：隧道和分片</h2><p>有两种情况，解码层手里的这个包还不是全部：一种是包里还套着另一个包(隧道)，一种是一个包被拆成了好几片(分片)。两种情况的处理方式是一样的：生出一个新的 <code>Packet</code>。</p>
+<p><strong>隧道。</strong> Suricata 认隧道有两种方式：</p>
+<ul>
+<li><strong>按协议号</strong>：GRE(47)、IP 套 IP(4)、IPv6 套 IPv4(41)，在 <code>DecodeIPV4()</code> 的 <code>switch</code> 里就能认出来。</li>
+<li><strong>按 UDP 端口</strong>：VXLAN、Geneve、Teredo 跑在普通 UDP 上，只能靠端口判断。<code>DecodeUDP()</code> 会检查端口是否在配置的范围内(<code>src/decode-udp.c:88</code> 起)，是的话再按对应格式尝试解码。</li>
+</ul>
+<p>认出隧道后，由 <code>PacketTunnelPktSetup()</code>(<code>src/decode.c:396</code>)生成内层包：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Packet *p = PacketGetFromQueueOrAlloc();          <span class="comment">/* 从包池再借一个 Packet */</span></span><br><span class="line">PacketCopyData(p, pkt, len);                      <span class="comment">/* 内层数据拷贝进来 */</span></span><br><span class="line">p-&gt;recursion_level = parent-&gt;recursion_level + <span class="number">1</span>;</span><br><span class="line">...</span><br><span class="line">p-&gt;root = parent-&gt;root ? parent-&gt;root : parent;   <span class="comment">/* root 指向最外层的那个包 */</span></span><br><span class="line">p-&gt;ttype = PacketTunnelChild;</span><br><span class="line">ret = DecodeTunnel(tv, dtv, p, GET_PKT_DATA(p), GET_PKT_LEN(p), proto);   <span class="comment">/* 立刻解码内层 */</span></span><br><span class="line">...</span><br><span class="line">DecodeSetNoPayloadInspectionFlag(parent);        <span class="comment">/* 外层包不再检查载荷 */</span></span><br></pre></td></tr></table></figure>
+
+<p>几个细节：</p>
+<ul>
+<li>内层包用的是 <code>PacketCopyData()</code>，把内层数据拷贝一份放进自己的 <code>Packet</code>，而不是像上一篇那样零拷贝指向环形缓冲区。</li>
+<li>内层包的 <code>root</code> 指向最外层的包，<code>recursion_level</code> 加一。流表查找时会把 <code>recursion_level</code> 算进去，所以隧道内外的同名连接不会被混成一条流。</li>
+<li>外层包被打上 <code>PKT_NOPAYLOAD_INSPECTION</code>：它的载荷就是内层包，内容检测交给内层包去做，免得同样的内容被检查两遍。</li>
+<li>最外层的包要等所有内层包都处理完，才能真正归还。<code>TmqhOutputPacketpool()</code> 里专门有一段处理这种父子关系的代码。</li>
+</ul>
+<p>生成的内层包被放进 <code>tv-&gt;decode_pq</code>，然后外层包继续往下走。那内层包什么时候处理？第 2 篇的 <code>TmThreadsSlotVarRun()</code> 里省略过一个细节：每走完一个解码模块，它都会检查 <code>decode_pq</code>，调用 <code>TmThreadsProcessDecodePseudoPackets()</code>(<code>src/tm-threads.c:114</code>)，把排在里面的新包逐个送进后面的工位。所以内层包和外层包在同一个线程里、紧挨着被处理。</p>
+<p><strong>分片。</strong> IPv4 头里的 MF 标志为 1，或者片偏移大于 0，说明这只是一个分片。<code>DecodeIPV4()</code> 把它交给 <code>Defrag()</code>(<code>src/defrag.c:1052</code>)：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (unlikely(IPV4_GET_RAW_FRAGOFFSET(ip4h) &gt; <span class="number">0</span> || IPV4_GET_RAW_FLAG_MF(ip4h))) &#123;</span><br><span class="line">    Packet *rp = Defrag(tv, dtv, p);</span><br><span class="line">    <span class="keyword">if</span> (rp != <span class="literal">NULL</span>) &#123;</span><br><span class="line">        PacketEnqueueNoLock(&amp;tv-&gt;decode_pq, rp);</span><br><span class="line">    &#125;</span><br><span class="line">    p-&gt;flags |= PKT_IS_FRAGMENT;</span><br><span class="line">    <span class="keyword">return</span> TM_ECODE_OK;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>Defrag()</code> 按源地址、目的地址、IP ID 和协议号，把属于同一个原始包的分片收集起来。还没收齐就返回空；收齐了，就用 <code>PacketDefragPktSetup()</code>(<code>src/decode.c:476</code>)生成一个重组好的新包，并立刻对它调用 <code>DecodeIPV4()</code>，从 IP 层重新解码一遍，最后同样放进 <code>decode_pq</code>。分片本身带着 <code>PKT_IS_FRAGMENT</code> 标志提前返回，没有走到 <code>FlowSetupPacket()</code>，不会进流表；进流表、做重组和检测内容的，是那个拼好的新包。</p>
+<p>收集分片用的表是所有线程共享的(按哈希桶加锁)，所以即使同一个包的分片落在不同线程，也能拼到一起。但这会带来另一个问题：上一篇 AF_PACKET 的 <code>cluster_flow</code> 按五元组分发，而除了第一片，后面的分片里没有端口号，算出来的哈希不同，会被分到别的线程，同一条流的包就不再落在同一个线程里了。这就是 Suricata 建议在 <code>cluster_flow</code> 下打开 fanout <code>defrag</code> 选项的原因：让内核在分发之前先把分片拼好，拼好的包带着完整的五元组，还能分到它该去的线程。</p>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><ul>
+<li>解码层是一串层层嵌套的 <code>switch</code>：链路层按 <code>datalink</code>，以太网按 <code>eth_type</code>，IP 按协议号，隧道有时还要按 UDP 端口。</li>
+<li>每一层都是同一个套路：检查长度 → 检查层数 → 把头部指针记进 <code>p-&gt;l2</code>&#x2F;<code>l3</code>&#x2F;<code>l4</code> → 交给下一层。解码只记位置，不拷贝头部。</li>
+<li>解码到 TCP&#x2F;UDP 时，五元组齐了，<code>FlowSetupPacket()</code> 打上 <code>PKT_WANTS_FLOW</code> 并算好 <code>flow_hash</code>，交给下一站。</li>
+<li>畸形包不丢弃，而是记解码事件：进统计、可被 <code>decode-event</code> 规则匹配，打开相应配置后还能写进 EVE 的 <code>anomaly</code>。它们不会进流表，但仍会经过检测和输出。</li>
+<li>隧道和分片会生出新的 <code>Packet</code>，放进 <code>decode_pq</code>，在同一个线程里紧接着处理。</li>
+</ul>
+<p>下一篇进入 <code>FlowWorker</code>：<code>Flow</code> 是怎么让 Suricata 记住一段通信的？流表怎么查找、什么时候过期、谁来回收？</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Suricata/" rel="tag"><i class="fa fa-tag"></i> Suricata</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/suricata/03-capture-and-packet/" rel="prev" title="Suricata 源码阅读(三)：包是怎么进来的——捕获模块与 Packet 结构体">
+                  <i class="fa fa-chevron-left"></i> Suricata 源码阅读(三)：包是怎么进来的——捕获模块与 Packet 结构体
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/suricata/05-flow/" rel="next" title="Suricata 源码阅读(五)：引擎开始记住事情——Flow">
+                  Suricata 源码阅读(五)：引擎开始记住事情——Flow <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  
+  <div class="comments giscus-container">
+  </div>
+  
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2008 – 
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Eazow</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Symbols count total">409k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">6:12</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+<script>
+(function () {
+  var numberOfBanners = 10;
+  var intervalMs = 5000;
+
+  var layerA = document.querySelector('.banner-layer-a');
+  var layerB = document.querySelector('.banner-layer-b');
+  if (!layerA || !layerB) return;
+
+  var urls = [];
+  for (var i = 0; i < numberOfBanners; i++) {
+    urls.push('/images/banner' + i + '.webp');
+  }
+  // shuffle so the slideshow order differs between visits
+  for (var i = urls.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var tmp = urls[i];
+    urls[i] = urls[j];
+    urls[j] = tmp;
+  }
+
+  // preload every banner once so the browser caches them up front;
+  // later switches then read from cache instead of firing new requests
+  urls.forEach(function (url) {
+    var img = new Image();
+    img.src = url;
+  });
+
+  var layers = [layerA, layerB];
+  var current = 0;
+  var index = 0;
+
+  function setLayer(layer, url) {
+    layer.style.backgroundImage = "url('" + url + "')";
+  }
+
+  setLayer(layers[current], urls[index]);
+  layers[current].classList.add('is-active');
+
+  if (urls.length <= 1) return;
+
+  setInterval(function () {
+    var next = current === 0 ? 1 : 0;
+    index = (index + 1) % urls.length;
+    setLayer(layers[next], urls[index]);
+    layers[next].classList.add('is-active');
+    layers[current].classList.remove('is-active');
+    current = next;
+  }, intervalMs);
+})();
+</script>
+<div class="footer-quote"><span>Stay kind and positive.</span></div>
+
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/9.1.3/mermaid.min.js","integrity":"sha256-TIYL00Rhw/8WaoUhYTLX9SKIEFdXxg+yMWSLVUbhiLg="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  <!--script async src="https://cdn.jsdelivr.net/gh/sukkaw/busuanzi@2.3/bsz.pure.mini.js"></script-->
+
+
+
+
+<script class="next-config" data-name="giscus" type="application/json">{"enable":true,"repo":"eazow/hexo","repo_id":"MDEwOlJlcG9zaXRvcnkxNjI1NTM4Nzk=","category":"Announcements","category_id":"DIC_kwDOCbBgF84CQl0J","mapping":"pathname","strict":0,"reactions_enabled":1,"emit_metadata":0,"theme":"light","lang":"en","crossorigin":"anonymous","input_position":"top","loading":"lazy"}</script>
+
+<script>
+document.addEventListener('page:loaded', () => {
+  if (!CONFIG.page.comments) return;
+
+  NexT.utils.loadComments('.giscus-container')
+    .then(() => NexT.utils.getScript('https://giscus.app/client.js', {
+      attributes: {
+        async                   : true,
+        crossOrigin             : 'anonymous',
+        'data-repo'             : CONFIG.giscus.repo,
+        'data-repo-id'          : CONFIG.giscus.repo_id,
+        'data-category'         : CONFIG.giscus.category,
+        'data-category-id'      : CONFIG.giscus.category_id,
+        'data-mapping'          : CONFIG.giscus.mapping,
+        'data-strict'           : CONFIG.giscus.strict,
+        'data-reactions-enabled': CONFIG.giscus.reactions_enabled,
+        'data-emit-metadata'    : CONFIG.giscus.emit_metadata,
+        'data-theme'            : CONFIG.giscus.theme,
+        'data-lang'             : CONFIG.giscus.lang,
+        'data-input-position'   : CONFIG.giscus.input_position,
+        'data-loading'          : CONFIG.giscus.loading
+      },
+      parentNode: document.querySelector('.giscus-container')
+    }));
+});
+</script>
+<script>
+document.querySelectorAll('figure.highlight').forEach(function (el) {
+  var lang = el.className.replace('highlight', '').trim().split(/\s+/)[0];
+  if (lang && lang !== 'plaintext') el.setAttribute('data-lang', lang);
+});
+</script>
+
+</body>
+</html>

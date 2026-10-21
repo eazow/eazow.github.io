@@ -53,7 +53,119 @@
   <noscript>
     <link rel="stylesheet" href="/css/noscript.css">
   </noscript>
-</head>
+<style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style></head>
 
 <body itemscope itemtype="http://schema.org/WebPage">
   <div class="headband"></div>
@@ -86,7 +198,7 @@
 
 
 <nav class="site-nav">
-  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li>
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-series"><a href="/series/" rel="section"><i class="fa fa-layer-group fa-fw"></i>Series</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li>
   </ul>
 </nav>
 
@@ -127,7 +239,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://eazow.com/tao-te-ching/">
+    <link itemprop="mainEntityOfPage" href="http://eazow.com/suricata/02-thread-model-and-tmmodule/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -145,7 +257,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/tao-te-ching/" class="post-title-link" itemprop="url">《道德经》读书笔记</a>
+          <a href="/suricata/02-thread-model-and-tmmodule/" class="post-title-link" itemprop="url">Suricata 源码阅读(二)：一条流水线是怎么跑起来的——线程模型与 TmModule</a>
         </h2>
 
         <div class="post-meta-container">
@@ -156,7 +268,7 @@
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2024-01-02 22:00:20" itemprop="dateCreated datePublished" datetime="2024-01-02T22:00:20+08:00">2024-01-02</time>
+      <time title="Created: 2026-06-29 00:00:00" itemprop="dateCreated datePublished" datetime="2026-06-29T00:00:00+08:00">2026-06-29</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -164,466 +276,7 @@
       </span>
       <span class="post-meta-item-text">In</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Reading/" itemprop="url" rel="index"><span itemprop="name">Reading</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>16 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h3 id="一"><a href="#一" class="headerlink" title="一"></a>一</h3><blockquote>
-<p>道可道，非常道；名可名，非常名。无，名天地之始；有，名万物之母。故常无，欲以观其妙；常有，欲以观其徼。此两者，同出而异名，同谓之玄。玄之又玄，众妙之门。</p>
-</blockquote>
-<p>这是老子对”道”的核心阐述：</p>
-<p><strong>道可道，非常道；名可名，非常名</strong>（道的本质）</p>
-<ul>
-<li>能够说出来的”道”，就不是永恒不变的道</li>
-<li>能够命名的”名”，就不是永恒不变的名</li>
-<li><strong>意思</strong>：真正的”道”超越语言文字，一旦说出来就变味了</li>
-</ul>
-<p><strong>无，名天地之始；有，名万物之母</strong>（有与无）</p>
-<ul>
-<li>“无”是天地的开端（混沌未分的状态）</li>
-<li>“有”是万物的根源（具体事物的来源）</li>
-</ul>
-<p><strong>故常无，欲以观其妙；常有，欲以观其徼</strong></p>
-<ul>
-<li>从”无”的角度，可以观察道的奥妙</li>
-<li>从”有”的角度，可以观察道的边界（具体表现）</li>
-</ul>
-<p><strong>此两者同出而异名，同谓之玄，玄之又玄，众妙之门</strong>（玄妙之门）</p>
-<ul>
-<li>“有”和”无”本是一体，只是名称不同</li>
-<li>都可称为”玄”（深奥难测）</li>
-<li>玄之又玄，是一切奥妙的门户</li>
-</ul>
-<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>道理说不清，一说就错；真理无法用语言完全表达。宇宙从”无”开始，演化出”有”。要从”无形”中体会本质，从”有形”中观察现象。虚与实本是一体，深不可测，这就是理解万物的入口。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/tao-te-ching/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://eazow.com/b-tree-leaf/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Eazow">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Eazow">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Eazow">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/b-tree-leaf/" class="post-title-link" itemprop="url">[译]B-Tree叶节点格式</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2023-09-20 23:57:20" itemprop="dateCreated datePublished" datetime="2023-09-20T23:57:20+08:00">2023-09-20</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Coding/" itemprop="url" rel="index"><span itemprop="name">Coding</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>6 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>我们将表的格式从未排序的行数组更改为 B 树。这是一个很大的改动，需要多篇文章来实现。在本文的结尾，我们将定义叶节点的布局，并支持将键&#x2F;值对插入到单节点树中。但首先，让我们回顾一下切换到树结构的原因。</p>
-<h3 id="替代表格格式"><a href="#替代表格格式" class="headerlink" title="替代表格格式"></a>替代表格格式</h3><p>使用当前格式，每个页面仅存储行（无元数据），因此非常节省空间。插入也很快速，因为我们只需追加到末尾即可。但是，只能通过扫描整个表来查找特定行。如果要删除一行，则必须通过移动其后的每一行来填补该空缺。</p>
-<p>如果我们将表存储为数组，但按 id 对行进行排序，则可以使用二分查找来查找特定 id。但是，插入会很慢，因为我们必须移动很多行来腾出空间。</p>
-<p>相反，我们采用树结构。树中的每个节点可以包含可变数量的行，因此我们必须在每个节点中存储一些信息以跟踪其包含的行数。此外，还有所有不存储任何行的内部节点的存储开销。作为交换，虽然数据库文件变大了，但我们获得了快速的插入、删除和查找功能。</p>
-<table>
-<thead>
-<tr>
-<th align="left"></th>
-<th align="left">未排序的行数组</th>
-<th align="left">已排序的行数组</th>
-<th align="left">节点树</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left">页面包含</td>
-<td align="left">仅数据</td>
-<td align="left">仅数据</td>
-<td align="left">元数据、主键和数据</td>
-</tr>
-<tr>
-<td align="left">每页行数</td>
-<td align="left">更多的</td>
-<td align="left">更多的</td>
-<td align="left">更少</td>
-</tr>
-<tr>
-<td align="left">插入</td>
-<td align="left">O(1)</td>
-<td align="left">O(n)</td>
-<td align="left">O(log(n))</td>
-</tr>
-<tr>
-<td align="left">删除</td>
-<td align="left">O(n)</td>
-<td align="left">O(n)</td>
-<td align="left">O(log(n))</td>
-</tr>
-<tr>
-<td align="left">通过id查找</td>
-<td align="left">O(n)</td>
-<td align="left">O(log(n))</td>
-<td align="left">O(log(n))</td>
-</tr>
-</tbody></table>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/b-tree-leaf/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://eazow.com/b-tree/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Eazow">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Eazow">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Eazow">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/b-tree/" class="post-title-link" itemprop="url">[译]B-Tree</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2023-09-10 23:57:20" itemprop="dateCreated datePublished" datetime="2023-09-10T23:57:20+08:00">2023-09-10</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Coding/" itemprop="url" rel="index"><span itemprop="name">Coding</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>B-Tree是 SQLite 用来表示表和索引的数据结构，因此它是一个非常核心的思想。本文只是介绍数据结构，所以不会有任何代码。</p>
-<p>为什么树是数据库的良好数据结构？</p>
-<ul>
-<li>搜索特定值很快（对数时间）</li>
-<li>插入&#x2F;删除您已经找到的值速度很快（重新平衡的时间很长）</li>
-<li>遍历一系列值的速度很快（与哈希映射不同）</li>
-</ul>
-<p>B 树与二叉树不同（“B”可能代表发明者的名字，但也可以代表“平衡”）。这是一个 B 树示例：</p>
-<img data-src="https://cstack.github.io/db_tutorial/assets/images/B-tree.png" alt="example B-Tree (https://en.wikipedia.org/wiki/File:B-tree.svg)" style="zoom:50%;" />
-
-
-<p>与二叉树不同，B 树中的每个节点可以有 2 个以上的子节点。每个节点最多可以有 m 个子节点，其中 m 称为树的“order”。为了保持树基本平衡，我们还说节点必须至少有 m&#x2F;2 个子节点（向上舍入）。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/b-tree/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://eazow.com/rust/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Eazow">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Eazow">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Eazow">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/rust/" class="post-title-link" itemprop="url">Rust</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2023-08-01 21:02:15" itemprop="dateCreated datePublished" datetime="2023-08-01T21:02:15+08:00">2023-08-01</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Coding/" itemprop="url" rel="index"><span itemprop="name">Coding</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>10 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <img data-src="https://hyz-blog.oss-cn-hangzhou.aliyuncs.com/rust.png" style="zoom:35%;" />
-
-
-
-<h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl https://sh.rustup.rs -sSf | sh</span><br></pre></td></tr></table></figure>
-
-<p>安装完成后</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Rust is installed now. Great!</span><br></pre></td></tr></table></figure>
-
-
-
-<h3 id="快速参考"><a href="#快速参考" class="headerlink" title="快速参考"></a>快速参考</h3>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/rust/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://eazow.com/poetry/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Eazow">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Eazow">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Eazow">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/poetry/" class="post-title-link" itemprop="url">我喜欢的古诗词</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2023-02-06 17:20:12" itemprop="dateCreated datePublished" datetime="2023-02-06T17:20:12+08:00">2023-02-06</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Life/" itemprop="url" rel="index"><span itemprop="name">Life</span></a>
+          <a href="/categories/Suricata/" itemprop="url" rel="index"><span itemprop="name">Suricata</span></a>
         </span>
     </span>
 
@@ -644,14 +297,14 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <p>读书时听着老师念答案不太能读懂诗词，年纪大了便能体会到其中的韵味和阅历。每次读时，还能有不同的品味。</p>
-<p>诗词包含了古人所有的情感，你的酸甜苦辣，各种感受都能从中找到共鸣。</p>
-<h4 id="定风波·莫听穿林打叶声"><a href="#定风波·莫听穿林打叶声" class="headerlink" title="定风波·莫听穿林打叶声"></a>定风波·莫听穿林打叶声</h4><h6 id="苏轼"><a href="#苏轼" class="headerlink" title="苏轼"></a>苏轼</h6><p>三月七日，沙湖道中遇雨，雨具先去，同行皆狼狈，余独不觉。已而遂晴，故作此词。</p>
-<p>莫听穿林打叶声，何妨吟啸且徐行。竹杖芒鞋轻胜马，谁怕？一蓑烟雨任平生。</p>
-<p>料峭春风吹酒醒，微冷，山头斜照却相迎。回首向来萧瑟处，归去，也无风雨也无晴。</p>
+          <blockquote>
+<p>这是系列第 2 篇。上一篇跟着 <code>main()</code> 走完了启动的五个阶段：<code>RunModeDispatch()</code> 把线程一个个创建出来，<code>SuricataPostInit()</code> 等它们就位后统一放行。但线程里面具体装了什么、放行之后怎么干活，上一篇没有展开。这一篇就拆开一个线程看：<code>TmModule</code> 怎么变成线程里真正在跑的代码？一个包在同一个线程里怎么连续闯过好几道工位？single、autofp、workers 这三种排班方式，差别到底落在哪一行代码上？</p>
+</blockquote>
+<p>先看全貌。下面这张图把本篇要讲的东西都画在了一起，读完再回来看会更清楚：</p>
+<p><img data-src="/images/suricata/suricata-thread-model.svg" alt="线程模型：TmModule 怎么变成一条正在跑的流水线"></p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/poetry/#more" rel="contents">
+              <a class="btn" href="/suricata/02-thread-model-and-tmmodule/#more" rel="contents">
                 Read more &raquo;
               </a>
             </div>
@@ -682,7 +335,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://eazow.com/fake/">
+    <link itemprop="mainEntityOfPage" href="http://eazow.com/suricata/01-startup-and-architecture/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -700,7 +353,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/fake/" class="post-title-link" itemprop="url">Fake data</a>
+          <a href="/suricata/01-startup-and-architecture/" class="post-title-link" itemprop="url">Suricata 源码阅读(一)：启动一个 Suricata 进程，到底要经过多少步？</a>
         </h2>
 
         <div class="post-meta-container">
@@ -711,7 +364,7 @@
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2023-01-02 12:56:31" itemprop="dateCreated datePublished" datetime="2023-01-02T12:56:31+08:00">2023-01-02</time>
+      <time title="Created: 2026-06-22 00:00:00" itemprop="dateCreated datePublished" datetime="2026-06-22T00:00:00+08:00">2026-06-22</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -719,7 +372,7 @@
       </span>
       <span class="post-meta-item-text">In</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Coding/" itemprop="url" rel="index"><span itemprop="name">Coding</span></a>
+          <a href="/categories/Suricata/" itemprop="url" rel="index"><span itemprop="name">Suricata</span></a>
         </span>
     </span>
 
@@ -729,7 +382,7 @@
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>2 mins.</span>
+      <span>7 mins.</span>
     </span>
 </div>
 
@@ -740,20 +393,26 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <p>当测试程序需要数据时，可以通过faker来构造测试数据</p>
-<h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ pip install faker</span><br></pre></td></tr></table></figure>
+          <blockquote>
+<p>这是系列第 1 篇。先不急着钻进协议解析器，也不急着看规则怎么匹配，而是跟着 Suricata 启动一遍：从命令行参数和配置文件出发，一路走到真正开始收包。后面每一篇，都会回到这张地图上的某个位置继续往下挖。</p>
+</blockquote>
+<p>先给答案：从 <code>main()</code> 到第一个包被处理，Suricata 要走五个阶段。</p>
+<ol>
+<li><strong>读懂命令</strong>：解析命令行，确认这次以什么模式运行，读入 <code>suricata.yaml</code>。</li>
+<li><strong>备料</strong>：按配置把各个子系统初始化好——注册模块、加载规则、放弃多余的权限。</li>
+<li><strong>搭产线</strong>：按运行模式把处理模块串成流水线，创建工作线程和管理线程。</li>
+<li><strong>放行</strong>：等所有线程都准备好，统一发令开工。</li>
+<li><strong>值守与收工</strong>：主线程退到一边响应信号，收到停止信号后再把线程逐个关掉。</li>
+</ol>
+<p>这五个阶段里藏着一条最值得抓住的线：前两个阶段只有主线程一个人在干活；第 3 阶段开始一个个新线程被创建出来，但都原地待命；直到第 4 阶段放行那一刻，进程才真正变成多线程并发运行。</p>
+<p>入口在 <code>src/main.c:20</code>。<code>main()</code> 的主体就是十来个函数调用，正好能和这五个阶段对上(省略了错误检查和 Windows 相关代码)：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span> **argv)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">/* 阶段 1：读懂命令 */</span></span><br><span class="line">    SuricataPreInit(argv[<span class="number">0</span>]);                  <span class="comment">// 早期初始化，注册所有运行模式</span></span><br><span class="line">    SCParseCommandLine(argc, argv);            <span class="comment">// 解析命令行参数到 SCInstance</span></span><br><span class="line">    SCFinalizeRunMode();                       <span class="comment">// 校验运行模式</span></span><br><span class="line">    SCStartInternalRunMode(argc, argv);        <span class="comment">// --list-* 之类&quot;跑完就退出&quot;的模式</span></span><br><span class="line">    SCLoadYamlConfig();                        <span class="comment">// 加载 suricata.yaml</span></span><br><span class="line">    SCEnableDefaultSignalHandlers();           <span class="comment">// 标记：稍后安装默认信号处理函数</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">/* 阶段 2 + 3：备料、搭产线，都在 SuricataInit() 里 */</span></span><br><span class="line">    SuricataInit();</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* 阶段 4：放行 */</span></span><br><span class="line">    SuricataPostInit();                        <span class="comment">// 等待所有线程 init 完成，再放行</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">/* 阶段 5：值守与收工 */</span></span><br><span class="line">    SuricataMainLoop();                        <span class="comment">// 主线程的事件循环</span></span><br><span class="line">    SuricataShutdown();</span><br><span class="line">    GlobalsDestroy();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-
-
-<h3 id="基本使用"><a href="#基本使用" class="headerlink" title="基本使用"></a>基本使用</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">from faker import Faker</span><br><span class="line">faker = Faker()</span><br><span class="line"> </span><br><span class="line">faker.name()</span><br><span class="line"># &#x27;Lucy Cechtelar&#x27;</span><br><span class="line"> </span><br><span class="line">faker.address()</span><br><span class="line"># &#x27;426 Jordy Lodge</span><br><span class="line">#  Cartwrightshire, SC 88120-6700&#x27;</span><br><span class="line"> </span><br><span class="line">faker.ipv4()</span><br><span class="line"># &#x27;196.67.103.129&#x27;</span><br></pre></td></tr></table></figure>
-
-
-
-<p>对方法 <a target="_blank" rel="noopener" href="http://fake.name/">faker.</a>ipv4()的每次调用都会产生不同的随机结果</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">for _ in range(10):</span><br><span class="line">  print(faker.ipv4())</span><br><span class="line"> </span><br><span class="line"># &#x27;120.36.235.152&#x27;</span><br><span class="line"># &#x27;16.58.6.69&#x27;</span><br><span class="line"># &#x27;170.215.56.41&#x27;</span><br><span class="line"># &#x27;135.217.158.192&#x27;</span><br><span class="line"># &#x27;218.235.87.38&#x27;</span><br><span class="line"># &#x27;175.80.75.73&#x27;</span><br><span class="line"># &#x27;122.120.1.128&#x27;</span><br><span class="line"># &#x27;99.91.143.38&#x27;</span><br><span class="line"># &#x27;1.90.129.142&#x27;</span><br><span class="line"># &#x27;184.148.193.249&#x27;</span><br></pre></td></tr></table></figure>
+<p>把这五个阶段画出来，就是下面这张图。后面每一节对应图里的一段，读的时候可以随时回来看看自己走到了哪里：</p>
+<img data-src="/images/suricata/suricata-startup-flow.svg" alt="main() 启动流程" width="560">
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/fake/#more" rel="contents">
+              <a class="btn" href="/suricata/01-startup-and-architecture/#more" rel="contents">
                 Read more &raquo;
               </a>
             </div>
@@ -784,7 +443,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://eazow.com/commencement/">
+    <link itemprop="mainEntityOfPage" href="http://eazow.com/suricata/00-packet-journey/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -802,7 +461,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/commencement/" class="post-title-link" itemprop="url">Commencement Address at Stanford University</a>
+          <a href="/suricata/00-packet-journey/" class="post-title-link" itemprop="url">Suricata 源码阅读(零)：一个数据包如何穿过 Suricata</a>
         </h2>
 
         <div class="post-meta-container">
@@ -813,7 +472,201 @@
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2022-10-26 20:16:06" itemprop="dateCreated datePublished" datetime="2022-10-26T20:16:06+08:00">2022-10-26</time>
+      <time title="Created: 2026-06-16 00:00:00" itemprop="dateCreated datePublished" datetime="2026-06-16T00:00:00+08:00">2026-06-16</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Suricata/" itemprop="url" rel="index"><span itemprop="name">Suricata</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>5 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>在一个有 Suricata 盯着的网络里，执行一次：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl http://example.com/</span><br></pre></td></tr></table></figure>
+
+<p>几毫秒后，Suricata 的 <code>eve.json</code> 里多出这样一行(为了好读，这里做了换行和缩进；字段顺序与 8.0.7 的实际输出一致)：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;timestamp&quot;</span><span class="punctuation">:</span> <span class="string">&quot;2026-09-24T14:03:21.482913+0800&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;flow_id&quot;</span><span class="punctuation">:</span> <span class="number">1712362980541209</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;in_iface&quot;</span><span class="punctuation">:</span> <span class="string">&quot;eth0&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;event_type&quot;</span><span class="punctuation">:</span> <span class="string">&quot;http&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;src_ip&quot;</span><span class="punctuation">:</span> <span class="string">&quot;10.0.0.23&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;src_port&quot;</span><span class="punctuation">:</span> <span class="number">51724</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;dest_ip&quot;</span><span class="punctuation">:</span> <span class="string">&quot;93.184.215.14&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;dest_port&quot;</span><span class="punctuation">:</span> <span class="number">80</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;proto&quot;</span><span class="punctuation">:</span> <span class="string">&quot;TCP&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;ip_v&quot;</span><span class="punctuation">:</span> <span class="number">4</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;pkt_src&quot;</span><span class="punctuation">:</span> <span class="string">&quot;wire/pcap&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;tx_id&quot;</span><span class="punctuation">:</span> <span class="number">0</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;http&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;hostname&quot;</span><span class="punctuation">:</span> <span class="string">&quot;example.com&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;url&quot;</span><span class="punctuation">:</span> <span class="string">&quot;/&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;http_user_agent&quot;</span><span class="punctuation">:</span> <span class="string">&quot;curl/8.7.1&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;http_content_type&quot;</span><span class="punctuation">:</span> <span class="string">&quot;text/html&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;http_method&quot;</span><span class="punctuation">:</span> <span class="string">&quot;GET&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;protocol&quot;</span><span class="punctuation">:</span> <span class="string">&quot;HTTP/1.1&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;status&quot;</span><span class="punctuation">:</span> <span class="number">200</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;length&quot;</span><span class="punctuation">:</span> <span class="number">1256</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>从网线上的一串字节，到这行结构清楚的 JSON，中间发生了什么？这个系列想回答的就是这个问题。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/suricata/00-packet-journey/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://eazow.com/logic-101/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Eazow">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Eazow">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Eazow">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/logic-101/" class="post-title-link" itemprop="url">逻辑学入门</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2026-05-12 15:16:08" itemprop="dateCreated datePublished" datetime="2026-05-12T15:16:08+08:00">2026-05-12</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Reading/" itemprop="url" rel="index"><span itemprop="name">Reading</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>5 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <blockquote>
+<p><em>“逻辑是思维的语法。”</em></p>
+</blockquote>
+<p>你一定有过这样的时刻：和人争了半天，面红耳赤，最后谁也说服不了谁；或者听完一段话，句句都像有道理，心里却总有根刺，说不出扎在哪儿。</p>
+<p>逻辑学要做的，就是把那根刺拔出来，放到灯下看清楚。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/logic-101/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://eazow.com/ted/1-thing-you-can-do-today-to-be-happier/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Eazow">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Eazow">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Eazow">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/ted/1-thing-you-can-do-today-to-be-happier/" class="post-title-link" itemprop="url">[TED]1 Thing You Can Do Today to Be Happier</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2026-03-20 19:58:26" itemprop="dateCreated datePublished" datetime="2026-03-20T19:58:26+08:00">2026-03-20</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -822,200 +675,6 @@
       <span class="post-meta-item-text">In</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
           <a href="/categories/English/" itemprop="url" rel="index"><span itemprop="name">English</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>14 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p align="right"><b>Steve Jobs</b></p>
-
-<p>I am honored to be with you today at your commencement from one of the finest universities in the world. Truth be told, I never graduated from college, and this is the closest I’ve ever gotten to a college graduation. Today I want to tell you three stories from my life. That’s it. No big deal. Just three stories.</p>
-<h4 id="The-first-story-is-about-connecting-the-dots"><a href="#The-first-story-is-about-connecting-the-dots" class="headerlink" title="The first story is about connecting the dots."></a>The first story is about connecting the dots.</h4><p>I dropped out of Reed College after the first 6 months, but then stayed around as a drop-in for another 18 months or so before I really quit. So why did I drop out?</p>
-<p>It started before I was born. My biological mother was a young, unwed college graduate student, and she decided to put me up for adoption. She felt very strongly that I should be adopted by college graduates, so everything was all set for me to be adopted at birth by a lawyer and his wife. Except that when I popped out they decided at the last minute that they really wanted a girl.</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/commencement/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://eazow.com/family-album/e01/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Eazow">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Eazow">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Eazow">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/family-album/e01/" class="post-title-link" itemprop="url">Family Album Episode 01</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2022-03-20 19:58:26" itemprop="dateCreated datePublished" datetime="2022-03-20T19:58:26+08:00">2022-03-20</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/English/" itemprop="url" rel="index"><span itemprop="name">English</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>9 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2 id="ACT-I"><a href="#ACT-I" class="headerlink" title="ACT I"></a>ACT I</h2><h3 id="Dialogue"><a href="#Dialogue" class="headerlink" title="Dialogue"></a>Dialogue</h3><p>Excuse me. My name is Richard Stewart.</p>
-<p>I’m a <strong>photographer</strong>.<br>May I take a picture of you and your little boy?</p>
-<p>What’s it for?</p>
-<p>It’s for a book.</p>
-<p>You’re writing a book?</p>
-<p>It’s a book of pictures.</p>
-<p>I call it Family Album, U.S.A.</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/family-album/e01/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://eazow.com/protobuf/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Eazow">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Eazow">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Eazow">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/protobuf/" class="post-title-link" itemprop="url">Protocol Buffers使用</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2021-02-21 22:20:55" itemprop="dateCreated datePublished" datetime="2021-02-21T22:20:55+08:00">2021-02-21</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Coding/" itemprop="url" rel="index"><span itemprop="name">Coding</span></a>
         </span>
     </span>
 
@@ -1036,12 +695,12 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h3 id="1-概述"><a href="#1-概述" class="headerlink" title="1. 概述"></a>1. 概述</h3><p>Protocol Buffers(又名protobuf) 是一种语言中立、平台中立的可扩展机制，用于序列化结构化的数据</p>
-<p>它就像JSON，只是它更小、更快</p>
-<p>只需定义一次数据如何被结构化，然后就可以使用特殊生成的源代码，轻松地从各种数据流和使用各种语言写入和读取结构化数据</p>
+          <p>I’m a happiness scientist, and I’ve been a happiness scientist for 36 years. For my entire professional career, I’ve been <strong>obsessed</strong> with learning the secrets to being a happy person – with trying to answer the question: Can anyone become happier?</p>
+<p>Now how do we even study something like that? Well, in 1998, my lab pioneered what we call happiness <strong>interventions</strong>. Happiness interventions are experiments with human participants. Over the years, we’ve done dozens of these experiments, testing whether practices like expressing gratitude or doing acts of kindness or simply acting like an <strong>extrovert</strong> make people happier. And they do. Under the right conditions.</p>
+<p>My students and I spent decades doing these experiments. This work made my career, and yet I realized that I hadn’t really been listening to what the data were trying to tell me. And then it finally clicked. It dawned on me that almost all of the interventions that work to make us happier, they work precisely because they help us feel more connected to and loved by others. So writing a gratitude letter to my mom makes me feel more loved by her. And doing an act of kindness for my colleague makes me feel closer to him. In other words, what I learned is that to be a better happiness scientist, I had to become a love scientist. Because, as it turns out, the key to happiness is feeling connected and loved.</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/protobuf/#more" rel="contents">
+              <a class="btn" href="/ted/1-thing-you-can-do-today-to-be-happier/#more" rel="contents">
                 Read more &raquo;
               </a>
             </div>
@@ -1072,7 +731,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://eazow.com/i-have-a-dream/">
+    <link itemprop="mainEntityOfPage" href="http://eazow.com/how-to-fix-your-entire-life-in-1-day/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -1090,7 +749,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/i-have-a-dream/" class="post-title-link" itemprop="url">I Have a Dream</a>
+          <a href="/how-to-fix-your-entire-life-in-1-day/" class="post-title-link" itemprop="url">[Repost]How to Fix Your Entire Life in 1 Day(by DAN KOE)</a>
         </h2>
 
         <div class="post-meta-container">
@@ -1101,7 +760,7 @@
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2020-12-29 00:02:55" itemprop="dateCreated datePublished" datetime="2020-12-29T00:02:55+08:00">2020-12-29</time>
+      <time title="Created: 2026-03-01 11:17:30" itemprop="dateCreated datePublished" datetime="2026-03-01T11:17:30+08:00">2026-03-01</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -1119,7 +778,201 @@
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>10 mins.</span>
+      <span>28 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>You’re probably going to quit your new years resolution.</p>
+<p>And that’s okay. Most people do (studies show 80-90% failure rates) because most people don’t actually want to change on a deep, internal level. That is, they go about changing their life in the completely wrong way. They create a new years resolution because everyone else does – humans want to impress others more than they want to impress themselves… we create a superficial meaning out of status games – but they don’t meet the requirements for true change, which goes a lot deeper than convincing yourself you’re going to be more disciplined or productive this year.</p>
+<p>I’m not here to talk down on you. I’ve quit 10 times more goals than I’ve set. I think that should be the case for most people. But the fact that people try to change their lives and utterly fail almost every time holds true. So much so that it’s a meme for the gym to be crowded during January and return back to normal in February.</p>
+<p>However, as much as I think new years resolutions are stupid, it’s always wise to reflect on the life you hate so you can launch yourself toward something that much better, as we will discuss.</p>
+<p>Human nature is a b*tch, and the worst feeling is when you make a promise to yourself and can’t help but break it. You start to feel helpless, and if you don’t know what you’re doing, you may continue the cycle for years on end: always wanting to change, but never being able to.</p>
+<p>So whether you want to start the business, transform your body, or take the risk toward a more meaningful life without quitting after 2 weeks, I want to share 7 ideas you probably haven’t heard before on behavior change, psychology, and productivity so you can do just that in 2026.</p>
+<p>This will be comprehensive.</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/how-to-fix-your-entire-life-in-1-day/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://eazow.com/ted/do-schools-kill-creativity/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Eazow">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Eazow">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Eazow">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/ted/do-schools-kill-creativity/" class="post-title-link" itemprop="url">[TED]Do Schools Kill Creativity?</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2026-02-20 15:17:03" itemprop="dateCreated datePublished" datetime="2026-02-20T15:17:03+08:00">2026-02-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/English/" itemprop="url" rel="index"><span itemprop="name">English</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>16 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="Background"><a href="#Background" class="headerlink" title="Background"></a>Background</h2><p>This speech was originally delivered by Ken Robinson at TED2006.</p>
+<h2 id="Speech-Transcript"><a href="#Speech-Transcript" class="headerlink" title="Speech Transcript"></a>Speech Transcript</h2><p>Good morning. How are you?</p>
+<p>It’s been great, hasn’t it? I’ve been blown away by the whole thing. In fact, I’m leaving.</p>
+<p>There have been three themes running through the conference which are relevant to what I want to talk about. One is the extraordinary evidence of human creativity in all of the presentations that we’ve had and in all of the people here. Just the variety of it and the range of it. The second is that it’s put us in a place where we have no idea what’s going to happen, in terms of the future. No idea how this may play out.</p>
+<p>I have an interest in education. Actually, what I find is everybody has an interest in education. Don’t you? I find this very interesting. If you’re at a dinner party, and you say you work in education — Actually, you’re not often at dinner parties, frankly.</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/ted/do-schools-kill-creativity/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://eazow.com/poetry/deng-gao/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Eazow">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Eazow">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Eazow">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/poetry/deng-gao/" class="post-title-link" itemprop="url">杜甫《登高》：古今七律第一</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2025-10-20 20:00:00" itemprop="dateCreated datePublished" datetime="2025-10-20T20:00:00+08:00">2025-10-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Poetry/" itemprop="url" rel="index"><span itemprop="name">Poetry</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>2 mins.</span>
     </span>
 </div>
 
@@ -1131,13 +984,242 @@
     
     <div class="post-body" itemprop="articleBody">
           <blockquote>
-<p>On August 28, 1963, some 100 years after President Abraham Lincoln signed the Emancipation Proclamation freeing the slaves, a young man named Martin Luther King climbed the marble steps of the Lincoln Memorial in Washington, D.C. to describe his vision of America. More than 200,000 people-black and white-came to listen. They came by plane, by car, by bus, by train, and by foot. They came to Washington to demand equal rights for black people. And the dream that they heard on the steps of the Monument became the dream of a generation.</p>
+<p>风急天高猿啸哀，渚清沙白鸟飞回。<br>无边落木萧萧下，不尽长江滚滚来。<br>万里悲秋常作客，百年多病独登台。<br>艰难苦恨繁霜鬓，潦倒新停浊酒杯。</p>
 </blockquote>
-<p>As far as black Americans were concerned, the nation’s response to Brown was <strong>agonizingly</strong> slow, and neither state <strong>legislatures</strong> nor the Congress seemed willing to help their cause along. Finally, President John F. Kennedy recognized that only a strong civil rights bill would put teeth into the drive to secure equal protection of the laws for African Americans. On June 11, 1963, he proposed such a bill to Congress, asking for legislation that would provide “the kind of equality of treatment which we would want for ourselves.” Southern representatives in Congress managed to block the bill in committee, and civil rights leaders sought some way to build political momentum behind the measure.</p>
-<p>A. Philip Randolph, a labor leader and longtime civil rights activist, called for a massive march on Washington to dramatize the issue. He welcomed the participation of white groups as well as black in order to demonstrate the multiracial backing for civil rights. The various elements of the civil rights movement, many of which had been wary of one another, agreed to participate. The National Association for the Advancement of Colored People, the Congress of Racial Equality, the Southern Christian Leadership Conference, the Student Non-violent Coordinating Committee and the Urban League all managed to bury their differences and work together. The leaders even agreed to tone down the rhetoric of some of the more militant activists for the sake of unity, and they worked closely with the Kennedy administration, which hoped the march would, in fact, lead to passage of the civil rights bill.</p>
+<p>明代胡应麟在《诗薮》里称这首诗”古今七言律第一”。短短 56 个字，前四句写秋景，后四句写自己。景写得极开阔，情写得极沉重，两者压在一起，就是杜甫晚年的全部处境。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/i-have-a-dream/#more" rel="contents">
+              <a class="btn" href="/poetry/deng-gao/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://eazow.com/chuang-tzu/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Eazow">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Eazow">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Eazow">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/chuang-tzu/" class="post-title-link" itemprop="url">《庄子》读书笔记</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2025-05-12 21:06:30" itemprop="dateCreated datePublished" datetime="2025-05-12T21:06:30+08:00">2025-05-12</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Reading/" itemprop="url" rel="index"><span itemprop="name">Reading</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>6 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="📚-结构总览"><a href="#📚-结构总览" class="headerlink" title="📚 结构总览"></a>📚 结构总览</h2><table>
+<thead>
+<tr>
+<th align="left"><strong>篇名</strong></th>
+<th align="left"><strong>英文译名 (Burton Watson)</strong></th>
+<th align="left"><strong>核心意象</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>逍遥游</strong></td>
+<td align="left">Free and Easy Wandering</td>
+<td align="left">鲲鹏展翅，追求绝对的精神自由</td>
+</tr>
+<tr>
+<td align="left"><strong>齐物论</strong></td>
+<td align="left">Discussion on Making All Things Equal</td>
+<td align="left">庄周梦蝶，万物齐一，超越世俗对立</td>
+</tr>
+<tr>
+<td align="left"><strong>养生主</strong></td>
+<td align="left">The Secret of Caring for Life</td>
+<td align="left">庖丁解牛，顺应自然规律以养护生命</td>
+</tr>
+<tr>
+<td align="left"><strong>人间世</strong></td>
+<td align="left">In the World of Men</td>
+<td align="left">树木无用之用，在复杂社会中的处世之道</td>
+</tr>
+<tr>
+<td align="left"><strong>德充符</strong></td>
+<td align="left">The Sign of Virtue Complete</td>
+<td align="left">忘形骸之外，内在精神的充实与圆满</td>
+</tr>
+<tr>
+<td align="left"><strong>大宗师</strong></td>
+<td align="left">The Great and Venerable Teacher</td>
+<td align="left">以”道”为师，生死齐一的达观境界</td>
+</tr>
+<tr>
+<td align="left"><strong>应帝王</strong></td>
+<td align="left">Fit for Emperors and Kings</td>
+<td align="left">浑沌之死，无为而治的政治哲学</td>
+</tr>
+</tbody></table>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/chuang-tzu/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://eazow.com/preface-to-the-pavilion-of-prince-teng/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Eazow">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Eazow">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Eazow">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/preface-to-the-pavilion-of-prince-teng/" class="post-title-link" itemprop="url">滕王阁序</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2025-02-02 20:05:50" itemprop="dateCreated datePublished" datetime="2025-02-02T20:05:50+08:00">2025-02-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Poetry/" itemprop="url" rel="index"><span itemprop="name">Poetry</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>4 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>豫章故郡，洪都新府。星分翼轸，地接衡庐。襟三江而带五湖，控蛮荆而引瓯越。物华天宝，龙光射牛斗之墟；人杰地灵，徐孺下陈蕃之榻。雄州雾列，俊采星驰。台隍枕夷夏之交，宾主尽东南之美。都督阎公之雅望，棨戟遥临；宇文新州之懿范，襜帷暂驻。十旬休假，胜友如云；千里逢迎，高朋满座。腾蛟起凤，孟学士之词宗；紫电青霜，王将军之武库。家君作宰，路出名区；童子何知，躬逢胜饯。</p>
+<p>时维九月，序属三秋。潦水尽而寒潭清，烟光凝而暮山紫。俨骖騑于上路，访风景于崇阿。临帝子之长洲，得天人之旧馆。层峦耸翠，上出重霄；飞阁流丹，下临无地。鹤汀凫渚，穷岛屿之萦回；桂殿兰宫，即冈峦之体势。</p>
+<p>披绣闼，俯雕甍，山原旷其盈视，川泽纡其骇瞩。闾阎扑地，钟鸣鼎食之家；舸舰迷津，青雀黄龙之舳。云销雨霁，彩彻区明。落霞与孤鹜齐飞，秋水共长天一色。渔舟唱晚，响穷彭蠡之滨，雁阵惊寒，声断衡阳之浦。</p>
+<p>遥襟甫畅，逸兴遄飞。爽籁发而清风生，纤歌凝而白云遏。睢园绿竹，气凌彭泽之樽；邺水朱华，光照临川之笔。四美具，二难并。穷睇眄于中天，极娱游于暇日。天高地迥，觉宇宙之无穷；兴尽悲来，识盈虚之有数。望长安于日下，目吴会于云间。地势极而南溟深，天柱高而北辰远。关山难越，谁悲失路之人；萍水相逢，尽是他乡之客。怀帝阍而不见，奉宣室以何年？</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/preface-to-the-pavilion-of-prince-teng/#more" rel="contents">
                 Read more &raquo;
               </a>
             </div>
@@ -1161,7 +1243,7 @@
 
 
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 </div>
@@ -1184,13 +1266,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">325k</span>
+    <span title="Symbols count total">409k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">4:55</span>
+    <span title="Reading time total">6:12</span>
   </span>
 </div>
 <div class="busuanzi-count">

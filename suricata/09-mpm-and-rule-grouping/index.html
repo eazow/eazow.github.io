@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic,900&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"eazow.com","root":"/","images":"/images","scheme":"Mist","darkmode":false,"version":"8.12.2","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":"flat"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":"giscus","storage":true,"lazyload":true,"nav":null,"activeClass":"giscus"},"stickytabs":false,"motion":{"enable":false,"async":true,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="这是系列第 9 篇。上一篇讲了一条规则怎么从文本变成结构。可真实的规则集动辄几万条，如果每个包都把几万条规则挨个试一遍，再快的机器也跟不上线速。这一篇看检测引擎怎么把”几万条”压到”少数几条”：规则是怎么分组的，多模式匹配(MPM)又是怎么做预过滤的。  先给答案，靠的是两层筛选：  分组。 启动时按”方向 × 协议 × 服务端端口”把规则分成若干组。一个发往 80 端口的 TCP 包，只需要看">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Suricata 源码阅读(九)：几万条规则一起跑——多模式匹配与规则分组">
+<meta property="og:url" content="http://eazow.com/suricata/09-mpm-and-rule-grouping/index.html">
+<meta property="og:site_name" content="Eazow">
+<meta property="og:description" content="这是系列第 9 篇。上一篇讲了一条规则怎么从文本变成结构。可真实的规则集动辄几万条，如果每个包都把几万条规则挨个试一遍，再快的机器也跟不上线速。这一篇看检测引擎怎么把”几万条”压到”少数几条”：规则是怎么分组的，多模式匹配(MPM)又是怎么做预过滤的。  先给答案，靠的是两层筛选：  分组。 启动时按”方向 × 协议 × 服务端端口”把规则分成若干组。一个发往 80 端口的 TCP 包，只需要看">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://eazow.com/images/logo.png">
+<meta property="article:published_time" content="2026-08-16T16:00:00.000Z">
+<meta property="article:modified_time" content="2026-10-20T09:24:17.435Z">
+<meta property="article:author" content="Eazow">
+<meta property="article:tag" content="Suricata">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://eazow.com/images/logo.png">
+
+
+<link rel="canonical" href="http://eazow.com/suricata/09-mpm-and-rule-grouping/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en-US","comments":true,"permalink":"http://eazow.com/suricata/09-mpm-and-rule-grouping/","path":"suricata/09-mpm-and-rule-grouping/","title":"Suricata 源码阅读(九)：几万条规则一起跑——多模式匹配与规则分组"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Suricata 源码阅读(九)：几万条规则一起跑——多模式匹配与规则分组 | Eazow</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-NHS1WWDHJE"></script>
+  <script class="next-config" data-name="google_analytics" type="application/json">{"tracking_id":"G-NHS1WWDHJE","only_pageview":false}</script>
+  <script src="/js/third-party/analytics/google-analytics.js"></script>
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <p class="site-title">Eazow</p>
+    </a>
+      <p class="site-subtitle" itemprop="description">Stay kind and positive</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-series"><a href="/series/" rel="section"><i class="fa fa-layer-group fa-fw"></i>Series</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner sidebar-toc-active">
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E5%88%86%E7%BB%84%E4%B9%8B%E5%89%8D%EF%BC%9A%E5%85%88%E7%BB%99%E8%A7%84%E5%88%99%E6%8E%92%E5%BA%8F"><span class="nav-text">1. 分组之前：先给规则排序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E5%88%86%E7%BB%84%EF%BC%9A%E6%96%B9%E5%90%91-%C3%97-%E5%8D%8F%E8%AE%AE-%C3%97-%E6%9C%8D%E5%8A%A1%E7%AB%AF%E7%AB%AF%E5%8F%A3"><span class="nav-text">2. 分组：方向 × 协议 × 服务端端口</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E8%A7%84%E5%88%99%E7%BB%84%E9%87%8C%E6%9C%89%E4%BB%80%E4%B9%88"><span class="nav-text">3. 规则组里有什么</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-%E5%BF%AB%E9%80%9F%E6%A8%A1%E5%BC%8F%EF%BC%9A%E6%AF%8F%E6%9D%A1%E8%A7%84%E5%88%99%E6%8C%91%E4%B8%80%E6%AE%B5%E5%86%85%E5%AE%B9"><span class="nav-text">4. 快速模式：每条规则挑一段内容</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-%E8%BF%90%E8%A1%8C%E6%97%B6%EF%BC%9A%E4%B8%80%E4%B8%AA%E5%8C%85%E6%80%8E%E4%B9%88%E8%B5%B0"><span class="nav-text">5. 运行时：一个包怎么走</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B0%8F%E7%BB%93"><span class="nav-text">小结</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en-US">
+    <link itemprop="mainEntityOfPage" href="http://eazow.com/suricata/09-mpm-and-rule-grouping/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Eazow">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Eazow">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Suricata 源码阅读(九)：几万条规则一起跑——多模式匹配与规则分组 | Eazow">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Suricata 源码阅读(九)：几万条规则一起跑——多模式匹配与规则分组
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2026-08-17 00:00:00" itemprop="dateCreated datePublished" datetime="2026-08-17T00:00:00+08:00">2026-08-17</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Suricata/" itemprop="url" rel="index"><span itemprop="name">Suricata</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>5 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <blockquote>
+<p>这是系列第 9 篇。上一篇讲了一条规则怎么从文本变成结构。可真实的规则集动辄几万条，如果每个包都把几万条规则挨个试一遍，再快的机器也跟不上线速。这一篇看检测引擎怎么把”几万条”压到”少数几条”：规则是怎么分组的，多模式匹配(MPM)又是怎么做预过滤的。</p>
+</blockquote>
+<p>先给答案，靠的是两层筛选：</p>
+<ol>
+<li><strong>分组。</strong> 启动时按”方向 × 协议 × 服务端端口”把规则分成若干组。一个发往 80 端口的 TCP 包，只需要看”发往服务器、TCP、80 端口”这一组规则，其他组的规则跟它无关。</li>
+<li><strong>预过滤。</strong> 每条规则挑出一段最有代表性的内容，叫”快速模式”(fast pattern)。每个组把组里所有规则的快速模式编进一个多模式匹配器，一个包来了，只搜一遍，就知道哪些规则的快速模式出现了。只有这些规则才需要逐条细查。</li>
+</ol>
+<p>两层加起来，就是 00 篇第 ⑦ 站说的”先挑出一个规则组(SGH)，再用 MPM 一次性搜出所有规则的关键字”：</p>
+<p><img data-src="/images/suricata/suricata-detect-flow.svg" alt="几万条规则一起跑"></p>
+<span id="more"></span>
+
+<h2 id="1-分组之前：先给规则排序"><a href="#1-分组之前：先给规则排序" class="headerlink" title="1. 分组之前：先给规则排序"></a>1. 分组之前：先给规则排序</h2><p><code>SigGroupBuild()</code>(<code>src/detect-engine-build.c:2191</code>)是上一篇提到的建结构的总入口。在它之前，规则先被排了一次序：<code>SCSigRegisterSignatureOrderingFuncs()</code>(<code>src/detect-engine-sigorder.c:919</code>)注册的排序规则依次是：</p>
+<ul>
+<li><strong>动作</strong>：默认 <code>pass</code> &gt; <code>drop</code> &gt; <code>reject</code> &gt; <code>alert</code>。这个顺序可以用配置项 <code>action-order</code> 改。</li>
+<li><strong>流变量依赖</strong>：用 <code>flowbits:set</code> 设置变量的规则，排在用 <code>flowbits:isset</code> 检查变量的规则前面，<code>flowint</code>、<code>hostbits</code> 等同理。否则在同一个包上，检查变量的规则可能先于设置变量的规则执行，就可能错过本该命中的情况。</li>
+<li><strong>优先级</strong>：<code>priority</code> 的数值越小越靠前，1 是最高优先级。</li>
+<li>以上都相同时，按 sid 从小到大排(<code>SCSigLessThan()</code>)。</li>
+</ul>
+<p>排好序之后，<code>SigGroupBuild()</code> 一开头就按这个顺序给每条规则分配一个内部编号 <code>s-&gt;iid</code>。后面你会看到，检测时候选规则是按这个编号排序的，所以规则的检查顺序就是这里排出来的优先顺序。</p>
+<h2 id="2-分组：方向-×-协议-×-服务端端口"><a href="#2-分组：方向-×-协议-×-服务端端口" class="headerlink" title="2. 分组：方向 × 协议 × 服务端端口"></a>2. 分组：方向 × 协议 × 服务端端口</h2><p><code>SigGroupBuild()</code> 接着分几个阶段建规则组。分组发生在 <code>SigPrepareStage2()</code>(<code>src/detect-engine-build.c:1873</code>)：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">de_ctx-&gt;flow_gh[<span class="number">1</span>].tcp = RulesGroupByPorts(de_ctx, IPPROTO_TCP, SIG_FLAG_TOSERVER);</span><br><span class="line">de_ctx-&gt;flow_gh[<span class="number">0</span>].tcp = RulesGroupByPorts(de_ctx, IPPROTO_TCP, SIG_FLAG_TOCLIENT);</span><br><span class="line">de_ctx-&gt;flow_gh[<span class="number">1</span>].udp = RulesGroupByPorts(de_ctx, IPPROTO_UDP, SIG_FLAG_TOSERVER);</span><br><span class="line">de_ctx-&gt;flow_gh[<span class="number">0</span>].udp = RulesGroupByPorts(de_ctx, IPPROTO_UDP, SIG_FLAG_TOCLIENT);</span><br><span class="line">RulesGroupByIPProto(de_ctx);       <span class="comment">/* 其他 IP 协议按协议号分组 */</span></span><br></pre></td></tr></table></figure>
+
+<p>TCP 和 UDP 各按两个方向、再按端口分组；ICMP、GRE 这类没有端口的协议，按协议号分组。另外两类规则单独处理：只看 IP 地址的规则(上一篇的 <code>IPONLY</code> 类型)交给专门的 IP-only 引擎；只看解码事件的规则(第 4 篇的 <code>decode-event</code>)另建一组。</p>
+<p><strong>按哪个端口分。</strong> <code>RulesGroupByPorts()</code>(<code>src/detect-engine-build.c:1468</code>)对发往服务器方向的组看规则的目的端口，对发往客户端方向的组看规则的源端口：两种情况看的都是服务端那一侧的端口，因为服务端端口才代表”这是什么服务”，客户端端口一般是随机的。</p>
+<p>一条规则的端口如果是 <code>any</code>，它就会出现在这个方向的每一个组里。上一篇那条 <code>alert http any any -&gt; any any</code> 规则就是这样：它不限端口，所以哪个端口组里都有它，协议是不是 HTTP，交给后面的检查去判断。</p>
+<p><strong>组数有上限。</strong> 端口的组合可能非常多，每个组都要建自己的 MPM，组太多内存会吃不消。所以组数有上限，由配置项 <code>detect.profile</code> 决定。默认的 <code>medium</code> 下，发往服务器方向最多 40 组，发往客户端方向最多 20 组(<code>src/detect-engine.c:3039</code> 附近)；超出的端口会被合并进相近的组。分完之后还会去重：规则完全相同的组只保留一份，其他组共用它。日志里的”Unique rule groups”就是最后剩下的组数，这条日志是 perf 级别的，默认的日志级别下不一定看得到。</p>
+<h2 id="3-规则组里有什么"><a href="#3-规则组里有什么" class="headerlink" title="3. 规则组里有什么"></a>3. 规则组里有什么</h2><p>分好的组，在运行时就是一个 <code>SigGroupHead</code>(SGH，<code>src/detect.h:1678</code>)。它比想象中简单：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">SigGroupHead_</span> &#123;</span></span><br><span class="line">    <span class="type">uint16_t</span> flags;</span><br><span class="line">    <span class="type">uint16_t</span> filestore_cnt;</span><br><span class="line">    <span class="type">uint32_t</span> id;</span><br><span class="line">    PrefilterEngine *pkt_engines;       <span class="comment">/* 作用于包头的预过滤引擎 */</span></span><br><span class="line">    PrefilterEngine *payload_engines;   <span class="comment">/* 作用于包载荷的预过滤引擎 */</span></span><br><span class="line">    PrefilterEngine *tx_engines;        <span class="comment">/* 作用于应用层事务的预过滤引擎 */</span></span><br><span class="line">    PrefilterEngine *frame_engines;     <span class="comment">/* 作用于应用层帧的预过滤引擎 */</span></span><br><span class="line">    PrefilterEngine *post_rule_match_engines;</span><br><span class="line">    SigGroupHeadInitData *init;</span><br><span class="line">&#125; SigGroupHead;</span><br></pre></td></tr></table></figure>
+
+<p>除了几个计数和标志，SGH 里主要就是几组<strong>预过滤引擎</strong>。组里有哪些规则，只在建组阶段的 <code>init</code> 里用到。运行时检测引擎并不遍历组里的规则，而是运行这些预过滤引擎，由它们报告”哪些规则值得细查”。</p>
+<p>这些引擎是在 <code>SigPrepareStage4()</code>(<code>src/detect-engine-build.c:2046</code>)里，由 <code>PrefilterSetupRuleGroup()</code> 给每个组建的。其中最重要的就是 MPM。</p>
+<h2 id="4-快速模式：每条规则挑一段内容"><a href="#4-快速模式：每条规则挑一段内容" class="headerlink" title="4. 快速模式：每条规则挑一段内容"></a>4. 快速模式：每条规则挑一段内容</h2><p>要用 MPM 做预过滤，每条规则得先挑出一段内容交给 MPM，这段内容就是<strong>快速模式</strong>。<code>RetrieveFPForSig()</code>(<code>src/detect-engine-mpm.c:1140</code>)按这样的顺序挑：</p>
+<ol>
+<li><strong>规则里显式写了 <code>fast_pattern</code> 的</strong>，直接用那个 <code>content</code>。</li>
+<li>否则，先看规则用到了哪些缓冲区，只在<strong>优先级最高的缓冲区</strong>里挑。各缓冲区注册 MPM 时都带着一个优先级，比如上一篇的 <code>http_uri</code>，注册时的优先级是 2。</li>
+<li>在这些缓冲区里，挑<strong>最长的</strong> <code>content</code>。越长越不容易碰巧出现，误报的候选就越少。</li>
+<li>一样长时，比较<strong>模式强度</strong>。<code>PatternStrength()</code>(<code>src/detect-engine-mpm.c:984</code>)给每个字节打分：每种字节第一次出现时，字母加 3 分，其他可打印字符加 4 分，其余二进制字节加 6 分；重复出现的字节只加 1 分。字节种类越多、越少见，得分越高，像 <code>aaaa</code> 这样全是重复字母的模式得分最低。</li>
+</ol>
+<p>挑好之后，每个组按缓冲区把组里各条规则的快速模式加进对应的 MPM：包载荷一个，<code>http_uri</code> 一个，<code>http_host</code> 一个……没有任何 <code>content</code> 的规则挑不出快速模式，由一个专门的”non-PF”预过滤引擎负责：它不做内容搜索，只做几项代价很低的检查(包的特征掩码，再加上应用层协议、目的端口或 <code>dsize</code> 中的一项)，通过了就把规则列为候选(<code>src/detect-engine-prefilter.c:536</code> 起)。</p>
+<p><strong>用哪种 MPM 算法。</strong> 由配置项 <code>mpm-algo</code> 决定，默认是 <code>auto</code>：编译时带了 Hyperscan 就用 Hyperscan，否则用 Aho-Corasick(<code>src/util-mpm.c:215</code>)。两者都能做到”一次扫描，找出所有模式”：扫描一遍数据的代价，基本不随快速模式的数量线性增长。一万个模式，并不需要扫一万遍。第 7 篇的协议识别用的也是这套 MPM。</p>
+<h2 id="5-运行时：一个包怎么走"><a href="#5-运行时：一个包怎么走" class="headerlink" title="5. 运行时：一个包怎么走"></a>5. 运行时：一个包怎么走</h2><p>检测的入口是 <code>DetectRun()</code>(<code>src/detect.c:105</code>)。去掉细节，一个包要经过这几步：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">DetectRunInspectIPOnly(th_v, de_ctx, det_ctx, pflow, p);       <span class="comment">/* IP-only 规则 */</span></span><br><span class="line">DetectRunGetRuleGroup(de_ctx, p, pflow, &amp;scratch);             <span class="comment">/* ① 找规则组 */</span></span><br><span class="line">DetectRunPrefilterPkt(th_v, de_ctx, det_ctx, p, &amp;scratch);     <span class="comment">/* ② ③ 预过滤，整理候选 */</span></span><br><span class="line">DetectRulePacketRules(th_v, de_ctx, det_ctx, p, pflow, &amp;scratch); <span class="comment">/* ④ 逐条细查 */</span></span><br><span class="line">...</span><br><span class="line">DetectRunTx(...);                                              <span class="comment">/* ⑤ 应用层事务 */</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>IP-only 规则。</strong> 只看 IP 地址的规则不需要每个包都查：同一条流的地址不会变，所以只在每个方向的第一个包上查一次。</p>
+<p><strong>① 找规则组。</strong> <code>DetectRunGetRuleGroup()</code>(<code>src/detect.c:441</code>)先看 <code>Flow</code> 上有没有缓存。第 5 篇说过，<code>Flow</code> 上有 <code>sgh_toserver</code>、<code>sgh_toclient</code> 两个字段，就是这里用的：没有缓存时，调用 <code>SigMatchSignaturesGetSgh()</code>(<code>src/detect.c:292</code>)按方向、协议、服务端端口查表，查到后存进 <code>Flow</code>。同一条流后面的包，直接用缓存的规则组，不用再查。</p>
+<p><strong>② 预过滤。</strong> <code>DetectRunPrefilterPkt()</code>(<code>src/detect.c:602</code>)调用 <code>Prefilter()</code>(<code>src/detect-engine-prefilter.c:219</code>)，依次运行规则组里的预过滤引擎。载荷的 MPM 引擎在 <code>PrefilterPktPayload()</code>(<code>src/detect-engine-payload.c:116</code>)里，核心就一行：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(<span class="type">void</span>)mpm_table[mpm_ctx-&gt;mpm_type].Search(mpm_ctx,</span><br><span class="line">        &amp;det_ctx-&gt;mtc, &amp;det_ctx-&gt;pmq, p-&gt;payload, p-&gt;payload_len);</span><br></pre></td></tr></table></figure>
+
+<p>在包载荷上扫一遍，所有命中的快速模式对应的规则编号，都被记进 <code>det_ctx-&gt;pmq</code>。</p>
+<p><strong>③ 整理候选。</strong> 同一条规则可能被几个引擎重复报告，所以先把编号排序(<code>QuickSortSigIntId()</code>，<code>src/detect-engine-prefilter.c:68</code>)，再去重，得到候选列表 <code>match_array</code>。因为编号就是第 1 节排出来的优先顺序，排序之后，候选的检查顺序也就是规则的优先顺序。</p>
+<p><strong>④ 逐条细查。</strong> <code>DetectRulePacketRules()</code>(<code>src/detect.c:731</code>)按顺序检查每条候选规则：先查规则头(协议、端口、地址、<code>flow</code> 方向等)，再把 <code>sm_arrays</code> 里的其余条件逐个交给对应关键字的 <code>Match()</code>(上一篇的结构在这里派上用场)。全部满足，就产生一条告警。</p>
+<p>快速模式命中，只说明规则”有可能”命中。规则里的其他 <code>content</code>、偏移、深度、<code>pcre</code> 等条件，都要在这一步逐一确认。MPM 的作用，是大幅减少需要做这一步的规则，比如从组里的几千条压到几十条甚至更少(具体数量取决于规则集和流量)。</p>
+<p><strong>⑤ 应用层事务。</strong> 有应用层状态的流，还要用 <code>DetectRunTx()</code>(<code>src/detect.c:2266</code>)按事务再检查一遍。套路相同：在 <code>http_uri</code> 这类缓冲区上跑 MPM 得到候选，再逐条细查。不同的是事务有进度。上一篇说过，<code>http_uri</code> 的检查引擎注册时绑定了事务进度 <code>LINE</code>。<code>DetectRunTxInspectRule()</code>(<code>src/detect.c:1267</code>)检查一条规则时，如果事务的进度还没到检查引擎要求的阶段，就先停下，把检查到一半的状态存进事务的 <code>de_state</code>；等事务进度推进了，下一次再从那里接着查。这样，一条既检查请求、又检查响应的规则，可以跨好几个包、等事务慢慢推进，最后完整地判断出是否命中。</p>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><ul>
+<li>规则先按动作、流变量依赖、优先级(数值越小越靠前)排序，再分配内部编号 <code>iid</code>；检测时候选按这个编号检查，所以规则的检查顺序就是优先顺序。</li>
+<li>规则按”方向 × 协议 × 服务端端口”分组，端口为 <code>any</code> 的规则进每个组；组数有上限，默认发往服务器方向 40 组、发往客户端方向 20 组，相同的组会去重。</li>
+<li>规则组(SGH)在运行时就是几组预过滤引擎。每条规则挑一个快速模式：显式指定的优先，否则在优先级最高的缓冲区里挑最长、最”强”的那个。</li>
+<li>MPM(默认有 Hyperscan 用 Hyperscan，否则 Aho-Corasick)一次扫描找出所有命中的快速模式，得到候选规则；规则组查到后缓存在 <code>Flow</code> 上。</li>
+<li>候选规则排序去重后逐条细查；应用层事务同样先预过滤再细查，并受事务进度约束，检查到一半可以停下、等进度推进再继续。</li>
+</ul>
+<p>规则命中之后，告警是怎么产生、又怎么一路变成 <code>eve.json</code> 里那一行 JSON 的？这是本系列最后一篇的内容。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Suricata/" rel="tag"><i class="fa fa-tag"></i> Suricata</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/suricata/08-rule-parsing/" rel="prev" title="Suricata 源码阅读(八)：规则还没开始匹配——检测引擎如何把文本变成结构">
+                  <i class="fa fa-chevron-left"></i> Suricata 源码阅读(八)：规则还没开始匹配——检测引擎如何把文本变成结构
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/suricata/10-from-rule-match-to-json/" rel="next" title="Suricata 源码阅读(十)：命中之后发生什么——从规则匹配到一行 JSON">
+                  Suricata 源码阅读(十)：命中之后发生什么——从规则匹配到一行 JSON <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  
+  <div class="comments giscus-container">
+  </div>
+  
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2008 – 
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Eazow</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Symbols count total">409k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">6:12</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+<script>
+(function () {
+  var numberOfBanners = 10;
+  var intervalMs = 5000;
+
+  var layerA = document.querySelector('.banner-layer-a');
+  var layerB = document.querySelector('.banner-layer-b');
+  if (!layerA || !layerB) return;
+
+  var urls = [];
+  for (var i = 0; i < numberOfBanners; i++) {
+    urls.push('/images/banner' + i + '.webp');
+  }
+  // shuffle so the slideshow order differs between visits
+  for (var i = urls.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var tmp = urls[i];
+    urls[i] = urls[j];
+    urls[j] = tmp;
+  }
+
+  // preload every banner once so the browser caches them up front;
+  // later switches then read from cache instead of firing new requests
+  urls.forEach(function (url) {
+    var img = new Image();
+    img.src = url;
+  });
+
+  var layers = [layerA, layerB];
+  var current = 0;
+  var index = 0;
+
+  function setLayer(layer, url) {
+    layer.style.backgroundImage = "url('" + url + "')";
+  }
+
+  setLayer(layers[current], urls[index]);
+  layers[current].classList.add('is-active');
+
+  if (urls.length <= 1) return;
+
+  setInterval(function () {
+    var next = current === 0 ? 1 : 0;
+    index = (index + 1) % urls.length;
+    setLayer(layers[next], urls[index]);
+    layers[next].classList.add('is-active');
+    layers[current].classList.remove('is-active');
+    current = next;
+  }, intervalMs);
+})();
+</script>
+<div class="footer-quote"><span>Stay kind and positive.</span></div>
+
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/9.1.3/mermaid.min.js","integrity":"sha256-TIYL00Rhw/8WaoUhYTLX9SKIEFdXxg+yMWSLVUbhiLg="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  <!--script async src="https://cdn.jsdelivr.net/gh/sukkaw/busuanzi@2.3/bsz.pure.mini.js"></script-->
+
+
+
+
+<script class="next-config" data-name="giscus" type="application/json">{"enable":true,"repo":"eazow/hexo","repo_id":"MDEwOlJlcG9zaXRvcnkxNjI1NTM4Nzk=","category":"Announcements","category_id":"DIC_kwDOCbBgF84CQl0J","mapping":"pathname","strict":0,"reactions_enabled":1,"emit_metadata":0,"theme":"light","lang":"en","crossorigin":"anonymous","input_position":"top","loading":"lazy"}</script>
+
+<script>
+document.addEventListener('page:loaded', () => {
+  if (!CONFIG.page.comments) return;
+
+  NexT.utils.loadComments('.giscus-container')
+    .then(() => NexT.utils.getScript('https://giscus.app/client.js', {
+      attributes: {
+        async                   : true,
+        crossOrigin             : 'anonymous',
+        'data-repo'             : CONFIG.giscus.repo,
+        'data-repo-id'          : CONFIG.giscus.repo_id,
+        'data-category'         : CONFIG.giscus.category,
+        'data-category-id'      : CONFIG.giscus.category_id,
+        'data-mapping'          : CONFIG.giscus.mapping,
+        'data-strict'           : CONFIG.giscus.strict,
+        'data-reactions-enabled': CONFIG.giscus.reactions_enabled,
+        'data-emit-metadata'    : CONFIG.giscus.emit_metadata,
+        'data-theme'            : CONFIG.giscus.theme,
+        'data-lang'             : CONFIG.giscus.lang,
+        'data-input-position'   : CONFIG.giscus.input_position,
+        'data-loading'          : CONFIG.giscus.loading
+      },
+      parentNode: document.querySelector('.giscus-container')
+    }));
+});
+</script>
+<script>
+document.querySelectorAll('figure.highlight').forEach(function (el) {
+  var lang = el.className.replace('highlight', '').trim().split(/\s+/)[0];
+  if (lang && lang !== 'plaintext') el.setAttribute('data-lang', lang);
+});
+</script>
+
+</body>
+</html>

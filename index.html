@@ -198,7 +198,7 @@ mjx-container[display="true"] + br {
 
 
 <nav class="site-nav">
-  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li>
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-series"><a href="/series/" rel="section"><i class="fa fa-layer-group fa-fw"></i>Series</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li>
   </ul>
 </nav>
 
@@ -230,6 +230,521 @@ mjx-container[display="true"] + br {
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://eazow.com/suricata/extra-c-language-knowledge/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Eazow">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Eazow">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Eazow">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/suricata/extra-c-language-knowledge/" class="post-title-link" itemprop="url">Suricata 源码阅读·番外：读懂 Suricata 需要哪些 C 语言知识</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2026-08-31 00:00:00" itemprop="dateCreated datePublished" datetime="2026-08-31T00:00:00+08:00">2026-08-31</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Suricata/" itemprop="url" rel="index"><span itemprop="name">Suricata</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>9 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <blockquote>
+<p>00 篇说，这个系列适合”有 C 基础”的读者。可”C 基础”这个说法太宽了：会写 <code>for</code> 循环、懂指针和结构体，翻开 Suricata 的源码，还是会被一些写法卡住。这篇番外把读 Suricata 时会遇到的、超出入门教材的 C 语言知识挑出来，每一项都配上源码里的真实例子和位置(基于 8.0.7)，并说明前面哪几篇用到了它。</p>
+</blockquote>
+<p>先给一个总览。读 Suricata，最常卡住人的是这几类：</p>
+<ol>
+<li>**函数指针和”接口表”**：整个系列反复出现的骨架。</li>
+<li><strong>宏</strong>：预处理器在 Suricata 里几乎是一门小语言。</li>
+<li><strong>结构体的内存布局</strong>：柔性数组、union、位域、<code>packed</code>。</li>
+<li><strong>把字节当结构体看的指针技巧</strong>：解码层的日常。</li>
+<li><strong>侵入式数据结构</strong>：链表和红黑树的节点长在业务结构体里。</li>
+<li><strong>并发</strong>：锁、条件变量、线程局部变量、原子操作。</li>
+<li><strong>编译器提示、错误处理、条件编译</strong>：每个文件都有，但很少有人解释。</li>
+<li><strong>和 Rust 打交道</strong>：8.0 里越来越多的代码是 Rust 写的。</li>
+</ol>
+<p>下面逐个看。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/suricata/extra-c-language-knowledge/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://eazow.com/suricata/10-from-rule-match-to-json/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Eazow">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Eazow">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Eazow">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/suricata/10-from-rule-match-to-json/" class="post-title-link" itemprop="url">Suricata 源码阅读(十)：命中之后发生什么——从规则匹配到一行 JSON</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2026-08-24 00:00:00" itemprop="dateCreated datePublished" datetime="2026-08-24T00:00:00+08:00">2026-08-24</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Suricata/" itemprop="url" rel="index"><span itemprop="name">Suricata</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>6 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <blockquote>
+<p>这是系列第 10 篇，也是最后一篇。上一篇结尾，一条规则的所有条件都满足了，”产生一条告警”。可告警不是凭空出现在 <code>eve.json</code> 里的：它要先经过一轮收尾，再由日志模块拼成 JSON、写到文件里。00 篇开头那行 http 事件，走的也是这条路。这一篇就把最后这一段走完。</p>
+</blockquote>
+<p>先给答案，输出这一段做了三件事：</p>
+<ol>
+<li><strong>告警先攒起来，再统一收尾。</strong> 规则命中时，告警先放进一个队列；整个包检测完，再统一排序、做抑制和阈值检查、执行 <code>drop</code> 这类动作，最后挂到 <code>p-&gt;alerts</code> 上。</li>
+<li><strong>日志按类型分发。</strong> 包处理的最后一步，<code>OutputLoggerLog()</code> 把包交给几类”根日志器”：包、事务、文件……每一类管着一批日志模块，各模块按自己的条件，或者按事务的进度，决定写不写。</li>
+<li><strong>拼成一行 JSON，写出去。</strong> EVE 的每个日志模块用同一套工具拼 JSON：先拼所有事件共用的头，再加自己的字段，最后写到文件、syslog、unix socket 或 redis。</li>
+</ol>
+<p>画出来是这样的：</p>
+<p><img data-src="/images/suricata/suricata-output.svg" alt="从规则命中到一行 JSON"></p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/suricata/10-from-rule-match-to-json/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://eazow.com/suricata/09-mpm-and-rule-grouping/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Eazow">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Eazow">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Eazow">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/suricata/09-mpm-and-rule-grouping/" class="post-title-link" itemprop="url">Suricata 源码阅读(九)：几万条规则一起跑——多模式匹配与规则分组</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2026-08-17 00:00:00" itemprop="dateCreated datePublished" datetime="2026-08-17T00:00:00+08:00">2026-08-17</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Suricata/" itemprop="url" rel="index"><span itemprop="name">Suricata</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>5 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <blockquote>
+<p>这是系列第 9 篇。上一篇讲了一条规则怎么从文本变成结构。可真实的规则集动辄几万条，如果每个包都把几万条规则挨个试一遍，再快的机器也跟不上线速。这一篇看检测引擎怎么把”几万条”压到”少数几条”：规则是怎么分组的，多模式匹配(MPM)又是怎么做预过滤的。</p>
+</blockquote>
+<p>先给答案，靠的是两层筛选：</p>
+<ol>
+<li><strong>分组。</strong> 启动时按”方向 × 协议 × 服务端端口”把规则分成若干组。一个发往 80 端口的 TCP 包，只需要看”发往服务器、TCP、80 端口”这一组规则，其他组的规则跟它无关。</li>
+<li><strong>预过滤。</strong> 每条规则挑出一段最有代表性的内容，叫”快速模式”(fast pattern)。每个组把组里所有规则的快速模式编进一个多模式匹配器，一个包来了，只搜一遍，就知道哪些规则的快速模式出现了。只有这些规则才需要逐条细查。</li>
+</ol>
+<p>两层加起来，就是 00 篇第 ⑦ 站说的”先挑出一个规则组(SGH)，再用 MPM 一次性搜出所有规则的关键字”：</p>
+<p><img data-src="/images/suricata/suricata-detect-flow.svg" alt="几万条规则一起跑"></p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/suricata/09-mpm-and-rule-grouping/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://eazow.com/suricata/08-rule-parsing/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Eazow">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Eazow">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Eazow">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/suricata/08-rule-parsing/" class="post-title-link" itemprop="url">Suricata 源码阅读(八)：规则还没开始匹配——检测引擎如何把文本变成结构</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2026-08-10 00:00:00" itemprop="dateCreated datePublished" datetime="2026-08-10T00:00:00+08:00">2026-08-10</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Suricata/" itemprop="url" rel="index"><span itemprop="name">Suricata</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>7 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <blockquote>
+<p>这是系列第 8 篇。前面几篇把一个包从网卡一路送到了应用层，HTTP 请求已经被解析成事务，URI、Host 这些字段都摆好了。接下来要轮到规则了。但在检查任何一个包之前，规则文件里那一行行文本，得先变成检测引擎能直接执行的结构。这一篇只看这一步：规则是怎么被读进来、拆开、存起来的。</p>
+</blockquote>
+<p>先给答案，规则加载做了三件事：</p>
+<ol>
+<li><strong>规则头填进 <code>Signature</code> 的字段。</strong> 动作、协议、地址、端口、方向，每条规则对应一个 <code>Signature</code> 结构。</li>
+<li><strong>每个选项交给对应关键字的 <code>Setup()</code>。</strong> 检测引擎本身不认识 <code>content</code>、<code>flow</code>、<code>http.uri</code> 这些关键字，它只按名字去关键字表里查，找到对应的 <code>Setup()</code> 函数，让它自己解析参数、决定往哪里存。</li>
+<li><strong>先用链表攒，再转成检测用的结构。</strong> 解析时，条件先挂在一组临时链表上；所有规则读完后，再统一转成紧凑的数组和”检查引擎”，临时数据随即释放。</li>
+</ol>
+<p>拿一条规则从头到尾走一遍：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">alert http any any -&gt; any any (msg:&quot;Example&quot;; flow:established,to_server; http.uri; content:&quot;/admin&quot;; nocase; sid:1000001; rev:1;)</span><br></pre></td></tr></table></figure>
+
+<p><img data-src="/images/suricata/suricata-rule-parse.svg" alt="一条规则从文本到结构"></p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/suricata/08-rule-parsing/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://eazow.com/suricata/07-app-layer-framework/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Eazow">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Eazow">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Eazow">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/suricata/07-app-layer-framework/" class="post-title-link" itemprop="url">Suricata 源码阅读(七)：从端口到协议——应用层解析框架</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2026-08-03 00:00:00" itemprop="dateCreated datePublished" datetime="2026-08-03T00:00:00+08:00">2026-08-03</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Suricata/" itemprop="url" rel="index"><span itemprop="name">Suricata</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>7 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <blockquote>
+<p>这是系列第 7 篇。上一篇结尾，Stream 引擎把拼好、已被对方 ACK 的字节流交给了 <code>AppLayerHandleTCPData()</code>。但字节流本身不会说自己是 HTTP 还是 TLS，也不会自己分成”一个请求、一个响应”。这一篇看应用层框架怎么认出协议，怎么找到对应的解析器，以及解析出来的东西长什么样。</p>
+</blockquote>
+<p>先给答案，应用层框架做了三件事：</p>
+<ol>
+<li><strong>认出协议。</strong> 三种手段依次尝试：在数据开头找特征串，按端口调用探测函数，查别的连接事先登记的”期望”。端口只是线索之一，不是判断的依据。</li>
+<li><strong>按协议查表，调用解析器。</strong> 每个协议在启动时注册一组回调：怎么建状态、两个方向的数据各交给哪个函数解析、怎么取出解析结果。C 写的解析器和 Rust 写的解析器，用的是同一套接口。</li>
+<li><strong>解析的产物是事务。</strong> 一问一答算一个事务，带着自己的进度。检测和日志都按事务进行，都处理完了才把它释放。</li>
+</ol>
+<p>画出来是这样的：</p>
+<p><img data-src="/images/suricata/suricata-applayer.svg" alt="应用层框架"></p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/suricata/07-app-layer-framework/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -332,7 +847,7 @@ mjx-container[display="true"] + br {
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://eazow.com/suricata/01-startup-and-architecture/">
+    <link itemprop="mainEntityOfPage" href="http://eazow.com/suricata/06-stream-engine/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -350,7 +865,7 @@ mjx-container[display="true"] + br {
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/suricata/01-startup-and-architecture/" class="post-title-link" itemprop="url">启动一个 Suricata 进程，到底要经过多少步？</a>
+          <a href="/suricata/06-stream-engine/" class="post-title-link" itemprop="url">Suricata 源码阅读(六)：TCP 重组为什么这么难——Stream 引擎</a>
         </h2>
 
         <div class="post-meta-container">
@@ -361,7 +876,7 @@ mjx-container[display="true"] + br {
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2026-06-22 00:00:00" itemprop="dateCreated datePublished" datetime="2026-06-22T00:00:00+08:00">2026-06-22</time>
+      <time title="Created: 2026-07-27 00:00:00" itemprop="dateCreated datePublished" datetime="2026-07-27T00:00:00+08:00">2026-07-27</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -379,7 +894,7 @@ mjx-container[display="true"] + br {
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>5 mins.</span>
+      <span>7 mins.</span>
     </span>
 </div>
 
@@ -391,12 +906,19 @@ mjx-container[display="true"] + br {
     
     <div class="post-body" itemprop="articleBody">
           <blockquote>
-<p>这是系列第 1 篇。我们先不急着钻进某个协议解析器，也不急着看规则是怎么匹配的。先跟着 Suricata 启动一遍，看看它如何从命令行参数和配置文件，一路走到真正可以接收数据包的状态。后面每篇文章，都会回到这张地图上的某个位置继续往下挖。</p>
+<p>这是系列第 6 篇。上一篇讲了 <code>Flow</code>：同一条连接的包已经能归到一起了，<code>Flow</code> 上还挂着一个 <code>protoctx</code> 指针，指向这条连接的 TCP 会话。这一篇就看这个会话：TCP 的段可能乱序到达、可能重传、可能互相重叠，还可能有一部分根本没被抓到，Suricata 怎么把它们拼成一条连续、可信的字节流，交给应用层去解析？</p>
 </blockquote>
-<h2 id="1-先看一眼-这个引擎准备怎么工作"><a href="#1-先看一眼-这个引擎准备怎么工作" class="headerlink" title="1. 先看一眼:这个引擎准备怎么工作"></a>1. 先看一眼:这个引擎准备怎么工作</h2><p>把 Suricata 想象成一条工厂流水线:网卡或者 pcap 文件是原料入口，每一个包从这里进来，依次经过一道道工位——捕获 → 解码 → 流跟踪 → TCP 重组 → 应用层解析 → 规则检测 → 输出，最后变成一条告警从流水线尽头掉出来。每道工位是一个可插拔的模块，若干个工位串成一条线，挂在一个或多个线程(也就是”工人”)身上跑。</p>
+<p>先给答案，Stream 引擎做了三件事：</p>
+<ol>
+<li><strong>用状态机跟踪连接。</strong> 握手、挥手、序号、窗口，Suricata 都按 TCP 协议自己跟一遍。每个包先检查”它出现在这条连接里合不合理”，不合理的记事件。</li>
+<li><strong>按序号把数据拼起来。</strong> 乱序、重传、重叠的段，按序号放进一棵红黑树，数据拷进一个流式缓冲区，拼成连续的字节流。重叠的部分如果数据不同，还要决定信哪一份。</li>
+<li><strong>只交出对方确认收到的数据。</strong> IDS 模式下，一个方向的数据要等另一方回了 ACK，才交给应用层；对方确认了、Suricata 却没抓到的部分，作为”缺口”通知应用层。</li>
+</ol>
+<p>画出来是这样的：</p>
+<p><img data-src="/images/suricata/suricata-stream-reassembly.svg" alt="TCP 重组：一个方向上的字节流"></p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/suricata/01-startup-and-architecture/#more" rel="contents">
+              <a class="btn" href="/suricata/06-stream-engine/#more" rel="contents">
                 Read more &raquo;
               </a>
             </div>
@@ -427,7 +949,7 @@ mjx-container[display="true"] + br {
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://eazow.com/suricata/00-packet-journey/">
+    <link itemprop="mainEntityOfPage" href="http://eazow.com/suricata/05-flow/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -445,7 +967,7 @@ mjx-container[display="true"] + br {
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/suricata/00-packet-journey/" class="post-title-link" itemprop="url">一个数据包如何穿过 Suricata</a>
+          <a href="/suricata/05-flow/" class="post-title-link" itemprop="url">Suricata 源码阅读(五)：引擎开始记住事情——Flow</a>
         </h2>
 
         <div class="post-meta-container">
@@ -456,7 +978,7 @@ mjx-container[display="true"] + br {
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2026-06-16 00:00:00" itemprop="dateCreated datePublished" datetime="2026-06-16T00:00:00+08:00">2026-06-16</time>
+      <time title="Created: 2026-07-20 00:00:00" itemprop="dateCreated datePublished" datetime="2026-07-20T00:00:00+08:00">2026-07-20</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -474,106 +996,7 @@ mjx-container[display="true"] + br {
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>2 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>简单说，Suricata 是一个开源的网络威胁检测引擎——实时读网络流量，按规则库做匹配，可以当 IDS 用(只告警不拦截)，也可以内联部署当 IPS 用(直接拦截恶意流量)，或者单纯做 NSM(把协议元数据和文件记下来，供事后分析)。</p>
-<p>不过这个系列不是使用手册，不讲规则怎么写、<code>suricata.yaml</code> 参数怎么调、怎么部署上线——网上这类教程已经很多。这里想讲的是原理：这套引擎自己是怎么实现的，一个包在源码里究竟经过了哪些函数、数据结构和状态机。</p>
-<p>在拆开每一块之前，先看一眼整个引擎长什么样，之后每一篇只是把其中一块拆开来细看：</p>
-<p><img data-src="/images/suricata/suricata-architecture-poster.svg" alt="Suricata 架构总览：六层流水线 + 四个配套子系统"></p>
-<p>Suricata 得名于非洲草原上的猫鼬(学名 <em>Suricata suricatta</em>)——猫鼬群居，总有几只直立放哨，一有风吹草动就尖声报警。2009 年 OISF(Open Information Security Foundation)用这个名字做了一个开源、多线程的下一代 IDS&#x2F;IPS 引擎，想在当时近乎单线程的 Snort 之外给出另一个选择。名字挑得很贴切:这个引擎干的也是同一件事——盯着每一个包，一有可疑动静就吼一声。</p>
-<p>具体是怎么盯的？跟着一个包走一遍就知道了。它从网卡钻进 Suricata 的那一刻开始，会经过哪些地方，又是怎么一步步变成一条 EVE JSON 告警的？它会被谁接住，在哪一步变成 <code>Packet</code>，什么时候和别的包组成 <code>Flow</code>，TCP 重组又是谁负责的？规则看起来只是一行文本，为什么加载之后却能参与几万次匹配？这些问题，光看配置手册很难得到答案——手册告诉你怎么用这台机器，不告诉你机器里齿轮怎么咬合。真正的答案藏在 Suricata 的线程、队列、状态机和那些名字并不总是直观的 C 结构体里。</p>
-<p>把 Suricata 想象成一条工厂流水线:包从网卡或 pcap 文件进来，依次经过捕获、解码、Flow、Stream、应用层解析、规则检测这几道工位，才走到终点。先给这条产线画一张图，后面每一篇都是在往图里的某一格添细节:</p>
-<p><img data-src="/images/suricata/suricata-pipeline.svg" alt="Suricata 数据包流水线总览"></p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/suricata/00-packet-journey/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://eazow.com/logic-101/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Eazow">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Eazow">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Eazow">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/logic-101/" class="post-title-link" itemprop="url">逻辑学入门</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2026-05-12 15:16:08" itemprop="dateCreated datePublished" datetime="2026-05-12T15:16:08+08:00">2026-05-12</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Reading/" itemprop="url" rel="index"><span itemprop="name">Reading</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>5 mins.</span>
+      <span>8 mins.</span>
     </span>
 </div>
 
@@ -585,13 +1008,19 @@ mjx-container[display="true"] + br {
     
     <div class="post-body" itemprop="articleBody">
           <blockquote>
-<p><em>“逻辑是思维的语法。”</em></p>
+<p>这是系列第 5 篇。上一篇结尾，解码层把包的五元组填好，用 <code>FlowSetupPacket()</code> 打上 <code>PKT_WANTS_FLOW</code> 并算好了 <code>flow_hash</code>，交给 <code>FlowWorker</code>。到这一步为止，每个包都是孤立的：Suricata 处理完一个包就忘了它。从这一篇开始，引擎要”记住”事情了：同一条连接的包要归到一起，TCP 重组、应用层解析、很多规则，都建立在这份记忆之上。</p>
 </blockquote>
-<p>你一定有过这样的时刻：和人争了半天，面红耳赤，最后谁也说服不了谁；或者听完一段话，句句都像有道理，心里却总有根刺，说不出扎在哪儿。</p>
-<p>逻辑学要做的，就是把那根刺拔出来，放到灯下看清楚。</p>
+<p>先给答案，<code>Flow</code> 这一层做了三件事：</p>
+<ol>
+<li><strong>一张所有线程共用的哈希表。</strong> 每条连接对应一个 <code>Flow</code>，存在全局的流表里，按哈希桶加锁。哈希的算法让一条连接两个方向的包算出同一个值，落进同一个桶。</li>
+<li><strong>后面所有模块的挂钩。</strong> TCP 会话、应用层解析状态、规则组缓存、流变量，都挂在 <code>Flow</code> 上。有了 <code>Flow</code>，后面的模块才有地方存跨包的状态。</li>
+<li><strong>有借有还。</strong> <code>Flow</code> 从备用池里取，一条连接一段时间没有动静就算过期，写一条 <code>flow</code> 日志、清空内存，再还回备用池。内存不够时，还有一套紧急模式。</li>
+</ol>
+<p>一条 <code>Flow</code> 从创建到回收的全过程，画出来是这样的：</p>
+<p><img data-src="/images/suricata/suricata-flow-lifecycle.svg" alt="一条 Flow 的一生"></p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/logic-101/#more" rel="contents">
+              <a class="btn" href="/suricata/05-flow/#more" rel="contents">
                 Read more &raquo;
               </a>
             </div>
@@ -622,7 +1051,7 @@ mjx-container[display="true"] + br {
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://eazow.com/ted/1-thing-you-can-do-today-to-be-happier/">
+    <link itemprop="mainEntityOfPage" href="http://eazow.com/suricata/04-decode-layer/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -640,7 +1069,7 @@ mjx-container[display="true"] + br {
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/ted/1-thing-you-can-do-today-to-be-happier/" class="post-title-link" itemprop="url">[TED]1 Thing You Can Do Today to Be Happier</a>
+          <a href="/suricata/04-decode-layer/" class="post-title-link" itemprop="url">Suricata 源码阅读(四)：把字节剥成协议——解码层</a>
         </h2>
 
         <div class="post-meta-container">
@@ -651,7 +1080,7 @@ mjx-container[display="true"] + br {
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2026-03-20 19:58:26" itemprop="dateCreated datePublished" datetime="2026-03-20T19:58:26+08:00">2026-03-20</time>
+      <time title="Created: 2026-07-13 00:00:00" itemprop="dateCreated datePublished" datetime="2026-07-13T00:00:00+08:00">2026-07-13</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -659,7 +1088,7 @@ mjx-container[display="true"] + br {
       </span>
       <span class="post-meta-item-text">In</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/English/" itemprop="url" rel="index"><span itemprop="name">English</span></a>
+          <a href="/categories/Suricata/" itemprop="url" rel="index"><span itemprop="name">Suricata</span></a>
         </span>
     </span>
 
@@ -669,7 +1098,7 @@ mjx-container[display="true"] + br {
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>4 mins.</span>
+      <span>9 mins.</span>
     </span>
 </div>
 
@@ -680,12 +1109,20 @@ mjx-container[display="true"] + br {
     
     
     <div class="post-body" itemprop="articleBody">
-          <p>I’m a happiness scientist, and I’ve been a happiness scientist for 36 years. For my entire professional career, I’ve been <strong>obsessed</strong> with learning the secrets to being a happy person – with trying to answer the question: Can anyone become happier?</p>
-<p>Now how do we even study something like that? Well, in 1998, my lab pioneered what we call happiness <strong>interventions</strong>. Happiness interventions are experiments with human participants. Over the years, we’ve done dozens of these experiments, testing whether practices like expressing gratitude or doing acts of kindness or simply acting like an <strong>extrovert</strong> make people happier. And they do. Under the right conditions.</p>
-<p>My students and I spent decades doing these experiments. This work made my career, and yet I realized that I hadn’t really been listening to what the data were trying to tell me. And then it finally clicked. It dawned on me that almost all of the interventions that work to make us happier, they work precisely because they help us feel more connected to and loved by others. So writing a gratitude letter to my mom makes me feel more loved by her. And doing an act of kindness for my colleague makes me feel closer to him. In other words, what I learned is that to be a better happiness scientist, I had to become a love scientist. Because, as it turns out, the key to happiness is feeling connected and loved.</p>
+          <blockquote>
+<p>这是系列第 4 篇。上一篇结尾，包已经装进了 <code>Packet</code>，交给了链上的第二道工位 <code>DecodeAFP()</code>。但这时的 <code>Packet</code> 里只有一串从以太网头开始的原始字节，还不知道它是 IPv4 还是 IPv6，是 TCP 还是 UDP，源地址和端口是多少。这一篇看解码层怎么把这串字节一层层剥开，又怎么对付畸形包、隧道和分片。</p>
+</blockquote>
+<p>先给答案，解码层做了三件事：</p>
+<ol>
+<li><strong>一层层认出协议。</strong> 每一层都看头部里”下一层是什么”的字段(以太网的 <code>eth_type</code>、IP 的协议号、有时是 UDP 端口)，决定下一层交给哪个解码函数。整个解码层就是一串层层嵌套的 <code>switch</code>。</li>
+<li><strong>只记位置，不拷贝。</strong> 解码不会把头部拷出来，只是把各层头部在原始数据里的位置记进 <code>Packet</code>，顺便填好地址、端口和载荷的位置。</li>
+<li><strong>坏包留痕，不丢掉。</strong> 遇到畸形包不崩溃、也不丢弃，而是记一个解码事件，照样往后送。遇到隧道和分片，则会生出新的 <code>Packet</code>。</li>
+</ol>
+<p>整棵分发树画出来是这样的：</p>
+<p><img data-src="/images/suricata/suricata-decode-tree.svg" alt="解码分发树"></p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/ted/1-thing-you-can-do-today-to-be-happier/#more" rel="contents">
+              <a class="btn" href="/suricata/04-decode-layer/#more" rel="contents">
                 Read more &raquo;
               </a>
             </div>
@@ -716,7 +1153,7 @@ mjx-container[display="true"] + br {
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://eazow.com/how-to-fix-your-entire-life-in-1-day/">
+    <link itemprop="mainEntityOfPage" href="http://eazow.com/suricata/03-capture-and-packet/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -734,7 +1171,7 @@ mjx-container[display="true"] + br {
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/how-to-fix-your-entire-life-in-1-day/" class="post-title-link" itemprop="url">[Repost]How to Fix Your Entire Life in 1 Day(by DAN KOE)</a>
+          <a href="/suricata/03-capture-and-packet/" class="post-title-link" itemprop="url">Suricata 源码阅读(三)：包是怎么进来的——捕获模块与 Packet 结构体</a>
         </h2>
 
         <div class="post-meta-container">
@@ -745,7 +1182,7 @@ mjx-container[display="true"] + br {
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2026-03-01 11:17:30" itemprop="dateCreated datePublished" datetime="2026-03-01T11:17:30+08:00">2026-03-01</time>
+      <time title="Created: 2026-07-06 00:00:00" itemprop="dateCreated datePublished" datetime="2026-07-06T00:00:00+08:00">2026-07-06</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -753,7 +1190,7 @@ mjx-container[display="true"] + br {
       </span>
       <span class="post-meta-item-text">In</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/English/" itemprop="url" rel="index"><span itemprop="name">English</span></a>
+          <a href="/categories/Suricata/" itemprop="url" rel="index"><span itemprop="name">Suricata</span></a>
         </span>
     </span>
 
@@ -763,7 +1200,7 @@ mjx-container[display="true"] + br {
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>28 mins.</span>
+      <span>8 mins.</span>
     </span>
 </div>
 
@@ -774,439 +1211,21 @@ mjx-container[display="true"] + br {
     
     
     <div class="post-body" itemprop="articleBody">
-          <p>You’re probably going to quit your new years resolution.</p>
-<p>And that’s okay. Most people do (studies show 80-90% failure rates) because most people don’t actually want to change on a deep, internal level. That is, they go about changing their life in the completely wrong way. They create a new years resolution because everyone else does – humans want to impress others more than they want to impress themselves… we create a superficial meaning out of status games – but they don’t meet the requirements for true change, which goes a lot deeper than convincing yourself you’re going to be more disciplined or productive this year.</p>
-<p>I’m not here to talk down on you. I’ve quit 10 times more goals than I’ve set. I think that should be the case for most people. But the fact that people try to change their lives and utterly fail almost every time holds true. So much so that it’s a meme for the gym to be crowded during January and return back to normal in February.</p>
-<p>However, as much as I think new years resolutions are stupid, it’s always wise to reflect on the life you hate so you can launch yourself toward something that much better, as we will discuss.</p>
-<p>Human nature is a b*tch, and the worst feeling is when you make a promise to yourself and can’t help but break it. You start to feel helpless, and if you don’t know what you’re doing, you may continue the cycle for years on end: always wanting to change, but never being able to.</p>
-<p>So whether you want to start the business, transform your body, or take the risk toward a more meaningful life without quitting after 2 weeks, I want to share 7 ideas you probably haven’t heard before on behavior change, psychology, and productivity so you can do just that in 2026.</p>
-<p>This will be comprehensive.</p>
+          <blockquote>
+<p>这是系列第 3 篇。上一篇拆开了线程：workers 线程的链头是 <code>ReceiveAFP</code>，它用 <code>PktAcqLoop</code> 自己在循环里抓包，每抓到一个就交给后面的工位。这一篇钻进这个循环看：网卡上的字节是怎么到 Suricata 手里的？装它们的 <code>Packet</code> 长什么样？每秒几十万、上百万个包，Suricata 靠什么接得住？</p>
+</blockquote>
+<p>先给答案，靠的是三件事：</p>
+<ol>
+<li><strong>和内核共用一块内存。</strong> AF_PACKET 的环形缓冲区同时映射在内核和 Suricata 进程里，包不用从内核拷贝到用户态。</li>
+<li><strong><code>Packet</code> 提前备好。</strong> 每个线程启动时就预分配一批 <code>Packet</code>，放在自己的包池里反复复用，处理包的热路径上不做 malloc。</li>
+<li><strong>从环里取包也不拷贝。</strong> <code>Packet</code> 不另存一份数据，只存一个指针，指向环里的那一帧；处理完，再把这一帧还给内核。</li>
+</ol>
+<p>这三件事串起来，就是一个 <code>Packet</code> 从借到还的一生：</p>
+<p><img data-src="/images/suricata/suricata-packet-lifecycle.svg" alt="一个 Packet 的一生"></p>
+<p>下面先看 <code>Packet</code> 本身，再看包池，最后看 AF_PACKET 怎么和内核交接数据。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/how-to-fix-your-entire-life-in-1-day/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://eazow.com/ted/do-schools-kill-creativity/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Eazow">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Eazow">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Eazow">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/ted/do-schools-kill-creativity/" class="post-title-link" itemprop="url">[TED]Do Schools Kill Creativity?</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2026-02-20 15:17:03" itemprop="dateCreated datePublished" datetime="2026-02-20T15:17:03+08:00">2026-02-20</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/English/" itemprop="url" rel="index"><span itemprop="name">English</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>16 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2 id="Background"><a href="#Background" class="headerlink" title="Background"></a>Background</h2><p>This speech was originally delivered by Ken Robinson at TED2006.</p>
-<h2 id="Speech-Transcript"><a href="#Speech-Transcript" class="headerlink" title="Speech Transcript"></a>Speech Transcript</h2><p>Good morning. How are you?</p>
-<p>It’s been great, hasn’t it? I’ve been blown away by the whole thing. In fact, I’m leaving.</p>
-<p>There have been three themes running through the conference which are relevant to what I want to talk about. One is the extraordinary evidence of human creativity in all of the presentations that we’ve had and in all of the people here. Just the variety of it and the range of it. The second is that it’s put us in a place where we have no idea what’s going to happen, in terms of the future. No idea how this may play out.</p>
-<p>I have an interest in education. Actually, what I find is everybody has an interest in education. Don’t you? I find this very interesting. If you’re at a dinner party, and you say you work in education — Actually, you’re not often at dinner parties, frankly.</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/ted/do-schools-kill-creativity/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://eazow.com/chuang-tzu/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Eazow">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Eazow">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Eazow">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/chuang-tzu/" class="post-title-link" itemprop="url">《庄子》读书笔记</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2025-05-12 21:06:30" itemprop="dateCreated datePublished" datetime="2025-05-12T21:06:30+08:00">2025-05-12</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Reading/" itemprop="url" rel="index"><span itemprop="name">Reading</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>6 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2 id="📚-结构总览"><a href="#📚-结构总览" class="headerlink" title="📚 结构总览"></a>📚 结构总览</h2><table>
-<thead>
-<tr>
-<th align="left"><strong>篇名</strong></th>
-<th align="left"><strong>英文译名 (Burton Watson)</strong></th>
-<th align="left"><strong>核心意象</strong></th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left"><strong>逍遥游</strong></td>
-<td align="left">Free and Easy Wandering</td>
-<td align="left">鲲鹏展翅，追求绝对的精神自由</td>
-</tr>
-<tr>
-<td align="left"><strong>齐物论</strong></td>
-<td align="left">Discussion on Making All Things Equal</td>
-<td align="left">庄周梦蝶，万物齐一，超越世俗对立</td>
-</tr>
-<tr>
-<td align="left"><strong>养生主</strong></td>
-<td align="left">The Secret of Caring for Life</td>
-<td align="left">庖丁解牛，顺应自然规律以养护生命</td>
-</tr>
-<tr>
-<td align="left"><strong>人间世</strong></td>
-<td align="left">In the World of Men</td>
-<td align="left">树木无用之用，在复杂社会中的处世之道</td>
-</tr>
-<tr>
-<td align="left"><strong>德充符</strong></td>
-<td align="left">The Sign of Virtue Complete</td>
-<td align="left">忘形骸之外，内在精神的充实与圆满</td>
-</tr>
-<tr>
-<td align="left"><strong>大宗师</strong></td>
-<td align="left">The Great and Venerable Teacher</td>
-<td align="left">以”道”为师，生死齐一的达观境界</td>
-</tr>
-<tr>
-<td align="left"><strong>应帝王</strong></td>
-<td align="left">Fit for Emperors and Kings</td>
-<td align="left">浑沌之死，无为而治的政治哲学</td>
-</tr>
-</tbody></table>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/chuang-tzu/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://eazow.com/preface-to-the-pavilion-of-prince-teng/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Eazow">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Eazow">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Eazow">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/preface-to-the-pavilion-of-prince-teng/" class="post-title-link" itemprop="url">滕王阁序</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2025-02-02 20:05:50" itemprop="dateCreated datePublished" datetime="2025-02-02T20:05:50+08:00">2025-02-02</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Poetry/" itemprop="url" rel="index"><span itemprop="name">Poetry</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>4 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>豫章故郡，洪都新府。星分翼轸，地接衡庐。襟三江而带五湖，控蛮荆而引瓯越。物华天宝，龙光射牛斗之墟；人杰地灵，徐孺下陈蕃之榻。雄州雾列，俊采星驰。台隍枕夷夏之交，宾主尽东南之美。都督阎公之雅望，棨戟遥临；宇文新州之懿范，襜帷暂驻。十旬休假，胜友如云；千里逢迎，高朋满座。腾蛟起凤，孟学士之词宗；紫电青霜，王将军之武库。家君作宰，路出名区；童子何知，躬逢胜饯。</p>
-<p>时维九月，序属三秋。潦水尽而寒潭清，烟光凝而暮山紫。俨骖騑于上路，访风景于崇阿。临帝子之长洲，得天人之旧馆。层峦耸翠，上出重霄；飞阁流丹，下临无地。鹤汀凫渚，穷岛屿之萦回；桂殿兰宫，即冈峦之体势。</p>
-<p>披绣闼，俯雕甍，山原旷其盈视，川泽纡其骇瞩。闾阎扑地，钟鸣鼎食之家；舸舰迷津，青雀黄龙之舳。云销雨霁，彩彻区明。落霞与孤鹜齐飞，秋水共长天一色。渔舟唱晚，响穷彭蠡之滨，雁阵惊寒，声断衡阳之浦。</p>
-<p>遥襟甫畅，逸兴遄飞。爽籁发而清风生，纤歌凝而白云遏。睢园绿竹，气凌彭泽之樽；邺水朱华，光照临川之笔。四美具，二难并。穷睇眄于中天，极娱游于暇日。天高地迥，觉宇宙之无穷；兴尽悲来，识盈虚之有数。望长安于日下，目吴会于云间。地势极而南溟深，天柱高而北辰远。关山难越，谁悲失路之人；萍水相逢，尽是他乡之客。怀帝阍而不见，奉宣室以何年？</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/preface-to-the-pavilion-of-prince-teng/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://eazow.com/the-yueyang-tower/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Eazow">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Eazow">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Eazow">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/the-yueyang-tower/" class="post-title-link" itemprop="url">岳阳楼记</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2024-06-12 00:00:00" itemprop="dateCreated datePublished" datetime="2024-06-12T00:00:00+08:00">2024-06-12</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Reading/" itemprop="url" rel="index"><span itemprop="name">Reading</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>　　庆历四年春，滕子京谪守巴陵郡。越明年，政通人和，百废具兴，乃重修岳阳楼，增其旧制，刻唐贤今人诗赋于其上，属予作文以记之。</p>
-<p>　　予观夫巴陵胜状，在洞庭一湖。衔远山，吞长江，浩浩汤汤，横无际涯，朝晖夕阴，气象万千，此则岳阳楼之大观也，前人之述备矣。然则北通巫峡，南极潇湘，迁客骚人，多会于此，览物之情，得无异乎？</p>
-<p>　　若夫淫雨霏霏，连月不开，阴风怒号，浊浪排空，日星隐曜，山岳潜形，商旅不行，樯倾楫摧，薄暮冥冥，虎啸猿啼。登斯楼也，则有去国怀乡，忧谗畏讥，满目萧然，感极而悲者矣。</p>
-<p>　　至若春和景明，波澜不惊，上下天光，一碧万顷，沙鸥翔集，锦鳞游泳，岸芷汀兰，郁郁青青。而或长烟一空，皓月千里，浮光跃金，静影沉璧，渔歌互答，此乐何极！登斯楼也，则有心旷神怡，宠辱偕忘，把酒临风，其喜洋洋者矣。</p>
-<p>　　嗟夫！予尝求古仁人之心，或异二者之为，何哉？不以物喜，不以己悲，居庙堂之高则忧其民，处江湖之远则忧其君。是进亦忧，退亦忧。然则何时而乐耶？其必曰“先天下之忧而忧，后天下之乐而乐”乎！噫！微斯人，吾谁与归？</p>
-<p>　　时六年九月十五日。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/the-yueyang-tower/#more" rel="contents">
+              <a class="btn" href="/suricata/03-capture-and-packet/#more" rel="contents">
                 Read more &raquo;
               </a>
             </div>
@@ -1230,7 +1249,7 @@ mjx-container[display="true"] + br {
 
 
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 </div>
@@ -1253,13 +1272,13 @@ mjx-container[display="true"] + br {
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">325k</span>
+    <span title="Symbols count total">409k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">4:55</span>
+    <span title="Reading time total">6:12</span>
   </span>
 </div>
 <div class="busuanzi-count">

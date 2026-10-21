@@ -86,7 +86,7 @@
 
 
 <nav class="site-nav">
-  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li>
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-series"><a href="/series/" rel="section"><i class="fa fa-layer-group fa-fw"></i>Series</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li>
   </ul>
 </nav>
 
@@ -127,7 +127,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://eazow.com/tcpdump/">
+    <link itemprop="mainEntityOfPage" href="http://eazow.com/the-yueyang-tower/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -145,7 +145,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/tcpdump/" class="post-title-link" itemprop="url">Tcpdump使用</a>
+          <a href="/the-yueyang-tower/" class="post-title-link" itemprop="url">岳阳楼记</a>
         </h2>
 
         <div class="post-meta-container">
@@ -156,7 +156,7 @@
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2020-05-12 11:50:20" itemprop="dateCreated datePublished" datetime="2020-05-12T11:50:20+08:00">2020-05-12</time>
+      <time title="Created: 2024-06-12 00:00:00" itemprop="dateCreated datePublished" datetime="2024-06-12T00:00:00+08:00">2024-06-12</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -164,7 +164,7 @@
       </span>
       <span class="post-meta-item-text">In</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
+          <a href="/categories/Poetry/" itemprop="url" rel="index"><span itemprop="name">Poetry</span></a>
         </span>
     </span>
 
@@ -185,20 +185,15 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>tcpdump是一个命令行数据包分析、抓取工具</p>
-<p>可以使用 -D 标志来列出可用于捕获的接口</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">$ tcpdump -D</span><br><span class="line"> </span><br><span class="line">1.virbr0</span><br><span class="line">2.docker0</span><br><span class="line">3.vethdb0f731</span><br><span class="line">4.nflog (Linux netfilter log (NFLOG) interface)</span><br><span class="line">5.nfqueue (Linux netfilter queue (NFQUEUE) interface)</span><br><span class="line">6.usbmon1 (USB bus number 1)</span><br><span class="line">7.enp2s0</span><br><span class="line">8.usbmon2 (USB bus number 2)</span><br><span class="line">9.enp3s0</span><br></pre></td></tr></table></figure>
-
-
-<p>可以使用 -i 标志指定要捕获的接口，指定 any 作为接口将从所有活动接口捕获</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ tcpdump -i any</span><br><span class="line">$ tcpdump -i eth1</span><br></pre></td></tr></table></figure>
-
-
-<p>可以使用 -v 标志来调整tcpdump输出中的详细程度</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ tcpdump -i any -v (Verbose output)</span><br><span class="line">$ tcpdump -i any -vv (Even more verbose output)</span><br><span class="line">$ tcpdump -i any -vvv (The most verbose output)</span><br></pre></td></tr></table></figure>
+          <p>　　庆历四年春，滕子京谪守巴陵郡。越明年，政通人和，百废具兴，乃重修岳阳楼，增其旧制，刻唐贤今人诗赋于其上，属予作文以记之。</p>
+<p>　　予观夫巴陵胜状，在洞庭一湖。衔远山，吞长江，浩浩汤汤，横无际涯，朝晖夕阴，气象万千，此则岳阳楼之大观也，前人之述备矣。然则北通巫峡，南极潇湘，迁客骚人，多会于此，览物之情，得无异乎？</p>
+<p>　　若夫淫雨霏霏，连月不开，阴风怒号，浊浪排空，日星隐曜，山岳潜形，商旅不行，樯倾楫摧，薄暮冥冥，虎啸猿啼。登斯楼也，则有去国怀乡，忧谗畏讥，满目萧然，感极而悲者矣。</p>
+<p>　　至若春和景明，波澜不惊，上下天光，一碧万顷，沙鸥翔集，锦鳞游泳，岸芷汀兰，郁郁青青。而或长烟一空，皓月千里，浮光跃金，静影沉璧，渔歌互答，此乐何极！登斯楼也，则有心旷神怡，宠辱偕忘，把酒临风，其喜洋洋者矣。</p>
+<p>　　嗟夫！予尝求古仁人之心，或异二者之为，何哉？不以物喜，不以己悲，居庙堂之高则忧其民，处江湖之远则忧其君。是进亦忧，退亦忧。然则何时而乐耶？其必曰“先天下之忧而忧，后天下之乐而乐”乎！噫！微斯人，吾谁与归？</p>
+<p>　　时六年九月十五日。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/tcpdump/#more" rel="contents">
+              <a class="btn" href="/the-yueyang-tower/#more" rel="contents">
                 Read more &raquo;
               </a>
             </div>
@@ -229,7 +224,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://eazow.com/pragmatic-programmer/">
+    <link itemprop="mainEntityOfPage" href="http://eazow.com/tao-te-ching/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -247,7 +242,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/pragmatic-programmer/" class="post-title-link" itemprop="url">The Pragmatic Programmer</a>
+          <a href="/tao-te-ching/" class="post-title-link" itemprop="url">《道德经》读书笔记</a>
         </h2>
 
         <div class="post-meta-container">
@@ -258,7 +253,125 @@
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2020-01-20 23:25:22" itemprop="dateCreated datePublished" datetime="2020-01-20T23:25:22+08:00">2020-01-20</time>
+      <time title="Created: 2024-01-02 22:00:20" itemprop="dateCreated datePublished" datetime="2024-01-02T22:00:20+08:00">2024-01-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Reading/" itemprop="url" rel="index"><span itemprop="name">Reading</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>16 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h3 id="一"><a href="#一" class="headerlink" title="一"></a>一</h3><blockquote>
+<p>道可道，非常道；名可名，非常名。无，名天地之始；有，名万物之母。故常无，欲以观其妙；常有，欲以观其徼。此两者，同出而异名，同谓之玄。玄之又玄，众妙之门。</p>
+</blockquote>
+<p>这是老子对”道”的核心阐述：</p>
+<p><strong>道可道，非常道；名可名，非常名</strong>（道的本质）</p>
+<ul>
+<li>能够说出来的”道”，就不是永恒不变的道</li>
+<li>能够命名的”名”，就不是永恒不变的名</li>
+<li><strong>意思</strong>：真正的”道”超越语言文字，一旦说出来就变味了</li>
+</ul>
+<p><strong>无，名天地之始；有，名万物之母</strong>（有与无）</p>
+<ul>
+<li>“无”是天地的开端（混沌未分的状态）</li>
+<li>“有”是万物的根源（具体事物的来源）</li>
+</ul>
+<p><strong>故常无，欲以观其妙；常有，欲以观其徼</strong></p>
+<ul>
+<li>从”无”的角度，可以观察道的奥妙</li>
+<li>从”有”的角度，可以观察道的边界（具体表现）</li>
+</ul>
+<p><strong>此两者同出而异名，同谓之玄，玄之又玄，众妙之门</strong>（玄妙之门）</p>
+<ul>
+<li>“有”和”无”本是一体，只是名称不同</li>
+<li>都可称为”玄”（深奥难测）</li>
+<li>玄之又玄，是一切奥妙的门户</li>
+</ul>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>道理说不清，一说就错；真理无法用语言完全表达。宇宙从”无”开始，演化出”有”。要从”无形”中体会本质，从”有形”中观察现象。虚与实本是一体，深不可测，这就是理解万物的入口。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/tao-te-ching/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://eazow.com/b-tree-leaf/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Eazow">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Eazow">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Eazow">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/b-tree-leaf/" class="post-title-link" itemprop="url">[译]B-Tree叶节点格式</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2023-09-20 23:57:20" itemprop="dateCreated datePublished" datetime="2023-09-20T23:57:20+08:00">2023-09-20</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -276,7 +389,7 @@
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>5 mins.</span>
+      <span>6 mins.</span>
     </span>
 </div>
 
@@ -287,573 +400,58 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h4 id="The-Pragmatic-Programmer-Quick-Reference-Guide"><a href="#The-Pragmatic-Programmer-Quick-Reference-Guide" class="headerlink" title="The Pragmatic Programmer Quick Reference Guide"></a>The Pragmatic Programmer Quick Reference Guide</h4><ol>
-<li><p>关心你的技艺<br>Care About Your Craft<br>如果你不在乎能否漂亮地开发出软件，你又为何要耗费生命去开发软件呢？</p>
-</li>
-<li><p>思考！你的工作<br>Think！About Your Work<br>关掉自动驾驶，接管操作，不断地批评和评估你的工作</p>
-</li>
-<li><p>提供各种选择，不要找蹩脚的借口<br>Provide Options, Don’t Make Lame Excuses<br>要提供各种选择，而不是找借口，不要说事情做不到，说明能够做什么</p>
-</li>
-<li><p>不要容忍破窗户<br>Don’t Live with Broken Windows<br>当你看到糟糕的设计、错误的决策和糟糕的代码时，修正它们</p>
-</li>
-<li><p>做变化的催化剂<br>Be a Catalyst for Change<br>你不能强迫人们改变。相反，要向他们展示未来可能会怎样，并帮助他们参与对未来的创造</p>
-</li>
-<li><p>记住大图景<br>Remember the Big Picture<br>不要太过专注于细节，已忘了查看周围正在发生什么</p>
-</li>
-</ol>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/pragmatic-programmer/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://eazow.com/kafka/quickstart/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Eazow">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Eazow">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Eazow">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/kafka/quickstart/" class="post-title-link" itemprop="url">Kafka Quickstart</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2019-09-10 00:00:00" itemprop="dateCreated datePublished" datetime="2019-09-10T00:00:00+08:00">2019-09-10</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Kafka/" itemprop="url" rel="index"><span itemprop="name">Kafka</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>9 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h4 id="1-GET-KAFKA"><a href="#1-GET-KAFKA" class="headerlink" title="1. GET KAFKA"></a>1. GET KAFKA</h4><p><a target="_blank" rel="noopener" href="https://www.apache.org/dyn/closer.cgi?path=/kafka/3.2.1/kafka_2.13-3.2.1.tgz">Download</a> the latest Kafka release and extract it:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ tar -xzf kafka_2.13-3.2.1.tgz</span><br><span class="line">$ <span class="built_in">cd</span> kafka_2.13-3.2.1</span><br></pre></td></tr></table></figure>
-
-
-
-<h4 id="2-START-THE-KAFKA-ENVIRONMENT"><a href="#2-START-THE-KAFKA-ENVIRONMENT" class="headerlink" title="2.START THE KAFKA ENVIRONMENT"></a>2.START THE KAFKA ENVIRONMENT</h4><p><em>NOTE: Your local environment must have Java 8+ installed.</em></p>
-<p>Run the following commands in order to start all services in the correct order:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Start the ZooKeeper service</span></span><br><span class="line"><span class="comment"># Note: Soon, ZooKeeper will no longer be required by Apache Kafka.</span></span><br><span class="line">$ bin/zookeeper-server-start.sh config/zookeeper.properties</span><br></pre></td></tr></table></figure>
-
-<p>Open another terminal session and run:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Start the Kafka broker service</span></span><br><span class="line">$ bin/kafka-server-start.sh config/server.properties</span><br></pre></td></tr></table></figure>
-
-<p>Once all services have successfully launched, you will have a basic Kafka environment running and ready to use.</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/kafka/quickstart/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://eazow.com/kafka/introduction/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Eazow">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Eazow">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Eazow">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/kafka/introduction/" class="post-title-link" itemprop="url">Kafka Introduction</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2019-09-01 15:01:20" itemprop="dateCreated datePublished" datetime="2019-09-01T15:01:20+08:00">2019-09-01</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Kafka/" itemprop="url" rel="index"><span itemprop="name">Kafka</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>9 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h4 id="1-What-is-event-streaming"><a href="#1-What-is-event-streaming" class="headerlink" title="1. What is event streaming?"></a>1. What is event streaming?</h4><p>Event streaming is the digital equivalent of the human body’s central nervous system. It is the technological foundation for the ‘always-on’ world where businesses are increasingly software-defined and automated, and where the user of software is more software.</p>
-<p>事件流是人体中枢神经系统的数字等效物。它是”永远在线”世界的技术基础，在这个世界中，企业越来越多地由软件定义和自动化，并且软件的用户更多地是软件。</p>
-<p>Technically speaking, event streaming is the practice of capturing data in real-time from event sources like databases, sensors, mobile devices, cloud services, and software applications in the form of streams of events; storing these event streams durably for later retrieval; manipulating, processing, and reacting to the event streams in real-time as well as retrospectively; and routing the event streams to different destination technologies as needed. Event streaming thus ensures a continuous flow and interpretation of data so that the right information is at the right place, at the right time.</p>
-<p>从技术上讲，事件流是从事件源（如数据库、传感器、移动设备、云服务和软件应用程序）以事件流的形式实时捕获数据的实践；持久存储这些事件流以供以后检索；实时和回顾性地操作、处理和响应事件流；并根据需要将事件流路由到不同的目标技术。因此，事件流确保了数据的连续流动和解释，以便正确的信息在正确的时间出现在正确的位置。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/kafka/introduction/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://eazow.com/leetcode/index/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Eazow">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Eazow">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Eazow">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/leetcode/index/" class="post-title-link" itemprop="url">LeetCode Online Judge</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2019-02-01 15:01:20" itemprop="dateCreated datePublished" datetime="2019-02-01T15:01:20+08:00">2019-02-01</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Coding/" itemprop="url" rel="index"><span itemprop="name">Coding</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>2 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <table>
+          <p>我们将表的格式从未排序的行数组更改为 B 树。这是一个很大的改动，需要多篇文章来实现。在本文的结尾，我们将定义叶节点的布局，并支持将键&#x2F;值对插入到单节点树中。但首先，让我们回顾一下切换到树结构的原因。</p>
+<h3 id="替代表格格式"><a href="#替代表格格式" class="headerlink" title="替代表格格式"></a>替代表格格式</h3><p>使用当前格式，每个页面仅存储行（无元数据），因此非常节省空间。插入也很快速，因为我们只需追加到末尾即可。但是，只能通过扫描整个表来查找特定行。如果要删除一行，则必须通过移动其后的每一行来填补该空缺。</p>
+<p>如果我们将表存储为数组，但按 id 对行进行排序，则可以使用二分查找来查找特定 id。但是，插入会很慢，因为我们必须移动很多行来腾出空间。</p>
+<p>相反，我们采用树结构。树中的每个节点可以包含可变数量的行，因此我们必须在每个节点中存储一些信息以跟踪其包含的行数。此外，还有所有不存储任何行的内部节点的存储开销。作为交换，虽然数据库文件变大了，但我们获得了快速的插入、删除和查找功能。</p>
+<table>
 <thead>
 <tr>
-<th align="left">#</th>
-<th align="left">Problems</th>
-<th align="left">Difficulty</th>
-<th align="left">Solutions</th>
+<th align="left"></th>
+<th align="left">未排序的行数组</th>
+<th align="left">已排序的行数组</th>
+<th align="left">节点树</th>
 </tr>
 </thead>
 <tbody><tr>
-<td align="left">1</td>
-<td align="left"><a target="_blank" rel="noopener" href="https://leetcode.com/problems/two-sum/">Two Sum</a></td>
-<td align="left">Easy</td>
-<td align="left"><a href="/leetcode/1-two-sum/">Two Sum</a></td>
+<td align="left">页面包含</td>
+<td align="left">仅数据</td>
+<td align="left">仅数据</td>
+<td align="left">元数据、主键和数据</td>
 </tr>
 <tr>
-<td align="left">2</td>
-<td align="left"><a target="_blank" rel="noopener" href="https://leetcode.com/problems/add-two-numbers/description/">Add Two Sum</a></td>
-<td align="left">Medium</td>
-<td align="left"><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/11224e015ae3">Add Two Number</a></td>
+<td align="left">每页行数</td>
+<td align="left">更多的</td>
+<td align="left">更多的</td>
+<td align="left">更少</td>
 </tr>
 <tr>
-<td align="left">3</td>
-<td align="left"><a target="_blank" rel="noopener" href="https://leetcode.com/problems/longest-substring-without-repeating-characters/description/">Longest Substring Without Repeating Characters</a></td>
-<td align="left">Medium</td>
-<td align="left"><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/1803f19afc1d">Longest Substring Without Repeating Characters</a></td>
+<td align="left">插入</td>
+<td align="left">O(1)</td>
+<td align="left">O(n)</td>
+<td align="left">O(log(n))</td>
 </tr>
 <tr>
-<td align="left">4</td>
-<td align="left"><a target="_blank" rel="noopener" href="https://leetcode.com/problems/median-of-two-sorted-arrays/description/">Median of Two Sorted Arrays</a></td>
-<td align="left">Hard</td>
-<td align="left"><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/e6831a647d5b">Median of Two Sorted Arrays</a></td>
+<td align="left">删除</td>
+<td align="left">O(n)</td>
+<td align="left">O(n)</td>
+<td align="left">O(log(n))</td>
 </tr>
 <tr>
-<td align="left">5</td>
-<td align="left"><a target="_blank" rel="noopener" href="https://leetcode.com/problems/longest-palindromic-substring/description/">Longest Palindromic Substring</a></td>
-<td align="left">Medium</td>
-<td align="left"><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/3fcd19e900c6">Longest Palindromic Substring</a></td>
-</tr>
-<tr>
-<td align="left">10</td>
-<td align="left"><a target="_blank" rel="noopener" href="https://leetcode.com/problems/regular-expression-matching/description/">Regular Expression Matching</a></td>
-<td align="left">Hard</td>
-<td align="left"><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/a26a54fab687">Regular Expression Matching</a></td>
-</tr>
-<tr>
-<td align="left">12</td>
-<td align="left"><a target="_blank" rel="noopener" href="https://leetcode.com/problems/integer-to-roman/">Integer to Roman</a></td>
-<td align="left">Medium</td>
-<td align="left"><a target="_blank" rel="noopener" href="http://www.jianshu.com/p/e0bd6ab68df3">Integer to Roman</a></td>
-</tr>
-<tr>
-<td align="left">22</td>
-<td align="left"><a target="_blank" rel="noopener" href="https://leetcode.com/problems/generate-parentheses/">Generate Parentheses</a></td>
-<td align="left">Medium</td>
-<td align="left"><a target="_blank" rel="noopener" href="http://www.jianshu.com/p/ff0ef6914107">Generate Parentheses</a></td>
-</tr>
-<tr>
-<td align="left">39</td>
-<td align="left"><a target="_blank" rel="noopener" href="https://leetcode.com/problems/combination-sum/">Combination Sum</a></td>
-<td align="left">Medium</td>
-<td align="left"><a href="/leetcode/39-combination-sum/">Combination Sum</a></td>
-</tr>
-<tr>
-<td align="left">42</td>
-<td align="left"><a target="_blank" rel="noopener" href="https://leetcode.com/problems/trapping-rain-water/">Trapping Rain Water</a></td>
-<td align="left">Hard</td>
-<td align="left"><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/6104f19eec85">Trapping Rain Water</a></td>
-</tr>
-<tr>
-<td align="left">90</td>
-<td align="left"><a target="_blank" rel="noopener" href="https://leetcode.com/problems/subsets-ii/">Subsets II</a></td>
-<td align="left">Medium</td>
-<td align="left"><a href="/leetcode/90-subsets-2">Subsets II</a></td>
-</tr>
-<tr>
-<td align="left">94</td>
-<td align="left"><a target="_blank" rel="noopener" href="https://leetcode.com/problems/binary-tree-inorder-traversal/">Binary Tree Inorder Traversal</a></td>
-<td align="left">Medium</td>
-<td align="left"><a target="_blank" rel="noopener" href="http://www.jianshu.com/p/c117026c269a">Binary Tree Inorder Traversal(简书)</a></td>
-</tr>
-<tr>
-<td align="left">108</td>
-<td align="left"><a target="_blank" rel="noopener" href="https://leetcode.com/problems/convert-sorted-array-to-binary-search-tree/">Convert Sorted Array to Binary Search Tree</a></td>
-<td align="left">Medium</td>
-<td align="left"><a target="_blank" rel="noopener" href="http://www.jianshu.com/p/9ed4e9bef533">Convert Sorted Array to Binary Search Tree</a></td>
-</tr>
-<tr>
-<td align="left">122</td>
-<td align="left"><a target="_blank" rel="noopener" href="https://leetcode.com/problems/best-time-to-buy-and-sell-stock-ii/">Best Time to Buy and Sell Stock II</a></td>
-<td align="left">Medium</td>
-<td align="left"><a target="_blank" rel="noopener" href="http://www.jianshu.com/p/1de0d839dfb4">Best Time to Buy and Sell Stock II</a></td>
-</tr>
-<tr>
-<td align="left">136</td>
-<td align="left"><a target="_blank" rel="noopener" href="https://leetcode.com/problems/single-number/">Single Number</a></td>
-<td align="left">Medium</td>
-<td align="left"><a target="_blank" rel="noopener" href="http://www.jianshu.com/p/7c4ed69dcc77">Single Number(简书)</a></td>
-</tr>
-<tr>
-<td align="left">144</td>
-<td align="left"><a target="_blank" rel="noopener" href="https://leetcode.com/problems/binary-tree-preorder-traversal/">Binary Tree Preorder Traversal</a></td>
-<td align="left">Medium</td>
-<td align="left"><a target="_blank" rel="noopener" href="http://www.jianshu.com/p/02d614c43fcf">Binary Tree Preorder Traversal</a></td>
-</tr>
-<tr>
-<td align="left">167</td>
-<td align="left"><a target="_blank" rel="noopener" href="https://leetcode.com/problems/two-sum-ii-input-array-is-sorted/">Two Sum II - Input array is sorted</a></td>
-<td align="left">Medium</td>
-<td align="left"><a href="/leetcode167-two-sum-2-input-array-is-sorted/">Two Sum II - Input array is sorted</a></td>
-</tr>
-<tr>
-<td align="left">238</td>
-<td align="left"><a target="_blank" rel="noopener" href="https://leetcode.com/problems/product-of-array-except-self/">Product of Array Except Self</a></td>
-<td align="left">Medium</td>
-<td align="left"><a target="_blank" rel="noopener" href="http://www.jianshu.com/p/247bbcc105f9">Product of Array Except Self(简书)</a></td>
-</tr>
-<tr>
-<td align="left">260</td>
-<td align="left"><a target="_blank" rel="noopener" href="https://leetcode.com/problems/single-number-iii/">Single Number III</a></td>
-<td align="left">Medium</td>
-<td align="left"><a target="_blank" rel="noopener" href="http://www.jianshu.com/p/15dca43b225b">Single Number III(简书)</a></td>
-</tr>
-<tr>
-<td align="left">268</td>
-<td align="left"><a target="_blank" rel="noopener" href="https://leetcode.com/problems/missing-number/">Missing Number</a></td>
-<td align="left">Medium</td>
-<td align="left"><a target="_blank" rel="noopener" href="http://www.jianshu.com/p/61e569117c43">Missing Number</a></td>
-</tr>
-<tr>
-<td align="left">309</td>
-<td align="left"><a target="_blank" rel="noopener" href="https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-cooldown/">Best Time to Buy and Sell Stock with Cooldown</a></td>
-<td align="left">Medium</td>
-<td align="left"><a target="_blank" rel="noopener" href="http://www.jianshu.com/p/1fc3848099ec">Best Time to Buy and Sell Stock with Cooldown</a></td>
-</tr>
-<tr>
-<td align="left">318</td>
-<td align="left"><a target="_blank" rel="noopener" href="https://leetcode.com/problems/maximum-product-of-word-lengths/">Maximum Product of Word Lengths</a></td>
-<td align="left">Medium</td>
-<td align="left"><a target="_blank" rel="noopener" href="http://www.jianshu.com/p/7998a43e1e0c">Maximum Product of Word Lengths(简书)</a></td>
-</tr>
-<tr>
-<td align="left">319</td>
-<td align="left"><a target="_blank" rel="noopener" href="https://leetcode.com/problems/bulb-switcher/">Bulb Switcher</a></td>
-<td align="left">Medium</td>
-<td align="left"><a target="_blank" rel="noopener" href="http://www.jianshu.com/p/812e7da6f0c4">Bulb Switcher(简书)</a></td>
-</tr>
-<tr>
-<td align="left">338</td>
-<td align="left"><a target="_blank" rel="noopener" href="https://leetcode.com/problems/counting-bits/">Counting Bits</a></td>
-<td align="left">Medium</td>
-<td align="left"><a target="_blank" rel="noopener" href="http://www.jianshu.com/p/048a86dcbd9d">Counting Bits(简书)</a></td>
-</tr>
-<tr>
-<td align="left">343</td>
-<td align="left"><a target="_blank" rel="noopener" href="https://leetcode.com/problems/integer-break/">Integer Break</a></td>
-<td align="left">Medium</td>
-<td align="left"><a target="_blank" rel="noopener" href="http://www.jianshu.com/p/d062d3718df8">Integer Break(简书)</a></td>
-</tr>
-<tr>
-<td align="left">347</td>
-<td align="left"><a target="_blank" rel="noopener" href="https://leetcode.com/problems/top-k-frequent-elements/">Top K Frequent Elements</a></td>
-<td align="left">Medium</td>
-<td align="left"><a target="_blank" rel="noopener" href="http://www.jianshu.com/p/b22bfd5cc5b8">Top K Frequent Elements(简书)</a></td>
-</tr>
-<tr>
-<td align="left">357</td>
-<td align="left"><a target="_blank" rel="noopener" href="https://leetcode.com/problems/count-numbers-with-unique-digits/">Count Numbers with Unique Digits</a></td>
-<td align="left">Medium</td>
-<td align="left"><a target="_blank" rel="noopener" href="http://www.jianshu.com/p/8fa9fc9a46ed">Count Numbers with Unique Digits</a></td>
-</tr>
-<tr>
-<td align="left">377</td>
-<td align="left"><a target="_blank" rel="noopener" href="https://leetcode.com/problems/combination-sum-iv/">Combination Sum IV</a></td>
-<td align="left">Medium</td>
-<td align="left"><a target="_blank" rel="noopener" href="http://www.jianshu.com/p/6dcb2c66da36">Combination Sum IV</a></td>
-</tr>
-<tr>
-<td align="left">492</td>
-<td align="left"><a target="_blank" rel="noopener" href="https://leetcode.com/problems/construct-the-rectangle">Construct the Rectangle</a></td>
-<td align="left">Easy</td>
-<td align="left"><a target="_blank" rel="noopener" href="http://www.jianshu.com/p/f4da2927fffe">Construct the Rectangle</a></td>
-</tr>
-<tr>
-<td align="left">530</td>
-<td align="left"><a target="_blank" rel="noopener" href="https://leetcode.com/problems/minimum-absolute-difference-in-bst">Minimum Absolute Difference in BST</a></td>
-<td align="left">Easy</td>
-<td align="left"><a target="_blank" rel="noopener" href="http://www.jianshu.com/p/f6ce5df1895f">Minimum Absolute Difference in BST</a></td>
-</tr>
-<tr>
-<td align="left">535</td>
-<td align="left"><a target="_blank" rel="noopener" href="https://leetcode.com/problems/encode-and-decode-tinyurl">Encode and Decode TinyURL</a></td>
-<td align="left">Medium</td>
-<td align="left"><a target="_blank" rel="noopener" href="http://www.jianshu.com/p/09d79186f859">Encode and Decode TinyURL</a></td>
-</tr>
-<tr>
-<td align="left">599</td>
-<td align="left"><a target="_blank" rel="noopener" href="https://leetcode.com/problems/minimum-index-sum-of-two-lists">Minimum Index Sum of Two Lists</a></td>
-<td align="left">Easy</td>
-<td align="left"><a target="_blank" rel="noopener" href="http://www.jianshu.com/p/b2fceb996062">Minimum Index Sum of Two lists</a></td>
-</tr>
-<tr>
-<td align="left">606</td>
-<td align="left"><a target="_blank" rel="noopener" href="https://leetcode.com/problems/construct-string-from-binary-tree">Construct String from Binary Tree</a></td>
-<td align="left">Easy</td>
-<td align="left"><a target="_blank" rel="noopener" href="http://www.jianshu.com/p/9df545283b21">Construct String from Binary Tree</a></td>
+<td align="left">通过id查找</td>
+<td align="left">O(n)</td>
+<td align="left">O(log(n))</td>
+<td align="left">O(log(n))</td>
 </tr>
 </tbody></table>
-<h5 id="进度"><a href="#进度" class="headerlink" title="进度"></a>进度</h5><p><img data-src="https://bartiern.sirv.com/blog/leetcode.png"></p>
-<h5 id="Github"><a href="#Github" class="headerlink" title="Github"></a>Github</h5><p><a target="_blank" rel="noopener" href="https://github.com/eazow/leetcode">https://github.com/eazow/leetcode</a></p>
-<h5 id="作者"><a href="#作者" class="headerlink" title="作者"></a>作者</h5><p><a target="_blank" rel="noopener" href="http://www.eazow.com/">Eazow</a></p>
-<h5 id="版本"><a href="#版本" class="headerlink" title="版本"></a>版本</h5><p>0.3.0.0</p>
-<!--
-##### 更新日志
-
-2016.06.01
-347. Top K Frequent Elements
-
-2016.06.03 
-319. Bulb Switcher
-343. Integer Break
-268. Missing Number
-144. Binary Tree Preorder Traversal
-
-2016.06.06
-94. Binary Tree Inorder Traversal
-318. Maximum Product of Word Lengths
-12. Integer to Roman
-
-2016.06.13
-108. Convert Sorted Array to Binary Search Tree
-
-2016.06.14
-357. Count Numbers with Unique Digits
-
-2016.06.20
-完成100题
-20. Generate Parentheses
-309. Best Time to Buy and Sell Stock with Cooldown
-
-2016.08.20
-377. Combination Sum IV
-
-2016.09.01
-39. Combination Sum 
-167. Two Sum II - Input array is sorted
-
-2018.07.26
-2. Add Two Numbers
-3. Longest Substring Without Repeating Characters
-4. Median of Two Sorted Arrays
-
-2018.07.25
-调整排序为按题号排序，这样比较容易对照leetcode整理
-
-2019.06.20
-完成300题
-
-持续更新中...
-
--->
-
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/b-tree-leaf/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -879,7 +477,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://eazow.com/nce/4/49-through-the-tunnel/">
+    <link itemprop="mainEntityOfPage" href="http://eazow.com/b-tree/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -897,7 +495,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/nce/4/49-through-the-tunnel/" class="post-title-link" itemprop="url">Lesson 49 Though the Tunnel</a>
+          <a href="/b-tree/" class="post-title-link" itemprop="url">[译]B-Tree</a>
         </h2>
 
         <div class="post-meta-container">
@@ -908,7 +506,7 @@
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2018-08-08 00:00:00" itemprop="dateCreated datePublished" datetime="2018-08-08T00:00:00+08:00">2018-08-08</time>
+      <time title="Created: 2023-09-10 23:57:20" itemprop="dateCreated datePublished" datetime="2023-09-10T23:57:20+08:00">2023-09-10</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -916,7 +514,7 @@
       </span>
       <span class="post-meta-item-text">In</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/English/" itemprop="url" rel="index"><span itemprop="name">English</span></a>
+          <a href="/categories/Coding/" itemprop="url" rel="index"><span itemprop="name">Coding</span></a>
         </span>
     </span>
 
@@ -926,7 +524,7 @@
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>3 mins.</span>
+      <span>1 mins.</span>
     </span>
 </div>
 
@@ -937,12 +535,26 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <p>He put on his <strong>goggles</strong>, fitted them tight, tested the <strong>vacuum</strong>. His hands were shaking. Then he chose the biggest stone he could carry and slipped over the edge of the rock until half of him was in the cool, <strong>enclosing</strong> water and half in the hot sun. He looked up once at the empty sky, filled his lungs once, twice, and then sank fast to the bottom with the stone. He let it go and began to count. He took the edges of the hole in his hands and drew himself into it, <strong>wriggling</strong> his shoulders in sideways as he remembered he must, kicking himself along with his feet.</p>
-<p>Soon he was clear inside. He was in a small rock-bound hole filled with yellowish-gray water. The water was pushing him up against the roof. The roof was sharp and pained his back. He pulled himself along with his hands — fast, fast — and used his legs as levers. His head knocked against something; a sharp pain dizzied him. Fifty, fifty-one, fifty-two… He was without light, and the water seemed to press upon him with the weight of rock. Seventy-one, seventy-two… There was no strain on his lungs. He felt like an inflated balloon, his lungs were so light and easy, but his head was pulsing.</p>
-<p>He was being continually pressed against the sharp roof, which felt slimy as well as sharp. Again he thought of octopuses, and wondered if the tunnel might be filled with weed that could tangle him. He gave himself a panicky, convulsive kick forward, ducked his head, and swam. His feet and hands moved freely, as if in open water. The hole must have widened out. He thought he must be swimming fast, and he was frightened of banging his head if the tunnel narrowed.</p>
-<p>A hundred, a hundred and one… The water paled. Victory filled him. His lungs were beginning to hurt. A few more strokes and he would be out. He was counting wildly; he said a hundred and fifteen and then, a long time later, a hundred and fifteen again. The water was a clear jewel-green all around him. Then he saw, above his head, a crack running up through the rock. Sunlight was falling through it, showing the clean dark rock of the tunnel, a single mussel shell, and darkness ahead.</p>
-<p>He was at the end of what he could do. He looked up at the crack as if it were filled with air and not water, as if he could put his mouth to it to draw in air. A hundred and fifteen, he heard himself say inside his head — but he had said that long ago. He must go on into the blackness ahead, or he would drown. His head was swelling, his lungs cracking. A hundred and fifteen, a hundred and fifteen pounded through his head, and he feebly clutched at rocks in the dark, pulling himself forward, leaving the brief space of sunlit water behind. He felt he was dying. He was no longer quite conscious. He struggled on in the darkness between lapses into unconsciousness. An immense, swelling pain filled his head, and then the darkness cracked with an explosion of green light. His hands, groping forward, met nothing; and his feet, kicking back, propelled him out into the open sea.</p>
+          <p>B-Tree是 SQLite 用来表示表和索引的数据结构，因此它是一个非常核心的思想。本文只是介绍数据结构，所以不会有任何代码。</p>
+<p>为什么树是数据库的良好数据结构？</p>
+<ul>
+<li>搜索特定值很快（对数时间）</li>
+<li>插入&#x2F;删除您已经找到的值速度很快（重新平衡的时间很长）</li>
+<li>遍历一系列值的速度很快（与哈希映射不同）</li>
+</ul>
+<p>B 树与二叉树不同（“B”可能代表发明者的名字，但也可以代表“平衡”）。这是一个 B 树示例：</p>
+<img data-src="https://cstack.github.io/db_tutorial/assets/images/B-tree.png" alt="example B-Tree (https://en.wikipedia.org/wiki/File:B-tree.svg)" style="zoom:50%;" />
 
+
+<p>与二叉树不同，B 树中的每个节点可以有 2 个以上的子节点。每个节点最多可以有 m 个子节点，其中 m 称为树的“order”。为了保持树基本平衡，我们还说节点必须至少有 m&#x2F;2 个子节点（向上舍入）。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/b-tree/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -968,7 +580,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://eazow.com/nce/4/48-planning-a-share-portfolio/">
+    <link itemprop="mainEntityOfPage" href="http://eazow.com/rust/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -986,7 +598,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/nce/4/48-planning-a-share-portfolio/" class="post-title-link" itemprop="url">Lesson 48 Planning a share portfolio</a>
+          <a href="/rust/" class="post-title-link" itemprop="url">Rust</a>
         </h2>
 
         <div class="post-meta-container">
@@ -997,7 +609,7 @@
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2018-08-01 00:00:00" itemprop="dateCreated datePublished" datetime="2018-08-01T00:00:00+08:00">2018-08-01</time>
+      <time title="Created: 2023-08-01 21:02:15" itemprop="dateCreated datePublished" datetime="2023-08-01T21:02:15+08:00">2023-08-01</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -1005,7 +617,206 @@
       </span>
       <span class="post-meta-item-text">In</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/English/" itemprop="url" rel="index"><span itemprop="name">English</span></a>
+          <a href="/categories/Coding/" itemprop="url" rel="index"><span itemprop="name">Coding</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>10 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <img data-src="https://hyz-blog.oss-cn-hangzhou.aliyuncs.com/rust.png" style="zoom:35%;" />
+
+
+
+<h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl https://sh.rustup.rs -sSf | sh</span><br></pre></td></tr></table></figure>
+
+<p>安装完成后</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Rust is installed now. Great!</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="快速参考"><a href="#快速参考" class="headerlink" title="快速参考"></a>快速参考</h3>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/rust/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://eazow.com/poetry/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Eazow">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Eazow">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Eazow">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/poetry/" class="post-title-link" itemprop="url">我喜欢的古诗词</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2023-02-06 17:20:12" itemprop="dateCreated datePublished" datetime="2023-02-06T17:20:12+08:00">2023-02-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Poetry/" itemprop="url" rel="index"><span itemprop="name">Poetry</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>7 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>读书时听着老师念答案不太能读懂诗词，年纪大了便能体会到其中的韵味和阅历。每次读时，还能有不同的品味。</p>
+<p>诗词包含了古人所有的情感，你的酸甜苦辣，各种感受都能从中找到共鸣。</p>
+<h4 id="定风波·莫听穿林打叶声"><a href="#定风波·莫听穿林打叶声" class="headerlink" title="定风波·莫听穿林打叶声"></a>定风波·莫听穿林打叶声</h4><h6 id="苏轼"><a href="#苏轼" class="headerlink" title="苏轼"></a>苏轼</h6><p>三月七日，沙湖道中遇雨，雨具先去，同行皆狼狈，余独不觉。已而遂晴，故作此词。</p>
+<p>莫听穿林打叶声，何妨吟啸且徐行。竹杖芒鞋轻胜马，谁怕？一蓑烟雨任平生。</p>
+<p>料峭春风吹酒醒，微冷，山头斜照却相迎。回首向来萧瑟处，归去，也无风雨也无晴。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/poetry/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://eazow.com/fake/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Eazow">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Eazow">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Eazow">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/fake/" class="post-title-link" itemprop="url">Fake data</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2023-01-02 12:56:31" itemprop="dateCreated datePublished" datetime="2023-01-02T12:56:31+08:00">2023-01-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Coding/" itemprop="url" rel="index"><span itemprop="name">Coding</span></a>
         </span>
     </span>
 
@@ -1026,28 +837,25 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <blockquote>
-<p>How does the older investor differ in his approach to investment from the younger investor?</p>
-</blockquote>
-<p>There is no shortage of <strong>tipsters</strong> around offering “get-rich-quick” opportunities. </p>
-<p>But if you are a serious private investor, leave the Las Vegas <strong>mentality</strong> to those with money to <strong>fritter</strong>.</p>
-<p>The serious investor needs a proper “<strong>portfolio</strong>“ - a well-planned selection of investments, with a definite structure and a clear aim. </p>
-<p>But exactly how does a newcomer to the stock market go about achieving that?</p>
-<p>Well, if you go to five reputable stockbrokers and ask them what you should do with your money, you’re likely to get five different answers, — even if you give all the relevant information about your age, family, finances and what you want from your investments. </p>
-<p>Moral? There is no one “right” way to structure a portfolio.</p>
-<p>However, there are undoubtedly some wrong ways, and you can be sure that none of our five advisers would have suggested <strong>sinking</strong> all (or perhaps any) of your money into Periwigs*.</p>
-<p>So what should you do? We’ll assume that you have sorted out the basics — like <strong>mortgages</strong>, <strong>pensions</strong>, insurance and access to sufficient cash reserves. </p>
-<p>You should then establish your own individual aims. </p>
-<p>These are partly a matter of personal circumstances, partly a matter of psychology.</p>
-<p>For instance, if you are older you have less time to recover from any major losses, and you may well wish to boost your pension income. </p>
-<p>So preserving your capital and generating extra income are your main priorities. </p>
-<p>In this case, you’d probably construct a portfolio with some shares (but not high risk ones), along with <strong>gilts</strong>, cash deposits, and perhaps convertibles or the income shares of split capital investment <strong>trusts</strong>.</p>
-<p>If you are younger, and in a solid financial position, you may decide to take an aggressive approach — but only if you’re blessed with a <strong>sanguine</strong> disposition and won’t suffer sleepless nights over share prices. </p>
-<p>If you recognize yourself in this description, you might include a couple of heady growth stocks in your portfolio, alongside your more <strong>pedestrian</strong> investments. </p>
-<p>Once you have decided on your investment aims, you can then decide where to put your money. </p>
-<p>The golden rule here is “spread your risk” — if you put all of your money into Periwigs International, you’re setting yourself up as a hostage to fortune.</p>
-<p><em><strong>“Periwigs”</strong></em> is the name of a <strong>fictitious</strong> company.</p>
+          <p>当测试程序需要数据时，可以通过faker来构造测试数据</p>
+<h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ pip install faker</span><br></pre></td></tr></table></figure>
 
+
+
+<h3 id="基本使用"><a href="#基本使用" class="headerlink" title="基本使用"></a>基本使用</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">from faker import Faker</span><br><span class="line">faker = Faker()</span><br><span class="line"> </span><br><span class="line">faker.name()</span><br><span class="line"># &#x27;Lucy Cechtelar&#x27;</span><br><span class="line"> </span><br><span class="line">faker.address()</span><br><span class="line"># &#x27;426 Jordy Lodge</span><br><span class="line">#  Cartwrightshire, SC 88120-6700&#x27;</span><br><span class="line"> </span><br><span class="line">faker.ipv4()</span><br><span class="line"># &#x27;196.67.103.129&#x27;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>对方法 <a target="_blank" rel="noopener" href="http://fake.name/">faker.</a>ipv4()的每次调用都会产生不同的随机结果</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">for _ in range(10):</span><br><span class="line">  print(faker.ipv4())</span><br><span class="line"> </span><br><span class="line"># &#x27;120.36.235.152&#x27;</span><br><span class="line"># &#x27;16.58.6.69&#x27;</span><br><span class="line"># &#x27;170.215.56.41&#x27;</span><br><span class="line"># &#x27;135.217.158.192&#x27;</span><br><span class="line"># &#x27;218.235.87.38&#x27;</span><br><span class="line"># &#x27;175.80.75.73&#x27;</span><br><span class="line"># &#x27;122.120.1.128&#x27;</span><br><span class="line"># &#x27;99.91.143.38&#x27;</span><br><span class="line"># &#x27;1.90.129.142&#x27;</span><br><span class="line"># &#x27;184.148.193.249&#x27;</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/fake/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -1073,7 +881,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://eazow.com/nce/4/47-the-great-escape/">
+    <link itemprop="mainEntityOfPage" href="http://eazow.com/commencement/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -1091,7 +899,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/nce/4/47-the-great-escape/" class="post-title-link" itemprop="url">Lesson 47 The great escape</a>
+          <a href="/commencement/" class="post-title-link" itemprop="url">Commencement Address at Stanford University</a>
         </h2>
 
         <div class="post-meta-container">
@@ -1102,7 +910,7 @@
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2018-07-20 00:00:00" itemprop="dateCreated datePublished" datetime="2018-07-20T00:00:00+08:00">2018-07-20</time>
+      <time title="Created: 2022-10-26 20:16:06" itemprop="dateCreated datePublished" datetime="2022-10-26T20:16:06+08:00">2022-10-26</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -1111,6 +919,200 @@
       <span class="post-meta-item-text">In</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
           <a href="/categories/English/" itemprop="url" rel="index"><span itemprop="name">English</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>14 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p align="right"><b>Steve Jobs</b></p>
+
+<p>I am honored to be with you today at your commencement from one of the finest universities in the world. Truth be told, I never graduated from college, and this is the closest I’ve ever gotten to a college graduation. Today I want to tell you three stories from my life. That’s it. No big deal. Just three stories.</p>
+<h4 id="The-first-story-is-about-connecting-the-dots"><a href="#The-first-story-is-about-connecting-the-dots" class="headerlink" title="The first story is about connecting the dots."></a>The first story is about connecting the dots.</h4><p>I dropped out of Reed College after the first 6 months, but then stayed around as a drop-in for another 18 months or so before I really quit. So why did I drop out?</p>
+<p>It started before I was born. My biological mother was a young, unwed college graduate student, and she decided to put me up for adoption. She felt very strongly that I should be adopted by college graduates, so everything was all set for me to be adopted at birth by a lawyer and his wife. Except that when I popped out they decided at the last minute that they really wanted a girl.</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/commencement/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://eazow.com/family-album/e01/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Eazow">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Eazow">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Eazow">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/family-album/e01/" class="post-title-link" itemprop="url">Family Album Episode 01</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2022-03-20 19:58:26" itemprop="dateCreated datePublished" datetime="2022-03-20T19:58:26+08:00">2022-03-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/English/" itemprop="url" rel="index"><span itemprop="name">English</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>9 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="ACT-I"><a href="#ACT-I" class="headerlink" title="ACT I"></a>ACT I</h2><h3 id="Dialogue"><a href="#Dialogue" class="headerlink" title="Dialogue"></a>Dialogue</h3><p>Excuse me. My name is Richard Stewart.</p>
+<p>I’m a <strong>photographer</strong>.<br>May I take a picture of you and your little boy?</p>
+<p>What’s it for?</p>
+<p>It’s for a book.</p>
+<p>You’re writing a book?</p>
+<p>It’s a book of pictures.</p>
+<p>I call it Family Album, U.S.A.</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/family-album/e01/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://eazow.com/protobuf/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Eazow">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Eazow">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Eazow">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/protobuf/" class="post-title-link" itemprop="url">Protocol Buffers使用</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-02-21 22:20:55" itemprop="dateCreated datePublished" datetime="2021-02-21T22:20:55+08:00">2021-02-21</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Coding/" itemprop="url" rel="index"><span itemprop="name">Coding</span></a>
         </span>
     </span>
 
@@ -1131,245 +1133,17 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <blockquote>
-<p>What is one of the features of modern camping where nationality is concerned?</p>
-</blockquote>
-<p>Economy is one powerful motive for camping, since after the initial <strong>outlay</strong> upon equipment, or through <strong>hiring</strong> it, the total expense can be far less than the cost of hotels. </p>
-<p>But, contrary to a popular assumption, it is far from being the only one, or even the greatest. </p>
-<p>The man who <strong>manoeuvres</strong> carelessly into his twenty pounds’ worth of space at one of Europe’s <strong>myriad</strong> <strong>permanent</strong> sites may find himself <strong>bumping</strong> a Bentley. </p>
-<p>More likely, Ford Escort will be hub to hub with Renault or Mercedes, but rarely with bicycles made for two.</p>
-<p>That the equipment of modern camping becomes yearly more <strong>sophisticated</strong> is an <strong>entertaining</strong> <strong>paradox</strong> for the <strong>cynic</strong>, a brighter <strong>promise</strong> for the hopeful traveler who has <strong>sworn</strong> to get away from it all. </p>
-<p>It also provides—and some student <strong>sociologist</strong> might care to base his <strong>thesis</strong> upon the phenomenon—an escape of another kind. </p>
-<p>The modern traveller is often a man who dislikes the Splendide and the Bellavista, not because he cannot afford, or <strong>shuns</strong> their material comforts, but because he is affraid of them. </p>
-<p><strong>Affluent</strong> he may be, but he is by no means sure what to tip the doorman or the <strong>chambermaid</strong>. </p>
-<p>Master in his own house, he has little idea of when to say boo to a <strong>maitre</strong> d’hotel.</p>
-<p>From all such fears camping releases him. </p>
-<p><strong>Granted</strong>, a <strong>snobbery</strong> of camping itself, based upon equipment and techniques, already exists; but it is of a kind that, if he meets it, he can <strong>readily</strong> understand and deal with. </p>
-<p>There is no superior ‘they’ in the shape of managements and hotel <strong>hierarchies</strong> to darken his holiday days.</p>
-<p>To such motives, yet another must be added.</p>
-<p>The <strong>contemporary</strong> phenomenon of car worship is to be explained not least by the sense of independence and freedom that ownership <strong>entails</strong>. </p>
-<p>To this pleasure camping gives an <strong>exquisite</strong> <strong>refinement</strong>.</p>
-<p>From one’s own front door to home or foreign hills or sands and back again, everything is to hand. </p>
-<p>Not only are the means of arriving at the holiday paradise entirely within one’s own command and keeping, but the means of escape from holiday hell(if the beach proves too crowded, the local weather too <strong>inclement</strong>) are there, outside—or, as likely, part of—the tent.</p>
-<p>Idealists have objected to the practice of camping, as to the package tour, that the traveller abroad thereby denies himself the opportunity of getting to know the people of the country visited. </p>
-<p><strong>Insularity</strong> and self-<strong>containment</strong>, it is argued, go hand in hand. </p>
-<p>The opinion does not survive experience of a popular Continental camping place. </p>
-<p>Holiday hotels tend to <strong>cater</strong> for one nationality of visitors especially, sometimes exclusively.</p>
-<p>Camping sites, by contrast, are highly <strong>cosmopolitan</strong>. </p>
-<p>Granted, a <strong>preponderance</strong> of Germans is a characteristic that seems common to most Mediterranean sites; but as yet there is no <strong>overwhelmingly</strong> specialized <strong>patronage</strong>. </p>
-<p>Notices forbidding the open-air drying of clothes, or the use of water points for car washing, or those inviting “our camping friends” to a dance or a boat trip are printed not only in French or Italian or Spanish, but also in English, German and Dutch. </p>
-<p>At meal times the <strong>odour</strong> of <strong>sauerkraut</strong> <strong>vies</strong> with that of <strong>garlic</strong>. </p>
-<p>The Frenchman’s breakfast coffee competes with the Englishman’s bacon and eggs.</p>
-<p>Whether the remarkable growth of organized camping means the eventual death of the more independent kind is hard to say. </p>
-<p><strong>Municipalities</strong> naturally want to secure the campers’ site fees and other custom. </p>
-<p>Police are <strong>wary</strong> of <strong>itinerants</strong> who cannot be traced to a recognized camp boundary or to four walls. </p>
-<p>But most probably it will all depend upon campers themselves: how many heath fires they cause; how much <strong>litter</strong> they leave; in short, whether or not they wholly <strong>alienate</strong> landowners and those who live in the countryside.</p>
-<p>Only good <strong>scouting</strong> is likely to preserve the freedoms so dear to the heart of the <strong>eternal</strong> Boy Scout.</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://eazow.com/nce/4/46-hobbies/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Eazow">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Eazow">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Eazow">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/nce/4/46-hobbies/" class="post-title-link" itemprop="url">Lesson 46 Hobbies</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2018-07-10 00:00:00" itemprop="dateCreated datePublished" datetime="2018-07-10T00:00:00+08:00">2018-07-10</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/English/" itemprop="url" rel="index"><span itemprop="name">English</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>3 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <blockquote>
-<p>Who, according to the author, are ‘Fortune’s favoured children’?</p>
-</blockquote>
-<p>A gifted American psychologist has said, ‘Worry is a <strong>spasm</strong> of the emotion; the mind catches hold of something and will not let it go.’ </p>
-<p>It is useless to argue with the mind in this condition. </p>
-<p>The stronger the will, the more <strong>futile</strong> the task. </p>
-<p>One can only gently <strong>insinuate</strong> something else into its <strong>convulsive</strong> <strong>grasp</strong>.</p>
-<p>And if this something else is rightly chosen, if it really attended by the <strong>illumination</strong> of another field of interest, gradually, and often quite swiftly, the old <strong>undue</strong> <strong>grip</strong> relaxes and the process of <strong>recuperation</strong> and repair begins.</p>
-<p>The <strong>cultivation</strong> of a hobby and new forms of interest is therefore a policy of the first importance to a public man. </p>
-<p>But this is not a business that can be undertaken in a day or swiftly <strong>improvised</strong> by a mere command of the will. </p>
-<p>The growth of <strong>alternative</strong> mental interests is a long process. </p>
-<p>The seeds must be carefully chosen; they must fall on good ground; they must be <strong>sedulously</strong> <strong>tended</strong>, if the <strong>vivifying</strong> fruits are to be at hand when needed.</p>
-<p>To be really happy and really safe, one ought to have at least two or three hobbies, and they must all be real. </p>
-<p>It is no use starting late in life to say: “I will take an interest in this or that.”</p>
-<p>Such an attempt only aggravates the strain of mental effort. </p>
-<p>A man may acquire great knowledge of topics unconnected with his daily work, and yet get hardly any benefit or <strong>relief</strong>. </p>
-<p>It is no use doing what you like; you have got to like what you do. </p>
-<p>Broadly speaking, human beings may be divided into three classes: those who are <strong>toiled</strong> to death, those who are worried to death,  and those who are bored to death.</p>
-<p>It is no use offering the manual laborer, tired out with a hard week’s <strong>sweat</strong> and effort, the chance of playing a game of football or baseball on Saturday afternoon. </p>
-<p>It is no use inviting the politician or the professional or business man, who has been working or worrying about serious things for six days, to work or worry about <strong>trifling</strong> things at the weekend.</p>
-<p>As for the unfortunate people who can command everything they want, who can <strong>gratify</strong> every <strong>caprice</strong> and lay their hands on almost every object of desire—for them a new pleasure, a new excitement if only an additional <strong>satiation</strong>. </p>
-<p>In <strong>vain</strong> they rush <strong>frantically</strong> round from place to place, trying to escape from <strong>avenging</strong> <strong>boredom</strong> by mere <strong>clatter</strong> and motion. </p>
-<p>For them discipline in one form or another is the most hopeful path.</p>
-<p>It may also be said that rational, industrious, useful human being are divided into two classes: first, those whose work is work and whose pleasure is pleasure; and secondly, those whose work and pleasure are one. </p>
-<p>Of these the former are the majority. </p>
-<p>They have their <strong>compensations</strong>. </p>
-<p>The long hours in the office or the factory bring with them as their reward, not only the means of <strong>sustenance</strong>, but a <strong>keen</strong> <strong>appetite</strong> for pleasure even in its simplest and most modest forms.</p>
-<p>But Fortune’s favoured children belong to the second class. </p>
-<p>Their life is a natural harmony. </p>
-<p>For them the working hours are never long enough. </p>
-<p>Each day is a holiday, and ordinary holidays, when they come, are <strong>grudged</strong> as enforced interruptions in an absorbing vocation. </p>
-<p>Yet to both classes, the need of an alternative outlook, of a change of atmosphere, of a <strong>diversion</strong> of effort, is essential. </p>
-<p>Indeed, it may well be that those whose work is their pleasure are those who most need the means of <strong>banishing</strong> it at intervals from their minds.</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://eazow.com/zen-of-python/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Eazow">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Eazow">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Eazow">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/zen-of-python/" class="post-title-link" itemprop="url">The Zen of Python</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2018-05-20 11:52:50" itemprop="dateCreated datePublished" datetime="2018-05-20T11:52:50+08:00">2018-05-20</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Coding/" itemprop="url" rel="index"><span itemprop="name">Coding</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">Beautiful is better than ugly.</span><br><span class="line">Explicit is better than implicit.</span><br><span class="line">Simple is better than complex.</span><br><span class="line">Complex is better than complicated.</span><br><span class="line">Flat is better than nested.</span><br><span class="line">Sparse is better than dense.</span><br><span class="line">Readability counts.</span><br><span class="line">Special cases aren&#x27;t special enough to break the rules.</span><br><span class="line">Although practicality beats purity.</span><br><span class="line">Errors should never pass silently.</span><br><span class="line">Unless explicitly silenced.</span><br><span class="line">In the face of ambiguity, refuse the temptation to guess.</span><br><span class="line">There should be one-- and preferably only one --obvious way to do it.</span><br><span class="line">Although that way may not be obvious at first unless you&#x27;re Dutch.</span><br><span class="line">Now is better than never.</span><br><span class="line">Although never is often better than *right* now.</span><br><span class="line">If the implementation is hard to explain, it&#x27;s a bad idea.</span><br><span class="line">If the implementation is easy to explain, it may be a good idea.</span><br><span class="line">Namespaces are one honking great idea -- let&#x27;s do more of those!</span><br></pre></td></tr></table></figure>
-
-<h5 id="Easter-Egg"><a href="#Easter-Egg" class="headerlink" title="Easter Egg"></a>Easter Egg</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; import this</span><br></pre></td></tr></table></figure>
-
+          <h3 id="1-概述"><a href="#1-概述" class="headerlink" title="1. 概述"></a>1. 概述</h3><p>Protocol Buffers(又名protobuf) 是一种语言中立、平台中立的可扩展机制，用于序列化结构化的数据</p>
+<p>它就像JSON，只是它更小、更快</p>
+<p>只需定义一次数据如何被结构化，然后就可以使用特殊生成的源代码，轻松地从各种数据流和使用各种语言写入和读取结构化数据</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/protobuf/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -1388,7 +1162,7 @@
 
 
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 </div>
@@ -1411,13 +1185,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">325k</span>
+    <span title="Symbols count total">409k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">4:55</span>
+    <span title="Reading time total">6:12</span>
   </span>
 </div>
 <div class="busuanzi-count">

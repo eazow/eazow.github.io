@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic,900&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"eazow.com","root":"/","images":"/images","scheme":"Mist","darkmode":false,"version":"8.12.2","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":"flat"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":"giscus","storage":true,"lazyload":true,"nav":null,"activeClass":"giscus"},"stickytabs":false,"motion":{"enable":false,"async":true,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="这是系列第 2 篇。上一篇跟着 main() 走完了启动的五个阶段：RunModeDispatch() 把线程一个个创建出来，SuricataPostInit() 等它们就位后统一放行。但线程里面具体装了什么、放行之后怎么干活，上一篇没有展开。这一篇就拆开一个线程看：TmModule 怎么变成线程里真正在跑的代码？一个包在同一个线程里怎么连续闯过好几道工位？single、autofp、worke">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Suricata 源码阅读(二)：一条流水线是怎么跑起来的——线程模型与 TmModule">
+<meta property="og:url" content="http://eazow.com/suricata/02-thread-model-and-tmmodule/index.html">
+<meta property="og:site_name" content="Eazow">
+<meta property="og:description" content="这是系列第 2 篇。上一篇跟着 main() 走完了启动的五个阶段：RunModeDispatch() 把线程一个个创建出来，SuricataPostInit() 等它们就位后统一放行。但线程里面具体装了什么、放行之后怎么干活，上一篇没有展开。这一篇就拆开一个线程看：TmModule 怎么变成线程里真正在跑的代码？一个包在同一个线程里怎么连续闯过好几道工位？single、autofp、worke">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://eazow.com/images/logo.png">
+<meta property="article:published_time" content="2026-06-28T16:00:00.000Z">
+<meta property="article:modified_time" content="2026-10-20T09:24:17.421Z">
+<meta property="article:author" content="Eazow">
+<meta property="article:tag" content="Suricata">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://eazow.com/images/logo.png">
+
+
+<link rel="canonical" href="http://eazow.com/suricata/02-thread-model-and-tmmodule/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en-US","comments":true,"permalink":"http://eazow.com/suricata/02-thread-model-and-tmmodule/","path":"suricata/02-thread-model-and-tmmodule/","title":"Suricata 源码阅读(二)：一条流水线是怎么跑起来的——线程模型与 TmModule"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Suricata 源码阅读(二)：一条流水线是怎么跑起来的——线程模型与 TmModule | Eazow</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-NHS1WWDHJE"></script>
+  <script class="next-config" data-name="google_analytics" type="application/json">{"tracking_id":"G-NHS1WWDHJE","only_pageview":false}</script>
+  <script src="/js/third-party/analytics/google-analytics.js"></script>
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <p class="site-title">Eazow</p>
+    </a>
+      <p class="site-subtitle" itemprop="description">Stay kind and positive</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-series"><a href="/series/" rel="section"><i class="fa fa-layer-group fa-fw"></i>Series</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner sidebar-toc-active">
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E4%B8%89%E4%B8%AA%E8%A7%92%E8%89%B2%EF%BC%9A%E8%AF%B4%E6%98%8E%E4%B9%A6%E3%80%81%E4%B8%8A%E5%B2%97%E5%8D%95%E3%80%81%E6%A1%A3%E6%A1%88%E5%8D%A1"><span class="nav-text">1. 三个角色：说明书、上岗单、档案卡</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E7%BB%84%E8%A3%85%EF%BC%9A%E6%8A%8A%E4%B8%8A%E5%B2%97%E5%8D%95%E4%B8%B2%E5%88%B0%E5%B7%A5%E4%BA%BA%E8%BA%AB%E4%B8%8A"><span class="nav-text">2. 组装：把上岗单串到工人身上</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E4%B8%80%E4%B8%AA%E7%BA%BF%E7%A8%8B%E7%9A%84%E4%B8%80%E7%94%9F"><span class="nav-text">3. 一个线程的一生</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-%E4%B8%80%E4%B8%AA%E5%8C%85%E6%80%8E%E4%B9%88%E8%BF%9E%E7%BB%AD%E9%97%AF%E8%BF%87%E5%A5%BD%E5%87%A0%E9%81%93%E5%B7%A5%E4%BD%8D"><span class="nav-text">4. 一个包怎么连续闯过好几道工位</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-%E4%B8%89%E7%A7%8D%E6%8E%92%E7%8F%AD%E6%96%B9%E5%BC%8F%EF%BC%8C%E5%B7%AE%E5%88%AB%E5%9C%A8%E5%93%AA%E4%B8%80%E8%A1%8C"><span class="nav-text">5. 三种排班方式，差别在哪一行</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-autofp-%E7%9A%84%E4%BC%A0%E9%80%81%E5%B8%A6%E5%87%AD%E4%BB%80%E4%B9%88%E4%B8%8D%E6%8A%8A%E5%90%8C%E4%B8%80%E6%9D%A1%E6%B5%81%E6%8B%86%E4%B9%B1"><span class="nav-text">6. autofp 的传送带凭什么不把同一条流拆乱</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B0%8F%E7%BB%93"><span class="nav-text">小结</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en-US">
+    <link itemprop="mainEntityOfPage" href="http://eazow.com/suricata/02-thread-model-and-tmmodule/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Eazow">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Eazow">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Suricata 源码阅读(二)：一条流水线是怎么跑起来的——线程模型与 TmModule | Eazow">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Suricata 源码阅读(二)：一条流水线是怎么跑起来的——线程模型与 TmModule
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2026-06-29 00:00:00" itemprop="dateCreated datePublished" datetime="2026-06-29T00:00:00+08:00">2026-06-29</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Suricata/" itemprop="url" rel="index"><span itemprop="name">Suricata</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>7 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <blockquote>
+<p>这是系列第 2 篇。上一篇跟着 <code>main()</code> 走完了启动的五个阶段：<code>RunModeDispatch()</code> 把线程一个个创建出来，<code>SuricataPostInit()</code> 等它们就位后统一放行。但线程里面具体装了什么、放行之后怎么干活，上一篇没有展开。这一篇就拆开一个线程看：<code>TmModule</code> 怎么变成线程里真正在跑的代码？一个包在同一个线程里怎么连续闯过好几道工位？single、autofp、workers 这三种排班方式，差别到底落在哪一行代码上？</p>
+</blockquote>
+<p>先看全貌。下面这张图把本篇要讲的东西都画在了一起，读完再回来看会更清楚：</p>
+<p><img data-src="/images/suricata/suricata-thread-model.svg" alt="线程模型：TmModule 怎么变成一条正在跑的流水线"></p>
+<span id="more"></span>
+
+<h2 id="1-三个角色：说明书、上岗单、档案卡"><a href="#1-三个角色：说明书、上岗单、档案卡" class="headerlink" title="1. 三个角色：说明书、上岗单、档案卡"></a>1. 三个角色：说明书、上岗单、档案卡</h2><p>要把一组函数变成一条会跑的流水线，Suricata 用了三个结构体。</p>
+<p><strong><code>TmModule</code>：岗位说明书。</strong> 定义在 <code>src/tm-modules.h:47</code>，挑关键字段看：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">TmModule_</span> &#123;</span></span><br><span class="line">    <span class="type">const</span> <span class="type">char</span> *name;</span><br><span class="line">    TmEcode (*ThreadInit)(ThreadVars *, <span class="type">const</span> <span class="type">void</span> *, <span class="type">void</span> **);</span><br><span class="line">    TmEcode (*Func)(ThreadVars *, Packet *, <span class="type">void</span> *);</span><br><span class="line">    TmEcode (*PktAcqLoop)(ThreadVars *, <span class="type">void</span> *, <span class="type">void</span> *);</span><br><span class="line">    TmEcode (*Management)(ThreadVars *, <span class="type">void</span> *);</span><br><span class="line">    TmEcode (*ThreadDeinit)(ThreadVars *, <span class="type">void</span> *);</span><br><span class="line">    ...</span><br><span class="line">&#125; TmModule;</span><br></pre></td></tr></table></figure>
+
+<p><code>ThreadInit</code>&#x2F;<code>ThreadDeinit</code> 负责上岗和下岗，中间三个函数指针是三种不同的干活方式，一个模块通常只实现其中一种：</p>
+<ul>
+<li><strong><code>Func</code>：来一个包处理一个包。</strong> 包递过来才干活，干完就把控制权交回去。<code>DecodeAFP</code>、<code>FlowWorker</code>、<code>RespondReject</code> 都是这一类。(<code>RespondReject</code> 平时什么都不做，只有包命中了动作为 <code>reject</code> 的规则时，才会发出 TCP RST 或 ICMP 不可达，主动掐断连接。)</li>
+<li><strong><code>PktAcqLoop</code>：自己去抓包。</strong> 只有站在流水线最前端的工位才用，比如 <code>ReceiveAFP</code>。它本身就是一个不停抓包的循环，不等别人递包，而是主动去网卡或 pcap 文件里”生产”包。</li>
+<li><strong><code>Management</code>：不碰包的后台活。</strong> <code>FlowManager</code>、<code>FlowRecycler</code> 这类管理线程用的就是它。</li>
+</ul>
+<p>所有模块在启动时由 <code>RegisterAllModules()</code> 注册进一个全局数组 <code>tmm_modules[TMM_SIZE]</code>，每个模块全局只有一份。</p>
+<p><strong><code>TmSlot</code>：上岗单。</strong> 定义在 <code>src/tm-threads.h:53</code>。同一份说明书可以发给好几个工人，比如 8 个 worker 线程都要干 <code>FlowWorker</code> 这道工位。<code>TmSlot</code> 就是发给某一个工人的那一份：它记下这道工位的函数指针，还带着这个工人自己的运行数据(<code>slot_data</code>，由 <code>ThreadInit</code> 初始化)。多个 <code>TmSlot</code> 用 <code>slot_next</code> 串成链表。</p>
+<p><strong><code>ThreadVars</code>：工人档案卡。</strong> 定义在 <code>src/threadvars.h:59</code>，一个线程一份，是 <code>pthread_create()</code> 真正传进去的那个参数。上面记着线程名字、CPU 亲和性、运行标志位，还有三样决定这个线程怎么干活的东西：</p>
+<ul>
+<li><code>tm_slots</code>：这个工人身上串着的那条上岗单链表。</li>
+<li><code>tm_func</code>：线程的主函数，也就是”驱动方式”。</li>
+<li><code>tmqh_in</code> &#x2F; <code>tmqh_out</code>：从哪里取包、处理完把包交到哪里。</li>
+</ul>
+<p>一句话理清三者的关系：<strong>TmModule 是岗位说明书，TmSlot 是发到某个工人手上的上岗单，ThreadVars 是工人档案卡，一个工人身上可以串一串上岗单</strong>。</p>
+<h2 id="2-组装：把上岗单串到工人身上"><a href="#2-组装：把上岗单串到工人身上" class="headerlink" title="2. 组装：把上岗单串到工人身上"></a>2. 组装：把上岗单串到工人身上</h2><p>把说明书发给工人、再串成一条线，靠的是 <code>TmSlotSetFuncAppend()</code>(<code>src/tm-threads.c:658</code>)：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">TmSlotSetFuncAppend</span><span class="params">(ThreadVars *tv, TmModule *tm, <span class="type">const</span> <span class="type">void</span> *data)</span></span><br><span class="line">&#123;</span><br><span class="line">    TmSlot *slot = SCCalloc(<span class="number">1</span>, <span class="keyword">sizeof</span>(TmSlot));</span><br><span class="line">    ...</span><br><span class="line">    slot-&gt;SlotThreadInit = tm-&gt;ThreadInit;</span><br><span class="line">    slot-&gt;slot_initdata = data;</span><br><span class="line">    <span class="keyword">if</span> (tm-&gt;Func) &#123;</span><br><span class="line">        slot-&gt;SlotFunc = tm-&gt;Func;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (tm-&gt;PktAcqLoop) &#123;</span><br><span class="line">        slot-&gt;PktAcqLoop = tm-&gt;PktAcqLoop;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (tm-&gt;Management) &#123;</span><br><span class="line">        slot-&gt;Management = tm-&gt;Management;</span><br><span class="line">    &#125;</span><br><span class="line">    ...</span><br><span class="line">    <span class="keyword">if</span> (tv-&gt;tm_slots == <span class="literal">NULL</span>) &#123;</span><br><span class="line">        tv-&gt;tm_slots = slot;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="comment">// 找到链表末尾，把新 slot 接上去</span></span><br><span class="line">        ...</span><br><span class="line">        b-&gt;slot_next = slot;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>每调用一次，就新建一个 <code>TmSlot</code>，把 <code>TmModule</code> 里的函数指针抄过来，挂到这个 <code>ThreadVars</code> 的 <code>tm_slots</code> 链表尾部。谁调用它、调用几次、传哪些模块，就决定了这个线程身上串了哪几道工位、按什么顺序串。</p>
+<h2 id="3-一个线程的一生"><a href="#3-一个线程的一生" class="headerlink" title="3. 一个线程的一生"></a>3. 一个线程的一生</h2><p>工位串好了，线程还要有人驱动。一个处理包的线程，是由 <code>TmThreadCreatePacketHandler()</code>(<code>src/tm-threads.c:1062</code>)创建的，它的参数值得细看：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ThreadVars *<span class="title function_">TmThreadCreatePacketHandler</span><span class="params">(<span class="type">const</span> <span class="type">char</span> *name,</span></span><br><span class="line"><span class="params">        <span class="type">const</span> <span class="type">char</span> *inq_name, <span class="type">const</span> <span class="type">char</span> *inqh_name,    <span class="comment">// 从哪条队列取包，用什么方式取</span></span></span><br><span class="line"><span class="params">        <span class="type">const</span> <span class="type">char</span> *outq_name, <span class="type">const</span> <span class="type">char</span> *outqh_name,  <span class="comment">// 包交到哪条队列，用什么方式交</span></span></span><br><span class="line"><span class="params">        <span class="type">const</span> <span class="type">char</span> *slots)</span>;                             <span class="comment">// 驱动方式</span></span><br></pre></td></tr></table></figure>
+
+<p>后面会看到，<strong>三种排班方式的差别，几乎全部体现在线程名之后的这五个字符串参数上</strong>。</p>
+<p>最后一个参数 <code>slots</code> 决定线程的主函数。<code>TmThreadSetSlots()</code>(<code>src/tm-threads.c:612</code>)按名字挑选：</p>
+<table>
+<thead>
+<tr>
+<th><code>slots</code></th>
+<th>线程主函数 <code>tm_func</code></th>
+<th>用在哪</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>&quot;pktacqloop&quot;</code></td>
+<td><code>TmThreadsSlotPktAcqLoop()</code></td>
+<td>链头是抓包模块的线程</td>
+</tr>
+<tr>
+<td><code>&quot;varslot&quot;</code></td>
+<td><code>TmThreadsSlotVar()</code></td>
+<td>从队列里取包的线程</td>
+</tr>
+<tr>
+<td><code>&quot;management&quot;</code></td>
+<td><code>TmThreadsManagement()</code></td>
+<td>管理线程</td>
+</tr>
+</tbody></table>
+<p><code>TmThreadSpawn()</code>(<code>src/tm-threads.c:1718</code>)最终调用 <code>pthread_create(&amp;tv-&gt;t, &amp;attr, tv-&gt;tm_func, (void *)tv)</code>(第 1739 行)，线程就从 <code>tm_func</code> 开始跑。处理包的两种主函数(<code>pktacqloop</code> 和 <code>varslot</code>)，一上来做的事都差不多：</p>
+<ol>
+<li>挨个调用链上每个 <code>TmSlot</code> 的 <code>SlotThreadInit</code>，初始化各工位的线程私有数据。</li>
+<li>打上 <code>THV_INIT_DONE</code> 标志，告诉主线程”我准备好了”。</li>
+<li>调用 <code>TmThreadsWaitForUnpause()</code> 原地等待，直到主线程清掉 <code>THV_PAUSE</code>。这就是上一篇”放行”阶段在线程这一侧的样子。</li>
+<li>进入主循环，开始干活。</li>
+</ol>
+<h2 id="4-一个包怎么连续闯过好几道工位"><a href="#4-一个包怎么连续闯过好几道工位" class="headerlink" title="4. 一个包怎么连续闯过好几道工位"></a>4. 一个包怎么连续闯过好几道工位</h2><p>两种处理包的主函数，主循环不一样，但最后会汇到同一个函数里。先看整条调用栈：</p>
+<p><img data-src="/images/suricata/suricata-callstack.svg" alt="一个包在线程里的调用栈"></p>
+<p><strong><code>&quot;pktacqloop&quot;</code>：线程自己去抓包。</strong> <code>TmThreadsSlotPktAcqLoop()</code>(<code>src/tm-threads.c:310</code>)的主循环很简单，就是调用链头那个 <code>TmSlot</code> 的 <code>PktAcqLoop</code>，比如 <code>ReceiveAFPLoop()</code>。抓包循环在自己手里，所以抓包模块会把”链上剩下的部分”记下来：<code>ReceiveAFPLoop()</code> 一开头就保存了 <code>ptv-&gt;slot = s-&gt;slot_next</code>(<code>src/source-af-packet.c:1313</code>)。每抓到一个包，就调用 <code>TmThreadsSlotProcessPkt()</code>(<code>src/tm-threads.h:195</code>)把包交给后面的工位：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">static</span> <span class="keyword">inline</span> TmEcode <span class="title function_">TmThreadsSlotProcessPkt</span><span class="params">(ThreadVars *tv, TmSlot *s, Packet *p)</span></span><br><span class="line">&#123;</span><br><span class="line">    ...</span><br><span class="line">    TmEcode r = TmThreadsSlotVarRun(tv, p, s);   <span class="comment">// 依次走完剩下的工位</span></span><br><span class="line">    ...</span><br><span class="line">    tv-&gt;tmqh_out(tv, p);                          <span class="comment">// 处理完，把包交出去</span></span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong><code>&quot;varslot&quot;</code>：线程从队列里取包。</strong> <code>TmThreadsSlotVar()</code>(<code>src/tm-threads.c:410</code>)的主循环是：<code>tv-&gt;tmqh_in(tv)</code> 从输入队列取一个包，调用 <code>TmThreadsSlotVarRun()</code> 走完整条链，再 <code>tv-&gt;tmqh_out(tv, p)</code> 交出去。</p>
+<p>两条路最后都汇到 <code>TmThreadsSlotVarRun()</code>(<code>src/tm-threads.c:133</code>)：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">TmEcode <span class="title function_">TmThreadsSlotVarRun</span><span class="params">(ThreadVars *tv, Packet *p, TmSlot *slot)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">for</span> (TmSlot *s = slot; s != <span class="literal">NULL</span>; s = s-&gt;slot_next) &#123;</span><br><span class="line">        TmEcode r = s-&gt;SlotFunc(tv, p, SC_ATOMIC_GET(s-&gt;slot_data));</span><br><span class="line">        <span class="keyword">if</span> (unlikely(r == TM_ECODE_FAILED)) &#123;</span><br><span class="line">            ...</span><br><span class="line">            <span class="keyword">return</span> TM_ECODE_FAILED;</span><br><span class="line">        &#125;</span><br><span class="line">        ...</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> TM_ECODE_OK;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>就是一个 <code>for</code> 循环，顺着 <code>slot_next</code> 挨个调用 <code>SlotFunc</code>。没有排队，也没有线程切换：同一个包，在同一个线程的调用栈上，被一条函数链依次处理完。(省略的部分里还有一个细节：解码时如果拆出了隧道里的内层包，会在这里把它们也送进后面的工位。这是第 4 篇的话题。)</p>
+<p>至于包”交出去”交到了哪里，取决于 <code>tmqh_out</code>，也就是创建线程时指定的队列处理器(<code>Tmqh</code>，定义见 <code>src/tm-queuehandlers.h:36</code>)：</p>
+<ul>
+<li><code>&quot;packetpool&quot;</code>：包处理完了，还回它所属的包池，等着下次复用。workers 里包始终在同一个线程，还回的就是本线程的包池，不用加锁；autofp 里包是抓包线程分配的，处理线程用完后会把它还给抓包线程的包池。</li>
+<li><code>&quot;flow&quot;</code>：按流的哈希值挑一条队列，把包塞进去，交给另一个线程接着处理。</li>
+</ul>
+<h2 id="5-三种排班方式，差别在哪一行"><a href="#5-三种排班方式，差别在哪一行" class="headerlink" title="5. 三种排班方式，差别在哪一行"></a>5. 三种排班方式，差别在哪一行</h2><p>有了上面这些，三种排班方式就可以直接对着 <code>TmThreadCreatePacketHandler()</code> 的参数看了。代码都在 <code>src/util-runmodes.c</code>。</p>
+<p><strong>workers。</strong> <code>RunModeSetLiveCaptureWorkersForDevice()</code>(<code>util-runmodes.c:245</code>)按配置的线程数循环，每一轮创建一个线程：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ThreadVars *tv = TmThreadCreatePacketHandler(tname,</span><br><span class="line">        <span class="string">&quot;packetpool&quot;</span>, <span class="string">&quot;packetpool&quot;</span>,</span><br><span class="line">        <span class="string">&quot;packetpool&quot;</span>, <span class="string">&quot;packetpool&quot;</span>,</span><br><span class="line">        <span class="string">&quot;pktacqloop&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>然后连续调用四次 <code>TmSlotSetFuncAppend()</code>，串上 <code>ReceiveAFP → DecodeAFP → FlowWorker → RespondReject</code>。输入输出都是 <code>&quot;packetpool&quot;</code>，也就是说根本没有队列：包从抓进来到处理完，全程待在同一个线程里，处理完直接还回包池。</p>
+<p><strong>autofp。</strong> <code>RunModeSetLiveCaptureAutoFp()</code>(<code>util-runmodes.c:85</code>)创建两组线程：</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>抓包线程</th>
+<th>处理线程</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>输入</td>
+<td><code>&quot;packetpool&quot;</code></td>
+<td>自己那条 <code>&quot;pickupN&quot;</code> 队列，处理器 <code>&quot;flow&quot;</code></td>
+</tr>
+<tr>
+<td>输出</td>
+<td>所有 <code>&quot;pickup1,pickup2,...&quot;</code> 队列，处理器 <code>&quot;flow&quot;</code></td>
+<td><code>&quot;packetpool&quot;</code></td>
+</tr>
+<tr>
+<td>驱动方式</td>
+<td><code>&quot;pktacqloop&quot;</code></td>
+<td><code>&quot;varslot&quot;</code></td>
+</tr>
+<tr>
+<td>工位</td>
+<td><code>ReceiveAFP → DecodeAFP</code></td>
+<td><code>FlowWorker → RespondReject</code></td>
+</tr>
+</tbody></table>
+<p>抓包线程只做抓包和解码，然后按流把包分发到各条 <code>pickup</code> 队列；处理线程各守一条队列，取到包再做流跟踪、重组、检测和输出。处理线程的数量由 <code>TmThreadsGetWorkerThreadMax()</code> 决定，线程组名是 <code>&quot;Detect&quot;</code>。两组线程之间靠队列传包，队列就像连接两组工人的传送带。</p>
+<p><strong>single。</strong> 翻开 <code>RunModeSetLiveCaptureSingle()</code>(<code>util-runmodes.c:359</code>)会发现，它调用的还是 <code>RunModeSetLiveCaptureWorkersForDevice()</code>，只是最后一个参数 <code>single_mode</code> 传了 1：线程数被钉死成 1，并且配了多个网卡就直接报错退出。<strong>single 不是第三种拓扑，它就是只有一个工人、一个入口的 workers。</strong></p>
+<p>所以回到开头的问题：三种排班方式的差别，落在 <code>TmThreadCreatePacketHandler()</code> 的那几个队列参数、驱动方式参数，以及每个线程串了哪几个 <code>TmSlot</code> 上。</p>
+<h2 id="6-autofp-的传送带凭什么不把同一条流拆乱"><a href="#6-autofp-的传送带凭什么不把同一条流拆乱" class="headerlink" title="6. autofp 的传送带凭什么不把同一条流拆乱"></a>6. autofp 的传送带凭什么不把同一条流拆乱</h2><p>两组线程之间用队列传包没错，但如果随便分发，同一条 TCP 流的包散落到不同的处理线程里，<code>Flow</code>、<code>Stream</code> 这些依赖连续状态的模块就全乱了。</p>
+<p>解决办法藏在抓包线程的输出处理器 <code>&quot;flow&quot;</code> 里。默认的分发函数是 <code>TmqhOutputFlowHash()</code>(<code>src/tmqh-flow.c:220</code>)：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">TmqhOutputFlowHash</span><span class="params">(ThreadVars *tv, Packet *p)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">uint32_t</span> qid;</span><br><span class="line">    TmqhFlowCtx *ctx = (TmqhFlowCtx *)tv-&gt;outctx;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (p-&gt;flags &amp; PKT_WANTS_FLOW) &#123;</span><br><span class="line">        <span class="type">uint32_t</span> hash = p-&gt;flow_hash;</span><br><span class="line">        qid = hash % ctx-&gt;size;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        qid = ctx-&gt;last++;             <span class="comment">// 没有流信息的包，轮流分发</span></span><br><span class="line">        <span class="keyword">if</span> (ctx-&gt;last == ctx-&gt;size)</span><br><span class="line">            ctx-&gt;last = <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    PacketQueue *q = ctx-&gt;queues[qid].q;</span><br><span class="line">    SCMutexLock(&amp;q-&gt;mutex_q);</span><br><span class="line">    PacketEnqueue(q, p);</span><br><span class="line">    SCCondSignal(&amp;q-&gt;cond_q);          <span class="comment">// 唤醒等在这条队列上的处理线程</span></span><br><span class="line">    SCMutexUnlock(&amp;q-&gt;mutex_q);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>核心就一句：用 <code>p-&gt;flow_hash</code> 对队列数取模，决定进哪条 <code>pickup</code> 队列。<code>flow_hash</code> 是解码时由 <code>FlowSetupPacket()</code> 按五元组算好的，同一条流的哈希值不会变，所以它的所有包永远落进同一条队列，也就永远由同一个处理线程处理。<code>Flow</code>、<code>Stream</code> 这些跨包的状态，就不会被两个线程同时读写。</p>
+<p>分发策略可以通过配置项 <code>autofp-scheduler</code> 换成 <code>ippair</code>(按 IP 对)或 <code>ftp-hash</code>，不配置时默认就是上面这个 <code>hash</code>。</p>
+<p>顺便也能看出 workers 为什么通常更快：autofp 的每个包都要经过一次加锁入队、一次唤醒、一次出队，而 workers 里这些开销都不存在。</p>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>把这一篇的内容压成几句话：</p>
+<ul>
+<li><code>TmModule</code> 是全局唯一的岗位说明书，有 <code>Func</code>、<code>PktAcqLoop</code>、<code>Management</code> 三种干活方式。</li>
+<li><code>TmSlotSetFuncAppend()</code> 把模块抄成 <code>TmSlot</code>，串到 <code>ThreadVars</code> 身上，一个线程就有了自己的工位链。</li>
+<li>线程的驱动方式(<code>pktacqloop</code> 或 <code>varslot</code>)决定包从哪来；<code>TmThreadsSlotVarRun()</code> 的一个 <code>for</code> 循环让包依次走完工位链；<code>tmqh_out</code> 决定包处理完去哪。</li>
+<li>workers、autofp、single 的差别，就是这几样东西的不同组合；autofp 靠按流哈希分发，保证同一条流始终落在同一个线程上。</li>
+</ul>
+<p>下一篇往前挪一站，看流水线上的第一道工位：包是怎么从网卡或 pcap 文件里被抓出来的，<code>AF_PACKET</code>、<code>PCAP</code>、<code>NFQ</code> 抓到的原始字节，又是怎么变成 Suricata 内部那个远比想象中复杂的 <code>Packet</code> 结构体的。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Suricata/" rel="tag"><i class="fa fa-tag"></i> Suricata</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/suricata/01-startup-and-architecture/" rel="prev" title="Suricata 源码阅读(一)：启动一个 Suricata 进程，到底要经过多少步？">
+                  <i class="fa fa-chevron-left"></i> Suricata 源码阅读(一)：启动一个 Suricata 进程，到底要经过多少步？
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/suricata/03-capture-and-packet/" rel="next" title="Suricata 源码阅读(三)：包是怎么进来的——捕获模块与 Packet 结构体">
+                  Suricata 源码阅读(三)：包是怎么进来的——捕获模块与 Packet 结构体 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  
+  <div class="comments giscus-container">
+  </div>
+  
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2008 – 
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Eazow</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Symbols count total">409k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">6:12</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+<script>
+(function () {
+  var numberOfBanners = 10;
+  var intervalMs = 5000;
+
+  var layerA = document.querySelector('.banner-layer-a');
+  var layerB = document.querySelector('.banner-layer-b');
+  if (!layerA || !layerB) return;
+
+  var urls = [];
+  for (var i = 0; i < numberOfBanners; i++) {
+    urls.push('/images/banner' + i + '.webp');
+  }
+  // shuffle so the slideshow order differs between visits
+  for (var i = urls.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var tmp = urls[i];
+    urls[i] = urls[j];
+    urls[j] = tmp;
+  }
+
+  // preload every banner once so the browser caches them up front;
+  // later switches then read from cache instead of firing new requests
+  urls.forEach(function (url) {
+    var img = new Image();
+    img.src = url;
+  });
+
+  var layers = [layerA, layerB];
+  var current = 0;
+  var index = 0;
+
+  function setLayer(layer, url) {
+    layer.style.backgroundImage = "url('" + url + "')";
+  }
+
+  setLayer(layers[current], urls[index]);
+  layers[current].classList.add('is-active');
+
+  if (urls.length <= 1) return;
+
+  setInterval(function () {
+    var next = current === 0 ? 1 : 0;
+    index = (index + 1) % urls.length;
+    setLayer(layers[next], urls[index]);
+    layers[next].classList.add('is-active');
+    layers[current].classList.remove('is-active');
+    current = next;
+  }, intervalMs);
+})();
+</script>
+<div class="footer-quote"><span>Stay kind and positive.</span></div>
+
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/9.1.3/mermaid.min.js","integrity":"sha256-TIYL00Rhw/8WaoUhYTLX9SKIEFdXxg+yMWSLVUbhiLg="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  <!--script async src="https://cdn.jsdelivr.net/gh/sukkaw/busuanzi@2.3/bsz.pure.mini.js"></script-->
+
+
+
+
+<script class="next-config" data-name="giscus" type="application/json">{"enable":true,"repo":"eazow/hexo","repo_id":"MDEwOlJlcG9zaXRvcnkxNjI1NTM4Nzk=","category":"Announcements","category_id":"DIC_kwDOCbBgF84CQl0J","mapping":"pathname","strict":0,"reactions_enabled":1,"emit_metadata":0,"theme":"light","lang":"en","crossorigin":"anonymous","input_position":"top","loading":"lazy"}</script>
+
+<script>
+document.addEventListener('page:loaded', () => {
+  if (!CONFIG.page.comments) return;
+
+  NexT.utils.loadComments('.giscus-container')
+    .then(() => NexT.utils.getScript('https://giscus.app/client.js', {
+      attributes: {
+        async                   : true,
+        crossOrigin             : 'anonymous',
+        'data-repo'             : CONFIG.giscus.repo,
+        'data-repo-id'          : CONFIG.giscus.repo_id,
+        'data-category'         : CONFIG.giscus.category,
+        'data-category-id'      : CONFIG.giscus.category_id,
+        'data-mapping'          : CONFIG.giscus.mapping,
+        'data-strict'           : CONFIG.giscus.strict,
+        'data-reactions-enabled': CONFIG.giscus.reactions_enabled,
+        'data-emit-metadata'    : CONFIG.giscus.emit_metadata,
+        'data-theme'            : CONFIG.giscus.theme,
+        'data-lang'             : CONFIG.giscus.lang,
+        'data-input-position'   : CONFIG.giscus.input_position,
+        'data-loading'          : CONFIG.giscus.loading
+      },
+      parentNode: document.querySelector('.giscus-container')
+    }));
+});
+</script>
+<script>
+document.querySelectorAll('figure.highlight').forEach(function (el) {
+  var lang = el.className.replace('highlight', '').trim().split(/\s+/)[0];
+  if (lang && lang !== 'plaintext') el.setAttribute('data-lang', lang);
+});
+</script>
+
+</body>
+</html>

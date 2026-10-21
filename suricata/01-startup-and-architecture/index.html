@@ -22,16 +22,16 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"eazow.com","root":"/","images":"/images","scheme":"Mist","darkmode":false,"version":"8.12.2","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":"flat"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":"giscus","storage":true,"lazyload":true,"nav":null,"activeClass":"giscus"},"stickytabs":false,"motion":{"enable":false,"async":true,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="这是系列第 1 篇。我们先不急着钻进某个协议解析器，也不急着看规则是怎么匹配的。先跟着 Suricata 启动一遍，看看它如何从命令行参数和配置文件，一路走到真正可以接收数据包的状态。后面每篇文章，都会回到这张地图上的某个位置继续往下挖。  1. 先看一眼:这个引擎准备怎么工作把 Suricata 想象成一条工厂流水线:网卡或者 pcap 文件是原料入口，每一个包从这里进来，依次经过一道道工位—">
+    <meta name="description" content="这是系列第 1 篇。先不急着钻进协议解析器，也不急着看规则怎么匹配，而是跟着 Suricata 启动一遍：从命令行参数和配置文件出发，一路走到真正开始收包。后面每一篇，都会回到这张地图上的某个位置继续往下挖。  先给答案：从 main() 到第一个包被处理，Suricata 要走五个阶段。  读懂命令：解析命令行，确认这次以什么模式运行，读入 suricata.yaml。 备料：按配置把各个子系">
 <meta property="og:type" content="article">
-<meta property="og:title" content="启动一个 Suricata 进程，到底要经过多少步？">
+<meta property="og:title" content="Suricata 源码阅读(一)：启动一个 Suricata 进程，到底要经过多少步？">
 <meta property="og:url" content="http://eazow.com/suricata/01-startup-and-architecture/index.html">
 <meta property="og:site_name" content="Eazow">
-<meta property="og:description" content="这是系列第 1 篇。我们先不急着钻进某个协议解析器，也不急着看规则是怎么匹配的。先跟着 Suricata 启动一遍，看看它如何从命令行参数和配置文件，一路走到真正可以接收数据包的状态。后面每篇文章，都会回到这张地图上的某个位置继续往下挖。  1. 先看一眼:这个引擎准备怎么工作把 Suricata 想象成一条工厂流水线:网卡或者 pcap 文件是原料入口，每一个包从这里进来，依次经过一道道工位—">
+<meta property="og:description" content="这是系列第 1 篇。先不急着钻进协议解析器，也不急着看规则怎么匹配，而是跟着 Suricata 启动一遍：从命令行参数和配置文件出发，一路走到真正开始收包。后面每一篇，都会回到这张地图上的某个位置继续往下挖。  先给答案：从 main() 到第一个包被处理，Suricata 要走五个阶段。  读懂命令：解析命令行，确认这次以什么模式运行，读入 suricata.yaml。 备料：按配置把各个子系">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://eazow.com/images/logo.png">
 <meta property="article:published_time" content="2026-06-21T16:00:00.000Z">
-<meta property="article:modified_time" content="2026-09-18T10:17:12.137Z">
+<meta property="article:modified_time" content="2026-10-20T09:24:17.419Z">
 <meta property="article:author" content="Eazow">
 <meta property="article:tag" content="Suricata">
 <meta name="twitter:card" content="summary">
@@ -42,10 +42,10 @@
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en-US","comments":true,"permalink":"http://eazow.com/suricata/01-startup-and-architecture/","path":"suricata/01-startup-and-architecture/","title":"启动一个 Suricata 进程，到底要经过多少步？"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en-US","comments":true,"permalink":"http://eazow.com/suricata/01-startup-and-architecture/","path":"suricata/01-startup-and-architecture/","title":"Suricata 源码阅读(一)：启动一个 Suricata 进程，到底要经过多少步？"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>启动一个 Suricata 进程，到底要经过多少步？ | Eazow</title>
+<title>Suricata 源码阅读(一)：启动一个 Suricata 进程，到底要经过多少步？ | Eazow</title>
   
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-NHS1WWDHJE"></script>
   <script class="next-config" data-name="google_analytics" type="application/json">{"tracking_id":"G-NHS1WWDHJE","only_pageview":false}</script>
@@ -91,7 +91,7 @@
 
 
 <nav class="site-nav">
-  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li>
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-series"><a href="/series/" rel="section"><i class="fa fa-layer-group fa-fw"></i>Series</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li>
   </ul>
 </nav>
 
@@ -112,7 +112,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E5%85%88%E7%9C%8B%E4%B8%80%E7%9C%BC-%E8%BF%99%E4%B8%AA%E5%BC%95%E6%93%8E%E5%87%86%E5%A4%87%E6%80%8E%E4%B9%88%E5%B7%A5%E4%BD%9C"><span class="nav-text">1. 先看一眼:这个引擎准备怎么工作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E7%AC%AC%E4%B8%80%E4%B8%AA%E9%97%AE%E9%A2%98-%E8%BF%99%E4%B9%88%E5%A4%A7%E7%9A%84%E4%BB%93%E5%BA%93%EF%BC%8C%E4%BB%8E%E5%93%AA%E9%87%8C%E4%B8%8B%E6%89%8B%EF%BC%9F"><span class="nav-text">2. 第一个问题:这么大的仓库，从哪里下手？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E4%BB%8E-main-%E5%BC%80%E5%A7%8B%EF%BC%8C%E6%8A%8A%E5%90%AF%E5%8A%A8%E8%BF%87%E7%A8%8B%E8%B5%B0%E4%B8%80%E9%81%8D"><span class="nav-text">3. 从 main() 开始，把启动过程走一遍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-RunModeDispatch-%E6%B5%81%E6%B0%B4%E7%BA%BF%E7%9C%9F%E6%AD%A3%E8%A2%AB%E7%84%8A%E8%B5%B7%E6%9D%A5%E7%9A%84%E5%9C%B0%E6%96%B9"><span class="nav-text">4. RunModeDispatch:流水线真正被焊起来的地方</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-%E4%B8%BB%E5%BE%AA%E7%8E%AF%E5%9C%A8%E5%B9%B2%E5%98%9B"><span class="nav-text">5. 主循环在干嘛</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-%E4%B8%80%E5%BC%A0%E5%9B%BE%E6%94%B6%E5%B0%BE"><span class="nav-text">6. 一张图收尾</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-%E8%B0%81%E5%9C%A8%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%E8%A2%AB%E8%B0%81%E6%8B%89%E8%B5%B7%E6%9D%A5"><span class="nav-text">7. 谁在什么时候被谁拉起来</span></a></li></ol></div>
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E8%AF%BB%E6%87%82%E5%91%BD%E4%BB%A4%EF%BC%9A%E8%BF%99%E6%AC%A1%E8%A6%81%E6%80%8E%E4%B9%88%E8%B7%91"><span class="nav-text">1. 读懂命令：这次要怎么跑</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E5%A4%87%E6%96%99%EF%BC%9A%E6%8A%8A%E5%90%84%E4%B8%AA%E5%AD%90%E7%B3%BB%E7%BB%9F%E5%88%9D%E5%A7%8B%E5%8C%96%E5%A5%BD"><span class="nav-text">2. 备料：把各个子系统初始化好</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E6%90%AD%E4%BA%A7%E7%BA%BF%EF%BC%9ARunModeDispatch"><span class="nav-text">3. 搭产线：RunModeDispatch()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-%E6%94%BE%E8%A1%8C%EF%BC%9ASuricataPostInit"><span class="nav-text">4. 放行：SuricataPostInit()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-%E5%80%BC%E5%AE%88%E4%B8%8E%E6%94%B6%E5%B7%A5%EF%BC%9A%E4%B8%BB%E5%BE%AA%E7%8E%AF"><span class="nav-text">5. 值守与收工：主循环</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B0%8F%E7%BB%93"><span class="nav-text">小结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%99%84%E5%BD%95%EF%BC%9Asrc-%E7%9B%AE%E5%BD%95%E9%80%9F%E6%9F%A5"><span class="nav-text">附录：src&#x2F; 目录速查</span></a></li></ol></div>
         </div>
         <!--/noindex-->
       </div>
@@ -161,12 +161,12 @@
     </span>
 
     <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="启动一个 Suricata 进程，到底要经过多少步？ | Eazow">
+      <meta itemprop="name" content="Suricata 源码阅读(一)：启动一个 Suricata 进程，到底要经过多少步？ | Eazow">
       <meta itemprop="description" content="">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          启动一个 Suricata 进程，到底要经过多少步？
+          Suricata 源码阅读(一)：启动一个 Suricata 进程，到底要经过多少步？
         </h1>
 
         <div class="post-meta-container">
@@ -202,7 +202,7 @@
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>5 mins.</span>
+      <span>7 mins.</span>
     </span>
 </div>
 
@@ -214,26 +214,120 @@
     
     <div class="post-body" itemprop="articleBody">
         <blockquote>
-<p>这是系列第 1 篇。我们先不急着钻进某个协议解析器，也不急着看规则是怎么匹配的。先跟着 Suricata 启动一遍，看看它如何从命令行参数和配置文件，一路走到真正可以接收数据包的状态。后面每篇文章，都会回到这张地图上的某个位置继续往下挖。</p>
+<p>这是系列第 1 篇。先不急着钻进协议解析器，也不急着看规则怎么匹配，而是跟着 Suricata 启动一遍：从命令行参数和配置文件出发，一路走到真正开始收包。后面每一篇，都会回到这张地图上的某个位置继续往下挖。</p>
 </blockquote>
-<h2 id="1-先看一眼-这个引擎准备怎么工作"><a href="#1-先看一眼-这个引擎准备怎么工作" class="headerlink" title="1. 先看一眼:这个引擎准备怎么工作"></a>1. 先看一眼:这个引擎准备怎么工作</h2><p>把 Suricata 想象成一条工厂流水线:网卡或者 pcap 文件是原料入口，每一个包从这里进来，依次经过一道道工位——捕获 → 解码 → 流跟踪 → TCP 重组 → 应用层解析 → 规则检测 → 输出，最后变成一条告警从流水线尽头掉出来。每道工位是一个可插拔的模块，若干个工位串成一条线，挂在一个或多个线程(也就是”工人”)身上跑。</p>
+<p>先给答案：从 <code>main()</code> 到第一个包被处理，Suricata 要走五个阶段。</p>
+<ol>
+<li><strong>读懂命令</strong>：解析命令行，确认这次以什么模式运行，读入 <code>suricata.yaml</code>。</li>
+<li><strong>备料</strong>：按配置把各个子系统初始化好——注册模块、加载规则、放弃多余的权限。</li>
+<li><strong>搭产线</strong>：按运行模式把处理模块串成流水线，创建工作线程和管理线程。</li>
+<li><strong>放行</strong>：等所有线程都准备好，统一发令开工。</li>
+<li><strong>值守与收工</strong>：主线程退到一边响应信号，收到停止信号后再把线程逐个关掉。</li>
+</ol>
+<p>这五个阶段里藏着一条最值得抓住的线：前两个阶段只有主线程一个人在干活；第 3 阶段开始一个个新线程被创建出来，但都原地待命；直到第 4 阶段放行那一刻，进程才真正变成多线程并发运行。</p>
+<p>入口在 <code>src/main.c:20</code>。<code>main()</code> 的主体就是十来个函数调用，正好能和这五个阶段对上(省略了错误检查和 Windows 相关代码)：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span> **argv)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">/* 阶段 1：读懂命令 */</span></span><br><span class="line">    SuricataPreInit(argv[<span class="number">0</span>]);                  <span class="comment">// 早期初始化，注册所有运行模式</span></span><br><span class="line">    SCParseCommandLine(argc, argv);            <span class="comment">// 解析命令行参数到 SCInstance</span></span><br><span class="line">    SCFinalizeRunMode();                       <span class="comment">// 校验运行模式</span></span><br><span class="line">    SCStartInternalRunMode(argc, argv);        <span class="comment">// --list-* 之类&quot;跑完就退出&quot;的模式</span></span><br><span class="line">    SCLoadYamlConfig();                        <span class="comment">// 加载 suricata.yaml</span></span><br><span class="line">    SCEnableDefaultSignalHandlers();           <span class="comment">// 标记：稍后安装默认信号处理函数</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">/* 阶段 2 + 3：备料、搭产线，都在 SuricataInit() 里 */</span></span><br><span class="line">    SuricataInit();</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* 阶段 4：放行 */</span></span><br><span class="line">    SuricataPostInit();                        <span class="comment">// 等待所有线程 init 完成，再放行</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">/* 阶段 5：值守与收工 */</span></span><br><span class="line">    SuricataMainLoop();                        <span class="comment">// 主线程的事件循环</span></span><br><span class="line">    SuricataShutdown();</span><br><span class="line">    GlobalsDestroy();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>把这五个阶段画出来，就是下面这张图。后面每一节对应图里的一段，读的时候可以随时回来看看自己走到了哪里：</p>
+<img data-src="/images/suricata/suricata-startup-flow.svg" alt="main() 启动流程" width="560">
+
 <span id="more"></span>
 
-<p>这个比喻值得记住，因为它决定了我们接下来读源码的姿势。看到一个函数，先问它站在流水线的哪个工位上;看到一个线程，再问它身兼几道工位。这样读下去，<code>src/</code> 里几百个文件就不再是名字的乱码，而是一张可以顺着走的车间地图。</p>
-<p>对应到源码里，这条流水线靠两个核心概念撑起来:</p>
+<h2 id="1-读懂命令：这次要怎么跑"><a href="#1-读懂命令：这次要怎么跑" class="headerlink" title="1. 读懂命令：这次要怎么跑"></a>1. 读懂命令：这次要怎么跑</h2><p>第一个阶段要回答的问题很朴素：用户这次想让 Suricata 干什么？</p>
+<p><code>SuricataPreInit()</code> 先做一些不依赖任何参数的准备：初始化 Rust 侧的运行环境、早期日志、信号屏蔽和配置树，还有一件后面会用到的事——<code>RunModeRegisterRunModes()</code> 把所有运行模式(af-packet、pcap、nfq……乘以 single&#x2F;autofp&#x2F;workers)登记到一张表里。这时候还没决定用哪一个，只是先把菜单印好。</p>
+<p>接着 <code>SCParseCommandLine()</code> 把 argv 解析进一个全局的 <code>SCInstance suricata</code>(类型定义在 <code>src/suricata.h</code>，实例在 <code>src/suricata.c</code>)。命令行参数、运行模式、用户&#x2F;组 ID 等等，统统塞进这一个结构体——可以把它想成挂在车间墙上的一块总仪表盘，谁想知道”现在该怎么跑”，看这块牌子就行。运行模式也是在这里定下来的：比如 <code>-r</code> 读 pcap 文件，<code>--af-packet</code> 从网卡抓包。这是典型的”C 语言用全局单例代替面向对象里的 this”写法，以后在代码里看到 <code>suricata.xxx</code>，把它当成”整个进程当前的配置快照”来读就对了。</p>
+<p>剩下几步都很短：</p>
 <ul>
-<li><strong>TmModule</strong>(Thread Module):一个工位的抽象，定义在 <code>src/tm-modules.h:47</code>。本质是一组函数指针(<code>ThreadInit</code>&#x2F;<code>Func</code>&#x2F;<code>ThreadDeinit</code>&#x2F;<code>PktAcqLoop</code> 等)，”Decode””StreamTcp””Detect”都是某个 TmModule 的名字——你可以把它理解成”这道工位该怎么上岗、怎么干活、怎么下岗”的标准作业流程。</li>
-<li><strong>RunMode</strong>:决定这些工位怎么排布、分给几个工人。同样是”捕获→解码→检测→输出”这条线，可以让一个工人从头干到尾(workers 模式)，也可以拆成两组工人接力、中间用传送带(队列)交接(autofp 模式)。RunMode 的注册与调度在 <code>src/runmodes.c</code>。</li>
+<li><code>SCFinalizeRunMode()</code> 只做校验：没指定运行模式就打印用法退出，再检查守护进程模式和运行模式是否兼容。</li>
+<li><code>SCStartInternalRunMode()</code> 处理那些”跑完就退出”的模式：<code>--list-keywords</code>、<code>--list-runmodes</code>、<code>--build-info</code>、单元测试等。<code>suricata --list-runmodes</code> 能秒回，就是因为它在这里提前下车了，根本走不到后面。</li>
+<li><code>SCLoadYamlConfig()</code> 把 <code>suricata.yaml</code> 读成一棵配置树。从这之后，任何模块都可以用 <code>SCConfGet*()</code> 系列函数查配置。</li>
+<li><code>SCEnableDefaultSignalHandlers()</code> 只是打个标记，表示要用默认的信号处理函数；真正安装是在第 2 阶段的 <code>PostConfLoadedSetup()</code> 里。</li>
 </ul>
-<p>这两个概念先记在这里就够了。等启动流程走到 <code>RunModeDispatch()</code>，车间才真正开工，第 2 篇会专门拆开讲工位是怎么排布、工人是怎么分配的。</p>
-<h2 id="2-第一个问题-这么大的仓库，从哪里下手？"><a href="#2-第一个问题-这么大的仓库，从哪里下手？" class="headerlink" title="2. 第一个问题:这么大的仓库，从哪里下手？"></a>2. 第一个问题:这么大的仓库，从哪里下手？</h2><p>Suricata 的仓库看起来吓人，但和”引擎本体”直接相关的顶层目录其实只有这几个:</p>
+<h2 id="2-备料：把各个子系统初始化好"><a href="#2-备料：把各个子系统初始化好" class="headerlink" title="2. 备料：把各个子系统初始化好"></a>2. 备料：把各个子系统初始化好</h2><p>配置读进来之后，<code>SuricataInit()</code>(<code>src/suricata.c:3046</code>)登场。它是整个启动过程的重头戏，第 2、3 两个阶段都在它里面。前半段是备料，内部顺序大致是：</p>
+<ol>
+<li><code>GlobalsInitPreConfig()</code> —— 不依赖配置文件的全局初始化(时间子系统、阈值配置、协议名表等)。</li>
+<li>读取一批 yaml 配置项(vlan&#x2F;livedev tracking 开关等)，配置日志系统 <code>SCLogLoadConfig</code>。</li>
+<li><code>RunModeInitializeThreadSettings()</code> —— 确定每个 runmode 用几个线程、CPU 亲和性怎么设。</li>
+<li><code>ParseInterfacesList()</code> —— 解析要监听的网卡&#x2F;pcap 列表。</li>
+<li><code>PostConfLoadedSetup()</code> —— 把各个子系统初始化起来。</li>
+<li><code>SCDropMainThreadCaps()</code> —— 权限收敛，drop 掉不需要的 capabilities&#x2F;root 权限。</li>
+<li><code>PostConfLoadedDetectSetup()</code> —— 创建检测引擎上下文，加载规则。</li>
+</ol>
+<p>这七步里细节多且杂，不用一次记住，但有三处值得标出来，因为后面几篇会从这里接着讲：</p>
+<ul>
+<li><strong>注册所有 TmModule</strong>：第 5 步里的 <code>RegisterAllModules()</code>(<code>src/suricata.c:2902</code>)把 <code>ReceiveAFP</code>、<code>DecodeAFP</code>、<code>FlowWorker</code> 这些处理模块一个个填进全局的模块表。下一阶段搭产线时，就是按名字从这张表里取模块。TmModule 是什么，第 2 篇细讲。</li>
+<li><strong>加载规则</strong>：第 7 步里的 <code>LoadSignatures()</code>(<code>src/suricata.c:2683</code>)把规则文件读进来，编译成检测引擎能用的结构。规则从文本变成结构的过程，是第 8 篇的主题。</li>
+<li><strong>降权</strong>：第 6 步尽早放弃不必要的特权。它不是一刀切地全部放弃，而是按运行模式只留下抓包必需的能力：比如 af-packet&#x2F;pcap 模式保留 <code>CAP_NET_RAW</code>、<code>CAP_NET_ADMIN</code> 等，nfq 模式保留 <code>CAP_NET_ADMIN</code>；如果配置了运行用户，还会切换到那个用户。这是网络安全软件的常规操作。</li>
+</ul>
+<p>顺便一提，这里能看出一个贯穿全码库的惯例：<strong>Suricata 大量使用”名字即文档”的函数命名</strong>。<code>XxxPreConfig</code>&#x2F;<code>PostConfLoadedXxx</code>&#x2F;<code>ThreadInit</code>&#x2F;<code>ThreadDeinit</code> 这类命名一以贯之，读源码时基本可以靠名字做时间线定位，不用每个都跳进去看实现。</p>
+<h2 id="3-搭产线：RunModeDispatch"><a href="#3-搭产线：RunModeDispatch" class="headerlink" title="3. 搭产线：RunModeDispatch()"></a>3. 搭产线：RunModeDispatch()</h2><p>备料完成后，<code>SuricataInit()</code> 的最后一步是调用 <code>RunModeDispatch()</code>(<code>src/runmodes.c:409</code>)，进入第 3 阶段。</p>
+<p>先补两个概念。Suricata 把包的处理拆成一道道工位，每道工位是一个 <strong>TmModule</strong>(定义在 <code>src/tm-modules.h:47</code>)，本质是一组函数指针(<code>ThreadInit</code>&#x2F;<code>Func</code>&#x2F;<code>ThreadDeinit</code>&#x2F;<code>PktAcqLoop</code> 等)，规定了这道工位怎么上岗、怎么干活、怎么下岗。而 <strong>RunMode</strong> 决定这些工位怎么排布、分给几个工人(线程)：可以让一个工人从头干到尾(workers 模式)，也可以拆成两组工人接力、中间用队列交接(autofp 模式)。</p>
+<p><code>RunModeDispatch()</code> 做的事情，简化后是这样：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">RunMode *mode = RunModeGetCustomMode(runmode, custom_mode);</span><br><span class="line">...</span><br><span class="line">mode-&gt;RunModeFunc();          <span class="comment">// 组装流水线，创建工作线程</span></span><br><span class="line">...</span><br><span class="line">TmValidateQueueState();       <span class="comment">// 校验模块间队列都至少有一个读者一个写者</span></span><br><span class="line">FlowManagerThreadSpawn();     <span class="comment">// 再拉起几个&quot;管理类&quot;线程</span></span><br><span class="line">FlowRecyclerThreadSpawn();</span><br><span class="line">StatsSpawnThreads();</span><br><span class="line">LogFlushThreads();</span><br><span class="line">TmThreadsSealThreads();       <span class="comment">// 封口:之后不再允许创建新线程</span></span><br></pre></td></tr></table></figure>
+
+<p><code>RunModeGetCustomMode()</code> 从第 1 阶段登记的那张运行模式表里，挑出这次要用的一项。它的 <code>RunModeFunc</code> 是一个函数指针，指向类似 <code>RunModeIdsAFPAutoFp()</code>(<code>src/runmode-af-packet.c:795</code>)这样的函数。这个函数内部再调用 <code>RunModeSetLiveCaptureAutoFp()</code> &#x2F; <code>RunModeSetLiveCaptureWorkers()</code> 这类公共辅助函数，用 <code>TmModuleGetByName()</code> 从第 2 阶段注册好的模块表里按名字取出 <code>&quot;ReceiveAFP&quot;</code>、<code>&quot;DecodeAFP&quot;</code>、<code>&quot;FlowWorker&quot;</code>、<code>&quot;RespondReject&quot;</code>，按 workers&#x2F;autofp 的拓扑接成一条真正的产线，再把工人(线程)派上去。流跟踪、TCP 重组、应用层解析、检测和输出，全都装在 <code>FlowWorker</code> 这一个模块里。</p>
+<p>有一个细节决定了下一阶段为什么存在：线程在创建时就被打上了 <code>THV_PAUSE</code> 标志(<code>src/tm-threads.c:954</code>)。所以 <code>TmThreadSpawn()</code> 把线程拉起来之后，每个线程只做完自己的初始化，就原地待命，并不会马上开始收包。</p>
+<p>这条流水线具体怎么焊、工位之间传递包用的队列(<code>Tmq</code>)怎么工作，留到第 2 篇拆开细看；<code>ReceiveAFP</code> 这类抓包模块怎么把包交给引擎，是第 3 篇的内容。</p>
+<h2 id="4-放行：SuricataPostInit"><a href="#4-放行：SuricataPostInit" class="headerlink" title="4. 放行：SuricataPostInit()"></a>4. 放行：SuricataPostInit()</h2><p><code>RunModeDispatch()</code> 返回后，<code>SuricataInit()</code> 也就结束了。这时车间里已经站满了工人，但谁都还没动手。</p>
+<p><code>SuricataPostInit()</code>(<code>src/suricata.c:3145</code>)负责发令：</p>
+<ol>
+<li><code>TmThreadWaitOnThreadInit()</code> —— 挨个检查每个线程，等它们都把 <code>THV_INIT_DONE</code> 标志位设好，也就是都初始化完了。任何一个线程初始化失败，整个进程直接退出。</li>
+<li><code>TmThreadContinueThreads()</code>(<code>src/tm-threads.c:1986</code>)—— 遍历所有线程，清掉 <code>THV_PAUSE</code>，统一放行。</li>
+<li><code>TmThreadWaitOnThreadRunning()</code> —— 再确认所有线程都真正跑起来了。</li>
+</ol>
+<p>放行这一刻，就是进程从单线程变成多线程的分界线。把这一刻的并发关系画成时序图会更直观：</p>
+<img data-src="/images/suricata/suricata-startup-sequence.svg" alt="启动过程中：谁在什么时候被谁拉起来" width="720">
+
+<p>先等齐、再统一放行，一个直观的好处是：工位之间是连着的，所有线程同时开工，就不会出现收包线程已经在往队列里塞包、后面的处理线程还没准备好的情况。</p>
+<h2 id="5-值守与收工：主循环"><a href="#5-值守与收工：主循环" class="headerlink" title="5. 值守与收工：主循环"></a>5. 值守与收工：主循环</h2><p>流水线一开工，主线程反而成了最闲的那个人——包的处理全交给车间里的专职工人，自己退到门口，只做一件事：盯着外面有没有动静。<code>SuricataMainLoop()</code>(<code>src/suricata.c:2956</code>)就是这样一个很轻的轮询循环：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span> (<span class="number">1</span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (sigterm_count || sigint_count) suricata_ctl_flags |= SURICATA_STOP;</span><br><span class="line">    <span class="keyword">if</span> (suricata_ctl_flags &amp; SURICATA_STOP) <span class="keyword">break</span>;      <span class="comment">// 收到停止信号就退出循环</span></span><br><span class="line"></span><br><span class="line">    TmThreadCheckThreadState();                          <span class="comment">// 检查各线程是否还活着</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (sighup_count &gt; <span class="number">0</span>) OutputNotifyFileRotation();    <span class="comment">// SIGHUP: 日志轮转</span></span><br><span class="line">    <span class="keyword">if</span> (sigusr2_count &gt; <span class="number">0</span>) DetectEngineReload(suri);      <span class="comment">// SIGUSR2: 热加载规则</span></span><br><span class="line">    ...</span><br><span class="line">    usleep(<span class="number">10</span> * <span class="number">1000</span>);                                   <span class="comment">// 每 10 毫秒看一次</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>信号处理函数本身几乎什么都不做，只是改一下 <code>sigterm_count</code>、<code>sighup_count</code> 这类标志，真正的响应都在这里做。信号处理函数里能安全调用的函数非常有限，把重活挪到主循环里，就不用担心这些限制。</p>
+<p>跳出循环后，<code>SuricataShutdown()</code> 通过 <code>TmThreadKillThreads()</code> 给各个线程打上 <code>THV_KILL</code> 标志，等它们各自退出；最后 <code>GlobalsDestroy()</code> 收拾全局资源，进程结束。</p>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>回到开头的问题：启动一个 Suricata 进程，要经过五个阶段。每个阶段都给后面的文章留了线头：</p>
+<table>
+<thead>
+<tr>
+<th>阶段</th>
+<th>关键函数</th>
+<th>后面在哪展开</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1. 读懂命令</td>
+<td><code>SCParseCommandLine()</code>、<code>SCLoadYamlConfig()</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>2. 备料</td>
+<td><code>RegisterAllModules()</code>、<code>LoadSignatures()</code></td>
+<td>第 2 篇(TmModule)、第 8 篇(规则加载)</td>
+</tr>
+<tr>
+<td>3. 搭产线</td>
+<td><code>RunModeDispatch()</code> → <code>RunModeFunc()</code></td>
+<td>第 2 篇(线程模型)、第 3 篇(抓包模块)</td>
+</tr>
+<tr>
+<td>4. 放行</td>
+<td><code>SuricataPostInit()</code> → <code>TmThreadContinueThreads()</code></td>
+<td>第 2 篇</td>
+</tr>
+<tr>
+<td>5. 值守与收工</td>
+<td><code>SuricataMainLoop()</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<p>下一篇从最关键、也最容易让人困惑的地方开始：<code>TmModule</code> 和 <code>RunMode</code> 到底怎样把一组函数变成一条正在工作的流水线？<code>ThreadVars</code>、<code>TmSlot</code> 和模块间的队列(<code>Tmq</code>)，会把这个问题继续往下展开。</p>
+<h2 id="附录：src-目录速查"><a href="#附录：src-目录速查" class="headerlink" title="附录：src/ 目录速查"></a>附录：<code>src/</code> 目录速查</h2><p>Suricata 的仓库看起来吓人，但和”引擎本体”直接相关的顶层目录其实只有这几个：</p>
 <ul>
 <li><code>src/</code> —— C 语言写的核心引擎，本系列关注的主体。</li>
-<li><code>rust/</code> —— 部分应用层协议解析器(如 DNS、NFS、SMB 等)用 Rust 重写，通过 FFI 和 <code>src/</code> 里的 C 代码互调。</li>
-<li><code>rules/</code>、<code>etc/</code>、<code>suricata.yaml.in</code> —— 默认规则和配置模板，运行期行为参数，不是本系列重点。</li>
-<li><code>doc/</code> —— 官方用户文档(用法向)，和本系列(源码阅读向)是两回事，别搞混了。</li>
+<li><code>rust/</code> —— 部分应用层协议解析器(如 DNS、NFS、SMB 等)用 Rust 实现，通过 FFI 和 <code>src/</code> 里的 C 代码互调。</li>
+<li><code>rules/</code>、<code>etc/</code>、<code>suricata.yaml.in</code> —— 默认规则和配置模板，不是本系列重点。</li>
+<li><code>doc/</code> —— 官方用户文档(用法向)，和本系列(源码阅读向)是两回事。</li>
 </ul>
-<p><code>src/</code> 目录下有上千个文件，第一次打开确实容易失去方向。好在它们基本都按前缀归类，摸清楚这些前缀，就相当于拿到了车间地图的图例:</p>
+<p><code>src/</code> 下有上千个文件，好在基本都按前缀归类，摸清楚这些前缀，就相当于拿到了车间地图的图例：</p>
 <table>
 <thead>
 <tr>
@@ -242,12 +336,12 @@
 </tr>
 </thead>
 <tbody><tr>
-<td><code>suricata.c</code>，<code>main.c</code></td>
+<td><code>suricata.c</code>, <code>main.c</code></td>
 <td>程序入口与生命周期管理</td>
 </tr>
 <tr>
-<td><code>tm-threads*.c</code>，<code>tm-modules.c</code>，<code>tm-queues.c</code></td>
-<td>线程模型:TmModule、线程创建、模块间队列</td>
+<td><code>tm-threads*.c</code>, <code>tm-modules.c</code>, <code>tm-queues.c</code></td>
+<td>线程模型：TmModule、线程创建、模块间队列</td>
 </tr>
 <tr>
 <td><code>runmode*.c</code></td>
@@ -263,7 +357,7 @@
 </tr>
 <tr>
 <td><code>flow*.c</code></td>
-<td>Flow(流)引擎:哈希表、超时、状态管理</td>
+<td>Flow(流)引擎：哈希表、超时、状态管理</td>
 </tr>
 <tr>
 <td><code>stream-tcp*.c</code></td>
@@ -271,14 +365,14 @@
 </tr>
 <tr>
 <td><code>app-layer*.c</code></td>
-<td>应用层协议解析框架及各协议解析器(HTTP、TLS、DNS…)</td>
+<td>应用层协议解析框架及各协议解析器(HTTP、TLS、SMTP…)</td>
 </tr>
 <tr>
 <td><code>detect*.c</code></td>
-<td>检测引擎:规则解析、匹配、签名分组</td>
+<td>检测引擎：规则解析、匹配、签名分组</td>
 </tr>
 <tr>
-<td><code>output*.c</code>，<code>log-*.c</code>，<code>alert-*.c</code>，<code>eve-log*</code></td>
+<td><code>output*.c</code>, <code>log-*.c</code>, <code>alert-*.c</code>, <code>output-json*.c</code>(EVE)</td>
 <td>日志&#x2F;告警输出</td>
 </tr>
 <tr>
@@ -286,38 +380,6 @@
 <td>通用工具(哈希表、内存池、原子操作、字符串处理…)</td>
 </tr>
 </tbody></table>
-<p>这也解释了本系列为什么从启动流程开始:先知道这些模块在什么时候被接上，再去看包如何被抓进来、解码、入流表，最后走到检测和输出。否则一上来就读某个局部函数，很容易知道”它做了什么”，却不知道”它为什么在这里做”。</p>
-<h2 id="3-从-main-开始，把启动过程走一遍"><a href="#3-从-main-开始，把启动过程走一遍" class="headerlink" title="3. 从 main() 开始，把启动过程走一遍"></a>3. 从 <code>main()</code> 开始，把启动过程走一遍</h2><p>入口在 <code>src/main.c:20</code>。<code>main()</code> 只有十几行，却像一张折叠起来的路线图:参数从这里进来，配置从这里落地，线程也从这里被组织起来。把调用顺序贴出来，很多事情会比想象中清楚:</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span> **argv)</span></span><br><span class="line">&#123;</span><br><span class="line">    SuricataPreInit(argv[<span class="number">0</span>]);                 <span class="comment">// 早期初始化(日志系统等)</span></span><br><span class="line">    SCParseCommandLine(argc, argv);            <span class="comment">// 解析命令行参数到 SCInstance</span></span><br><span class="line">    SCFinalizeRunMode(argc);                   <span class="comment">// 根据参数确定 run_mode</span></span><br><span class="line">    SCStartInternalRunMode(argc, argv);        <span class="comment">// 处理 --list-* 之类&quot;跑完就退出&quot;的模式</span></span><br><span class="line">    SCLoadYamlConfig();                        <span class="comment">// 加载 suricata.yaml</span></span><br><span class="line">    SCEnableDefaultSignalHandlers();</span><br><span class="line">    SuricataInit();                            <span class="comment">// 真正的初始化重头戏</span></span><br><span class="line">    SuricataPostInit();                        <span class="comment">// 等待所有线程 init 完成</span></span><br><span class="line">    SuricataMainLoop();                        <span class="comment">// 主线程的事件循环</span></span><br><span class="line">    SuricataShutdown();</span><br><span class="line">    GlobalsDestroy();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>这十几个调用里，有两处值得停下来看看。</p>
-<p><strong>第一，全局状态被收敛到了一个结构体里。</strong> 命令行参数、运行模式、用户&#x2F;组 ID 等等，统统塞进一个全局的 <code>SCInstance suricata</code>(定义见 <code>src/suricata.h</code>，实例在 <code>src/suricata.c</code>)——可以把它想成挂在车间墙上的一块总仪表盘，谁想知道”现在该怎么跑”，看这块牌子就行，不用满车间去问。<code>SCParseCommandLine</code> 把 argv 解析进这块牌子，后面几乎所有初始化函数都在读写它。这是典型的”C 语言用全局单例代替面向对象里的 this”写法，以后在代码里看到 <code>suricata.xxx</code>，把它当成”整个进程当前的配置快照”来读就对了。</p>
-<p><strong>第二，初始化被拆成了”配置加载前&#x2F;后”两段。</strong> <code>SuricataInit()</code>(<code>src/suricata.c:3107</code>)是这一段的重头戏，内部顺序大致是:</p>
-<ol>
-<li><code>GlobalsInitPreConfig()</code> —— 不依赖配置文件的全局初始化(内存分配器、随机数种子等)。</li>
-<li>读取一批 yaml 配置项(vlan&#x2F;livedev tracking 开关等)，配置日志系统 <code>SCLogLoadConfig</code>。</li>
-<li><code>RunModeInitializeThreadSettings()</code> —— 确定每个 runmode 用几个线程、CPU 亲和性怎么设。</li>
-<li><code>ParseInterfacesList()</code> —— 解析要监听的网卡&#x2F;pcap 列表。</li>
-<li><code>PostConfLoadedSetup()</code> —— 配置加载完成后的收尾(magic 库、GeoIP、检测引擎的预分配等等，细节多且杂，不用一次记住)。</li>
-<li><code>SCDropMainThreadCaps()</code> —— 权限收敛，drop 掉不需要的 capabilities&#x2F;root 权限。这是一个网络安全软件的常规操作:尽早放弃不必要的特权。</li>
-<li><code>PostConfLoadedDetectSetup()</code> —— 检测引擎相关的收尾(规则加载在这之后触发)。</li>
-<li>最后调用 <code>RunModeDispatch()</code>，把控制权交给某个具体的 RunMode。</li>
-</ol>
-<p>这里能看出一个贯穿全码库的惯例:<strong>Suricata 大量使用”名字即文档”的函数命名</strong>。<code>XxxPreConfig</code>&#x2F;<code>PostConfLoadedXxx</code>&#x2F;<code>ThreadInit</code>&#x2F;<code>ThreadDeinit</code> 这类命名一以贯之，读源码时基本可以靠名字做时间线定位，不用每个都跳进去看实现——这是这个代码库对读者最友好的地方之一。</p>
-<h2 id="4-RunModeDispatch-流水线真正被焊起来的地方"><a href="#4-RunModeDispatch-流水线真正被焊起来的地方" class="headerlink" title="4. RunModeDispatch:流水线真正被焊起来的地方"></a>4. <code>RunModeDispatch</code>:流水线真正被焊起来的地方</h2><p>前面铺垫的都是”备料”——读配置、建仪表盘、drop 权限。真正动手焊流水线、招工人上岗的，是 <code>RunModeDispatch()</code>(<code>src/runmodes.c:405</code>):</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">RunMode *mode = RunModeGetCustomMode(runmode, custom_mode);</span><br><span class="line">...</span><br><span class="line">mode-&gt;RunModeFunc();          <span class="comment">// 真正组装并启动&quot;捕获+解码+检测+输出&quot;这条流水线</span></span><br><span class="line">...</span><br><span class="line">TmValidateQueueState();       <span class="comment">// 校验模块间队列都至少有一个读者一个写者</span></span><br><span class="line">FlowManagerThreadSpawn();     <span class="comment">// 再拉起几个&quot;管理类&quot;线程</span></span><br><span class="line">FlowRecyclerThreadSpawn();</span><br><span class="line">StatsSpawnThreads();</span><br><span class="line">LogMaintenanceThreadSpawn();</span><br><span class="line">TmThreadsSealThreads();       <span class="comment">// 封口:之后不再允许创建新线程</span></span><br></pre></td></tr></table></figure>
-
-<p><code>mode-&gt;RunModeFunc</code> 是一个函数指针，指向类似 <code>RunModeIdsAFPAutoFp()</code>(<code>src/runmode-af-packet.c:808</code> 附近)这样的函数。每种抓包后端(af-packet&#x2F;pcap&#x2F;nfq&#x2F;dpdk&#x2F;…)乘以每种线程编排方式(single&#x2F;autofp&#x2F;workers)，就组合出一个这样的函数，内部再调用 <code>RunModeSetLiveCaptureAutoFp()</code> &#x2F; <code>RunModeSetLiveCaptureWorkers()</code> 这类公共辅助函数，把 <code>&quot;ReceiveAFP&quot;</code>、<code>&quot;DecodeAFP&quot;</code>、<code>&quot;FlowWorker&quot;</code>、<code>&quot;Detect&quot;</code>、<code>&quot;RespondReject&quot;</code> 这一串工位的名字，按 workers&#x2F;autofp 的拓扑接成一条真正的产线，再把工人(线程)派上去。</p>
-<p>这条流水线具体怎么焊、工位之间传递包用的队列(<code>Tmq</code>)怎么工作，留到第 2 篇拆开细看。</p>
-<h2 id="5-主循环在干嘛"><a href="#5-主循环在干嘛" class="headerlink" title="5. 主循环在干嘛"></a>5. 主循环在干嘛</h2><p>流水线一开工，主线程反而成了最闲的那个人——包的处理全丢给车间里的专职工人，自己退到门口，只做一件事:盯着外面有没有动静。<code>SuricataMainLoop()</code>(<code>src/suricata.c:3017</code>)就是这样一个很轻的轮询循环，守着几件”外部信号”相关的事:</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span> (<span class="number">1</span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (sigterm_count || sigint_count) suricata_ctl_flags |= SURICATA_STOP;</span><br><span class="line">    <span class="keyword">if</span> (suricata_ctl_flags &amp; SURICATA_STOP) <span class="keyword">break</span>;      <span class="comment">// 收到停止信号就退出循环</span></span><br><span class="line"></span><br><span class="line">    TmThreadCheckThreadState();                          <span class="comment">// 检查各线程是否还活着</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (sighup_count &gt; <span class="number">0</span>) OutputNotifyFileRotation();    <span class="comment">// SIGHUP: 日志轮转</span></span><br><span class="line">    <span class="keyword">if</span> (sigusr2_count &gt; <span class="number">0</span>) DetectEngineReload(suri);      <span class="comment">// SIGUSR2: 热加载规则</span></span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>抓包、解码、检测这些”重活”全部跑在 <code>RunModeDispatch</code> 拉起来的工作线程里，主线程只剩信号响应和健康检查两件事，活得挺清闲。跳出循环后依次调用 <code>SuricataShutdown()</code>(叫停所有线程)和 <code>GlobalsDestroy()</code>(收拾场地)，进程结束。</p>
-<h2 id="6-一张图收尾"><a href="#6-一张图收尾" class="headerlink" title="6. 一张图收尾"></a>6. 一张图收尾</h2><p><img data-src="/images/suricata/suricata-startup-flow.svg" alt="main() 启动流程"></p>
-<h2 id="7-谁在什么时候被谁拉起来"><a href="#7-谁在什么时候被谁拉起来" class="headerlink" title="7. 谁在什么时候被谁拉起来"></a>7. 谁在什么时候被谁拉起来</h2><p>上面这张图是”竖着看”的调用顺序，但启动过程里有一刻其实是”横着”发生的：<code>RunModeDispatch()</code> 一声令下，主线程从单打独斗变成了甩手掌柜——工作线程和管理线程被 <code>TmThreadSpawn()</code> 一个个拉起来之后，就各自跑各自的循环，谁也不等谁。把这一刻的并发关系画成时序图会更直观：</p>
-<p><img data-src="/images/suricata/suricata-startup-sequence.svg" alt="启动过程中：谁在什么时候被谁拉起来"></p>
-<p>主线程在 <code>SuricataPostInit()</code> 里等的，其实就是每个新线程把 <code>THV_INIT_DONE</code> 标志位设好；等完之后主线程自己也退到 <code>SuricataMainLoop()</code> 里去做信号响应和健康检查，三条线就这样并发跑到进程收到停止信号为止。</p>
-<p>到这里，启动流程的主线就走完了。下一篇从最关键、也最容易让人困惑的地方开始:<code>TmModule</code> 和 <code>RunMode</code> 到底怎样把一组函数变成一条正在工作的流水线？ <code>ThreadVars</code>、<code>TmSlot</code> 和模块间的队列(<code>Tmq</code>)，会把这个问题继续往下展开。</p>
 
     </div>
 
@@ -334,13 +396,13 @@
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/suricata/00-packet-journey/" rel="prev" title="一个数据包如何穿过 Suricata">
-                  <i class="fa fa-chevron-left"></i> 一个数据包如何穿过 Suricata
+                <a href="/suricata/00-packet-journey/" rel="prev" title="Suricata 源码阅读(零)：一个数据包如何穿过 Suricata">
+                  <i class="fa fa-chevron-left"></i> Suricata 源码阅读(零)：一个数据包如何穿过 Suricata
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/transformer/01-vectors-and-dot-product/" rel="next" title="Transformer 前置知识 01：向量与点积">
-                  Transformer 前置知识 01：向量与点积 <i class="fa fa-chevron-right"></i>
+                <a href="/suricata/02-thread-model-and-tmmodule/" rel="next" title="Suricata 源码阅读(二)：一条流水线是怎么跑起来的——线程模型与 TmModule">
+                  Suricata 源码阅读(二)：一条流水线是怎么跑起来的——线程模型与 TmModule <i class="fa fa-chevron-right"></i>
                 </a>
             </div>
           </div>
@@ -379,13 +441,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">325k</span>
+    <span title="Symbols count total">409k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">4:55</span>
+    <span title="Reading time total">6:12</span>
   </span>
 </div>
 <div class="busuanzi-count">
