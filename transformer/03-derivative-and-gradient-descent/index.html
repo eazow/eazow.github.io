@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic,900&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"eazow.com","root":"/","images":"/images","scheme":"Mist","darkmode":false,"version":"8.12.2","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":"flat"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":"giscus","storage":true,"lazyload":true,"nav":null,"activeClass":"giscus"},"stickytabs":false,"motion":{"enable":false,"async":true,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="上一课讲了矩阵乘法：模型是怎么算的。这一课回答另一个问题：模型是怎么学会的？ 答案藏在三个词里：导数、梯度、梯度下降。我们不从公式讲起，而是从一件很日常的小事说起：调洗澡水。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Transformer 前置知识 03：导数与梯度下降">
+<meta property="og:url" content="http://eazow.com/transformer/03-derivative-and-gradient-descent/index.html">
+<meta property="og:site_name" content="Eazow">
+<meta property="og:description" content="上一课讲了矩阵乘法：模型是怎么算的。这一课回答另一个问题：模型是怎么学会的？ 答案藏在三个词里：导数、梯度、梯度下降。我们不从公式讲起，而是从一件很日常的小事说起：调洗澡水。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://eazow.com/images/logo.png">
+<meta property="article:published_time" content="2026-10-16T04:02:00.000Z">
+<meta property="article:modified_time" content="2026-10-28T10:16:27.586Z">
+<meta property="article:author" content="Eazow">
+<meta property="article:tag" content="Transformer">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://eazow.com/images/logo.png">
+
+
+<link rel="canonical" href="http://eazow.com/transformer/03-derivative-and-gradient-descent/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en-US","comments":true,"permalink":"http://eazow.com/transformer/03-derivative-and-gradient-descent/","path":"transformer/03-derivative-and-gradient-descent/","title":"Transformer 前置知识 03：导数与梯度下降"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Transformer 前置知识 03：导数与梯度下降 | Eazow</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-NHS1WWDHJE"></script>
+  <script class="next-config" data-name="google_analytics" type="application/json">{"tracking_id":"G-NHS1WWDHJE","only_pageview":false}</script>
+  <script src="/js/third-party/analytics/google-analytics.js"></script>
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <p class="site-title">Eazow</p>
+    </a>
+      <p class="site-subtitle" itemprop="description">Stay kind and positive</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-series"><a href="/series/" rel="section"><i class="fa fa-layer-group fa-fw"></i>Series</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner sidebar-toc-active">
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AF%BC%E6%95%B0%EF%BC%9A%E6%8B%A7%E4%B8%80%E6%A0%BC%EF%BC%8C%E5%8F%98%E5%A4%9A%E5%B0%91"><span class="nav-text">导数：拧一格，变多少</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%81%8F%E5%AF%BC%E6%95%B0%EF%BC%9A%E4%B8%80%E6%AC%A1%E5%8F%AA%E5%8A%A8%E4%B8%80%E4%B8%AA"><span class="nav-text">偏导数：一次只动一个</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A2%AF%E5%BA%A6%EF%BC%9A%E6%89%80%E6%9C%89%E5%81%8F%E5%AF%BC%E6%95%B0%E6%8E%92%E6%88%90%E4%B8%80%E6%8E%92"><span class="nav-text">梯度：所有偏导数排成一排</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E6%89%BE%E2%80%9D%E8%B0%B7%E5%BA%95%E2%80%9D"><span class="nav-text">为什么要找”谷底”</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D%EF%BC%9A%E5%8F%8D%E7%9D%80%E7%AE%AD%E5%A4%B4%EF%BC%8C%E4%B8%80%E5%B0%8F%E6%AD%A5%E4%B8%80%E5%B0%8F%E6%AD%A5%E8%B5%B0"><span class="nav-text">梯度下降：反着箭头，一小步一小步走</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%A8%E4%BB%A3%E7%A0%81%E8%B7%91%E4%B8%80%E9%81%8D"><span class="nav-text">用代码跑一遍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%A6%E4%B9%A0%E7%8E%87%EF%BC%9A%E6%AD%A5%E5%AD%90%E5%A4%AA%E5%A4%A7%E6%88%96%E5%A4%AA%E5%B0%8F%E9%83%BD%E4%B8%8D%E8%A1%8C"><span class="nav-text">学习率：步子太大或太小都不行</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B0%8F%E7%BB%93"><span class="nav-text">小结</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en-US">
+    <link itemprop="mainEntityOfPage" href="http://eazow.com/transformer/03-derivative-and-gradient-descent/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Eazow">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Eazow">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Transformer 前置知识 03：导数与梯度下降 | Eazow">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Transformer 前置知识 03：导数与梯度下降
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2026-10-16 12:02:00" itemprop="dateCreated datePublished" datetime="2026-10-16T12:02:00+08:00">2026-10-16</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Transformer/" itemprop="url" rel="index"><span itemprop="name">Transformer</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>2 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>上一课讲了矩阵乘法：模型是怎么<strong>算</strong>的。这一课回答另一个问题：模型是怎么<strong>学会</strong>的？</p>
+<p>答案藏在三个词里：<strong>导数、梯度、梯度下降</strong>。我们不从公式讲起，而是从一件很日常的小事说起：<strong>调洗澡水</strong>。</p>
+<span id="more"></span>
+
+<hr>
+<h2 id="导数：拧一格，变多少"><a href="#导数：拧一格，变多少" class="headerlink" title="导数：拧一格，变多少"></a>导数：拧一格，变多少</h2><p>假设只有一个热水龙头。把它拧大一格，水温升高了 3 度。</p>
+<p>这个 <strong>3</strong>，就是导数：</p>
+<blockquote>
+<p><strong>导数 = 参数变动一点点，结果会变多少。</strong></p>
+</blockquote>
+<img data-src="/images/transformer/03-derivative.png" alt="拧大 1 格，水温升高 3 度：导数就是这条切线的斜率" title="拧大 1 格，水温升高 3 度：导数就是这条切线的斜率" width="560" style="display:block;margin:0 auto;">
+
+<ul>
+<li>导数<strong>大</strong>：这个旋钮很灵敏，稍微一拧，结果变化很大</li>
+<li>导数<strong>小</strong>：拧了也没什么变化</li>
+<li>导数是<strong>负数</strong>：越拧，结果反而越小</li>
+</ul>
+<p>数学上写作：</p>
+<p><mjx-container class="MathJax" jax="SVG" overflow="overflow" display="true"><svg style="vertical-align: -1.577ex;" xmlns="http://www.w3.org/2000/svg" width="7.913ex" height="4.676ex" role="img" focusable="false" viewBox="0 -1370 3497.6 2067"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math" data-latex="
+\frac{dT}{dh} = 3
+"><g data-mml-node="mfrac" data-latex="\frac{dT}{dh}"><g data-mml-node="mrow" data-latex="dT" transform="translate(220,676)"><g data-mml-node="mi" data-latex="d"><path data-c="1D451" d="M429 632L370 389C349 426 320 445 281 445C216 445 159 412 109 345C63 283 40 218 40 151C40 63 91-11 175-11C218-11 260 12 300 59C311 21 345-11 392-11C461-11 483 71 498 145C498 154 493 159 483 159C474 159 468 152 465 138C445 59 421 19 394 19C377 19 368 33 368 60C368 75 370 91 374 107L516 679L516 683C513 690 507 694 499 694C476 694 434 690 374 683C363 682 357 674 357 660C357 650 366 645 384 645C403 645 429 646 429 632M341 376C351 355 356 341 356 332C355 328 354 323 353 316L304 122C301 111 294 99 285 87C248 42 212 19 177 19C138 19 118 49 118 108C118 132 124 168 136 216C157 301 187 359 224 390C244 407 263 415 282 415C309 415 329 402 341 376Z"></path></g><g data-mml-node="mi" data-latex="T" transform="translate(520,0)"><path data-c="1D447" d="M344 631C344 628 343 621 340 611L208 83C204 68 200 59 197 55C188 44 154 39 94 39C63 39 49 42 49 16C49 5 56 0 69 0C120 0 192 4 235 3L317 2C331 2 386 0 403 0C420 0 428 8 428 24C428 34 416 39 391 39C339 39 309 41 300 46C297 48 295 52 295 58L430 603C433 617 436 626 439 629C443 635 467 638 511 638C566 638 604 634 623 625C642 616 652 595 652 561C652 543 649 517 644 483C642 475 641 469 641 464C641 453 646 447 657 447C666 447 672 456 675 473L702 645C703 650 704 656 704 662C704 672 694 677 673 677L125 677C99 677 97 674 89 655L30 481C27 472 25 466 24 462C24 452 29 447 40 447C48 447 55 455 60 470C85 543 110 588 133 607C159 628 209 638 282 638L321 638C332 638 344 639 344 631Z"></path></g></g><g data-mml-node="mrow" data-latex="dh" transform="translate(284,-686)"><g data-mml-node="mi" data-latex="d"><path data-c="1D451" d="M429 632L370 389C349 426 320 445 281 445C216 445 159 412 109 345C63 283 40 218 40 151C40 63 91-11 175-11C218-11 260 12 300 59C311 21 345-11 392-11C461-11 483 71 498 145C498 154 493 159 483 159C474 159 468 152 465 138C445 59 421 19 394 19C377 19 368 33 368 60C368 75 370 91 374 107L516 679L516 683C513 690 507 694 499 694C476 694 434 690 374 683C363 682 357 674 357 660C357 650 366 645 384 645C403 645 429 646 429 632M341 376C351 355 356 341 356 332C355 328 354 323 353 316L304 122C301 111 294 99 285 87C248 42 212 19 177 19C138 19 118 49 118 108C118 132 124 168 136 216C157 301 187 359 224 390C244 407 263 415 282 415C309 415 329 402 341 376Z"></path></g><g data-mml-node="mi" data-latex="h" transform="translate(520,0)"><path data-c="210E" d="M512 138C489 59 457 19 415 19C402 19 395 28 395 47C395 62 401 85 413 116C453 223 473 296 473 335C473 406 427 445 356 445C303 445 257 423 218 380L291 679C289 688 287 694 274 694C241 694 168 685 155 684C140 682 132 675 132 660C132 650 141 645 159 645C180 645 203 646 205 632L59 43C56 32 55 25 55 21C55 0 66-11 87-11C107-11 121-1 128 18L168 182C180 231 189 268 196 293C199 300 207 314 220 334C256 388 300 415 353 415C386 415 402 393 402 350C402 309 382 236 342 130C333 107 329 89 329 74C329 26 365-11 413-11C457-11 492 14 517 65C536 105 546 132 546 145C546 154 541 159 530 159C527 159 512 150 512 138Z"></path></g></g><rect width="1424" height="60" x="120" y="220"></rect></g><g data-mml-node="mo" data-latex="=" transform="translate(1941.8,0)"><path data-c="3D" d="M698 367L80 367C64 367 56 359 56 344C56 329 64 321 80 321L698 321C714 321 722 329 722 344C722 356 711 367 698 367M698 179L80 179C64 179 56 171 56 156C56 141 64 133 80 133L698 133C714 133 722 141 722 156C722 169 711 179 698 179Z"></path></g><g data-mml-node="mn" data-latex="3" transform="translate(2997.6,0)"><path data-c="33" d="M303 353C369 378 431 441 431 526C431 569 410 604 369 631C333 654 292 666 246 666C201 666 162 654 127 631C88 605 68 571 68 528C68 495 90 472 122 472C154 472 176 495 176 527C176 560 157 578 119 580C145 615 186 633 242 633C302 633 332 598 332 527C332 485 324 450 309 421C282 373 245 364 183 364C171 362 165 357 165 348C165 333 172 333 192 333L235 333C310 333 348 280 348 173C348 88 317 14 241 14C176 14 128 36 99 80C134 79 160 105 160 139C160 173 135 198 101 198C62 198 42 178 42 137C42 88 64 49 108 18C147-9 193-22 244-22C301-22 350-3 393 34C436 71 457 117 457 173C457 267 383 332 303 353Z"></path></g></g></g></svg></mjx-container></p>
+<p>读作”水温 <mjx-container class="MathJax" jax="SVG" overflow="overflow"><svg style="vertical-align: 0;" xmlns="http://www.w3.org/2000/svg" width="1.593ex" height="1.532ex" role="img" focusable="false" viewBox="0 -677 704 677"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math" data-latex="T"><g data-mml-node="mi" data-latex="T"><path data-c="1D447" d="M344 631C344 628 343 621 340 611L208 83C204 68 200 59 197 55C188 44 154 39 94 39C63 39 49 42 49 16C49 5 56 0 69 0C120 0 192 4 235 3L317 2C331 2 386 0 403 0C420 0 428 8 428 24C428 34 416 39 391 39C339 39 309 41 300 46C297 48 295 52 295 58L430 603C433 617 436 626 439 629C443 635 467 638 511 638C566 638 604 634 623 625C642 616 652 595 652 561C652 543 649 517 644 483C642 475 641 469 641 464C641 453 646 447 657 447C666 447 672 456 675 473L702 645C703 650 704 656 704 662C704 672 694 677 673 677L125 677C99 677 97 674 89 655L30 481C27 472 25 466 24 462C24 452 29 447 40 447C48 447 55 455 60 470C85 543 110 588 133 607C159 628 209 638 282 638L321 638C332 638 344 639 344 631Z"></path></g></g></g></svg></mjx-container> 对热水 <mjx-container class="MathJax" jax="SVG" overflow="overflow"><svg style="vertical-align: -0.025ex;" xmlns="http://www.w3.org/2000/svg" width="1.303ex" height="1.595ex" role="img" focusable="false" viewBox="0 -694 576 705"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math" data-latex="h"><g data-mml-node="mi" data-latex="h"><path data-c="210E" d="M512 138C489 59 457 19 415 19C402 19 395 28 395 47C395 62 401 85 413 116C453 223 473 296 473 335C473 406 427 445 356 445C303 445 257 423 218 380L291 679C289 688 287 694 274 694C241 694 168 685 155 684C140 682 132 675 132 660C132 650 141 645 159 645C180 645 203 646 205 632L59 43C56 32 55 25 55 21C55 0 66-11 87-11C107-11 121-1 128 18L168 182C180 231 189 268 196 293C199 300 207 314 220 334C256 388 300 415 353 415C386 415 402 393 402 350C402 309 382 236 342 130C333 107 329 89 329 74C329 26 365-11 413-11C457-11 492 14 517 65C536 105 546 132 546 145C546 154 541 159 530 159C527 159 512 150 512 138Z"></path></g></g></g></svg></mjx-container> 的导数等于 3”。</p>
+<h2 id="偏导数：一次只动一个"><a href="#偏导数：一次只动一个" class="headerlink" title="偏导数：一次只动一个"></a>偏导数：一次只动一个</h2><p>现实中，旋钮通常不止一个。比如有热水 <mjx-container class="MathJax" jax="SVG" overflow="overflow"><svg style="vertical-align: -0.025ex;" xmlns="http://www.w3.org/2000/svg" width="1.303ex" height="1.595ex" role="img" focusable="false" viewBox="0 -694 576 705"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math" data-latex="h"><g data-mml-node="mi" data-latex="h"><path data-c="210E" d="M512 138C489 59 457 19 415 19C402 19 395 28 395 47C395 62 401 85 413 116C453 223 473 296 473 335C473 406 427 445 356 445C303 445 257 423 218 380L291 679C289 688 287 694 274 694C241 694 168 685 155 684C140 682 132 675 132 660C132 650 141 645 159 645C180 645 203 646 205 632L59 43C56 32 55 25 55 21C55 0 66-11 87-11C107-11 121-1 128 18L168 182C180 231 189 268 196 293C199 300 207 314 220 334C256 388 300 415 353 415C386 415 402 393 402 350C402 309 382 236 342 130C333 107 329 89 329 74C329 26 365-11 413-11C457-11 492 14 517 65C536 105 546 132 546 145C546 154 541 159 530 159C527 159 512 150 512 138Z"></path></g></g></g></svg></mjx-container> 和冷水 <mjx-container class="MathJax" jax="SVG" overflow="overflow"><svg style="vertical-align: -0.025ex;" xmlns="http://www.w3.org/2000/svg" width="0.98ex" height="1.025ex" role="img" focusable="false" viewBox="0 -442 433 453"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math" data-latex="c"><g data-mml-node="mi" data-latex="c"><path data-c="1D450" d="M328 325C328 300 341 287 368 287C404 287 427 318 427 354C427 410 368 442 308 442C239 442 176 412 122 353C68 294 41 229 41 159C41 61 106-11 204-11C257-11 304 2 345 27C379 48 404 69 420 90C427 99 430 106 430 109C430 120 425 126 414 126C409 126 404 122 398 114C365 70 324 42 277 30C246 22 223 18 206 18C149 18 121 53 121 122C121 184 150 274 174 317C198 361 249 413 308 413C346 413 372 402 386 381C355 378 328 358 328 325Z"></path></g></g></g></svg></mjx-container> 两个龙头，水温同时受它们影响。</p>
+<p><strong>偏导数</strong>，就是一次只动一个，其他的按住不动：</p>
+<ul>
+<li>冷水按住不动，只把热水拧大一格，水温<strong>升了 3 度</strong></li>
+<li>热水按住不动，只把冷水拧大一格，水温<strong>降了 2 度</strong></li>
+</ul>
+<p>所以：</p>
+<p><mjx-container class="MathJax" jax="SVG" overflow="overflow" display="true"><svg style="vertical-align: -1.602ex;" xmlns="http://www.w3.org/2000/svg" width="22.823ex" height="4.751ex" role="img" focusable="false" viewBox="0 -1392 10087.8 2100"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math" data-latex="
+\frac{\partial T}{\partial h} = +3, \quad \frac{\partial T}{\partial c} = -2
+"><g data-mml-node="mfrac" data-latex="\frac{\partial T}{\partial h}"><g data-mml-node="mrow" data-latex="\partial T" transform="translate(220,676)"><g data-mml-node="mi" data-latex="\partial"><path data-c="1D715" d="M256 574C256 597 241 610 212 612C243 659 288 683 347 683C439 683 484 606 484 508C484 467 476 417 461 356C444 425 401 460 334 460C257 460 190 428 130 366C70 304 40 235 40 158C40 121 53 83 79 45C110 0 158-22 225-22C315-22 390 20 449 105C505 187 566 329 566 456C566 527 548 587 512 635C473 689 418 716 349 716C282 716 232 693 198 646C171 609 157 579 157 556C157 530 171 517 199 517C229 517 256 544 256 574M439 303C439 240 420 178 381 117C338 48 287 14 228 14C162 14 124 57 124 121C124 149 131 188 145 238C159 288 173 323 188 344C228 401 277 430 334 430C407 430 439 376 439 303Z"></path></g><g data-mml-node="mi" data-latex="T" transform="translate(566,0)"><path data-c="1D447" d="M344 631C344 628 343 621 340 611L208 83C204 68 200 59 197 55C188 44 154 39 94 39C63 39 49 42 49 16C49 5 56 0 69 0C120 0 192 4 235 3L317 2C331 2 386 0 403 0C420 0 428 8 428 24C428 34 416 39 391 39C339 39 309 41 300 46C297 48 295 52 295 58L430 603C433 617 436 626 439 629C443 635 467 638 511 638C566 638 604 634 623 625C642 616 652 595 652 561C652 543 649 517 644 483C642 475 641 469 641 464C641 453 646 447 657 447C666 447 672 456 675 473L702 645C703 650 704 656 704 662C704 672 694 677 673 677L125 677C99 677 97 674 89 655L30 481C27 472 25 466 24 462C24 452 29 447 40 447C48 447 55 455 60 470C85 543 110 588 133 607C159 628 209 638 282 638L321 638C332 638 344 639 344 631Z"></path></g></g><g data-mml-node="mrow" data-latex="\partial h" transform="translate(284,-686)"><g data-mml-node="mi" data-latex="\partial"><path data-c="1D715" d="M256 574C256 597 241 610 212 612C243 659 288 683 347 683C439 683 484 606 484 508C484 467 476 417 461 356C444 425 401 460 334 460C257 460 190 428 130 366C70 304 40 235 40 158C40 121 53 83 79 45C110 0 158-22 225-22C315-22 390 20 449 105C505 187 566 329 566 456C566 527 548 587 512 635C473 689 418 716 349 716C282 716 232 693 198 646C171 609 157 579 157 556C157 530 171 517 199 517C229 517 256 544 256 574M439 303C439 240 420 178 381 117C338 48 287 14 228 14C162 14 124 57 124 121C124 149 131 188 145 238C159 288 173 323 188 344C228 401 277 430 334 430C407 430 439 376 439 303Z"></path></g><g data-mml-node="mi" data-latex="h" transform="translate(566,0)"><path data-c="210E" d="M512 138C489 59 457 19 415 19C402 19 395 28 395 47C395 62 401 85 413 116C453 223 473 296 473 335C473 406 427 445 356 445C303 445 257 423 218 380L291 679C289 688 287 694 274 694C241 694 168 685 155 684C140 682 132 675 132 660C132 650 141 645 159 645C180 645 203 646 205 632L59 43C56 32 55 25 55 21C55 0 66-11 87-11C107-11 121-1 128 18L168 182C180 231 189 268 196 293C199 300 207 314 220 334C256 388 300 415 353 415C386 415 402 393 402 350C402 309 382 236 342 130C333 107 329 89 329 74C329 26 365-11 413-11C457-11 492 14 517 65C536 105 546 132 546 145C546 154 541 159 530 159C527 159 512 150 512 138Z"></path></g></g><rect width="1470" height="60" x="120" y="220"></rect></g><g data-mml-node="mo" data-latex="=" transform="translate(1987.8,0)"><path data-c="3D" d="M698 367L80 367C64 367 56 359 56 344C56 329 64 321 80 321L698 321C714 321 722 329 722 344C722 356 711 367 698 367M698 179L80 179C64 179 56 171 56 156C56 141 64 133 80 133L698 133C714 133 722 141 722 156C722 169 711 179 698 179Z"></path></g><g data-mml-node="mo" data-latex="+" transform="translate(3043.6,0)"><path data-c="2B" d="M698 274L413 274L413 559C413 575 405 583 389 583C373 583 365 575 365 559L365 274L80 274C64 274 56 266 56 250C56 234 64 226 80 226L365 226L365-59C365-75 373-83 389-83C405-83 413-75 413-59L413 226L698 226C714 226 722 234 722 250C722 263 711 274 698 274Z"></path></g><g data-mml-node="mn" data-latex="3" transform="translate(3821.6,0)"><path data-c="33" d="M303 353C369 378 431 441 431 526C431 569 410 604 369 631C333 654 292 666 246 666C201 666 162 654 127 631C88 605 68 571 68 528C68 495 90 472 122 472C154 472 176 495 176 527C176 560 157 578 119 580C145 615 186 633 242 633C302 633 332 598 332 527C332 485 324 450 309 421C282 373 245 364 183 364C171 362 165 357 165 348C165 333 172 333 192 333L235 333C310 333 348 280 348 173C348 88 317 14 241 14C176 14 128 36 99 80C134 79 160 105 160 139C160 173 135 198 101 198C62 198 42 178 42 137C42 88 64 49 108 18C147-9 193-22 244-22C301-22 350-3 393 34C436 71 457 117 457 173C457 267 383 332 303 353Z"></path></g><g data-mml-node="mo" data-latex="," transform="translate(4321.6,0)"><path data-c="2C" d="M139 106C107 106 86 82 86 50C86 20 109-5 139-5C153-5 165-1 174 8L175 0C175-63 154-117 112-160C105-168 101-174 101-178C101-188 105-193 114-193C123-193 135-181 152-158C186-110 203-57 203 0C203 53 185 106 139 106Z"></path></g><g data-mml-node="mspace" data-latex="\quad" transform="translate(4599.6,0)"></g><g data-mml-node="mfrac" data-latex="\frac{\partial T}{\partial c}" transform="translate(5766.2,0)"><g data-mml-node="mrow" data-latex="\partial T" transform="translate(220,676)"><g data-mml-node="mi" data-latex="\partial"><path data-c="1D715" d="M256 574C256 597 241 610 212 612C243 659 288 683 347 683C439 683 484 606 484 508C484 467 476 417 461 356C444 425 401 460 334 460C257 460 190 428 130 366C70 304 40 235 40 158C40 121 53 83 79 45C110 0 158-22 225-22C315-22 390 20 449 105C505 187 566 329 566 456C566 527 548 587 512 635C473 689 418 716 349 716C282 716 232 693 198 646C171 609 157 579 157 556C157 530 171 517 199 517C229 517 256 544 256 574M439 303C439 240 420 178 381 117C338 48 287 14 228 14C162 14 124 57 124 121C124 149 131 188 145 238C159 288 173 323 188 344C228 401 277 430 334 430C407 430 439 376 439 303Z"></path></g><g data-mml-node="mi" data-latex="T" transform="translate(566,0)"><path data-c="1D447" d="M344 631C344 628 343 621 340 611L208 83C204 68 200 59 197 55C188 44 154 39 94 39C63 39 49 42 49 16C49 5 56 0 69 0C120 0 192 4 235 3L317 2C331 2 386 0 403 0C420 0 428 8 428 24C428 34 416 39 391 39C339 39 309 41 300 46C297 48 295 52 295 58L430 603C433 617 436 626 439 629C443 635 467 638 511 638C566 638 604 634 623 625C642 616 652 595 652 561C652 543 649 517 644 483C642 475 641 469 641 464C641 453 646 447 657 447C666 447 672 456 675 473L702 645C703 650 704 656 704 662C704 672 694 677 673 677L125 677C99 677 97 674 89 655L30 481C27 472 25 466 24 462C24 452 29 447 40 447C48 447 55 455 60 470C85 543 110 588 133 607C159 628 209 638 282 638L321 638C332 638 344 639 344 631Z"></path></g></g><g data-mml-node="mrow" data-latex="\partial c" transform="translate(355.5,-686)"><g data-mml-node="mi" data-latex="\partial"><path data-c="1D715" d="M256 574C256 597 241 610 212 612C243 659 288 683 347 683C439 683 484 606 484 508C484 467 476 417 461 356C444 425 401 460 334 460C257 460 190 428 130 366C70 304 40 235 40 158C40 121 53 83 79 45C110 0 158-22 225-22C315-22 390 20 449 105C505 187 566 329 566 456C566 527 548 587 512 635C473 689 418 716 349 716C282 716 232 693 198 646C171 609 157 579 157 556C157 530 171 517 199 517C229 517 256 544 256 574M439 303C439 240 420 178 381 117C338 48 287 14 228 14C162 14 124 57 124 121C124 149 131 188 145 238C159 288 173 323 188 344C228 401 277 430 334 430C407 430 439 376 439 303Z"></path></g><g data-mml-node="mi" data-latex="c" transform="translate(566,0)"><path data-c="1D450" d="M328 325C328 300 341 287 368 287C404 287 427 318 427 354C427 410 368 442 308 442C239 442 176 412 122 353C68 294 41 229 41 159C41 61 106-11 204-11C257-11 304 2 345 27C379 48 404 69 420 90C427 99 430 106 430 109C430 120 425 126 414 126C409 126 404 122 398 114C365 70 324 42 277 30C246 22 223 18 206 18C149 18 121 53 121 122C121 184 150 274 174 317C198 361 249 413 308 413C346 413 372 402 386 381C355 378 328 358 328 325Z"></path></g></g><rect width="1470" height="60" x="120" y="220"></rect></g><g data-mml-node="mo" data-latex="=" transform="translate(7754,0)"><path data-c="3D" d="M698 367L80 367C64 367 56 359 56 344C56 329 64 321 80 321L698 321C714 321 722 329 722 344C722 356 711 367 698 367M698 179L80 179C64 179 56 171 56 156C56 141 64 133 80 133L698 133C714 133 722 141 722 156C722 169 711 179 698 179Z"></path></g><g data-mml-node="mo" data-latex="-" transform="translate(8809.8,0)"><path data-c="2212" d="M698 270L80 270C64 270 56 263 56 250C56 237 64 230 80 230L698 230C714 230 722 237 722 250C722 262 710 270 698 270Z"></path></g><g data-mml-node="mn" data-latex="2" transform="translate(9587.8,0)"><path data-c="32" d="M237 666C186 666 143 648 106 612C69 576 50 534 50 483C50 449 75 424 106 424C136 424 161 450 161 480C161 513 137 536 105 536C102 536 100 536 98 535C117 584 161 627 224 627C306 627 352 556 352 470C352 403 318 331 250 255L62 43C49 28 50 29 50 0L421 0L450 180L417 180C409 129 402 100 396 91C391 86 361 84 306 84L139 84L236 179C304 243 390 312 419 365C439 400 449 435 449 470C449 588 357 666 237 666Z"></path></g></g></g></svg></mjx-container></p>
+<p>符号 <mjx-container class="MathJax" jax="SVG" overflow="overflow"><svg style="vertical-align: -0.05ex;" xmlns="http://www.w3.org/2000/svg" width="1.281ex" height="1.67ex" role="img" focusable="false" viewBox="0 -716 566 738"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math" data-latex="\partial"><g data-mml-node="mi" data-latex="\partial"><path data-c="1D715" d="M256 574C256 597 241 610 212 612C243 659 288 683 347 683C439 683 484 606 484 508C484 467 476 417 461 356C444 425 401 460 334 460C257 460 190 428 130 366C70 304 40 235 40 158C40 121 53 83 79 45C110 0 158-22 225-22C315-22 390 20 449 105C505 187 566 329 566 456C566 527 548 587 512 635C473 689 418 716 349 716C282 716 232 693 198 646C171 609 157 579 157 556C157 530 171 517 199 517C229 517 256 544 256 574M439 303C439 240 420 178 381 117C338 48 287 14 228 14C162 14 124 57 124 121C124 149 131 188 145 238C159 288 173 323 188 344C228 401 277 430 334 430C407 430 439 376 439 303Z"></path></g></g></g></svg></mjx-container> 读作”偏”，提醒我们”只动这一个，别的不动”。</p>
+<h2 id="梯度：所有偏导数排成一排"><a href="#梯度：所有偏导数排成一排" class="headerlink" title="梯度：所有偏导数排成一排"></a>梯度：所有偏导数排成一排</h2><p>把所有偏导数排成一排，就是<strong>梯度</strong>，记作 <mjx-container class="MathJax" jax="SVG" overflow="overflow"><svg style="vertical-align: -0.075ex;" xmlns="http://www.w3.org/2000/svg" width="3.477ex" height="1.62ex" role="img" focusable="false" viewBox="0 -683 1537 716"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math" data-latex="\nabla T"><g data-mml-node="mi" data-latex="\nabla"><path data-c="2207" d="M780 657C783 664 785 669 785 671C785 679 776 683 759 683L73 683C56 683 47 679 47 670L387-13C394-26 403-33 416-33C429-33 438-26 445-13M445 72L179 605L710 605Z"></path></g><g data-mml-node="mi" data-latex="T" transform="translate(833,0)"><path data-c="1D447" d="M344 631C344 628 343 621 340 611L208 83C204 68 200 59 197 55C188 44 154 39 94 39C63 39 49 42 49 16C49 5 56 0 69 0C120 0 192 4 235 3L317 2C331 2 386 0 403 0C420 0 428 8 428 24C428 34 416 39 391 39C339 39 309 41 300 46C297 48 295 52 295 58L430 603C433 617 436 626 439 629C443 635 467 638 511 638C566 638 604 634 623 625C642 616 652 595 652 561C652 543 649 517 644 483C642 475 641 469 641 464C641 453 646 447 657 447C666 447 672 456 675 473L702 645C703 650 704 656 704 662C704 672 694 677 673 677L125 677C99 677 97 674 89 655L30 481C27 472 25 466 24 462C24 452 29 447 40 447C48 447 55 455 60 470C85 543 110 588 133 607C159 628 209 638 282 638L321 638C332 638 344 639 344 631Z"></path></g></g></g></svg></mjx-container>：</p>
+<p><mjx-container class="MathJax" jax="SVG" overflow="overflow" display="true"><svg style="vertical-align: -0.561ex;" xmlns="http://www.w3.org/2000/svg" width="15.043ex" height="2.253ex" role="img" focusable="false" viewBox="0 -748 6649.2 996"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math" data-latex="
+\nabla T = (+3, -2)
+"><g data-mml-node="mi" data-latex="\nabla"><path data-c="2207" d="M780 657C783 664 785 669 785 671C785 679 776 683 759 683L73 683C56 683 47 679 47 670L387-13C394-26 403-33 416-33C429-33 438-26 445-13M445 72L179 605L710 605Z"></path></g><g data-mml-node="mi" data-latex="T" transform="translate(833,0)"><path data-c="1D447" d="M344 631C344 628 343 621 340 611L208 83C204 68 200 59 197 55C188 44 154 39 94 39C63 39 49 42 49 16C49 5 56 0 69 0C120 0 192 4 235 3L317 2C331 2 386 0 403 0C420 0 428 8 428 24C428 34 416 39 391 39C339 39 309 41 300 46C297 48 295 52 295 58L430 603C433 617 436 626 439 629C443 635 467 638 511 638C566 638 604 634 623 625C642 616 652 595 652 561C652 543 649 517 644 483C642 475 641 469 641 464C641 453 646 447 657 447C666 447 672 456 675 473L702 645C703 650 704 656 704 662C704 672 694 677 673 677L125 677C99 677 97 674 89 655L30 481C27 472 25 466 24 462C24 452 29 447 40 447C48 447 55 455 60 470C85 543 110 588 133 607C159 628 209 638 282 638L321 638C332 638 344 639 344 631Z"></path></g><g data-mml-node="mo" data-latex="=" transform="translate(1814.8,0)"><path data-c="3D" d="M698 367L80 367C64 367 56 359 56 344C56 329 64 321 80 321L698 321C714 321 722 329 722 344C722 356 711 367 698 367M698 179L80 179C64 179 56 171 56 156C56 141 64 133 80 133L698 133C714 133 722 141 722 156C722 169 711 179 698 179Z"></path></g><g data-mml-node="mo" data-latex="(" transform="translate(2870.6,0)"><path data-c="28" d="M318-248C327-248 332-243 332-234C332-231 330-227 327-223C275-183 233-117 202-26C175 53 161 131 161 208L161 292C161 369 175 447 202 526C233 617 275 683 327 723C330 726 332 730 332 734C332 743 327 748 318 748C317 748 314 747 311 745C251 699 201 631 160 540C121 453 101 371 101 292L101 208C101 129 121 47 160-40C201-131 251-199 311-245C314-247 317-248 318-248Z"></path></g><g data-mml-node="mo" data-latex="+" transform="translate(3259.6,0)"><path data-c="2B" d="M698 274L413 274L413 559C413 575 405 583 389 583C373 583 365 575 365 559L365 274L80 274C64 274 56 266 56 250C56 234 64 226 80 226L365 226L365-59C365-75 373-83 389-83C405-83 413-75 413-59L413 226L698 226C714 226 722 234 722 250C722 263 711 274 698 274Z"></path></g><g data-mml-node="mn" data-latex="3" transform="translate(4037.6,0)"><path data-c="33" d="M303 353C369 378 431 441 431 526C431 569 410 604 369 631C333 654 292 666 246 666C201 666 162 654 127 631C88 605 68 571 68 528C68 495 90 472 122 472C154 472 176 495 176 527C176 560 157 578 119 580C145 615 186 633 242 633C302 633 332 598 332 527C332 485 324 450 309 421C282 373 245 364 183 364C171 362 165 357 165 348C165 333 172 333 192 333L235 333C310 333 348 280 348 173C348 88 317 14 241 14C176 14 128 36 99 80C134 79 160 105 160 139C160 173 135 198 101 198C62 198 42 178 42 137C42 88 64 49 108 18C147-9 193-22 244-22C301-22 350-3 393 34C436 71 457 117 457 173C457 267 383 332 303 353Z"></path></g><g data-mml-node="mo" data-latex="," transform="translate(4537.6,0)"><path data-c="2C" d="M139 106C107 106 86 82 86 50C86 20 109-5 139-5C153-5 165-1 174 8L175 0C175-63 154-117 112-160C105-168 101-174 101-178C101-188 105-193 114-193C123-193 135-181 152-158C186-110 203-57 203 0C203 53 185 106 139 106Z"></path></g><g data-mml-node="mo" data-latex="-" transform="translate(4982.2,0)"><path data-c="2212" d="M698 270L80 270C64 270 56 263 56 250C56 237 64 230 80 230L698 230C714 230 722 237 722 250C722 262 710 270 698 270Z"></path></g><g data-mml-node="mn" data-latex="2" transform="translate(5760.2,0)"><path data-c="32" d="M237 666C186 666 143 648 106 612C69 576 50 534 50 483C50 449 75 424 106 424C136 424 161 450 161 480C161 513 137 536 105 536C102 536 100 536 98 535C117 584 161 627 224 627C306 627 352 556 352 470C352 403 318 331 250 255L62 43C49 28 50 29 50 0L421 0L450 180L417 180C409 129 402 100 396 91C391 86 361 84 306 84L139 84L236 179C304 243 390 312 419 365C439 400 449 435 449 470C449 588 357 666 237 666Z"></path></g><g data-mml-node="mo" data-latex=")" transform="translate(6260.2,0)"><path data-c="29" d="M78-245C138-199 188-131 229-40C268 47 288 129 288 208L288 292C288 371 268 453 229 540C188 631 138 699 78 745C75 747 72 748 71 748C62 748 57 743 57 734C57 730 59 726 62 723C114 683 156 617 187 526C214 447 228 369 228 292L228 208C228 131 214 53 187-26C156-117 114-183 62-223C59-227 57-231 57-234C57-243 62-248 71-248C72-248 75-247 78-245Z"></path></g></g></g></svg></mjx-container></p>
+<p>梯度可以看成一个<strong>箭头</strong>，它就像一张说明书：</p>
+<blockquote>
+<p><strong>照着箭头拧，水温升得最快；反着箭头拧，水温降得最快。</strong></p>
+</blockquote>
+<img data-src="/images/transformer/03-gradient.png" alt="梯度 (+3, −2) 指向水温升得最快的方向；反方向 (−3, +2) 降得最快" title="梯度 (+3, −2) 指向水温升得最快的方向；反方向 (−3, +2) 降得最快" width="440" style="display:block;margin:0 auto;">
+
+<p><strong>考考你</strong>：水太烫了，想尽快降温，两个龙头该怎么拧？</p>
+<p>答案是<strong>反过来</strong>：<mjx-container class="MathJax" jax="SVG" overflow="overflow"><svg style="vertical-align: -0.566ex;" xmlns="http://www.w3.org/2000/svg" width="0.88ex" height="2.262ex" role="img" focusable="false" viewBox="0 -750 389 1000"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math" data-latex="(-3, +2)"><g data-mml-node="mo" data-latex="("><path data-c="28" d="M318-248C327-248 332-243 332-234C332-231 330-227 327-223C275-183 233-117 202-26C175 53 161 131 161 208L161 292C161 369 175 447 202 526C233 617 275 683 327 723C330 726 332 730 332 734C332 743 327 748 318 748C317 748 314 747 311 745C251 699 201 631 160 540C121 453 101 371 101 292L101 208C101 129 121 47 160-40C201-131 251-199 311-245C314-247 317-248 318-248Z"></path></g></g></g></svg><mjx-break size="0"> </mjx-break><svg style="vertical-align: -0.566ex;" xmlns="http://www.w3.org/2000/svg" width="3.52ex" height="2.262ex" role="img" focusable="false" viewBox="0 -750 1556 1000"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math" data-latex="(-3, +2)"><g data-mml-node="mo" data-latex="-"><path data-c="2212" d="M698 270L80 270C64 270 56 263 56 250C56 237 64 230 80 230L698 230C714 230 722 237 722 250C722 262 710 270 698 270Z"></path></g><g data-mml-node="mn" data-latex="3" transform="translate(778,0)"><path data-c="33" d="M303 353C369 378 431 441 431 526C431 569 410 604 369 631C333 654 292 666 246 666C201 666 162 654 127 631C88 605 68 571 68 528C68 495 90 472 122 472C154 472 176 495 176 527C176 560 157 578 119 580C145 615 186 633 242 633C302 633 332 598 332 527C332 485 324 450 309 421C282 373 245 364 183 364C171 362 165 357 165 348C165 333 172 333 192 333L235 333C310 333 348 280 348 173C348 88 317 14 241 14C176 14 128 36 99 80C134 79 160 105 160 139C160 173 135 198 101 198C62 198 42 178 42 137C42 88 64 49 108 18C147-9 193-22 244-22C301-22 350-3 393 34C436 71 457 117 457 173C457 267 383 332 303 353Z"></path></g><g data-mml-node="mo" data-latex="," transform="translate(1278,0)"><path data-c="2C" d="M139 106C107 106 86 82 86 50C86 20 109-5 139-5C153-5 165-1 174 8L175 0C175-63 154-117 112-160C105-168 101-174 101-178C101-188 105-193 114-193C123-193 135-181 152-158C186-110 203-57 203 0C203 53 185 106 139 106Z"></path></g></g></g></svg><mjx-break size="2"> </mjx-break><svg style="vertical-align: -0.566ex;" xmlns="http://www.w3.org/2000/svg" width="3.771ex" height="2.262ex" role="img" focusable="false" viewBox="0 -750 1667 1000"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math" data-latex="(-3, +2)"><g data-mml-node="mo" data-latex="+"><path data-c="2B" d="M698 274L413 274L413 559C413 575 405 583 389 583C373 583 365 575 365 559L365 274L80 274C64 274 56 266 56 250C56 234 64 226 80 226L365 226L365-59C365-75 373-83 389-83C405-83 413-75 413-59L413 226L698 226C714 226 722 234 722 250C722 263 711 274 698 274Z"></path></g><g data-mml-node="mn" data-latex="2" transform="translate(778,0)"><path data-c="32" d="M237 666C186 666 143 648 106 612C69 576 50 534 50 483C50 449 75 424 106 424C136 424 161 450 161 480C161 513 137 536 105 536C102 536 100 536 98 535C117 584 161 627 224 627C306 627 352 556 352 470C352 403 318 331 250 255L62 43C49 28 50 29 50 0L421 0L450 180L417 180C409 129 402 100 396 91C391 86 361 84 306 84L139 84L236 179C304 243 390 312 419 365C439 400 449 435 449 470C449 588 357 666 237 666Z"></path></g><g data-mml-node="mo" data-latex=")" transform="translate(1278,0)"><path data-c="29" d="M78-245C138-199 188-131 229-40C268 47 288 129 288 208L288 292C288 371 268 453 229 540C188 631 138 699 78 745C75 747 72 748 71 748C62 748 57 743 57 734C57 730 59 726 62 723C114 683 156 617 187 526C214 447 228 369 228 292L228 208C228 131 214 53 187-26C156-117 114-183 62-223C59-227 57-231 57-234C57-243 62-248 71-248C72-248 75-247 78-245Z"></path></g></g></g></svg></mjx-container>，也就是热水关小、冷水开大。</p>
+<p>再想一个：如果梯度是 <mjx-container class="MathJax" jax="SVG" overflow="overflow"><svg style="vertical-align: -0.566ex;" xmlns="http://www.w3.org/2000/svg" width="0.88ex" height="2.262ex" role="img" focusable="false" viewBox="0 -750 389 1000"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math" data-latex="(+10, -1)"><g data-mml-node="mo" data-latex="("><path data-c="28" d="M318-248C327-248 332-243 332-234C332-231 330-227 327-223C275-183 233-117 202-26C175 53 161 131 161 208L161 292C161 369 175 447 202 526C233 617 275 683 327 723C330 726 332 730 332 734C332 743 327 748 318 748C317 748 314 747 311 745C251 699 201 631 160 540C121 453 101 371 101 292L101 208C101 129 121 47 160-40C201-131 251-199 311-245C314-247 317-248 318-248Z"></path></g></g></g></svg><mjx-break size="0"> </mjx-break><svg style="vertical-align: -0.566ex;" xmlns="http://www.w3.org/2000/svg" width="4.652ex" height="2.262ex" role="img" focusable="false" viewBox="0 -750 2056 1000"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math" data-latex="(+10, -1)"><g data-mml-node="mo" data-latex="+"><path data-c="2B" d="M698 274L413 274L413 559C413 575 405 583 389 583C373 583 365 575 365 559L365 274L80 274C64 274 56 266 56 250C56 234 64 226 80 226L365 226L365-59C365-75 373-83 389-83C405-83 413-75 413-59L413 226L698 226C714 226 722 234 722 250C722 263 711 274 698 274Z"></path></g><g data-mml-node="mn" data-latex="10" transform="translate(778,0)"><path data-c="31" d="M269 666C228 624 168 603 89 603L89 564C141 564 184 572 217 588L217 82C217 64 213 52 204 47C195 42 170 39 130 39L95 39L95 0C120 2 174 3 257 3C340 3 394 2 419 0L419 39L384 39C343 39 318 42 310 47C302 52 297 64 297 82L297 636C297 660 295 666 269 666Z"></path><path data-c="30" d="M249-22C390-22 460 92 460 320C460 473 428 575 365 625C330 652 291 666 250 666C109 666 39 551 39 320C39 136 88-22 249-22M361 524C368 489 371 425 371 332C371 240 367 172 360 128C347 48 310 8 249 8C226 8 203 17 182 34C155 57 139 104 132 176C129 201 128 253 128 332C128 419 131 480 136 513C145 568 163 603 191 618C213 630 232 636 249 636C314 636 350 583 361 524Z" transform="translate(500,0)"></path></g><g data-mml-node="mo" data-latex="," transform="translate(1778,0)"><path data-c="2C" d="M139 106C107 106 86 82 86 50C86 20 109-5 139-5C153-5 165-1 174 8L175 0C175-63 154-117 112-160C105-168 101-174 101-178C101-188 105-193 114-193C123-193 135-181 152-158C186-110 203-57 203 0C203 53 185 106 139 106Z"></path></g></g></g></svg><mjx-break size="2"> </mjx-break><svg style="vertical-align: -0.566ex;" xmlns="http://www.w3.org/2000/svg" width="3.771ex" height="2.262ex" role="img" focusable="false" viewBox="0 -750 1667 1000"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math" data-latex="(+10, -1)"><g data-mml-node="mo" data-latex="-"><path data-c="2212" d="M698 270L80 270C64 270 56 263 56 250C56 237 64 230 80 230L698 230C714 230 722 237 722 250C722 262 710 270 698 270Z"></path></g><g data-mml-node="mn" data-latex="1" transform="translate(778,0)"><path data-c="31" d="M269 666C228 624 168 603 89 603L89 564C141 564 184 572 217 588L217 82C217 64 213 52 204 47C195 42 170 39 130 39L95 39L95 0C120 2 174 3 257 3C340 3 394 2 419 0L419 39L384 39C343 39 318 42 310 47C302 52 297 64 297 82L297 636C297 660 295 666 269 666Z"></path></g><g data-mml-node="mo" data-latex=")" transform="translate(1278,0)"><path data-c="29" d="M78-245C138-199 188-131 229-40C268 47 288 129 288 208L288 292C288 371 268 453 229 540C188 631 138 699 78 745C75 747 72 748 71 748C62 748 57 743 57 734C57 730 59 726 62 723C114 683 156 617 187 526C214 447 228 369 228 292L228 208C228 131 214 53 187-26C156-117 114-183 62-223C59-227 57-231 57-234C57-243 62-248 71-248C72-248 75-247 78-245Z"></path></g></g></g></svg></mjx-container>，应该优先调哪个？</p>
+<ul>
+<li>热水关小一格，水温降 10 度</li>
+<li>冷水开大一格，水温只降 1 度</li>
+</ul>
+<p>所以，<strong>偏导数的绝对值越大，说明这个参数影响越大，调它最有效</strong>。</p>
+<h2 id="为什么要找”谷底”"><a href="#为什么要找”谷底”" class="headerlink" title="为什么要找”谷底”"></a>为什么要找”谷底”</h2><p>训练模型，本质上是在<strong>找误差最小的地方</strong>。为什么是”最小”？</p>
+<p>假设你想要的水温是 40 度：</p>
+<table>
+<thead>
+<tr>
+<th align="center">实际水温</th>
+<th align="center">差距</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">50 度</td>
+<td align="center">10 度</td>
+</tr>
+<tr>
+<td align="center">45 度</td>
+<td align="center">5 度</td>
+</tr>
+<tr>
+<td align="center">40 度</td>
+<td align="center">0</td>
+</tr>
+</tbody></table>
+<p>这个差距就叫<strong>误差</strong>，也叫<strong>损失</strong>（Loss），记作 <mjx-container class="MathJax" jax="SVG" overflow="overflow"><svg style="vertical-align: 0;" xmlns="http://www.w3.org/2000/svg" width="1.541ex" height="1.548ex" role="img" focusable="false" viewBox="0 -684 681 684"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math" data-latex="L"><g data-mml-node="mi" data-latex="L"><path data-c="1D43F" d="M520 667C520 678 513 683 500 683L354 680L223 683C208 684 200 676 200 659C200 652 203 647 209 646C218 645 226 644 231 644C262 643 279 641 284 640C289 639 292 636 292 631C292 629 291 623 288 613L156 82C150 60 140 47 125 42C119 40 101 39 70 39C49 39 39 31 39 15C39 5 49 0 70 0L527 0C552 0 554 0 561 19L639 233C642 240 643 245 643 248C643 258 638 263 627 263C617 263 612 254 607 240C588 191 570 154 555 131C518 75 455 39 363 39L270 39C259 39 252 39 249 40C242 40 239 42 239 45C239 47 241 54 244 67L377 601C383 624 396 637 415 642C421 643 442 644 478 644C506 644 520 644 520 667Z"></path></g></g></g></svg></mjx-container>。误差越小，结果越接近我们想要的。所以误差最小的地方，就是最好的旋钮位置。</p>
+<p>模型也一样：误差，就是<strong>模型的答案和正确答案差了多少</strong>。我们习惯把目标定成”误差越小越好”，所以训练就是在<strong>找谷底</strong>。</p>
+<h2 id="梯度下降：反着箭头，一小步一小步走"><a href="#梯度下降：反着箭头，一小步一小步走" class="headerlink" title="梯度下降：反着箭头，一小步一小步走"></a>梯度下降：反着箭头，一小步一小步走</h2><p>把两个参数画成坐标，误差画成一圈圈等高线，就得到一张<strong>误差地形图</strong>，中心就是谷底。</p>
+<p>梯度就是图上的一个箭头：它指向<strong>误差上升最快</strong>的方向，箭头的长度代表坡有多陡。</p>
+<p>想让误差变小，就：</p>
+<ol>
+<li>算出当前位置的梯度</li>
+<li>沿着梯度的<strong>反方向</strong>走一小步</li>
+<li>回到第 1 步，重复</li>
+</ol>
+<p>每一步走多远，由<strong>学习率</strong> <mjx-container class="MathJax" jax="SVG" overflow="overflow"><svg style="vertical-align: -0.489ex;" xmlns="http://www.w3.org/2000/svg" width="1.124ex" height="1.489ex" role="img" focusable="false" viewBox="0 -442 497 658"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math" data-latex="\eta"><g data-mml-node="mi" data-latex="\eta"><path data-c="1D702" d="M379 442C318 442 268 415 229 362C222 407 187 442 136 442C95 442 65 409 44 344C34 311 29 292 29 286C29 277 34 272 45 272C50 272 53 273 56 275C61 284 64 291 65 298C83 374 106 412 133 412C151 412 160 398 160 371C160 358 155 330 144 289L87 61C84 48 78 22 78 17C78-3 89-13 111-13C130-13 144-3 151 17C152 22 158 47 169 90L191 179C203 228 212 265 219 290C222 297 230 311 243 331C279 385 323 412 376 412C409 412 425 390 425 347C425 332 422 312 415 286L303-169C301-177 300-182 300-185C300-206 311-216 332-216C354-216 369-202 376-173L488 274C493 295 496 315 496 332C496 404 451 442 379 442Z"></path></g></g></g></svg></mjx-container> 决定：</p>
+<p><mjx-container class="MathJax" jax="SVG" overflow="overflow" display="true"><svg style="vertical-align: -0.489ex;" xmlns="http://www.w3.org/2000/svg" width="14.592ex" height="2.084ex" role="img" focusable="false" viewBox="0 -705 6449.4 921"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math" data-latex="
+\theta \leftarrow \theta - \eta \cdot \nabla L
+"><g data-mml-node="mi" data-latex="\theta"><path data-c="1D703" d="M164-11C209-11 256 16 302 70C382 163 455 335 455 498C455 539 448 582 434 625C416 678 382 705 333 705C288 705 243 678 196 624C116 532 42 360 42 196C42 94 75-11 164-11M332 675C365 675 382 637 382 560C382 517 372 452 352 367L155 367C180 460 204 529 229 574C266 641 301 675 332 675M145 327L341 327C322 246 299 181 274 132C235 57 199 19 164 19C131 19 115 58 115 135C115 185 125 249 145 327Z"></path></g><g data-mml-node="mo" data-latex="\leftarrow" transform="translate(746.8,0)"><path data-c="2190" d="M918 274L172 274C245 326 289 395 306 482L306 483L307 485C307 502 299 510 283 510C270 510 262 504 259 491C250 444 231 403 203 368C161 316 116 282 68 266C61 263 57 257 57 250C57 243 61 237 68 234C116 218 161 184 203 132C231 97 250 56 259 9C262-4 270-10 283-10C299-10 307-2 307 15L306 17L306 18C289 105 245 174 172 226L918 226C934 226 942 234 942 250C942 263 931 274 918 274Z"></path></g><g data-mml-node="mi" data-latex="\theta" transform="translate(2024.6,0)"><path data-c="1D703" d="M164-11C209-11 256 16 302 70C382 163 455 335 455 498C455 539 448 582 434 625C416 678 382 705 333 705C288 705 243 678 196 624C116 532 42 360 42 196C42 94 75-11 164-11M332 675C365 675 382 637 382 560C382 517 372 452 352 367L155 367C180 460 204 529 229 574C266 641 301 675 332 675M145 327L341 327C322 246 299 181 274 132C235 57 199 19 164 19C131 19 115 58 115 135C115 185 125 249 145 327Z"></path></g><g data-mml-node="mo" data-latex="-" transform="translate(2715.8,0)"><path data-c="2212" d="M698 270L80 270C64 270 56 263 56 250C56 237 64 230 80 230L698 230C714 230 722 237 722 250C722 262 710 270 698 270Z"></path></g><g data-mml-node="mi" data-latex="\eta" transform="translate(3716,0)"><path data-c="1D702" d="M379 442C318 442 268 415 229 362C222 407 187 442 136 442C95 442 65 409 44 344C34 311 29 292 29 286C29 277 34 272 45 272C50 272 53 273 56 275C61 284 64 291 65 298C83 374 106 412 133 412C151 412 160 398 160 371C160 358 155 330 144 289L87 61C84 48 78 22 78 17C78-3 89-13 111-13C130-13 144-3 151 17C152 22 158 47 169 90L191 179C203 228 212 265 219 290C222 297 230 311 243 331C279 385 323 412 376 412C409 412 425 390 425 347C425 332 422 312 415 286L303-169C301-177 300-182 300-185C300-206 311-216 332-216C354-216 369-202 376-173L488 274C493 295 496 315 496 332C496 404 451 442 379 442Z"></path></g><g data-mml-node="mo" data-latex="\cdot" transform="translate(4435.2,0)"><path data-c="22C5" d="M192 250C192 279 168 303 139 303C110 303 86 279 86 250C86 221 110 197 139 197C168 197 192 221 192 250Z"></path></g><g data-mml-node="mi" data-latex="\nabla" transform="translate(4935.4,0)"><path data-c="2207" d="M780 657C783 664 785 669 785 671C785 679 776 683 759 683L73 683C56 683 47 679 47 670L387-13C394-26 403-33 416-33C429-33 438-26 445-13M445 72L179 605L710 605Z"></path></g><g data-mml-node="mi" data-latex="L" transform="translate(5768.4,0)"><path data-c="1D43F" d="M520 667C520 678 513 683 500 683L354 680L223 683C208 684 200 676 200 659C200 652 203 647 209 646C218 645 226 644 231 644C262 643 279 641 284 640C289 639 292 636 292 631C292 629 291 623 288 613L156 82C150 60 140 47 125 42C119 40 101 39 70 39C49 39 39 31 39 15C39 5 49 0 70 0L527 0C552 0 554 0 561 19L639 233C642 240 643 245 643 248C643 258 638 263 627 263C617 263 612 254 607 240C588 191 570 154 555 131C518 75 455 39 363 39L270 39C259 39 252 39 249 40C242 40 239 42 239 45C239 47 241 54 244 67L377 601C383 624 396 637 415 642C421 643 442 644 478 644C506 644 520 644 520 667Z"></path></g></g></g></svg></mjx-container></p>
+<ul>
+<li><mjx-container class="MathJax" jax="SVG" overflow="overflow"><svg style="vertical-align: -0.025ex;" xmlns="http://www.w3.org/2000/svg" width="1.061ex" height="1.62ex" role="img" focusable="false" viewBox="0 -705 469 716"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math" data-latex="\theta"><g data-mml-node="mi" data-latex="\theta"><path data-c="1D703" d="M164-11C209-11 256 16 302 70C382 163 455 335 455 498C455 539 448 582 434 625C416 678 382 705 333 705C288 705 243 678 196 624C116 532 42 360 42 196C42 94 75-11 164-11M332 675C365 675 382 637 382 560C382 517 372 452 352 367L155 367C180 460 204 529 229 574C266 641 301 675 332 675M145 327L341 327C322 246 299 181 274 132C235 57 199 19 164 19C131 19 115 58 115 135C115 185 125 249 145 327Z"></path></g></g></g></svg></mjx-container>：模型的参数（所有旋钮）</li>
+<li><mjx-container class="MathJax" jax="SVG" overflow="overflow"><svg style="vertical-align: -0.489ex;" xmlns="http://www.w3.org/2000/svg" width="1.124ex" height="1.489ex" role="img" focusable="false" viewBox="0 -442 497 658"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math" data-latex="\eta"><g data-mml-node="mi" data-latex="\eta"><path data-c="1D702" d="M379 442C318 442 268 415 229 362C222 407 187 442 136 442C95 442 65 409 44 344C34 311 29 292 29 286C29 277 34 272 45 272C50 272 53 273 56 275C61 284 64 291 65 298C83 374 106 412 133 412C151 412 160 398 160 371C160 358 155 330 144 289L87 61C84 48 78 22 78 17C78-3 89-13 111-13C130-13 144-3 151 17C152 22 158 47 169 90L191 179C203 228 212 265 219 290C222 297 230 311 243 331C279 385 323 412 376 412C409 412 425 390 425 347C425 332 422 312 415 286L303-169C301-177 300-182 300-185C300-206 311-216 332-216C354-216 369-202 376-173L488 274C493 295 496 315 496 332C496 404 451 442 379 442Z"></path></g></g></g></svg></mjx-container>：学习率，一个很小的数，比如 0.1</li>
+<li><mjx-container class="MathJax" jax="SVG" overflow="overflow"><svg style="vertical-align: -0.075ex;" xmlns="http://www.w3.org/2000/svg" width="3.425ex" height="1.622ex" role="img" focusable="false" viewBox="0 -684 1514 717"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math" data-latex="\nabla L"><g data-mml-node="mi" data-latex="\nabla"><path data-c="2207" d="M780 657C783 664 785 669 785 671C785 679 776 683 759 683L73 683C56 683 47 679 47 670L387-13C394-26 403-33 416-33C429-33 438-26 445-13M445 72L179 605L710 605Z"></path></g><g data-mml-node="mi" data-latex="L" transform="translate(833,0)"><path data-c="1D43F" d="M520 667C520 678 513 683 500 683L354 680L223 683C208 684 200 676 200 659C200 652 203 647 209 646C218 645 226 644 231 644C262 643 279 641 284 640C289 639 292 636 292 631C292 629 291 623 288 613L156 82C150 60 140 47 125 42C119 40 101 39 70 39C49 39 39 31 39 15C39 5 49 0 70 0L527 0C552 0 554 0 561 19L639 233C642 240 643 245 643 248C643 258 638 263 627 263C617 263 612 254 607 240C588 191 570 154 555 131C518 75 455 39 363 39L270 39C259 39 252 39 249 40C242 40 239 42 239 45C239 47 241 54 244 67L377 601C383 624 396 637 415 642C421 643 442 644 478 644C506 644 520 644 520 667Z"></path></g></g></g></svg></mjx-container>：误差对参数的梯度</li>
+<li>减号：<strong>反着</strong>梯度走</li>
+</ul>
+<img data-src="/images/transformer/03-descent.png" alt="沿梯度反方向一步步走，越接近谷底，坡越缓，步子越小" title="沿梯度反方向一步步走，越接近谷底，坡越缓，步子越小" width="520" style="display:block;margin:0 auto;">
+
+<p>注意图里的步子：<strong>越接近谷底，坡越缓，梯度越小，步子也就越小</strong>，最后稳稳停在谷底。</p>
+<blockquote>
+<p>梯度下降的”下降”，指的是<strong>沿着梯度的反方向往下走</strong>，而不是”梯度变小了”。</p>
+</blockquote>
+<h2 id="用代码跑一遍"><a href="#用代码跑一遍" class="headerlink" title="用代码跑一遍"></a>用代码跑一遍</h2><p>来看一个最简单的例子：误差 <mjx-container class="MathJax" jax="SVG" overflow="overflow"><svg style="vertical-align: -0.566ex;" xmlns="http://www.w3.org/2000/svg" width="1.541ex" height="2.262ex" role="img" focusable="false" viewBox="0 -750 681 1000"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math" data-latex="L = (w - 3)^2"><g data-mml-node="mi" data-latex="L"><path data-c="1D43F" d="M520 667C520 678 513 683 500 683L354 680L223 683C208 684 200 676 200 659C200 652 203 647 209 646C218 645 226 644 231 644C262 643 279 641 284 640C289 639 292 636 292 631C292 629 291 623 288 613L156 82C150 60 140 47 125 42C119 40 101 39 70 39C49 39 39 31 39 15C39 5 49 0 70 0L527 0C552 0 554 0 561 19L639 233C642 240 643 245 643 248C643 258 638 263 627 263C617 263 612 254 607 240C588 191 570 154 555 131C518 75 455 39 363 39L270 39C259 39 252 39 249 40C242 40 239 42 239 45C239 47 241 54 244 67L377 601C383 624 396 637 415 642C421 643 442 644 478 644C506 644 520 644 520 667Z"></path></g></g></g></svg><mjx-break size="4"> </mjx-break><svg style="vertical-align: -0.566ex;" xmlns="http://www.w3.org/2000/svg" width="4.889ex" height="2.262ex" role="img" focusable="false" viewBox="0 -750 2160.8 1000"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math" data-latex="L = (w - 3)^2"><g data-mml-node="mo" data-latex="="><path data-c="3D" d="M698 367L80 367C64 367 56 359 56 344C56 329 64 321 80 321L698 321C714 321 722 329 722 344C722 356 711 367 698 367M698 179L80 179C64 179 56 171 56 156C56 141 64 133 80 133L698 133C714 133 722 141 722 156C722 169 711 179 698 179Z"></path></g><g data-mml-node="mo" data-latex="(" transform="translate(1055.8,0)"><path data-c="28" d="M318-248C327-248 332-243 332-234C332-231 330-227 327-223C275-183 233-117 202-26C175 53 161 131 161 208L161 292C161 369 175 447 202 526C233 617 275 683 327 723C330 726 332 730 332 734C332 743 327 748 318 748C317 748 314 747 311 745C251 699 201 631 160 540C121 453 101 371 101 292L101 208C101 129 121 47 160-40C201-131 251-199 311-245C314-247 317-248 318-248Z"></path></g><g data-mml-node="mi" data-latex="w" transform="translate(1444.8,0)"><path data-c="1D464" d="M590 391C590 382 595 372 606 362C629 340 641 313 641 281C641 264 635 237 623 198C586 78 539 18 482 18C435 18 412 45 412 100C412 119 416 142 423 171C441 243 460 314 477 387C479 394 480 398 480 401C480 421 469 431 447 431C427 431 414 421 407 401L367 245C352 187 341 167 341 115C341 107 341 101 342 98C319 45 290 18 255 18C205 18 180 47 180 104C180 141 197 204 231 293C242 323 248 344 248 357C248 406 212 442 163 442C118 442 84 417 59 367C39 328 29 301 29 287C29 278 34 273 45 273C58 273 60 279 64 293C88 373 120 413 160 413C174 413 181 403 181 384C181 369 175 347 164 317C127 220 108 154 108 117C108 32 165-11 252-11C294-11 328 10 355 53C375 10 416-11 479-11C541-11 590 30 625 112C648 164 691 302 691 369C691 384 690 394 689 399C685 418 666 442 644 442C618 442 590 417 590 391Z"></path></g></g></g></svg><mjx-break size="3"> </mjx-break><svg style="vertical-align: -0.566ex;" xmlns="http://www.w3.org/2000/svg" width="5.262ex" height="2.452ex" role="img" focusable="false" viewBox="0 -833.9 2325.8 1083.9"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math" data-latex="L = (w - 3)^2"><g data-mml-node="mo" data-latex="-"><path data-c="2212" d="M698 270L80 270C64 270 56 263 56 250C56 237 64 230 80 230L698 230C714 230 722 237 722 250C722 262 710 270 698 270Z"></path></g><g data-mml-node="mn" data-latex="3" transform="translate(1000.2,0)"><path data-c="33" d="M303 353C369 378 431 441 431 526C431 569 410 604 369 631C333 654 292 666 246 666C201 666 162 654 127 631C88 605 68 571 68 528C68 495 90 472 122 472C154 472 176 495 176 527C176 560 157 578 119 580C145 615 186 633 242 633C302 633 332 598 332 527C332 485 324 450 309 421C282 373 245 364 183 364C171 362 165 357 165 348C165 333 172 333 192 333L235 333C310 333 348 280 348 173C348 88 317 14 241 14C176 14 128 36 99 80C134 79 160 105 160 139C160 173 135 198 101 198C62 198 42 178 42 137C42 88 64 49 108 18C147-9 193-22 244-22C301-22 350-3 393 34C436 71 457 117 457 173C457 267 383 332 303 353Z"></path></g><g data-mml-node="msup" data-latex=")^2" transform="translate(1500.2,0)"><g data-mml-node="mo" data-latex=")"><path data-c="29" d="M78-245C138-199 188-131 229-40C268 47 288 129 288 208L288 292C288 371 268 453 229 540C188 631 138 699 78 745C75 747 72 748 71 748C62 748 57 743 57 734C57 730 59 726 62 723C114 683 156 617 187 526C214 447 228 369 228 292L228 208C228 131 214 53 187-26C156-117 114-183 62-223C59-227 57-231 57-234C57-243 62-248 71-248C72-248 75-247 78-245Z"></path></g><g data-mml-node="mn" transform="translate(422,363) scale(0.707)" data-latex="2"><path data-c="32" d="M237 666C186 666 143 648 106 612C69 576 50 534 50 483C50 449 75 424 106 424C136 424 161 450 161 480C161 513 137 536 105 536C102 536 100 536 98 535C117 584 161 627 224 627C306 627 352 556 352 470C352 403 318 331 250 255L62 43C49 28 50 29 50 0L421 0L450 180L417 180C409 129 402 100 396 91C391 86 361 84 306 84L139 84L236 179C304 243 390 312 419 365C439 400 449 435 449 470C449 588 357 666 237 666Z"></path></g></g></g></g></svg></mjx-container>，谷底显然在 <mjx-container class="MathJax" jax="SVG" overflow="overflow"><svg style="vertical-align: -0.566ex;" xmlns="http://www.w3.org/2000/svg" width="1.62ex" height="2.262ex" role="img" focusable="false" viewBox="0 -750 716 1000"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math" data-latex="w = 3"><g data-mml-node="mi" data-latex="w"><path data-c="1D464" d="M590 391C590 382 595 372 606 362C629 340 641 313 641 281C641 264 635 237 623 198C586 78 539 18 482 18C435 18 412 45 412 100C412 119 416 142 423 171C441 243 460 314 477 387C479 394 480 398 480 401C480 421 469 431 447 431C427 431 414 421 407 401L367 245C352 187 341 167 341 115C341 107 341 101 342 98C319 45 290 18 255 18C205 18 180 47 180 104C180 141 197 204 231 293C242 323 248 344 248 357C248 406 212 442 163 442C118 442 84 417 59 367C39 328 29 301 29 287C29 278 34 273 45 273C58 273 60 279 64 293C88 373 120 413 160 413C174 413 181 403 181 384C181 369 175 347 164 317C127 220 108 154 108 117C108 32 165-11 252-11C294-11 328 10 355 53C375 10 416-11 479-11C541-11 590 30 625 112C648 164 691 302 691 369C691 384 690 394 689 399C685 418 666 442 644 442C618 442 590 417 590 391Z"></path></g></g></g></svg><mjx-break size="4"> </mjx-break><svg style="vertical-align: -0.566ex;" xmlns="http://www.w3.org/2000/svg" width="3.52ex" height="2.262ex" role="img" focusable="false" viewBox="0 -750 1555.8 1000"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math" data-latex="w = 3"><g data-mml-node="mo" data-latex="="><path data-c="3D" d="M698 367L80 367C64 367 56 359 56 344C56 329 64 321 80 321L698 321C714 321 722 329 722 344C722 356 711 367 698 367M698 179L80 179C64 179 56 171 56 156C56 141 64 133 80 133L698 133C714 133 722 141 722 156C722 169 711 179 698 179Z"></path></g><g data-mml-node="mn" data-latex="3" transform="translate(1055.8,0)"><path data-c="33" d="M303 353C369 378 431 441 431 526C431 569 410 604 369 631C333 654 292 666 246 666C201 666 162 654 127 631C88 605 68 571 68 528C68 495 90 472 122 472C154 472 176 495 176 527C176 560 157 578 119 580C145 615 186 633 242 633C302 633 332 598 332 527C332 485 324 450 309 421C282 373 245 364 183 364C171 362 165 357 165 348C165 333 172 333 192 333L235 333C310 333 348 280 348 173C348 88 317 14 241 14C176 14 128 36 99 80C134 79 160 105 160 139C160 173 135 198 101 198C62 198 42 178 42 137C42 88 64 49 108 18C147-9 193-22 244-22C301-22 350-3 393 34C436 71 457 117 457 173C457 267 383 332 303 353Z"></path></g></g></g></svg></mjx-container>。它的导数是 <mjx-container class="MathJax" jax="SVG" overflow="overflow"><svg style="vertical-align: -0.566ex;" xmlns="http://www.w3.org/2000/svg" width="3.631ex" height="2.262ex" role="img" focusable="false" viewBox="0 -750 1605 1000"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math" data-latex="2(w - 3)"><g data-mml-node="mn" data-latex="2"><path data-c="32" d="M237 666C186 666 143 648 106 612C69 576 50 534 50 483C50 449 75 424 106 424C136 424 161 450 161 480C161 513 137 536 105 536C102 536 100 536 98 535C117 584 161 627 224 627C306 627 352 556 352 470C352 403 318 331 250 255L62 43C49 28 50 29 50 0L421 0L450 180L417 180C409 129 402 100 396 91C391 86 361 84 306 84L139 84L236 179C304 243 390 312 419 365C439 400 449 435 449 470C449 588 357 666 237 666Z"></path></g><g data-mml-node="mo" data-latex="(" transform="translate(500,0)"><path data-c="28" d="M318-248C327-248 332-243 332-234C332-231 330-227 327-223C275-183 233-117 202-26C175 53 161 131 161 208L161 292C161 369 175 447 202 526C233 617 275 683 327 723C330 726 332 730 332 734C332 743 327 748 318 748C317 748 314 747 311 745C251 699 201 631 160 540C121 453 101 371 101 292L101 208C101 129 121 47 160-40C201-131 251-199 311-245C314-247 317-248 318-248Z"></path></g><g data-mml-node="mi" data-latex="w" transform="translate(889,0)"><path data-c="1D464" d="M590 391C590 382 595 372 606 362C629 340 641 313 641 281C641 264 635 237 623 198C586 78 539 18 482 18C435 18 412 45 412 100C412 119 416 142 423 171C441 243 460 314 477 387C479 394 480 398 480 401C480 421 469 431 447 431C427 431 414 421 407 401L367 245C352 187 341 167 341 115C341 107 341 101 342 98C319 45 290 18 255 18C205 18 180 47 180 104C180 141 197 204 231 293C242 323 248 344 248 357C248 406 212 442 163 442C118 442 84 417 59 367C39 328 29 301 29 287C29 278 34 273 45 273C58 273 60 279 64 293C88 373 120 413 160 413C174 413 181 403 181 384C181 369 175 347 164 317C127 220 108 154 108 117C108 32 165-11 252-11C294-11 328 10 355 53C375 10 416-11 479-11C541-11 590 30 625 112C648 164 691 302 691 369C691 384 690 394 689 399C685 418 666 442 644 442C618 442 590 417 590 391Z"></path></g></g></g></svg><mjx-break size="3"> </mjx-break><svg style="vertical-align: -0.566ex;" xmlns="http://www.w3.org/2000/svg" width="4.274ex" height="2.262ex" role="img" focusable="false" viewBox="0 -750 1889.2 1000"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math" data-latex="2(w - 3)"><g data-mml-node="mo" data-latex="-"><path data-c="2212" d="M698 270L80 270C64 270 56 263 56 250C56 237 64 230 80 230L698 230C714 230 722 237 722 250C722 262 710 270 698 270Z"></path></g><g data-mml-node="mn" data-latex="3" transform="translate(1000.2,0)"><path data-c="33" d="M303 353C369 378 431 441 431 526C431 569 410 604 369 631C333 654 292 666 246 666C201 666 162 654 127 631C88 605 68 571 68 528C68 495 90 472 122 472C154 472 176 495 176 527C176 560 157 578 119 580C145 615 186 633 242 633C302 633 332 598 332 527C332 485 324 450 309 421C282 373 245 364 183 364C171 362 165 357 165 348C165 333 172 333 192 333L235 333C310 333 348 280 348 173C348 88 317 14 241 14C176 14 128 36 99 80C134 79 160 105 160 139C160 173 135 198 101 198C62 198 42 178 42 137C42 88 64 49 108 18C147-9 193-22 244-22C301-22 350-3 393 34C436 71 457 117 457 173C457 267 383 332 303 353Z"></path></g><g data-mml-node="mo" data-latex=")" transform="translate(1500.2,0)"><path data-c="29" d="M78-245C138-199 188-131 229-40C268 47 288 129 288 208L288 292C288 371 268 453 229 540C188 631 138 699 78 745C75 747 72 748 71 748C62 748 57 743 57 734C57 730 59 726 62 723C114 683 156 617 187 526C214 447 228 369 228 292L228 208C228 131 214 53 187-26C156-117 114-183 62-223C59-227 57-231 57-234C57-243 62-248 71-248C72-248 75-247 78-245Z"></path></g></g></g></svg></mjx-container>。</p>
+<p>从 <mjx-container class="MathJax" jax="SVG" overflow="overflow"><svg style="vertical-align: -0.566ex;" xmlns="http://www.w3.org/2000/svg" width="1.62ex" height="2.262ex" role="img" focusable="false" viewBox="0 -750 716 1000"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math" data-latex="w = 0"><g data-mml-node="mi" data-latex="w"><path data-c="1D464" d="M590 391C590 382 595 372 606 362C629 340 641 313 641 281C641 264 635 237 623 198C586 78 539 18 482 18C435 18 412 45 412 100C412 119 416 142 423 171C441 243 460 314 477 387C479 394 480 398 480 401C480 421 469 431 447 431C427 431 414 421 407 401L367 245C352 187 341 167 341 115C341 107 341 101 342 98C319 45 290 18 255 18C205 18 180 47 180 104C180 141 197 204 231 293C242 323 248 344 248 357C248 406 212 442 163 442C118 442 84 417 59 367C39 328 29 301 29 287C29 278 34 273 45 273C58 273 60 279 64 293C88 373 120 413 160 413C174 413 181 403 181 384C181 369 175 347 164 317C127 220 108 154 108 117C108 32 165-11 252-11C294-11 328 10 355 53C375 10 416-11 479-11C541-11 590 30 625 112C648 164 691 302 691 369C691 384 690 394 689 399C685 418 666 442 644 442C618 442 590 417 590 391Z"></path></g></g></g></svg><mjx-break size="4"> </mjx-break><svg style="vertical-align: -0.566ex;" xmlns="http://www.w3.org/2000/svg" width="3.52ex" height="2.262ex" role="img" focusable="false" viewBox="0 -750 1555.8 1000"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math" data-latex="w = 0"><g data-mml-node="mo" data-latex="="><path data-c="3D" d="M698 367L80 367C64 367 56 359 56 344C56 329 64 321 80 321L698 321C714 321 722 329 722 344C722 356 711 367 698 367M698 179L80 179C64 179 56 171 56 156C56 141 64 133 80 133L698 133C714 133 722 141 722 156C722 169 711 179 698 179Z"></path></g><g data-mml-node="mn" data-latex="0" transform="translate(1055.8,0)"><path data-c="30" d="M249-22C390-22 460 92 460 320C460 473 428 575 365 625C330 652 291 666 250 666C109 666 39 551 39 320C39 136 88-22 249-22M361 524C368 489 371 425 371 332C371 240 367 172 360 128C347 48 310 8 249 8C226 8 203 17 182 34C155 57 139 104 132 176C129 201 128 253 128 332C128 419 131 480 136 513C145 568 163 603 191 618C213 630 232 636 249 636C314 636 350 583 361 524Z"></path></g></g></g></svg></mjx-container> 出发，学习率 0.1：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">w = <span class="number">0.0</span></span><br><span class="line">lr = <span class="number">0.1</span></span><br><span class="line"><span class="keyword">for</span> step <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">6</span>):</span><br><span class="line">    grad = <span class="number">2</span> * (w - <span class="number">3</span>)      <span class="comment"># 导数</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f"step <span class="subst">{step}</span>: w = <span class="subst">{w:<span class="number">.4</span>f}</span>, 梯度 = <span class="subst">{grad:<span class="number">.4</span>f}</span>"</span>)</span><br><span class="line">    w = w - lr * grad       <span class="comment"># 反着梯度走一小步</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># step 0: w = 0.0000, 梯度 = -6.0000</span></span><br><span class="line"><span class="comment"># step 1: w = 0.6000, 梯度 = -4.8000</span></span><br><span class="line"><span class="comment"># step 2: w = 1.0800, 梯度 = -3.8400</span></span><br><span class="line"><span class="comment"># step 3: w = 1.4640, 梯度 = -3.0720</span></span><br><span class="line"><span class="comment"># step 4: w = 1.7712, 梯度 = -2.4576</span></span><br><span class="line"><span class="comment"># step 5: w = 2.0170, 梯度 = -1.9661</span></span><br></pre></td></tr></table></figure>
+
+<p>可以看到：<mjx-container class="MathJax" jax="SVG" overflow="overflow"><svg style="vertical-align: -0.025ex;" xmlns="http://www.w3.org/2000/svg" width="1.62ex" height="1.025ex" role="img" focusable="false" viewBox="0 -442 716 453"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math" data-latex="w"><g data-mml-node="mi" data-latex="w"><path data-c="1D464" d="M590 391C590 382 595 372 606 362C629 340 641 313 641 281C641 264 635 237 623 198C586 78 539 18 482 18C435 18 412 45 412 100C412 119 416 142 423 171C441 243 460 314 477 387C479 394 480 398 480 401C480 421 469 431 447 431C427 431 414 421 407 401L367 245C352 187 341 167 341 115C341 107 341 101 342 98C319 45 290 18 255 18C205 18 180 47 180 104C180 141 197 204 231 293C242 323 248 344 248 357C248 406 212 442 163 442C118 442 84 417 59 367C39 328 29 301 29 287C29 278 34 273 45 273C58 273 60 279 64 293C88 373 120 413 160 413C174 413 181 403 181 384C181 369 175 347 164 317C127 220 108 154 108 117C108 32 165-11 252-11C294-11 328 10 355 53C375 10 416-11 479-11C541-11 590 30 625 112C648 164 691 302 691 369C691 384 690 394 689 399C685 418 666 442 644 442C618 442 590 417 590 391Z"></path></g></g></g></svg></mjx-container> 一步步靠近 3，梯度一步步变小，步子也一步步变小。跑 50 步之后，<mjx-container class="MathJax" jax="SVG" overflow="overflow"><svg style="vertical-align: -0.566ex;" xmlns="http://www.w3.org/2000/svg" width="1.62ex" height="2.262ex" role="img" focusable="false" viewBox="0 -750 716 1000"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math" data-latex="w \approx 2.99996"><g data-mml-node="mi" data-latex="w"><path data-c="1D464" d="M590 391C590 382 595 372 606 362C629 340 641 313 641 281C641 264 635 237 623 198C586 78 539 18 482 18C435 18 412 45 412 100C412 119 416 142 423 171C441 243 460 314 477 387C479 394 480 398 480 401C480 421 469 431 447 431C427 431 414 421 407 401L367 245C352 187 341 167 341 115C341 107 341 101 342 98C319 45 290 18 255 18C205 18 180 47 180 104C180 141 197 204 231 293C242 323 248 344 248 357C248 406 212 442 163 442C118 442 84 417 59 367C39 328 29 301 29 287C29 278 34 273 45 273C58 273 60 279 64 293C88 373 120 413 160 413C174 413 181 403 181 384C181 369 175 347 164 317C127 220 108 154 108 117C108 32 165-11 252-11C294-11 328 10 355 53C375 10 416-11 479-11C541-11 590 30 625 112C648 164 691 302 691 369C691 384 690 394 689 399C685 418 666 442 644 442C618 442 590 417 590 391Z"></path></g></g></g></svg><mjx-break size="4"> </mjx-break><svg style="vertical-align: -0.566ex;" xmlns="http://www.w3.org/2000/svg" width="9.794ex" height="2.262ex" role="img" focusable="false" viewBox="0 -750 4328.8 1000"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math" data-latex="w \approx 2.99996"><g data-mml-node="mo" data-latex="\approx"><path data-c="2248" d="M717 432L717 434C717 445 712 450 701 450C694 450 689 446 686 439C679 404 665 377 645 360C612 331 577 317 539 317C510 317 480 328 449 349C392 390 358 413 347 420C304 445 266 457 232 457C125 457 77 382 56 284L56 281C56 271 61 266 72 266C81 266 86 270 88 278C95 313 108 339 128 356C161 385 196 399 235 399C264 399 293 388 324 366C381 326 415 303 426 296C469 271 507 259 541 259C648 259 696 334 717 432M717 216L717 219C717 229 712 234 701 234C694 234 689 230 686 223C679 188 665 162 645 144C612 115 577 101 539 101C510 101 480 112 449 134C392 174 358 197 347 204C304 229 266 241 232 241C125 241 77 166 56 68L56 66C56 55 61 50 72 50C81 50 86 54 88 62C95 97 108 123 128 140C161 169 196 183 235 183C264 183 293 172 324 151C381 110 415 87 426 80C469 55 507 43 541 43C648 43 696 118 717 216Z"></path></g><g data-mml-node="mn" data-latex="2.99996" transform="translate(1050.8,0)"><path data-c="32" d="M237 666C186 666 143 648 106 612C69 576 50 534 50 483C50 449 75 424 106 424C136 424 161 450 161 480C161 513 137 536 105 536C102 536 100 536 98 535C117 584 161 627 224 627C306 627 352 556 352 470C352 403 318 331 250 255L62 43C49 28 50 29 50 0L421 0L450 180L417 180C409 129 402 100 396 91C391 86 361 84 306 84L139 84L236 179C304 243 390 312 419 365C439 400 449 435 449 470C449 588 357 666 237 666Z"></path><path data-c="2E" d="M192 53C192 82 168 106 139 106C110 106 86 82 86 53C86 24 110 0 139 0C168 0 192 24 192 53Z" transform="translate(500,0)"></path><path data-c="39" d="M116 140C83 140 67 123 67 89C67 14 128-22 207-22C287-22 351 18 398 99C437 166 457 243 457 329C457 456 434 546 388 599C349 644 304 666 253 666C194 666 145 645 106 602C63 557 42 503 42 440C42 379 60 327 96 284C134 238 183 215 242 215C294 215 334 243 361 299L361 286C361 177 342 103 303 63C272 30 239 14 206 14C166 14 137 23 118 42C149 42 165 60 165 91C165 119 144 140 116 140M243 246C204 246 175 266 155 306C144 329 138 374 138 439C138 504 145 548 158 573C180 613 212 633 253 633C294 633 324 608 343 558C354 531 361 485 361 420C361 333 322 246 243 246Z" transform="translate(778,0)"></path><path data-c="39" d="M116 140C83 140 67 123 67 89C67 14 128-22 207-22C287-22 351 18 398 99C437 166 457 243 457 329C457 456 434 546 388 599C349 644 304 666 253 666C194 666 145 645 106 602C63 557 42 503 42 440C42 379 60 327 96 284C134 238 183 215 242 215C294 215 334 243 361 299L361 286C361 177 342 103 303 63C272 30 239 14 206 14C166 14 137 23 118 42C149 42 165 60 165 91C165 119 144 140 116 140M243 246C204 246 175 266 155 306C144 329 138 374 138 439C138 504 145 548 158 573C180 613 212 633 253 633C294 633 324 608 343 558C354 531 361 485 361 420C361 333 322 246 243 246Z" transform="translate(1278,0)"></path><path data-c="39" d="M116 140C83 140 67 123 67 89C67 14 128-22 207-22C287-22 351 18 398 99C437 166 457 243 457 329C457 456 434 546 388 599C349 644 304 666 253 666C194 666 145 645 106 602C63 557 42 503 42 440C42 379 60 327 96 284C134 238 183 215 242 215C294 215 334 243 361 299L361 286C361 177 342 103 303 63C272 30 239 14 206 14C166 14 137 23 118 42C149 42 165 60 165 91C165 119 144 140 116 140M243 246C204 246 175 266 155 306C144 329 138 374 138 439C138 504 145 548 158 573C180 613 212 633 253 633C294 633 324 608 343 558C354 531 361 485 361 420C361 333 322 246 243 246Z" transform="translate(1778,0)"></path><path data-c="39" d="M116 140C83 140 67 123 67 89C67 14 128-22 207-22C287-22 351 18 398 99C437 166 457 243 457 329C457 456 434 546 388 599C349 644 304 666 253 666C194 666 145 645 106 602C63 557 42 503 42 440C42 379 60 327 96 284C134 238 183 215 242 215C294 215 334 243 361 299L361 286C361 177 342 103 303 63C272 30 239 14 206 14C166 14 137 23 118 42C149 42 165 60 165 91C165 119 144 140 116 140M243 246C204 246 175 266 155 306C144 329 138 374 138 439C138 504 145 548 158 573C180 613 212 633 253 633C294 633 324 608 343 558C354 531 361 485 361 420C361 333 322 246 243 246Z" transform="translate(2278,0)"></path><path data-c="36" d="M383 504C416 504 432 521 432 555C432 627 378 666 304 666C221 666 155 627 106 548C63 480 42 403 42 316C42 189 65 100 112 47C152 1 198-22 251-22C312-22 362 1 401 47C438 91 457 144 457 205C457 266 439 318 403 361C365 407 316 431 257 431C205 431 165 402 138 346L138 352C138 465 166 561 226 605C252 624 279 633 306 633C342 633 368 623 385 602C351 602 334 583 334 553C334 525 355 504 383 504M344 340C355 317 361 272 361 206C361 141 356 98 345 76C325 35 294 14 251 14C222 14 200 24 184 44C171 60 162 74 158 85C146 116 140 163 140 227C140 255 144 282 151 308C164 355 201 399 256 399C295 399 325 379 344 340Z" transform="translate(2778,0)"></path></g></g></g></svg></mjx-container>，几乎就到谷底了。</p>
+<p>真实的大模型也是这么学的，只不过参数从 1 个变成了几十亿个。</p>
+<h2 id="学习率：步子太大或太小都不行"><a href="#学习率：步子太大或太小都不行" class="headerlink" title="学习率：步子太大或太小都不行"></a>学习率：步子太大或太小都不行</h2><ul>
+<li><strong>太小</strong>：走得很稳，但要走非常多步，训练很慢</li>
+<li><strong>太大</strong>：一步迈过了谷底，跳到对面山坡上，甚至越跳越远</li>
+</ul>
+<p>在上面的例子里，如果把学习率改成 1.1，<mjx-container class="MathJax" jax="SVG" overflow="overflow"><svg style="vertical-align: -0.025ex;" xmlns="http://www.w3.org/2000/svg" width="1.62ex" height="1.025ex" role="img" focusable="false" viewBox="0 -442 716 453"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math" data-latex="w"><g data-mml-node="mi" data-latex="w"><path data-c="1D464" d="M590 391C590 382 595 372 606 362C629 340 641 313 641 281C641 264 635 237 623 198C586 78 539 18 482 18C435 18 412 45 412 100C412 119 416 142 423 171C441 243 460 314 477 387C479 394 480 398 480 401C480 421 469 431 447 431C427 431 414 421 407 401L367 245C352 187 341 167 341 115C341 107 341 101 342 98C319 45 290 18 255 18C205 18 180 47 180 104C180 141 197 204 231 293C242 323 248 344 248 357C248 406 212 442 163 442C118 442 84 417 59 367C39 328 29 301 29 287C29 278 34 273 45 273C58 273 60 279 64 293C88 373 120 413 160 413C174 413 181 403 181 384C181 369 175 347 164 317C127 220 108 154 108 117C108 32 165-11 252-11C294-11 328 10 355 53C375 10 416-11 479-11C541-11 590 30 625 112C648 164 691 302 691 369C691 384 690 394 689 399C685 418 666 442 644 442C618 442 590 417 590 391Z"></path></g></g></g></svg></mjx-container> 会在 3 的两边来回跳，而且越跳越远，永远到不了谷底。所以选一个合适的学习率，是训练模型时很重要的一件事。</p>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><ol>
+<li><strong>导数</strong>：调一个参数，结果变多少</li>
+<li><strong>偏导数</strong>：有多个参数时，一次只调一个，其他不动</li>
+<li><strong>梯度</strong>：所有偏导数排成的箭头，指向误差<strong>上升</strong>最快的方向</li>
+<li><strong>梯度下降</strong>：反着箭头，一小步一小步地走，直到谷底：<mjx-container class="MathJax" jax="SVG" overflow="overflow"><svg style="vertical-align: -0.566ex;" xmlns="http://www.w3.org/2000/svg" width="1.061ex" height="2.262ex" role="img" focusable="false" viewBox="0 -750 469 1000"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math" data-latex="\theta \leftarrow \theta - \eta \cdot \nabla L"><g data-mml-node="mi" data-latex="\theta"><path data-c="1D703" d="M164-11C209-11 256 16 302 70C382 163 455 335 455 498C455 539 448 582 434 625C416 678 382 705 333 705C288 705 243 678 196 624C116 532 42 360 42 196C42 94 75-11 164-11M332 675C365 675 382 637 382 560C382 517 372 452 352 367L155 367C180 460 204 529 229 574C266 641 301 675 332 675M145 327L341 327C322 246 299 181 274 132C235 57 199 19 164 19C131 19 115 58 115 135C115 185 125 249 145 327Z"></path></g></g></g></svg><mjx-break size="4"> </mjx-break><svg style="vertical-align: -0.566ex;" xmlns="http://www.w3.org/2000/svg" width="3.952ex" height="2.262ex" role="img" focusable="false" viewBox="0 -750 1746.8 1000"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math" data-latex="\theta \leftarrow \theta - \eta \cdot \nabla L"><g data-mml-node="mo" data-latex="\leftarrow"><path data-c="2190" d="M918 274L172 274C245 326 289 395 306 482L306 483L307 485C307 502 299 510 283 510C270 510 262 504 259 491C250 444 231 403 203 368C161 316 116 282 68 266C61 263 57 257 57 250C57 243 61 237 68 234C116 218 161 184 203 132C231 97 250 56 259 9C262-4 270-10 283-10C299-10 307-2 307 15L306 17L306 18C289 105 245 174 172 226L918 226C934 226 942 234 942 250C942 263 931 274 918 274Z"></path></g><g data-mml-node="mi" data-latex="\theta" transform="translate(1277.8,0)"><path data-c="1D703" d="M164-11C209-11 256 16 302 70C382 163 455 335 455 498C455 539 448 582 434 625C416 678 382 705 333 705C288 705 243 678 196 624C116 532 42 360 42 196C42 94 75-11 164-11M332 675C365 675 382 637 382 560C382 517 372 452 352 367L155 367C180 460 204 529 229 574C266 641 301 675 332 675M145 327L341 327C322 246 299 181 274 132C235 57 199 19 164 19C131 19 115 58 115 135C115 185 125 249 145 327Z"></path></g></g></g></svg><mjx-break size="3"> </mjx-break><svg style="vertical-align: -0.566ex;" xmlns="http://www.w3.org/2000/svg" width="3.387ex" height="2.262ex" role="img" focusable="false" viewBox="0 -750 1497.2 1000"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math" data-latex="\theta \leftarrow \theta - \eta \cdot \nabla L"><g data-mml-node="mo" data-latex="-"><path data-c="2212" d="M698 270L80 270C64 270 56 263 56 250C56 237 64 230 80 230L698 230C714 230 722 237 722 250C722 262 710 270 698 270Z"></path></g><g data-mml-node="mi" data-latex="\eta" transform="translate(1000.2,0)"><path data-c="1D702" d="M379 442C318 442 268 415 229 362C222 407 187 442 136 442C95 442 65 409 44 344C34 311 29 292 29 286C29 277 34 272 45 272C50 272 53 273 56 275C61 284 64 291 65 298C83 374 106 412 133 412C151 412 160 398 160 371C160 358 155 330 144 289L87 61C84 48 78 22 78 17C78-3 89-13 111-13C130-13 144-3 151 17C152 22 158 47 169 90L191 179C203 228 212 265 219 290C222 297 230 311 243 331C279 385 323 412 376 412C409 412 425 390 425 347C425 332 422 312 415 286L303-169C301-177 300-182 300-185C300-206 311-216 332-216C354-216 369-202 376-173L488 274C493 295 496 315 496 332C496 404 451 442 379 442Z"></path></g></g></g></svg><mjx-break size="3"> </mjx-break><svg style="vertical-align: -0.566ex;" xmlns="http://www.w3.org/2000/svg" width="4.557ex" height="2.262ex" role="img" focusable="false" viewBox="0 -750 2014.2 1000"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math" data-latex="\theta \leftarrow \theta - \eta \cdot \nabla L"><g data-mml-node="mo" data-latex="\cdot"><path data-c="22C5" d="M192 250C192 279 168 303 139 303C110 303 86 279 86 250C86 221 110 197 139 197C168 197 192 221 192 250Z"></path></g><g data-mml-node="mi" data-latex="\nabla" transform="translate(500.2,0)"><path data-c="2207" d="M780 657C783 664 785 669 785 671C785 679 776 683 759 683L73 683C56 683 47 679 47 670L387-13C394-26 403-33 416-33C429-33 438-26 445-13M445 72L179 605L710 605Z"></path></g><g data-mml-node="mi" data-latex="L" transform="translate(1333.2,0)"><path data-c="1D43F" d="M520 667C520 678 513 683 500 683L354 680L223 683C208 684 200 676 200 659C200 652 203 647 209 646C218 645 226 644 231 644C262 643 279 641 284 640C289 639 292 636 292 631C292 629 291 623 288 613L156 82C150 60 140 47 125 42C119 40 101 39 70 39C49 39 39 31 39 15C39 5 49 0 70 0L527 0C552 0 554 0 561 19L639 233C642 240 643 245 643 248C643 258 638 263 627 263C617 263 612 254 607 240C588 191 570 154 555 131C518 75 455 39 363 39L270 39C259 39 252 39 249 40C242 40 239 42 239 45C239 47 241 54 244 67L377 601C383 624 396 637 415 642C421 643 442 644 478 644C506 644 520 644 520 667Z"></path></g></g></g></svg></mjx-container></li>
+<li><strong>学习率</strong>：决定每一步迈多大</li>
+</ol>
+<p>还剩一个问题：模型有几十层、几十亿个参数，每个参数的梯度怎么算？下一课讲<strong>链式法则与反向传播</strong>。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Transformer/" rel="tag"><i class="fa fa-tag"></i> Transformer</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/suricata/extra-c-language-knowledge/" rel="prev" title="Suricata 源码阅读·番外：读懂 Suricata 需要哪些 C 语言知识">
+                  <i class="fa fa-chevron-left"></i> Suricata 源码阅读·番外：读懂 Suricata 需要哪些 C 语言知识
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  
+  <div class="comments giscus-container">
+  </div>
+  
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2008 – 
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Eazow</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Symbols count total">417k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">6:19</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+<script>
+(function () {
+  var numberOfBanners = 10;
+  var intervalMs = 5000;
+
+  var layerA = document.querySelector('.banner-layer-a');
+  var layerB = document.querySelector('.banner-layer-b');
+  if (!layerA || !layerB) return;
+
+  var urls = [];
+  for (var i = 0; i < numberOfBanners; i++) {
+    urls.push('/images/banner' + i + '.webp');
+  }
+  // shuffle so the slideshow order differs between visits
+  for (var i = urls.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var tmp = urls[i];
+    urls[i] = urls[j];
+    urls[j] = tmp;
+  }
+
+  // preload every banner once so the browser caches them up front;
+  // later switches then read from cache instead of firing new requests
+  urls.forEach(function (url) {
+    var img = new Image();
+    img.src = url;
+  });
+
+  var layers = [layerA, layerB];
+  var current = 0;
+  var index = 0;
+
+  function setLayer(layer, url) {
+    layer.style.backgroundImage = "url('" + url + "')";
+  }
+
+  setLayer(layers[current], urls[index]);
+  layers[current].classList.add('is-active');
+
+  if (urls.length <= 1) return;
+
+  setInterval(function () {
+    var next = current === 0 ? 1 : 0;
+    index = (index + 1) % urls.length;
+    setLayer(layers[next], urls[index]);
+    layers[next].classList.add('is-active');
+    layers[current].classList.remove('is-active');
+    current = next;
+  }, intervalMs);
+})();
+</script>
+<div class="footer-quote"><span>Stay kind and positive.</span></div>
+
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/9.1.3/mermaid.min.js","integrity":"sha256-TIYL00Rhw/8WaoUhYTLX9SKIEFdXxg+yMWSLVUbhiLg="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  <!--script async src="https://cdn.jsdelivr.net/gh/sukkaw/busuanzi@2.3/bsz.pure.mini.js"></script-->
+
+
+
+
+<script class="next-config" data-name="giscus" type="application/json">{"enable":true,"repo":"eazow/hexo","repo_id":"MDEwOlJlcG9zaXRvcnkxNjI1NTM4Nzk=","category":"Announcements","category_id":"DIC_kwDOCbBgF84CQl0J","mapping":"pathname","strict":0,"reactions_enabled":1,"emit_metadata":0,"theme":"light","lang":"en","crossorigin":"anonymous","input_position":"top","loading":"lazy"}</script>
+
+<script>
+document.addEventListener('page:loaded', () => {
+  if (!CONFIG.page.comments) return;
+
+  NexT.utils.loadComments('.giscus-container')
+    .then(() => NexT.utils.getScript('https://giscus.app/client.js', {
+      attributes: {
+        async                   : true,
+        crossOrigin             : 'anonymous',
+        'data-repo'             : CONFIG.giscus.repo,
+        'data-repo-id'          : CONFIG.giscus.repo_id,
+        'data-category'         : CONFIG.giscus.category,
+        'data-category-id'      : CONFIG.giscus.category_id,
+        'data-mapping'          : CONFIG.giscus.mapping,
+        'data-strict'           : CONFIG.giscus.strict,
+        'data-reactions-enabled': CONFIG.giscus.reactions_enabled,
+        'data-emit-metadata'    : CONFIG.giscus.emit_metadata,
+        'data-theme'            : CONFIG.giscus.theme,
+        'data-lang'             : CONFIG.giscus.lang,
+        'data-input-position'   : CONFIG.giscus.input_position,
+        'data-loading'          : CONFIG.giscus.loading
+      },
+      parentNode: document.querySelector('.giscus-container')
+    }));
+});
+</script>
+<script>
+document.querySelectorAll('figure.highlight').forEach(function (el) {
+  var lang = el.className.replace('highlight', '').trim().split(/\s+/)[0];
+  if (lang && lang !== 'plaintext') el.setAttribute('data-lang', lang);
+});
+</script>
+
+</body>
+</html>

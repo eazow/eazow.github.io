@@ -239,6 +239,211 @@ mjx-container[display="true"] + br {
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://eazow.com/suricata/04-decode-layer/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Eazow">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Eazow">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Eazow">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/suricata/04-decode-layer/" class="post-title-link" itemprop="url">Suricata 源码阅读(四)：把字节剥成协议——解码层</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2026-07-13 00:00:00" itemprop="dateCreated datePublished" datetime="2026-07-13T00:00:00+08:00">2026-07-13</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Suricata/" itemprop="url" rel="index"><span itemprop="name">Suricata</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>9 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <blockquote>
+<p>这是系列第 4 篇。上一篇结尾，包已经装进了 <code>Packet</code>，交给了链上的第二道工位 <code>DecodeAFP()</code>。但这时的 <code>Packet</code> 里只有一串从以太网头开始的原始字节，还不知道它是 IPv4 还是 IPv6，是 TCP 还是 UDP，源地址和端口是多少。这一篇看解码层怎么把这串字节一层层剥开，又怎么对付畸形包、隧道和分片。</p>
+</blockquote>
+<p>先给答案，解码层做了三件事：</p>
+<ol>
+<li><strong>一层层认出协议。</strong> 每一层都看头部里”下一层是什么”的字段(以太网的 <code>eth_type</code>、IP 的协议号、有时是 UDP 端口)，决定下一层交给哪个解码函数。整个解码层就是一串层层嵌套的 <code>switch</code>。</li>
+<li><strong>只记位置，不拷贝。</strong> 解码不会把头部拷出来，只是把各层头部在原始数据里的位置记进 <code>Packet</code>，顺便填好地址、端口和载荷的位置。</li>
+<li><strong>坏包留痕，不丢掉。</strong> 遇到畸形包不崩溃、也不丢弃，而是记一个解码事件，照样往后送。遇到隧道和分片，则会生出新的 <code>Packet</code>。</li>
+</ol>
+<p>整棵分发树画出来是这样的：</p>
+<p><img data-src="/images/suricata/suricata-decode-tree.svg" alt="解码分发树"></p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/suricata/04-decode-layer/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://eazow.com/suricata/03-capture-and-packet/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Eazow">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Eazow">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Eazow">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/suricata/03-capture-and-packet/" class="post-title-link" itemprop="url">Suricata 源码阅读(三)：包是怎么进来的——捕获模块与 Packet 结构体</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2026-07-06 00:00:00" itemprop="dateCreated datePublished" datetime="2026-07-06T00:00:00+08:00">2026-07-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Suricata/" itemprop="url" rel="index"><span itemprop="name">Suricata</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>8 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <blockquote>
+<p>这是系列第 3 篇。上一篇拆开了线程：workers 线程的链头是 <code>ReceiveAFP</code>，它用 <code>PktAcqLoop</code> 自己在循环里抓包，每抓到一个就交给后面的工位。这一篇钻进这个循环看：网卡上的字节是怎么到 Suricata 手里的？装它们的 <code>Packet</code> 长什么样？每秒几十万、上百万个包，Suricata 靠什么接得住？</p>
+</blockquote>
+<p>先给答案，靠的是三件事：</p>
+<ol>
+<li><strong>和内核共用一块内存。</strong> AF_PACKET 的环形缓冲区同时映射在内核和 Suricata 进程里，包不用从内核拷贝到用户态。</li>
+<li><strong><code>Packet</code> 提前备好。</strong> 每个线程启动时就预分配一批 <code>Packet</code>，放在自己的包池里反复复用，处理包的热路径上不做 malloc。</li>
+<li><strong>从环里取包也不拷贝。</strong> <code>Packet</code> 不另存一份数据，只存一个指针，指向环里的那一帧；处理完，再把这一帧还给内核。</li>
+</ol>
+<p>这三件事串起来，就是一个 <code>Packet</code> 从借到还的一生：</p>
+<p><img data-src="/images/suricata/suricata-packet-lifecycle.svg" alt="一个 Packet 的一生"></p>
+<p>下面先看 <code>Packet</code> 本身，再看包池，最后看 AF_PACKET 怎么和内核交接数据。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/suricata/03-capture-and-packet/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
     <link itemprop="mainEntityOfPage" href="http://eazow.com/suricata/02-thread-model-and-tmmodule/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1012,238 +1217,8 @@ mjx-container[display="true"] + br {
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://eazow.com/chuang-tzu/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Eazow">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Eazow">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Eazow">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/chuang-tzu/" class="post-title-link" itemprop="url">《庄子》读书笔记</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2025-05-12 21:06:30" itemprop="dateCreated datePublished" datetime="2025-05-12T21:06:30+08:00">2025-05-12</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Reading/" itemprop="url" rel="index"><span itemprop="name">Reading</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>6 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2 id="📚-结构总览"><a href="#📚-结构总览" class="headerlink" title="📚 结构总览"></a>📚 结构总览</h2><table>
-<thead>
-<tr>
-<th align="left"><strong>篇名</strong></th>
-<th align="left"><strong>英文译名 (Burton Watson)</strong></th>
-<th align="left"><strong>核心意象</strong></th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left"><strong>逍遥游</strong></td>
-<td align="left">Free and Easy Wandering</td>
-<td align="left">鲲鹏展翅，追求绝对的精神自由</td>
-</tr>
-<tr>
-<td align="left"><strong>齐物论</strong></td>
-<td align="left">Discussion on Making All Things Equal</td>
-<td align="left">庄周梦蝶，万物齐一，超越世俗对立</td>
-</tr>
-<tr>
-<td align="left"><strong>养生主</strong></td>
-<td align="left">The Secret of Caring for Life</td>
-<td align="left">庖丁解牛，顺应自然规律以养护生命</td>
-</tr>
-<tr>
-<td align="left"><strong>人间世</strong></td>
-<td align="left">In the World of Men</td>
-<td align="left">树木无用之用，在复杂社会中的处世之道</td>
-</tr>
-<tr>
-<td align="left"><strong>德充符</strong></td>
-<td align="left">The Sign of Virtue Complete</td>
-<td align="left">忘形骸之外，内在精神的充实与圆满</td>
-</tr>
-<tr>
-<td align="left"><strong>大宗师</strong></td>
-<td align="left">The Great and Venerable Teacher</td>
-<td align="left">以”道”为师，生死齐一的达观境界</td>
-</tr>
-<tr>
-<td align="left"><strong>应帝王</strong></td>
-<td align="left">Fit for Emperors and Kings</td>
-<td align="left">浑沌之死，无为而治的政治哲学</td>
-</tr>
-</tbody></table>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/chuang-tzu/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://eazow.com/preface-to-the-pavilion-of-prince-teng/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Eazow">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Eazow">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Eazow">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/preface-to-the-pavilion-of-prince-teng/" class="post-title-link" itemprop="url">滕王阁序</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2025-02-02 20:05:50" itemprop="dateCreated datePublished" datetime="2025-02-02T20:05:50+08:00">2025-02-02</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Poetry/" itemprop="url" rel="index"><span itemprop="name">Poetry</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>4 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>豫章故郡，洪都新府。星分翼轸，地接衡庐。襟三江而带五湖，控蛮荆而引瓯越。物华天宝，龙光射牛斗之墟；人杰地灵，徐孺下陈蕃之榻。雄州雾列，俊采星驰。台隍枕夷夏之交，宾主尽东南之美。都督阎公之雅望，棨戟遥临；宇文新州之懿范，襜帷暂驻。十旬休假，胜友如云；千里逢迎，高朋满座。腾蛟起凤，孟学士之词宗；紫电青霜，王将军之武库。家君作宰，路出名区；童子何知，躬逢胜饯。</p>
-<p>时维九月，序属三秋。潦水尽而寒潭清，烟光凝而暮山紫。俨骖騑于上路，访风景于崇阿。临帝子之长洲，得天人之旧馆。层峦耸翠，上出重霄；飞阁流丹，下临无地。鹤汀凫渚，穷岛屿之萦回；桂殿兰宫，即冈峦之体势。</p>
-<p>披绣闼，俯雕甍，山原旷其盈视，川泽纡其骇瞩。闾阎扑地，钟鸣鼎食之家；舸舰迷津，青雀黄龙之舳。云销雨霁，彩彻区明。落霞与孤鹜齐飞，秋水共长天一色。渔舟唱晚，响穷彭蠡之滨，雁阵惊寒，声断衡阳之浦。</p>
-<p>遥襟甫畅，逸兴遄飞。爽籁发而清风生，纤歌凝而白云遏。睢园绿竹，气凌彭泽之樽；邺水朱华，光照临川之笔。四美具，二难并。穷睇眄于中天，极娱游于暇日。天高地迥，觉宇宙之无穷；兴尽悲来，识盈虚之有数。望长安于日下，目吴会于云间。地势极而南溟深，天柱高而北辰远。关山难越，谁悲失路之人；萍水相逢，尽是他乡之客。怀帝阍而不见，奉宣室以何年？</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/preface-to-the-pavilion-of-prince-teng/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 </div>
@@ -1266,13 +1241,13 @@ mjx-container[display="true"] + br {
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">409k</span>
+    <span title="Symbols count total">417k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">6:12</span>
+    <span title="Reading time total">6:19</span>
   </span>
 </div>
 <div class="busuanzi-count">
