@@ -2703,7 +2703,7 @@ hr {
   vertical-align: middle;
 }
 .links-of-author a::before {
-  background: #b3ffff;
+  background: #47a6ff;
   display: inline-block;
   margin-right: 3px;
   transform: translateY(-2px);
@@ -3165,6 +3165,14 @@ figure.highlight .copy-btn {
   color: #60a5fa;
   font-style: normal;
   font-weight: 700;
+}
+.about-terminal pre .t-cursor {
+  display: inline-block;
+  width: 0.6em;
+  height: 1.1em;
+  vertical-align: text-bottom;
+  background: #e5e7eb;
+  animation: about-cursor-blink 1s steps(1) infinite;
 }
 .about-section {
   margin: 0 0 48px;
@@ -3712,6 +3720,20 @@ figure.highlight .copy-btn {
   color: #999;
   font-size: 1em;
 }
+.banner-layer {
+  top: -25%;
+  height: 125%;
+  translate: 0 var(--banner-y, 0);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .banner-layer {
+    transition: opacity 1.5s ease-in-out, scale 0s 1.5s;
+  }
+  .banner-layer.is-active {
+    scale: 1.1;
+    transition: opacity 1.5s ease-in-out, scale 7s linear;
+  }
+}
 @-moz-keyframes site-title-gradient {
   0% {
     background-position: 0% 50%;
@@ -3742,6 +3764,26 @@ figure.highlight .copy-btn {
   }
   100% {
     background-position: 300% 50%;
+  }
+}
+@-moz-keyframes about-cursor-blink {
+  50% {
+    opacity: 0;
+  }
+}
+@-webkit-keyframes about-cursor-blink {
+  50% {
+    opacity: 0;
+  }
+}
+@-o-keyframes about-cursor-blink {
+  50% {
+    opacity: 0;
+  }
+}
+@keyframes about-cursor-blink {
+  50% {
+    opacity: 0;
   }
 }
 @-moz-keyframes logo-cursor {
