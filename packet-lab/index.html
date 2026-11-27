@@ -1,0 +1,2477 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PacketFlow Lab · 网络数据包流转与状态演化</title>
+  <style>
+    :root {
+      --bg-page: #FFFFFF;
+      --bg-stage: #FFFFFF;
+      --bg-surface: #FFFFFF;
+      --bg-subtle: #F8FAFC;
+      --bg-terminal: #FAFBFD;
+      --border: #E5E7EB;
+      --border-strong: #CBD5E1;
+
+      --text-primary: #141B29;
+      --text-secondary: #4B5565;
+      --text-tertiary: #687385;
+
+      --sapphire: #2563EB;
+      --sapphire-bg: #EFF6FF;
+      --sapphire-border: #BFDBFE;
+
+      --teal: #0D9488;
+      --teal-bg: #F0FDFA;
+      --teal-border: #99F6E4;
+
+      --amber: #B45309;
+      --amber-accent: #D97706;
+      --amber-bg: #FFFBEB;
+      --amber-border: #FDE68A;
+
+      --indigo: #4F46E5;
+      --indigo-bg: #EEF2FF;
+      --indigo-border: #C7D2FE;
+
+      --crimson: #DC2626;
+      --crimson-bg: #FEF2F2;
+      --crimson-border: #FECACA;
+
+      --shadow-card: 0 10px 28px -14px rgba(20, 27, 41, 0.09), 0 1px 3px rgba(20, 27, 41, 0.04);
+      --shadow-pill: 0 2px 8px -2px rgba(20, 27, 41, 0.08);
+      --radius-lg: 14px;
+      --radius-md: 10px;
+      --radius-sm: 6px;
+
+      --font-sans: "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      --font-mono: "JetBrains Mono", "SF Mono", "Cascadia Mono", ui-monospace, Menlo, Consolas, monospace;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+
+    ::selection {
+      background: rgba(37, 99, 235, 0.16);
+      color: var(--text-primary);
+    }
+
+    * {
+      scrollbar-width: thin;
+      scrollbar-color: #CBD5E1 transparent;
+    }
+    *::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    *::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    *::-webkit-scrollbar-thumb {
+      background: #CBD5E1;
+      border-radius: 999px;
+    }
+    *::-webkit-scrollbar-thumb:hover {
+      background: #94A3B8;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg-page);
+      color: var(--text-primary);
+      font-family: var(--font-sans);
+      font-size: 14px;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    .mono, .tabular {
+      font-variant-numeric: tabular-nums;
+    }
+    .mono {
+      font-family: var(--font-mono);
+    }
+
+    button:focus-visible,
+    [tabindex]:focus-visible {
+      outline: 2px solid var(--sapphire);
+      outline-offset: 2px;
+    }
+
+    .app-shell {
+      max-width: 1360px;
+      margin: 0 auto;
+      padding: 16px 20px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      min-height: 100vh;
+    }
+
+    /* Top Bar */
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 10px 16px;
+      box-shadow: var(--shadow-card);
+      flex-wrap: wrap;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+    }
+
+    .brand-mark {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: var(--bg-subtle);
+      border: 1px solid var(--border);
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
+      color: var(--text-primary);
+    }
+
+    .brand-title {
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--text-primary);
+      margin: 0;
+      white-space: nowrap;
+    }
+
+    .brand-sub {
+      font-size: 12px;
+      color: var(--text-tertiary);
+      margin-left: 8px;
+      padding-left: 10px;
+      border-left: 1px solid var(--border);
+      white-space: nowrap;
+    }
+
+    .scene-switcher {
+      display: inline-flex;
+      background: var(--bg-subtle);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 3px;
+      gap: 3px;
+    }
+
+    .scene-btn {
+      appearance: none;
+      border: 1px solid transparent;
+      background: transparent;
+      color: var(--text-secondary);
+      font-family: var(--font-sans);
+      font-size: 13px;
+      font-weight: 500;
+      padding: 6px 13px;
+      border-radius: 7px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      transition: background 160ms ease, color 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
+      white-space: nowrap;
+    }
+
+    .scene-btn:hover:not(.active) {
+      color: var(--text-primary);
+      background: rgba(255, 255, 255, 0.55);
+    }
+
+    .scene-btn.active {
+      background: var(--bg-surface);
+      color: var(--text-primary);
+      font-weight: 600;
+      border-color: var(--border);
+      box-shadow: var(--shadow-pill);
+    }
+
+    .scene-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: var(--sapphire);
+      flex-shrink: 0;
+    }
+    .scene-btn[data-scene="docker-tls-rst"] .scene-dot {
+      background: var(--crimson);
+    }
+
+    .topbar-hints {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--text-tertiary);
+      font-size: 12px;
+    }
+
+    .kbd {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 22px;
+      height: 20px;
+      padding: 0 5px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-secondary);
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-strong);
+      border-radius: 5px;
+    }
+
+    /* Main Workspace Grid */
+    .workspace {
+      display: grid;
+      grid-template-columns: minmax(0, 1.68fr) minmax(330px, 1fr);
+      gap: 14px;
+      align-items: stretch;
+    }
+
+    .panel {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-card);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    /* Left Stage */
+    .stage-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg-surface);
+    }
+
+    .stage-title-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+    }
+
+    .stage-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin: 0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .legend-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .legend-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 11.5px;
+      color: var(--text-secondary);
+      white-space: nowrap;
+    }
+
+    .legend-swatch {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+    }
+
+    .canvas-wrap {
+      position: relative;
+      background-color: var(--bg-stage);
+      background-image: radial-gradient(rgba(20, 27, 41, 0.085) 1px, transparent 1px);
+      background-size: 20px 20px;
+      border-bottom: 1px solid var(--border);
+      padding: 8px 10px 6px;
+    }
+
+    #topoSvg {
+      width: 100%;
+      height: auto;
+      display: block;
+      user-select: none;
+      overflow: visible;
+    }
+
+    .node-group {
+      cursor: pointer;
+      transition: opacity 200ms ease;
+    }
+    .node-card {
+      transition: stroke 180ms ease, fill 180ms ease, filter 180ms ease;
+    }
+    .node-group:hover .node-card {
+      stroke: var(--sapphire);
+      stroke-width: 1.75;
+    }
+
+    /* Node inspection floating popover inside canvas */
+    .node-popover {
+      position: absolute;
+      left: 14px;
+      bottom: 12px;
+      max-width: 420px;
+      background: rgba(255, 255, 255, 0.96);
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-md);
+      padding: 10px 12px;
+      box-shadow: 0 12px 26px -10px rgba(20, 27, 41, 0.16);
+      display: none;
+      gap: 8px;
+      align-items: flex-start;
+      z-index: 4;
+      animation: popIn 180ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .node-popover.open {
+      display: flex;
+    }
+    .node-popover-body {
+      flex: 1;
+      min-width: 0;
+    }
+    .node-popover-title {
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin: 0 0 2px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .node-popover-desc {
+      font-size: 12px;
+      color: var(--text-secondary);
+      margin: 0;
+      line-height: 1.45;
+    }
+    .node-popover-close {
+      border: none;
+      background: transparent;
+      color: var(--text-tertiary);
+      cursor: pointer;
+      padding: 2px;
+      border-radius: 4px;
+      display: grid;
+      place-items: center;
+    }
+    .node-popover-close:hover {
+      background: var(--bg-subtle);
+      color: var(--text-primary);
+    }
+
+    @keyframes popIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Narrative Banner */
+    .narrative-bar {
+      padding: 13px 16px;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      background: var(--bg-surface);
+      border-bottom: 1px solid var(--border);
+      min-height: 78px;
+    }
+
+    .step-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 3px 9px;
+      border-radius: 999px;
+      border: 1px solid var(--sapphire-border);
+      background: var(--sapphire-bg);
+      color: var(--sapphire);
+      white-space: nowrap;
+      margin-top: 1px;
+      flex-shrink: 0;
+    }
+    .step-pill.tone-teal {
+      background: var(--teal-bg);
+      border-color: var(--teal-border);
+      color: var(--teal);
+    }
+    .step-pill.tone-amber {
+      background: var(--amber-bg);
+      border-color: var(--amber-border);
+      color: var(--amber);
+    }
+    .step-pill.tone-indigo {
+      background: var(--indigo-bg);
+      border-color: var(--indigo-border);
+      color: var(--indigo);
+    }
+    .step-pill.tone-crimson {
+      background: var(--crimson-bg);
+      border-color: var(--crimson-border);
+      color: var(--crimson);
+    }
+
+    .narrative-content {
+      flex: 1;
+      min-width: 0;
+    }
+    .narrative-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin: 0 0 3px;
+    }
+    .narrative-desc {
+      font-size: 12.5px;
+      color: var(--text-secondary);
+      margin: 0;
+      line-height: 1.5;
+    }
+
+    /* Playback Controls */
+    .controls-bar {
+      padding: 10px 16px 12px;
+      background: var(--bg-surface);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .controls-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .btn-group {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .ctrl-btn {
+      appearance: none;
+      border: 1px solid var(--border);
+      background: var(--bg-surface);
+      color: var(--text-primary);
+      font-family: var(--font-sans);
+      font-size: 12.5px;
+      font-weight: 500;
+      height: 32px;
+      padding: 0 11px;
+      border-radius: 8px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: background 140ms ease, border-color 140ms ease, transform 100ms ease;
+    }
+    .ctrl-btn:hover:not(:disabled) {
+      background: var(--bg-subtle);
+      border-color: var(--border-strong);
+    }
+    .ctrl-btn:active:not(:disabled) {
+      transform: translateY(0.5px);
+    }
+    .ctrl-btn:disabled {
+      opacity: 0.42;
+      cursor: not-allowed;
+    }
+
+    .ctrl-btn.primary {
+      background: var(--text-primary);
+      border-color: var(--text-primary);
+      color: #FFFFFF;
+      font-weight: 600;
+      padding: 0 14px;
+    }
+    .ctrl-btn.primary:hover:not(:disabled) {
+      background: #232D42;
+      border-color: #232D42;
+    }
+
+    .speed-group {
+      display: inline-flex;
+      align-items: center;
+      background: var(--bg-subtle);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 2px;
+      gap: 2px;
+    }
+    .speed-btn {
+      appearance: none;
+      border: none;
+      background: transparent;
+      color: var(--text-secondary);
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      padding: 4px 8px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 140ms ease, color 140ms ease;
+    }
+    .speed-btn.active {
+      background: var(--bg-surface);
+      color: var(--text-primary);
+      font-weight: 600;
+      box-shadow: 0 1px 2px rgba(20, 27, 41, 0.08);
+    }
+
+    /* Segmented Scrubber */
+    .scrubber {
+      display: grid;
+      grid-template-columns: repeat(10, minmax(0, 1fr));
+      gap: 5px;
+      align-items: center;
+    }
+
+    .scrub-seg {
+      appearance: none;
+      border: 1px solid var(--border);
+      background: var(--bg-subtle);
+      height: 22px;
+      border-radius: 6px;
+      cursor: pointer;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-mono);
+      font-size: 10.5px;
+      font-weight: 500;
+      color: var(--text-tertiary);
+      transition: all 160ms ease;
+      padding: 0;
+    }
+    .scrub-seg:hover {
+      border-color: var(--border-strong);
+      color: var(--text-primary);
+      background: #E2E8F0;
+    }
+    .scrub-seg.visited {
+      background: var(--sapphire-bg);
+      border-color: var(--sapphire-border);
+      color: var(--sapphire);
+    }
+    .scrub-seg.visited.tone-teal {
+      background: var(--teal-bg);
+      border-color: var(--teal-border);
+      color: var(--teal);
+    }
+    .scrub-seg.visited.tone-crimson {
+      background: var(--crimson-bg);
+      border-color: var(--crimson-border);
+      color: var(--crimson);
+    }
+    .scrub-seg.active {
+      background: var(--sapphire);
+      border-color: var(--sapphire);
+      color: #FFFFFF;
+      font-weight: 700;
+      box-shadow: 0 2px 6px -1px rgba(37, 99, 235, 0.35);
+    }
+    .scrub-seg.active.tone-teal {
+      background: var(--teal);
+      border-color: var(--teal);
+      box-shadow: 0 2px 6px -1px rgba(13, 148, 136, 0.35);
+    }
+    .scrub-seg.active.tone-amber {
+      background: var(--amber-accent);
+      border-color: var(--amber-accent);
+      box-shadow: 0 2px 6px -1px rgba(217, 119, 6, 0.35);
+    }
+    .scrub-seg.active.tone-indigo {
+      background: var(--indigo);
+      border-color: var(--indigo);
+      box-shadow: 0 2px 6px -1px rgba(79, 70, 229, 0.35);
+    }
+    .scrub-seg.active.tone-crimson {
+      background: var(--crimson);
+      border-color: var(--crimson);
+      box-shadow: 0 2px 6px -1px rgba(220, 38, 38, 0.35);
+    }
+
+    /* Right Inspector */
+    .inspector-header {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .inspector-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin: 0;
+    }
+
+    .proto-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      font-weight: 600;
+      padding: 3px 9px;
+      border-radius: 999px;
+      border: 1px solid var(--sapphire-border);
+      background: var(--sapphire-bg);
+      color: var(--sapphire);
+    }
+    .proto-badge.tone-teal {
+      background: var(--teal-bg);
+      border-color: var(--teal-border);
+      color: var(--teal);
+    }
+    .proto-badge.tone-amber {
+      background: var(--amber-bg);
+      border-color: var(--amber-border);
+      color: var(--amber);
+    }
+    .proto-badge.tone-indigo {
+      background: var(--indigo-bg);
+      border-color: var(--indigo-border);
+      color: var(--indigo);
+    }
+    .proto-badge.tone-crimson {
+      background: var(--crimson-bg);
+      border-color: var(--crimson-border);
+      color: var(--crimson);
+    }
+
+    .inspector-body {
+      padding: 12px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      overflow-y: auto;
+      flex: 1;
+    }
+
+    .layer-block {
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      background: var(--bg-surface);
+      overflow: hidden;
+    }
+
+    .layer-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 6px 10px;
+      background: var(--bg-subtle);
+      border-bottom: 1px solid var(--border);
+      font-size: 11.5px;
+      font-weight: 600;
+      color: var(--text-secondary);
+    }
+
+    .layer-tag {
+      font-family: var(--font-mono);
+      font-size: 10.5px;
+      color: var(--text-tertiary);
+    }
+
+    .field-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+    }
+
+    .field-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 6px 10px;
+      border-bottom: 1px solid #F1F5F9;
+      font-size: 12.5px;
+      transition: background 240ms ease;
+    }
+    .field-row:last-child {
+      border-bottom: none;
+    }
+
+    .field-row.changed {
+      background: var(--amber-bg);
+      animation: diffPulse 720ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .field-row.alert {
+      background: var(--crimson-bg);
+      animation: alertPulse 720ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes diffPulse {
+      0% { background: #FDE68A; }
+      100% { background: var(--amber-bg); }
+    }
+    @keyframes alertPulse {
+      0% { background: #FECACA; }
+      100% { background: var(--crimson-bg); }
+    }
+
+    .field-name {
+      color: var(--text-tertiary);
+      font-size: 12px;
+      white-space: nowrap;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .field-val-wrap {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      text-align: right;
+    }
+
+    .field-val {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-primary);
+    }
+
+    .field-old {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-tertiary);
+      text-decoration: line-through;
+    }
+
+    .field-arrow {
+      font-size: 11px;
+      color: var(--amber);
+      font-weight: 600;
+    }
+
+    .diff-chip {
+      font-size: 10.5px;
+      font-weight: 600;
+      padding: 1px 6px;
+      border-radius: 999px;
+      background: #FEF3C7;
+      border: 1px solid var(--amber-border);
+      color: var(--amber);
+      white-space: nowrap;
+    }
+
+    .alert-chip {
+      font-size: 10.5px;
+      font-weight: 600;
+      padding: 1px 6px;
+      border-radius: 999px;
+      background: #FEE2E2;
+      border: 1px solid var(--crimson-border);
+      color: var(--crimson);
+      white-space: nowrap;
+    }
+
+    .keep-chip {
+      font-size: 10.5px;
+      font-weight: 500;
+      padding: 1px 6px;
+      border-radius: 999px;
+      background: var(--bg-subtle);
+      border: 1px solid var(--border);
+      color: var(--text-tertiary);
+      white-space: nowrap;
+    }
+
+    /* Fingerprint Comparison Card in Step 10 of Scene 2 */
+    .compare-box {
+      border: 1px solid var(--crimson-border);
+      background: var(--crimson-bg);
+      border-radius: var(--radius-md);
+      padding: 10px;
+    }
+    .compare-title {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--crimson);
+      margin: 0 0 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .compare-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 11.5px;
+      background: var(--bg-surface);
+      border-radius: 7px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+    .compare-table th,
+    .compare-table td {
+      padding: 5px 8px;
+      border-bottom: 1px solid #F1F5F9;
+      text-align: left;
+    }
+    .compare-table tr:last-child td {
+      border-bottom: none;
+    }
+    .compare-table th {
+      background: var(--bg-subtle);
+      color: var(--text-secondary);
+      font-weight: 600;
+      font-size: 11px;
+    }
+    .compare-table td.mono {
+      font-size: 11.5px;
+    }
+    .compare-real {
+      color: var(--teal);
+      font-weight: 600;
+    }
+    .compare-fake {
+      color: var(--crimson);
+      font-weight: 600;
+    }
+
+    /* Bottom tcpdump strip */
+    .tcpdump-panel {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-card);
+      overflow: hidden;
+    }
+
+    .tcpdump-head {
+      padding: 9px 16px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      background: var(--bg-surface);
+    }
+
+    .tcpdump-head-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .tcpdump-hint {
+      font-size: 11.5px;
+      color: var(--text-tertiary);
+    }
+
+    .tcpdump-list {
+      position: relative;
+      background: var(--bg-terminal);
+      padding: 6px 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      max-height: 174px;
+      overflow-y: auto;
+    }
+
+    .dump-line {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      padding: 5px 9px;
+      border-radius: 7px;
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: background 140ms ease, border-color 140ms ease;
+      text-align: left;
+      width: 100%;
+      background: transparent;
+      font-family: var(--font-sans);
+    }
+    .dump-line:hover {
+      background: rgba(20, 27, 41, 0.035);
+    }
+    .dump-line.active {
+      background: var(--sapphire-bg);
+      border-color: var(--sapphire-border);
+    }
+    .dump-line.active.tone-teal {
+      background: var(--teal-bg);
+      border-color: var(--teal-border);
+    }
+    .dump-line.active.tone-amber {
+      background: var(--amber-bg);
+      border-color: var(--amber-border);
+    }
+    .dump-line.active.tone-indigo {
+      background: var(--indigo-bg);
+      border-color: var(--indigo-border);
+    }
+    .dump-line.active.tone-crimson {
+      background: var(--crimson-bg);
+      border-color: var(--crimson-border);
+    }
+    .dump-line.future {
+      opacity: 0.42;
+    }
+
+    .dump-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: var(--border-strong);
+      flex-shrink: 0;
+      transform: translateY(-1px);
+    }
+    .dump-line.active .dump-dot {
+      background: var(--sapphire);
+    }
+    .dump-line.active.tone-teal .dump-dot { background: var(--teal); }
+    .dump-line.active.tone-amber .dump-dot { background: var(--amber-accent); }
+    .dump-line.active.tone-indigo .dump-dot { background: var(--indigo); }
+    .dump-line.active.tone-crimson .dump-dot { background: var(--crimson); }
+
+    .dump-probe {
+      font-family: var(--font-sans);
+      font-size: 11px;
+      font-weight: 600;
+      padding: 1px 7px;
+      border-radius: 999px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .dump-text {
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      color: var(--text-primary);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      flex: 1;
+    }
+
+    /* SVG link dashes animation */
+    @keyframes dashFlow {
+      to { stroke-dashoffset: -24; }
+    }
+    .link-active-flow {
+      stroke-dasharray: 6 6;
+      animation: dashFlow 0.85s linear infinite;
+    }
+
+    /* Responsive adjustments for Hexo blog iframes & mobile */
+    @media (max-width: 980px) {
+      .workspace {
+        grid-template-columns: 1fr;
+      }
+      .topbar-hints {
+        display: none;
+      }
+      .brand-sub {
+        display: none;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .app-shell {
+        padding: 10px 10px 18px;
+        gap: 10px;
+      }
+      .scene-btn {
+        font-size: 12px;
+        padding: 5px 9px;
+      }
+      .stage-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .scrubber {
+        gap: 3px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .link-active-flow,
+      .field-row.changed,
+      .field-row.alert {
+        animation: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <!-- Top Header -->
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="4" width="6" height="6" rx="1.5"></rect>
+            <rect x="16" y="14" width="6" height="6" rx="1.5"></rect>
+            <path d="M8 7h5a3 3 0 0 1 3 3v4"></path>
+            <path d="M11 4.5 13.5 7 11 9.5"></path>
+          </svg>
+        </div>
+        <h1 class="brand-title">PacketFlow Lab</h1>
+        <span class="brand-sub">交互式网络数据包演化实验室</span>
+      </div>
+
+      <nav class="scene-switcher" aria-label="拓扑场景切换">
+        <button type="button" class="scene-btn active" data-scene="routed">
+          <span class="scene-dot"></span>
+          <span>1. 跨多跳网关转发</span>
+        </button>
+        <button type="button" class="scene-btn" data-scene="docker-tls-rst">
+          <span class="scene-dot"></span>
+          <span>2. Docker SNAT &amp; 伪造 RST</span>
+        </button>
+      </nav>
+
+      <div class="topbar-hints" aria-label="快捷键提示">
+        <span><span class="kbd">Space</span> 播放/暂停</span>
+        <span><span class="kbd">←</span><span class="kbd">→</span> 单步</span>
+      </div>
+    </header>
+
+    <!-- Main 2-Column Workspace -->
+    <main class="workspace">
+      <!-- Left: Topology Stage + Narrative + Controls -->
+      <section class="panel" aria-label="拓扑动画舞台">
+        <div class="stage-header">
+          <div class="stage-title-group">
+            <h2 class="stage-title" id="stageTitle">跨多跳网关转发（二层透传 vs 三层路由）</h2>
+          </div>
+          <div class="legend-row">
+            <span class="legend-item"><span class="legend-swatch" style="background: var(--sapphire);"></span>去程请求</span>
+            <span class="legend-item"><span class="legend-swatch" style="background: var(--teal);"></span>回程响应</span>
+            <span class="legend-item"><span class="legend-swatch" style="background: var(--amber-accent);"></span>字段改写</span>
+            <span class="legend-item" id="legendAlert" style="display:none;"><span class="legend-swatch" style="background: var(--crimson);"></span>伪造 RST</span>
+          </div>
+        </div>
+
+        <div class="canvas-wrap">
+          <svg id="topoSvg" viewBox="0 0 860 370" role="img" aria-label="网络拓扑与数据包流转动画">
+            <defs>
+              <filter id="capsuleShadow" x="-25%" y="-35%" width="150%" height="180%">
+                <feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="#141B29" flood-opacity="0.16" />
+              </filter>
+              <filter id="nodeShadow" x="-15%" y="-15%" width="130%" height="140%">
+                <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#141B29" flood-opacity="0.06" />
+              </filter>
+            </defs>
+            <g id="layerZones"></g>
+            <g id="layerLinks"></g>
+            <g id="layerNodes"></g>
+            <g id="layerPulse"></g>
+            <g id="layerPackets"></g>
+          </svg>
+
+          <div class="node-popover" id="nodePopover" role="dialog" aria-label="节点设备详情">
+            <div class="node-popover-body">
+              <div class="node-popover-title" id="nodePopoverTitle"></div>
+              <p class="node-popover-desc" id="nodePopoverDesc"></p>
+            </div>
+            <button type="button" class="node-popover-close" id="nodePopoverClose" aria-label="关闭节点详情">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                <path d="M18 6 6 18M6 6l12 12"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="narrative-bar">
+          <span class="step-pill tabular" id="stepBadge">步骤 1 / 10</span>
+          <div class="narrative-content">
+            <div class="narrative-title" id="stepTitle">Host A 构造 TCP SYN</div>
+            <p class="narrative-desc" id="stepDesc"></p>
+          </div>
+        </div>
+
+        <div class="controls-bar">
+          <div class="controls-row">
+            <div class="btn-group">
+              <button type="button" class="ctrl-btn primary" id="btnPlay">
+                <svg id="playIcon" width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+                  <polygon points="6 4 20 12 6 20 6 4"></polygon>
+                </svg>
+                <span id="playLabel">播放</span>
+              </button>
+              <button type="button" class="ctrl-btn" id="btnPrev" title="上一步 (←)">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="m15 18-6-6 6-6"></path>
+                </svg>
+                <span>上一步</span>
+              </button>
+              <button type="button" class="ctrl-btn" id="btnNext" title="下一步 (→)">
+                <span>下一步</span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="m9 18 6-6-6-6"></path>
+                </svg>
+              </button>
+              <button type="button" class="ctrl-btn" id="btnReplay" title="重播当前拓扑">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M3 12a9 9 0 1 0 3-6.7L3 8"></path>
+                  <path d="M3 3v5h5"></path>
+                </svg>
+                <span>重播</span>
+              </button>
+            </div>
+
+            <div class="speed-group" role="group" aria-label="动画倍速">
+              <button type="button" class="speed-btn" data-speed="0.7">0.7x</button>
+              <button type="button" class="speed-btn active" data-speed="1">1x</button>
+              <button type="button" class="speed-btn" data-speed="1.5">1.5x</button>
+            </div>
+          </div>
+
+          <div class="scrubber" id="scrubber" role="tablist" aria-label="步骤进度条"></div>
+        </div>
+      </section>
+
+      <!-- Right: Live Packet Header Inspector -->
+      <aside class="panel" aria-label="实时包头字段检查器">
+        <div class="inspector-header">
+          <h2 class="inspector-title">数据包头实时检查</h2>
+          <span class="proto-badge" id="protoBadge">TCP SYN</span>
+        </div>
+        <div class="inspector-body" id="inspectorBody"></div>
+      </aside>
+    </main>
+
+    <!-- Bottom: Step-Synced tcpdump Strip -->
+    <section class="tcpdump-panel" aria-label="同步 tcpdump 抓包视图">
+      <div class="tcpdump-head">
+        <div class="tcpdump-head-left">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="4 17 10 11 4 5"></polyline>
+            <line x1="12" y1="19" x2="20" y2="19"></line>
+          </svg>
+          <span>同步 tcpdump 抓包记录</span>
+        </div>
+        <span class="tcpdump-hint">点击任意抓包行可直接跳转到对应步骤</span>
+      </div>
+      <div class="tcpdump-list" id="tcpdumpList"></div>
+    </section>
+  </div>
+
+  <script>
+    (function () {
+      "use strict";
+
+      const ICON_PATHS = {
+        host: '<rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/>',
+        switch: '<rect x="3" y="7" width="18" height="10" rx="2"/><path d="M7 12h4M17 12h-4M9 10l2 2-2 2M15 10l-2 2 2 2"/>',
+        router: '<circle cx="12" cy="12" r="8.5"/><path d="M12 7v10M7 12h10M9.5 9.5 12 7l2.5 2.5M9.5 14.5 12 17l2.5-2.5"/>',
+        server: '<rect x="4" y="3.5" width="16" height="7" rx="1.5"/><rect x="4" y="13.5" width="16" height="7" rx="1.5"/><circle cx="7.5" cy="7" r="0.9" fill="currentColor" stroke="none"/><circle cx="7.5" cy="17" r="0.9" fill="currentColor" stroke="none"/><path d="M12 7h4.5M12 17h4.5"/>',
+        container: '<path d="M12 3 4 7.5v9L12 21l8-4.5v-9L12 3Z"/><path d="M4 7.5 12 12l8-4.5M12 12v9"/>',
+        nat: '<rect x="3.5" y="4" width="17" height="16" rx="2.5"/><path d="M7.5 9.5h9M14 7l2.5 2.5L14 12M16.5 14.5h-9M10 12l-2.5 2.5L10 17"/>',
+        middlebox: '<path d="M12 3 4.5 6.2v5.4c0 4.6 3.2 8.6 7.5 9.9 4.3-1.3 7.5-5.3 7.5-9.9V6.2L12 3Z"/><path d="M9.5 9.5 14.5 14.5M14.5 9.5 9.5 14.5"/>'
+      };
+
+      const TONE_MAP = {
+        sapphire: { stroke: "#2563EB", fill: "#EFF6FF", text: "#1D4ED8" },
+        teal:     { stroke: "#0D9488", fill: "#F0FDFA", text: "#0F766E" },
+        amber:    { stroke: "#D97706", fill: "#FFFBEB", text: "#B45309" },
+        indigo:   { stroke: "#4F46E5", fill: "#EEF2FF", text: "#4338CA" },
+        crimson:  { stroke: "#DC2626", fill: "#FEF2F2", text: "#B91C1C" }
+      };
+
+      const SCENES = {
+        routed: {
+          id: "routed",
+          title: "跨多跳网关转发（二层交换机透传 vs 三层网关重写）",
+          hasAlert: false,
+          zones: [
+            { x: 24, y: 48, w: 326, h: 256, label: "源子网 192.168.1.0/24", bg: "#EFF6FF", border: "#DBEAFE", text: "#1E40AF" },
+            { x: 682, y: 48, w: 162, h: 256, label: "目标网段 172.16.2.0/24", bg: "#F0FDFA", border: "#CCFBF1", text: "#115E59" }
+          ],
+          nodes: [
+            {
+              id: "client", x: 96, y: 174, type: "host", label: "Host A", sub: "192.168.1.10", mac: "aa:10",
+              detail: "源主机（Linux 默认 TTL=64）。目的 IP 172.16.2.80 不在同网段，因此查询默认路由，将二层 Dst MAC 填为下一跳网关 GW1（bb:01）。"
+            },
+            {
+              id: "sw1", x: 266, y: 174, type: "switch", label: "二层交换机 SW1", sub: "L2 透传 · 无 IP", mac: "MAC 表转发",
+              detail: "纯二层设备：只读取以太网帧头 Dst MAC 并查询 CAM 表转发，不拆三层 IP 头，因此 MAC 不重写、TTL 也不减。"
+            },
+            {
+              id: "gw1", x: 436, y: 174, type: "router", label: "网关 GW1", sub: "192.168.1.1 | 10.0.12.1", mac: "bb:01 / bb:02",
+              detail: "三层路由器（跳数 #1）：收到帧后剥离旧二层头，查路由表确定下一跳为 10.0.12.2（GW2），执行 TTL - 1，并重新封装源/目的 MAC。"
+            },
+            {
+              id: "gw2", x: 606, y: 174, type: "router", label: "网关 GW2", sub: "10.0.12.2 | 172.16.2.1", mac: "cc:01 / cc:02",
+              detail: "三层路由器（跳数 #2）：再次查路由表确认直连目标网段 172.16.2.0/24，执行 TTL - 1，重新封装指向目标服务器 dd:80 的 MAC。"
+            },
+            {
+              id: "server", x: 764, y: 174, type: "server", label: "目标服务器", sub: "172.16.2.80:443", mac: "dd:80",
+              detail: "目的主机：接收报文时不减 TTL。回包（SYN-ACK）时并不沿用收到的 TTL，而是按自身系统默认值（Linux 64）重新起算。"
+            }
+          ],
+          links: [
+            { from: "client", to: "sw1", label: "LAN" },
+            { from: "sw1", to: "gw1", label: "LAN" },
+            { from: "gw1", to: "gw2", label: "10.0.12.0/30" },
+            { from: "gw2", to: "server", label: "eth1" }
+          ],
+          steps: [
+            {
+              title: "Host A 构造 TCP SYN（跨网段寻址）",
+              desc: "目的 IP 172.16.2.80 与本机不在同一网段。Host A 通过 ARP 获取默认网关 GW1 的 MAC（bb:01），生成初始 TTL = 64 的 SYN 包。",
+              tone: "sapphire",
+              proto: "TCP SYN",
+              from: "client", to: "client",
+              capsule: "SYN · TTL 64",
+              probe: "Host A eth0",
+              tcpdump: "16:10:01.000100 IP (ttl 64, id 10241) 192.168.1.10.51234 > 172.16.2.80.443: Flags [S], seq 1000, win 64240",
+              packet: {
+                l2: { srcMac: "aa:10", dstMac: "bb:01 (GW1)" },
+                l3: { srcIp: "192.168.1.10", dstIp: "172.16.2.80", ttl: "64", id: "10241" },
+                l4: { srcPort: "51234", dstPort: "443", flags: "SYN", seqAck: "Seq=1000 Ack=0", win: "64240" },
+                l7: "无应用载荷（TCP 握手第 1 步）"
+              },
+              diffs: {}
+            },
+            {
+              title: "经二层交换机 SW1 透传（TTL 与 MAC 均不变）",
+              desc: "SW1 工作在数据链路层，只根据 Dst MAC（bb:01）查 MAC 表转发端口。包头内容完全原样透传，TTL 保持 64。",
+              tone: "sapphire",
+              proto: "TCP SYN",
+              from: "client", to: "sw1",
+              capsule: "SYN · TTL 64",
+              probe: "SW1 转发",
+              tcpdump: "16:10:01.000220 L2 Frame aa:10 > bb:01 (ether IPv4): ttl 64 192.168.1.10.51234 > 172.16.2.80.443 [S]",
+              packet: {
+                l2: { srcMac: "aa:10", dstMac: "bb:01 (GW1)" },
+                l3: { srcIp: "192.168.1.10", dstIp: "172.16.2.80", ttl: "64", id: "10241" },
+                l4: { srcPort: "51234", dstPort: "443", flags: "SYN", seqAck: "Seq=1000 Ack=0", win: "64240" },
+                l7: "无应用载荷（L2 透传，不改任何字段）"
+              },
+              diffs: {
+                ttl: { keep: "L2 不减 TTL" },
+                srcMac: { keep: "MAC 不变" }
+              }
+            },
+            {
+              title: "网关 GW1 三层转发（MAC 重写，TTL 64 → 63）",
+              desc: "经过第 1 个三层网关：剥离旧二层帧，查路由表选中下一跳 GW2（cc:01）。源/目的 MAC 全部重写，TTL 减 1，IP 保持不变。",
+              tone: "amber",
+              proto: "TCP SYN",
+              from: "sw1", to: "gw1",
+              viaForward: true,
+              capsule: "SYN · TTL 63",
+              probe: "GW1 出接口",
+              tcpdump: "16:10:01.000510 IP (ttl 63, id 10241) 192.168.1.10.51234 > 172.16.2.80.443: Flags [S], seq 1000, win 64240",
+              packet: {
+                l2: { srcMac: "bb:02 (GW1)", dstMac: "cc:01 (GW2)" },
+                l3: { srcIp: "192.168.1.10", dstIp: "172.16.2.80", ttl: "63", id: "10241" },
+                l4: { srcPort: "51234", dstPort: "443", flags: "SYN", seqAck: "Seq=1000 Ack=0", win: "64240" },
+                l7: "无应用载荷"
+              },
+              diffs: {
+                srcMac: { old: "aa:10", tag: "MAC 重写" },
+                dstMac: { old: "bb:01", tag: "MAC 重写" },
+                ttl: { old: "64", tag: "TTL -1" }
+              }
+            },
+            {
+              title: "网关 GW2 三层转发（MAC 再重写，TTL 63 → 62）",
+              desc: "经过第 2 个三层网关：查路由直连 172.16.2.0/24，将 MAC 换为 dd:80（目标服务器），TTL 再次减 1 变成 62。",
+              tone: "amber",
+              proto: "TCP SYN",
+              from: "gw1", to: "gw2",
+              capsule: "SYN · TTL 62",
+              probe: "GW2 出接口",
+              tcpdump: "16:10:01.000840 IP (ttl 62, id 10241) 192.168.1.10.51234 > 172.16.2.80.443: Flags [S], seq 1000, win 64240",
+              packet: {
+                l2: { srcMac: "cc:02 (GW2)", dstMac: "dd:80 (Server)" },
+                l3: { srcIp: "192.168.1.10", dstIp: "172.16.2.80", ttl: "62", id: "10241" },
+                l4: { srcPort: "51234", dstPort: "443", flags: "SYN", seqAck: "Seq=1000 Ack=0", win: "64240" },
+                l7: "无应用载荷"
+              },
+              diffs: {
+                srcMac: { old: "bb:02", tag: "MAC 重写" },
+                dstMac: { old: "cc:01", tag: "MAC 重写" },
+                ttl: { old: "63", tag: "TTL -1" }
+              }
+            },
+            {
+              title: "抵达目标服务器（终点接收不减 TTL）",
+              desc: "数据包到达最终目的主机时不再减 TTL。服务器收到的 SYN 报文 TTL = 62，正好比出发时 64 少了中间 2 个网关的 2 跳。",
+              tone: "sapphire",
+              proto: "TCP SYN",
+              from: "gw2", to: "server",
+              capsule: "SYN · TTL 62",
+              probe: "Server eth0",
+              tcpdump: "16:10:01.001050 IP (ttl 62, id 10241) 192.168.1.10.51234 > 172.16.2.80.443: Flags [S], seq 1000, win 64240",
+              packet: {
+                l2: { srcMac: "cc:02 (GW2)", dstMac: "dd:80 (Server)" },
+                l3: { srcIp: "192.168.1.10", dstIp: "172.16.2.80", ttl: "62", id: "10241" },
+                l4: { srcPort: "51234", dstPort: "443", flags: "SYN", seqAck: "Seq=1000 Ack=0", win: "64240" },
+                l7: "Socket 状态：LISTEN → SYN_RCVD"
+              },
+              diffs: {
+                ttl: { keep: "终点接收不减" }
+              }
+            },
+            {
+              title: "目标服务器回发 SYN-ACK（重新起算 TTL 64）",
+              desc: "关键点：回包不使用去程的 TTL 62，而是从目标服务器系统默认 TTL 64 重新起算！源/目的 IP 与端口对调，Dst MAC 填回 GW2。",
+              tone: "teal",
+              proto: "TCP SYN-ACK",
+              from: "server", to: "server",
+              capsule: "SYN-ACK · TTL 64",
+              probe: "Server eth0",
+              tcpdump: "16:10:01.001190 IP (ttl 64, id 0) 172.16.2.80.443 > 192.168.1.10.51234: Flags [S.], seq 5000, ack 1001, win 29200",
+              packet: {
+                l2: { srcMac: "dd:80 (Server)", dstMac: "cc:02 (GW2)" },
+                l3: { srcIp: "172.16.2.80", dstIp: "192.168.1.10", ttl: "64", id: "0" },
+                l4: { srcPort: "443", dstPort: "51234", flags: "SYN, ACK", seqAck: "Seq=5000 Ack=1001", win: "29200" },
+                l7: "无应用载荷（TCP 握手第 2 步）"
+              },
+              diffs: {
+                ttl: { old: "62", tag: "新包重新起算" }
+              }
+            },
+            {
+              title: "回程经网关 GW2 转发（TTL 64 → 63）",
+              desc: "GW2 收到回程 SYN-ACK，查路由发往 GW1（bb:02）。重写 MAC，同时回程 TTL 减 1 变成 63。",
+              tone: "teal",
+              proto: "TCP SYN-ACK",
+              from: "server", to: "gw2",
+              capsule: "SYN-ACK · TTL 63",
+              probe: "GW2 出接口",
+              tcpdump: "16:10:01.001420 IP (ttl 63, id 0) 172.16.2.80.443 > 192.168.1.10.51234: Flags [S.], seq 5000, ack 1001, win 29200",
+              packet: {
+                l2: { srcMac: "cc:01 (GW2)", dstMac: "bb:02 (GW1)" },
+                l3: { srcIp: "172.16.2.80", dstIp: "192.168.1.10", ttl: "63", id: "0" },
+                l4: { srcPort: "443", dstPort: "51234", flags: "SYN, ACK", seqAck: "Seq=5000 Ack=1001", win: "29200" },
+                l7: "无应用载荷"
+              },
+              diffs: {
+                srcMac: { old: "dd:80", tag: "MAC 重写" },
+                dstMac: { old: "cc:02", tag: "MAC 重写" },
+                ttl: { old: "64", tag: "TTL -1" }
+              }
+            },
+            {
+              title: "回程经网关 GW1 转发（TTL 63 → 62）",
+              desc: "GW1 查路由确认目的 IP 192.168.1.10 位于直连子网，Dst MAC 改为 Host A（aa:10），TTL 再减 1 变为 62。",
+              tone: "teal",
+              proto: "TCP SYN-ACK",
+              from: "gw2", to: "gw1",
+              capsule: "SYN-ACK · TTL 62",
+              probe: "GW1 出接口",
+              tcpdump: "16:10:01.001710 IP (ttl 62, id 0) 172.16.2.80.443 > 192.168.1.10.51234: Flags [S.], seq 5000, ack 1001, win 29200",
+              packet: {
+                l2: { srcMac: "bb:01 (GW1)", dstMac: "aa:10 (Host A)" },
+                l3: { srcIp: "172.16.2.80", dstIp: "192.168.1.10", ttl: "62", id: "0" },
+                l4: { srcPort: "443", dstPort: "51234", flags: "SYN, ACK", seqAck: "Seq=5000 Ack=1001", win: "29200" },
+                l7: "无应用载荷"
+              },
+              diffs: {
+                srcMac: { old: "cc:01", tag: "MAC 重写" },
+                dstMac: { old: "bb:02", tag: "MAC 重写" },
+                ttl: { old: "63", tag: "TTL -1" }
+              }
+            },
+            {
+              title: "回程经二层交换机 SW1 透传（TTL 保持 62）",
+              desc: "SW1 依据 Dst MAC（aa:10）把帧送到 Host A 所在端口。二层透传不改 MAC，也不扣减 TTL。",
+              tone: "teal",
+              proto: "TCP SYN-ACK",
+              from: "gw1", to: "sw1",
+              capsule: "SYN-ACK · TTL 62",
+              probe: "SW1 转发",
+              tcpdump: "16:10:01.001830 L2 Frame bb:01 > aa:10 (ether IPv4): ttl 62 172.16.2.80.443 > 192.168.1.10.51234 [S.]",
+              packet: {
+                l2: { srcMac: "bb:01 (GW1)", dstMac: "aa:10 (Host A)" },
+                l3: { srcIp: "172.16.2.80", dstIp: "192.168.1.10", ttl: "62", id: "0" },
+                l4: { srcPort: "443", dstPort: "51234", flags: "SYN, ACK", seqAck: "Seq=5000 Ack=1001", win: "29200" },
+                l7: "无应用载荷（L2 透传）"
+              },
+              diffs: {
+                ttl: { keep: "L2 不减 TTL" }
+              }
+            },
+            {
+              title: "回到 Host A，TCP 连接建立完成",
+              desc: "Host A 收到 TTL = 62 的 SYN-ACK（由此也可反推对端 Linux 初始 TTL 64 经过了 2 跳网关），随后回复 ACK 完成三次握手。",
+              tone: "teal",
+              proto: "ESTABLISHED",
+              from: "sw1", to: "client",
+              capsule: "SYN-ACK · TTL 62",
+              probe: "Host A eth0",
+              tcpdump: "16:10:01.001950 IP (ttl 62, id 0) 172.16.2.80.443 > 192.168.1.10.51234: Flags [S.], seq 5000, ack 1001, win 29200",
+              packet: {
+                l2: { srcMac: "bb:01 (GW1)", dstMac: "aa:10 (Host A)" },
+                l3: { srcIp: "172.16.2.80", dstIp: "192.168.1.10", ttl: "62", id: "0" },
+                l4: { srcPort: "443", dstPort: "51234", flags: "SYN, ACK", seqAck: "Seq=5000 Ack=1001", win: "29200" },
+                l7: "Socket 状态：SYN_SENT → ESTABLISHED"
+              },
+              diffs: {}
+            }
+          ]
+        },
+
+        "docker-tls-rst": {
+          id: "docker-tls-rst",
+          title: "Docker 容器 SNAT 出网 & 旁路设备伪造 RST 阻断 TLS",
+          hasAlert: true,
+          zones: [
+            { x: 16, y: 34, w: 168, h: 192, label: "docker0 172.17.0.0/16", bg: "#EEF2FF", border: "#E0E7FF", text: "#3730A3" },
+            { x: 194, y: 34, w: 186, h: 192, label: "宿主机 172.17.2.0/24", bg: "#EFF6FF", border: "#DBEAFE", text: "#1E40AF" },
+            { x: 688, y: 34, w: 154, h: 192, label: "目标 172.19.2.0/24", bg: "#F0FDFA", border: "#CCFBF1", text: "#115E59" }
+          ],
+          nodes: [
+            {
+              id: "container", x: 100, y: 128, type: "container", label: "Docker 容器", sub: "172.17.0.4:36242", mac: "veth · eth0",
+              detail: "运行 curl -k -v https://172.19.2.125 的容器。容器内发出包时初始 TTL=64，走默认路由送到宿主机 docker0 网桥。"
+            },
+            {
+              id: "host", x: 274, y: 128, type: "nat", label: "宿主机 Linux", sub: "docker0 → eth0 172.17.2.246", mac: "SNAT / DNAT",
+              detail: "宿主机本身相当于 1 跳三层路由 + NAT：把源 IP 从容器内网 172.17.0.4 改写为宿主机 172.17.2.246（SNAT），同时 TTL 64 → 63。"
+            },
+            {
+              id: "gw1", x: 446, y: 128, type: "router", label: "第 1 跳网关", sub: "172.17.2.254", mac: "路由转发 + 镜像",
+              detail: "默认网关 172.17.2.254（traceroute 第 1 跳）。流量经过此处时会被分光/镜像一份给旁路安全审计或防火墙设备。"
+            },
+            {
+              id: "middlebox", x: 446, y: 282, type: "middlebox", label: "旁路安全设备", sub: "DPI 检测 · 伪造 RST 注入", mac: "TTL 128 起算",
+              detail: "串联或旁路在 1 跳网关旁的检测设备。识别出 TLS Client Hello 后，不走目标服务器，直接伪造 172.19.2.125:443 往回注入 RST+ACK（Win 8224, ID 28753, TTL 127）。"
+            },
+            {
+              id: "gw2", x: 616, y: 128, type: "router", label: "第 2 跳网关", sub: "172.18.0.1", mac: "核心路由",
+              detail: "去往目标机房的第 2 跳三层网关，同样执行 TTL - 1 与 MAC 重写。"
+            },
+            {
+              id: "target", x: 766, y: 128, type: "server", label: "目标服务器", sub: "172.19.2.125:443", mac: "真实服务端",
+              detail: "真实 443 服务。实际 tcpdump 证明它正常回应了 SYN-ACK（TTL 62, ID 0, Win 14480），说明端口可达且没有主动拒连。"
+            }
+          ],
+          links: [
+            { from: "container", to: "host", label: "docker0" },
+            { from: "host", to: "gw1", label: "eth0" },
+            { from: "gw1", to: "gw2", label: "三层路由" },
+            { from: "gw2", to: "target", label: "直连" },
+            { from: "gw1", to: "middlebox", label: "镜像/注入", dashed: true }
+          ],
+          steps: [
+            {
+              title: "容器发起 TCP SYN（TTL 64）",
+              desc: "容器 172.17.0.4:36242 执行 curl https://172.19.2.125，发出首个 SYN 包，初始 TTL=64、IP ID=43377、Win=64240。",
+              tone: "sapphire",
+              proto: "TCP SYN",
+              from: "container", to: "container",
+              capsule: "SYN · TTL 64",
+              probe: "容器 eth0",
+              tcpdump: "15:42:51.396107 IP (ttl 64, id 43377) 172.17.0.4.36242 > 172.19.2.125.443: Flags [S], seq 2390386326, win 64240",
+              packet: {
+                l2: { srcMac: "02:42:ac:11:00:04", dstMac: "02:42:5b:00:01 (docker0)" },
+                l3: { srcIp: "172.17.0.4", dstIp: "172.19.2.125", ttl: "64", id: "43377" },
+                l4: { srcPort: "36242", dstPort: "443", flags: "SYN", seqAck: "Seq=2390386326 Ack=0", win: "64240" },
+                l7: "无应用载荷（TCP 握手第 1 步）"
+              },
+              diffs: {}
+            },
+            {
+              title: "宿主机跨网卡转发：SNAT 改源 IP + TTL 64 → 63",
+              desc: "包从 docker0 转到 eth0 时，宿主机触发 iptables POSTROUTING SNAT（源 IP 变为 172.17.2.246）且作为三层节点使 TTL 减 1 变成 63。",
+              tone: "amber",
+              proto: "TCP SYN (SNAT)",
+              from: "container", to: "host",
+              capsule: "SNAT · TTL 63",
+              probe: "宿主机 eth0",
+              tcpdump: "15:42:51.396177 IP (ttl 63, id 43377) 172.17.2.246.36242 > 172.19.2.125.443: Flags [S], seq 2390386326, win 64240",
+              packet: {
+                l2: { srcMac: "00:50:56:a1:02:f6 (eth0)", dstMac: "00:00:5e:00:01 (GW1)" },
+                l3: { srcIp: "172.17.2.246", dstIp: "172.19.2.125", ttl: "63", id: "43377" },
+                l4: { srcPort: "36242", dstPort: "443", flags: "SYN", seqAck: "Seq=2390386326 Ack=0", win: "64240" },
+                l7: "conntrack 记录：172.17.0.4 ⇄ 172.17.2.246"
+              },
+              diffs: {
+                srcIp: { old: "172.17.0.4", tag: "SNAT 改写" },
+                ttl: { old: "64", tag: "TTL -1" }
+              }
+            },
+            {
+              title: "SYN 经 2 跳网关抵达目标（TTL 63 → 61）",
+              desc: "经过第 1 跳网关（TTL 62）和第 2 跳网关（TTL 61），真实服务器 172.19.2.125:443 收到 TTL=61 的 SYN，连接请求完全到达对端。",
+              tone: "sapphire",
+              proto: "TCP SYN",
+              from: "host", to: "target",
+              capsule: "SYN · TTL 61",
+              probe: "目标 eth0",
+              tcpdump: "15:42:51.396420 IP (ttl 61, id 43377) 172.17.2.246.36242 > 172.19.2.125.443: Flags [S], seq 2390386326, win 64240",
+              packet: {
+                l2: { srcMac: "gw2:eth1", dstMac: "target:eth0" },
+                l3: { srcIp: "172.17.2.246", dstIp: "172.19.2.125", ttl: "61", id: "43377" },
+                l4: { srcPort: "36242", dstPort: "443", flags: "SYN", seqAck: "Seq=2390386326 Ack=0", win: "64240" },
+                l7: "准备回复 SYN-ACK"
+              },
+              diffs: {
+                ttl: { old: "63", tag: "2 跳减 2" }
+              }
+            },
+            {
+              title: "真实服务器回发 SYN-ACK（到达宿主机 TTL 62）",
+              desc: "仅 0.50ms 后目标正常回复 SYN-ACK：特征是 Linux 初始 TTL 64 过两跳变 62，IP ID=0，Win=14480，MSS=1456。",
+              tone: "teal",
+              proto: "TCP SYN-ACK",
+              from: "target", to: "host",
+              capsule: "SYN-ACK · TTL 62",
+              probe: "宿主机 eth0",
+              tcpdump: "15:42:51.396678 IP (ttl 62, id 0) 172.19.2.125.443 > 172.17.2.246.36242: Flags [S.], seq 1234685666, ack 2390386327, win 14480",
+              packet: {
+                l2: { srcMac: "00:00:5e:00:01 (GW1)", dstMac: "00:50:56:a1:02:f6" },
+                l3: { srcIp: "172.19.2.125", dstIp: "172.17.2.246", ttl: "62", id: "0" },
+                l4: { srcPort: "443", dstPort: "36242", flags: "SYN, ACK", seqAck: "Seq=1234685666 Ack=2390386327", win: "14480" },
+                l7: "真实服务指纹：TTL 62 · ID 0 · Win 14480"
+              },
+              diffs: {
+                ttl: { old: "61", tag: "回程重新起算 64→62" }
+              }
+            },
+            {
+              title: "宿主机 DNAT 还原目的 IP 并送入容器（TTL 62 → 61）",
+              desc: "宿主机匹配 conntrack 会话表，将目的 IP 还原为容器地址 172.17.0.4（DNAT），TTL 减 1 变成 61。容器完成三次握手！",
+              tone: "teal",
+              proto: "TCP ESTABLISHED",
+              from: "host", to: "container",
+              capsule: "DNAT · TTL 61",
+              probe: "容器 eth0",
+              tcpdump: "15:42:51.396733 IP (ttl 61, id 0) 172.19.2.125.443 > 172.17.0.4.36242: Flags [S.], seq 1234685666, ack 2390386327, win 14480",
+              packet: {
+                l2: { srcMac: "02:42:5b:00:01 (docker0)", dstMac: "02:42:ac:11:00:04" },
+                l3: { srcIp: "172.19.2.125", dstIp: "172.17.0.4", ttl: "61", id: "0" },
+                l4: { srcPort: "443", dstPort: "36242", flags: "SYN, ACK", seqAck: "Seq=1234685666 Ack=2390386327", win: "14480" },
+                l7: "TCP 三次握手成功，准备发起 TLS 握手"
+              },
+              diffs: {
+                dstIp: { old: "172.17.2.246", tag: "DNAT 还原" },
+                ttl: { old: "62", tag: "TTL -1" }
+              }
+            },
+            {
+              title: "容器发出 TLS 1.3 Client Hello（517 字节）",
+              desc: "TCP 建立后，OpenSSL 立即发送 517 字节的 Client Hello（Seq 1:518），经宿主机 SNAT（TTL 64 → 63）离开 eth0 发往网关。",
+              tone: "indigo",
+              proto: "TLS Client Hello",
+              from: "container", to: "gw1",
+              capsule: "ClientHello · 517B",
+              probe: "宿主机 eth0",
+              tcpdump: "15:42:51.398480 IP (ttl 63, id 43379) 172.17.2.246.36242 > 172.19.2.125.443: Flags [P.], seq 1:518, ack 1, win 502, length 517",
+              packet: {
+                l2: { srcMac: "00:50:56:a1:02:f6", dstMac: "00:00:5e:00:01 (GW1)" },
+                l3: { srcIp: "172.17.2.246", dstIp: "172.19.2.125", ttl: "63", id: "43379" },
+                l4: { srcPort: "36242", dstPort: "443", flags: "PSH, ACK", seqAck: "Seq=1:518 Ack=1", win: "502" },
+                l7: "TLSv1.3 Client Hello (517B, SNI / ALPN h2)"
+              },
+              diffs: {
+                srcIp: { old: "172.17.0.4", tag: "SNAT 改写" }
+              }
+            },
+            {
+              title: "第 1 跳网关旁路镜像：安全设备识别 TLS 握手",
+              desc: "流量经过第 1 跳网关 172.17.2.254 时被旁路镜像到安全/审计设备。DPI 引擎提取到 TLS Client Hello 特征并触发阻断策略。",
+              tone: "indigo",
+              proto: "DPI 镜像触发",
+              from: "gw1", to: "middlebox",
+              capsule: "镜像流量 · DPI",
+              probe: "GW1 旁路镜像",
+              tcpdump: "[Mirror @ 172.17.2.254] 172.17.2.246.36242 > 172.19.2.125.443: TLS ClientHello matched policy -> inject RST",
+              packet: {
+                l2: { srcMac: "GW1", dstMac: "Middlebox" },
+                l3: { srcIp: "172.17.2.246", dstIp: "172.19.2.125", ttl: "62", id: "43379" },
+                l4: { srcPort: "36242", dstPort: "443", flags: "PSH, ACK", seqAck: "Seq=1:518 Ack=1", win: "502" },
+                l7: "命中阻断策略：未放行的 IP 直连 HTTPS 访问"
+              },
+              diffs: {}
+            },
+            {
+              title: "旁路设备冒充目标 IP，抢先注入伪造 RST+ACK！",
+              desc: "旁路设备伪造源地址 172.19.2.125:443 往回发射 RST+ACK（TTL=127、ID=28753、Win=8224、Ack=1），与真实服务器指纹截然不同；同时原包继续右行。",
+              tone: "crimson",
+              proto: "伪造 TCP RST+ACK",
+              from: "middlebox", to: "gw1",
+              secondaryFrom: "gw1", secondaryTo: "target", secondaryLabel: "原 ClientHello",
+              capsule: "伪造 RST · TTL 127",
+              probe: "旁路注入点",
+              tcpdump: "15:42:51.398870 IP (ttl 127, id 28753, len 40) 172.19.2.125.443 > 172.17.2.246.36242: Flags [R.], seq 1, ack 1, win 8224",
+              packet: {
+                l2: { srcMac: "00:00:5e:00:01 (伪装自网关)", dstMac: "00:50:56:a1:02:f6" },
+                l3: { srcIp: "172.19.2.125 (伪造源IP)", dstIp: "172.17.2.246", ttl: "127", id: "28753" },
+                l4: { srcPort: "443", dstPort: "36242", flags: "RST, ACK", seqAck: "Seq=1 Ack=1 (未确认517B)", win: "8224" },
+                l7: "异常指纹：距客户端仅 1 跳，0.40ms 极速到达"
+              },
+              alerts: ["srcIp", "ttl", "id", "flags", "seqAck", "win"],
+              diffs: {}
+            },
+            {
+              title: "伪造 RST 0.40ms 回到容器，curl 报错连接被重置",
+              desc: "伪造 RST+ACK 经宿主机 DNAT（TTL 127 → 126）送入容器。内核立即 Tear down 连接，curl 报出 errno: Connection reset by peer。",
+              tone: "crimson",
+              proto: "连接被重设 (35)",
+              from: "gw1", to: "container",
+              capsule: "RST · TTL 126",
+              probe: "宿主机 / 容器",
+              tcpdump: "15:42:51.398910 IP (ttl 126, id 28753) 172.19.2.125.443 > 172.17.0.4.36242: Flags [R.], seq 1, ack 1, win 8224",
+              packet: {
+                l2: { srcMac: "02:42:5b:00:01", dstMac: "02:42:ac:11:00:04" },
+                l3: { srcIp: "172.19.2.125 (伪造)", dstIp: "172.17.0.4", ttl: "126", id: "28753" },
+                l4: { srcPort: "443", dstPort: "36242", flags: "RST, ACK", seqAck: "Seq=1 Ack=1", win: "8224" },
+                l7: "curl: (35) OpenSSL SSL_connect: 连接被对方重设"
+              },
+              alerts: ["ttl", "id", "flags", "win"],
+              diffs: {
+                dstIp: { old: "172.17.2.246", tag: "DNAT 还原" },
+                ttl: { old: "127", tag: "TTL -1" }
+              }
+            },
+            {
+              title: "抓包铁证复盘：为什么能 100% 锁定是中间设备所为？",
+              desc: "同一条 TCP 流里，真实服务端 SYN-ACK 与伪造 RST 的 IP ID、初始 TTL、TCP Window、Ack 号四项指纹全部冲突，证明 RST 来自距你仅 1 跳的中间设备。",
+              tone: "crimson",
+              proto: "指纹对比结论",
+              from: "middlebox", to: "container",
+              capsule: "指纹对比定位",
+              probe: "排障结论",
+              tcpdump: "[Forensic] Real Server (ttl 62, id 0, win 14480) != Spoofed RST (ttl 127, id 28753, win 8224, ack 1)",
+              packet: {
+                l2: { srcMac: "同一物理入口进入", dstMac: "172.17.2.246" },
+                l3: { srcIp: "172.19.2.125 (同IP不同源主机)", dstIp: "172.17.2.246", ttl: "62 vs 127", id: "0 vs 28753" },
+                l4: { srcPort: "443", dstPort: "36242", flags: "SYN-ACK vs RST-ACK", seqAck: "Ack=1 (伪造)", win: "14480 vs 8224" },
+                l7: "排查动作：检查 172.17.2.254 网关旁路防火墙 / 上网行为管理 / 零信任网关策略"
+              },
+              alerts: ["ttl", "id", "win", "seqAck"],
+              showCompare: true,
+              diffs: {}
+            }
+          ]
+        }
+      };
+
+      const state = {
+        sceneId: "routed",
+        stepIdx: 0,
+        playing: false,
+        speed: 1,
+        rafId: null,
+        timerId: null
+      };
+
+      const els = {
+        stageTitle: document.getElementById("stageTitle"),
+        legendAlert: document.getElementById("legendAlert"),
+        layerZones: document.getElementById("layerZones"),
+        layerLinks: document.getElementById("layerLinks"),
+        layerNodes: document.getElementById("layerNodes"),
+        layerPulse: document.getElementById("layerPulse"),
+        layerPackets: document.getElementById("layerPackets"),
+        stepBadge: document.getElementById("stepBadge"),
+        stepTitle: document.getElementById("stepTitle"),
+        stepDesc: document.getElementById("stepDesc"),
+        protoBadge: document.getElementById("protoBadge"),
+        inspectorBody: document.getElementById("inspectorBody"),
+        scrubber: document.getElementById("scrubber"),
+        tcpdumpList: document.getElementById("tcpdumpList"),
+        btnPlay: document.getElementById("btnPlay"),
+        playIcon: document.getElementById("playIcon"),
+        playLabel: document.getElementById("playLabel"),
+        btnPrev: document.getElementById("btnPrev"),
+        btnNext: document.getElementById("btnNext"),
+        btnReplay: document.getElementById("btnReplay"),
+        nodePopover: document.getElementById("nodePopover"),
+        nodePopoverTitle: document.getElementById("nodePopoverTitle"),
+        nodePopoverDesc: document.getElementById("nodePopoverDesc"),
+        nodePopoverClose: document.getElementById("nodePopoverClose")
+      };
+
+      function svgEl(tag, attrs = {}) {
+        const el = document.createElementNS("http://www.w3.org/2000/svg", tag);
+        for (const [k, v] of Object.entries(attrs)) {
+          el.setAttribute(k, String(v));
+        }
+        return el;
+      }
+
+      function getScene() {
+        return SCENES[state.sceneId];
+      }
+
+      function findNode(id) {
+        return getScene().nodes.find(n => n.id === id);
+      }
+
+      function closePopover() {
+        els.nodePopover.classList.remove("open");
+      }
+
+      function openNodePopover(node) {
+        els.nodePopoverTitle.textContent = `${node.label}（${node.sub}）`;
+        els.nodePopoverDesc.textContent = node.detail;
+        els.nodePopover.classList.add("open");
+      }
+
+      function measureLabelWidth(str, asciiW = 6.6, cjkW = 10.8) {
+        let total = 0;
+        for (const ch of str) {
+          total += ch.charCodeAt(0) > 127 ? cjkW : asciiW;
+        }
+        return total;
+      }
+
+      function renderTopologyBase() {
+        const scene = getScene();
+        els.stageTitle.textContent = scene.title;
+        els.legendAlert.style.display = scene.hasAlert ? "inline-flex" : "none";
+        closePopover();
+
+        // Zones
+        els.layerZones.innerHTML = "";
+        for (const z of scene.zones) {
+          const g = svgEl("g");
+          g.appendChild(svgEl("rect", {
+            x: z.x, y: z.y, width: z.w, height: z.h, rx: 12,
+            fill: z.bg, "fill-opacity": 0.45,
+            stroke: z.border, "stroke-width": 1.25, "stroke-dasharray": "5 4"
+          }));
+          const pillW = Math.min(z.w - 14, Math.ceil(measureLabelWidth(z.label, 6.4, 10.2) + 18));
+          g.appendChild(svgEl("rect", {
+            x: z.x + 8, y: z.y + 8, width: pillW, height: 21, rx: 6,
+            fill: "#FFFFFF", stroke: z.border, "stroke-width": 1
+          }));
+          const txt = svgEl("text", {
+            x: z.x + 16, y: z.y + 22,
+            fill: z.text, "font-size": 10.5, "font-weight": 600,
+            "font-family": "var(--font-mono)"
+          });
+          txt.textContent = z.label;
+          g.appendChild(txt);
+          els.layerZones.appendChild(g);
+        }
+
+        // Links
+        els.layerLinks.innerHTML = "";
+        for (const lk of scene.links) {
+          const a = findNode(lk.from);
+          const b = findNode(lk.to);
+          const g = svgEl("g", { "data-link": `${lk.from}-${lk.to}` });
+
+          const lineAttrs = {
+            x1: a.x, y1: a.y, x2: b.x, y2: b.y,
+            stroke: "#CBD5E1", "stroke-width": 2.5, "stroke-linecap": "round"
+          };
+          if (lk.dashed) {
+            lineAttrs["stroke-dasharray"] = "5 5";
+          }
+          g.appendChild(svgEl("line", lineAttrs));
+
+          // Active overlay line (initially hidden)
+          g.appendChild(svgEl("line", {
+            class: "link-overlay",
+            x1: a.x, y1: a.y, x2: b.x, y2: b.y,
+            stroke: "transparent", "stroke-width": 3.5, "stroke-linecap": "round"
+          }));
+
+          // Link label pill
+          const mx = (a.x + b.x) / 2;
+          const my = (a.y + b.y) / 2;
+          const isVertical = Math.abs(a.x - b.x) < 10;
+          const lx = isVertical ? mx + 46 : mx;
+          const ly = isVertical ? my + 24 : my - 16;
+          const lw = Math.ceil(measureLabelWidth(lk.label, 6.4, 10.2) + 18);
+
+          g.appendChild(svgEl("rect", {
+            x: lx - lw / 2, y: ly - 10, width: lw, height: 19, rx: 9.5,
+            fill: "#FFFFFF", stroke: "#E5E7EB", "stroke-width": 1
+          }));
+          const ltxt = svgEl("text", {
+            x: lx, y: ly + 3, "text-anchor": "middle",
+            fill: "#687385", "font-size": 10.5, "font-weight": 500,
+            "font-family": "var(--font-mono)"
+          });
+          ltxt.textContent = lk.label;
+          g.appendChild(ltxt);
+
+          els.layerLinks.appendChild(g);
+        }
+
+        // Nodes
+        els.layerNodes.innerHTML = "";
+        for (const n of scene.nodes) {
+          const g = svgEl("g", {
+            class: "node-group",
+            transform: `translate(${n.x}, ${n.y})`,
+            "data-node": n.id,
+            tabindex: 0,
+            role: "button",
+            "aria-label": `${n.label} ${n.sub}`
+          });
+
+          const isAlertNode = n.type === "middlebox";
+          g.appendChild(svgEl("rect", {
+            class: "node-card",
+            x: -27, y: -27, width: 54, height: 54, rx: 13,
+            fill: isAlertNode ? "#FEF2F2" : "#FFFFFF",
+            stroke: isAlertNode ? "#FCA5A5" : "#CBD5E1",
+            "stroke-width": 1.4,
+            filter: "url(#nodeShadow)"
+          }));
+
+          // Icon inside (24x24 centered)
+          const iconG = svgEl("g", {
+            transform: "translate(-12, -12)",
+            fill: "none",
+            stroke: isAlertNode ? "#DC2626" : "#141B29",
+            "stroke-width": 1.75,
+            "stroke-linecap": "round",
+            "stroke-linejoin": "round"
+          });
+          iconG.innerHTML = ICON_PATHS[n.type] || ICON_PATHS.host;
+          g.appendChild(iconG);
+
+          // Label below node
+          const labelY = 44;
+          const title = svgEl("text", {
+            x: 0, y: labelY, "text-anchor": "middle",
+            fill: isAlertNode ? "#B91C1C" : "#141B29",
+            "font-size": 12.5, "font-weight": 600
+          });
+          title.textContent = n.label;
+          g.appendChild(title);
+
+          const sub = svgEl("text", {
+            x: 0, y: labelY + 16, "text-anchor": "middle",
+            fill: "#4B5565", "font-size": 10.5,
+            "font-family": "var(--font-mono)"
+          });
+          sub.textContent = n.sub;
+          g.appendChild(sub);
+
+          if (n.mac) {
+            const mac = svgEl("text", {
+              x: 0, y: labelY + 30, "text-anchor": "middle",
+              fill: "#687385", "font-size": 10,
+              "font-family": "var(--font-mono)"
+            });
+            mac.textContent = n.mac;
+            g.appendChild(mac);
+          }
+
+          g.addEventListener("click", () => openNodePopover(n));
+          g.addEventListener("keydown", (e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              openNodePopover(n);
+            }
+          });
+          els.layerNodes.appendChild(g);
+        }
+      }
+
+      function renderScrubber() {
+        const scene = getScene();
+        els.scrubber.innerHTML = "";
+        scene.steps.forEach((st, idx) => {
+          const btn = document.createElement("button");
+          btn.type = "button";
+          btn.className = "scrub-seg tabular";
+          btn.textContent = String(idx + 1);
+          btn.title = `步骤 ${idx + 1}: ${st.title}`;
+          btn.addEventListener("click", () => {
+            stopAutoPlay();
+            goToStep(idx, true);
+          });
+          els.scrubber.appendChild(btn);
+        });
+      }
+
+      function updateScrubberState() {
+        const scene = getScene();
+        const segs = els.scrubber.querySelectorAll(".scrub-seg");
+        segs.forEach((seg, idx) => {
+          const st = scene.steps[idx];
+          seg.className = `scrub-seg tabular tone-${st.tone}`;
+          if (idx < state.stepIdx) seg.classList.add("visited");
+          if (idx === state.stepIdx) seg.classList.add("active");
+        });
+      }
+
+      function renderTcpdumpList() {
+        const scene = getScene();
+        els.tcpdumpList.innerHTML = "";
+        scene.steps.forEach((st, idx) => {
+          const btn = document.createElement("button");
+          btn.type = "button";
+          btn.className = `dump-line tone-${st.tone}`;
+          btn.innerHTML = `
+            <span class="dump-dot" aria-hidden="true"></span>
+            <span class="dump-probe">${st.probe}</span>
+            <span class="dump-text">${escapeHtml(st.tcpdump)}</span>
+          `;
+          btn.addEventListener("click", () => {
+            stopAutoPlay();
+            goToStep(idx, true);
+          });
+          els.tcpdumpList.appendChild(btn);
+        });
+      }
+
+      function updateTcpdumpHighlight() {
+        const lines = els.tcpdumpList.querySelectorAll(".dump-line");
+        lines.forEach((line, idx) => {
+          line.classList.toggle("active", idx === state.stepIdx);
+          line.classList.toggle("future", idx > state.stepIdx);
+          if (idx === state.stepIdx) {
+            const list = els.tcpdumpList;
+            const targetTop = line.offsetTop - (list.clientHeight - line.clientHeight) / 2;
+            list.scrollTop = Math.max(0, targetTop);
+          }
+        });
+      }
+
+      function escapeHtml(str) {
+        return String(str)
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;");
+      }
+
+      function renderInspector(step) {
+        const diffs = step.diffs || {};
+        const alerts = new Set(step.alerts || []);
+
+        function rowHtml(key, label, value) {
+          const diff = diffs[key];
+          const isAlert = alerts.has(key);
+          const isChanged = diff && diff.old !== undefined;
+          const rowClass = isAlert ? "field-row alert" : (isChanged ? "field-row changed" : "field-row");
+
+          let valHtml = `<span class="field-val">${escapeHtml(value)}</span>`;
+          if (isChanged) {
+            valHtml = `
+              <span class="field-old">${escapeHtml(diff.old)}</span>
+              <span class="field-arrow">→</span>
+              <span class="field-val">${escapeHtml(value)}</span>
+              <span class="diff-chip">${escapeHtml(diff.tag)}</span>
+            `;
+          } else if (diff && diff.keep) {
+            valHtml = `
+              <span class="field-val">${escapeHtml(value)}</span>
+              <span class="keep-chip">${escapeHtml(diff.keep)}</span>
+            `;
+          }
+          if (isAlert) {
+            valHtml += `<span class="alert-chip">伪造特征</span>`;
+          }
+
+          return `
+            <div class="${rowClass}">
+              <span class="field-name">${escapeHtml(label)}</span>
+              <div class="field-val-wrap">${valHtml}</div>
+            </div>
+          `;
+        }
+
+        const p = step.packet;
+        let html = `
+          <div class="layer-block">
+            <div class="layer-head"><span>L2 数据链路层（以太网帧）</span><span class="layer-tag">Ethernet II</span></div>
+            <div class="field-grid">
+              ${rowHtml("srcMac", "Src MAC", p.l2.srcMac)}
+              ${rowHtml("dstMac", "Dst MAC", p.l2.dstMac)}
+            </div>
+          </div>
+
+          <div class="layer-block">
+            <div class="layer-head"><span>L3 网络层（IP 报文）</span><span class="layer-tag">IPv4</span></div>
+            <div class="field-grid">
+              ${rowHtml("srcIp", "Src IP", p.l3.srcIp)}
+              ${rowHtml("dstIp", "Dst IP", p.l3.dstIp)}
+              ${rowHtml("ttl", "TTL 生存时间", p.l3.ttl)}
+              ${rowHtml("id", "IP Identification", p.l3.id)}
+            </div>
+          </div>
+
+          <div class="layer-block">
+            <div class="layer-head"><span>L4 传输层（TCP 段）</span><span class="layer-tag">TCP</span></div>
+            <div class="field-grid">
+              ${rowHtml("srcPort", "Src Port", p.l4.srcPort)}
+              ${rowHtml("dstPort", "Dst Port", p.l4.dstPort)}
+              ${rowHtml("flags", "TCP Flags", p.l4.flags)}
+              ${rowHtml("seqAck", "Seq / Ack", p.l4.seqAck)}
+              ${rowHtml("win", "Window 窗口", p.l4.win)}
+            </div>
+          </div>
+
+          <div class="layer-block">
+            <div class="layer-head"><span>L7 / 连接状态说明</span><span class="layer-tag">State</span></div>
+            <div class="field-grid">
+              <div class="field-row">
+                <span class="field-val" style="font-family:var(--font-sans);font-size:12px;color:var(--text-secondary);text-align:left;">${escapeHtml(p.l7)}</span>
+              </div>
+            </div>
+          </div>
+        `;
+
+        if (step.showCompare) {
+          html += `
+            <div class="compare-box">
+              <div class="compare-title">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 9v4M12 17h.01"></path>
+                  <path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"></path>
+                </svg>
+                <span>真实服务端 vs 旁路伪造包指纹对比</span>
+              </div>
+              <table class="compare-table">
+                <thead>
+                  <tr><th>字段</th><th>真实 172.19.2.125</th><th>旁路伪造 RST</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>到达 TTL</td><td class="mono compare-real">62 (初始 64)</td><td class="mono compare-fake">127 (初始 128)</td></tr>
+                  <tr><td>IP ID</td><td class="mono compare-real">0 (DF)</td><td class="mono compare-fake">28753 (固定特征)</td></tr>
+                  <tr><td>Window</td><td class="mono compare-real">14480</td><td class="mono compare-fake">8224 (固定特征)</td></tr>
+                  <tr><td>Ack 值</td><td class="mono compare-real">正常递增确认</td><td class="mono compare-fake">Ack=1 (未确认517B)</td></tr>
+                </tbody>
+              </table>
+            </div>
+          `;
+        }
+
+        els.inspectorBody.innerHTML = html;
+      }
+
+      function highlightLinkPath(fromId, toId, tone) {
+        const scene = getScene();
+        const strokeColor = (TONE_MAP[tone] || TONE_MAP.sapphire).stroke;
+        // Reset all link overlays
+        els.layerLinks.querySelectorAll(".link-overlay").forEach(el => {
+          el.setAttribute("stroke", "transparent");
+          el.classList.remove("link-active-flow");
+        });
+
+        if (fromId === toId) return;
+
+        // Find node indices along main horizontal axis or direct link
+        const orderedIds = scene.nodes.filter(n => n.type !== "middlebox").map(n => n.id);
+        const idxA = orderedIds.indexOf(fromId);
+        const idxB = orderedIds.indexOf(toId);
+
+        const activeSegments = [];
+        if (idxA !== -1 && idxB !== -1) {
+          const dir = idxB > idxA ? 1 : -1;
+          for (let i = idxA; i !== idxB; i += dir) {
+            activeSegments.push([orderedIds[i], orderedIds[i + dir]]);
+          }
+        } else {
+          // Involves middlebox
+          if (fromId === "middlebox" && toId !== "gw1") {
+            activeSegments.push(["middlebox", "gw1"]);
+            const idxTarget = orderedIds.indexOf(toId);
+            const idxGw1 = orderedIds.indexOf("gw1");
+            const dir = idxTarget > idxGw1 ? 1 : -1;
+            for (let i = idxGw1; i !== idxTarget; i += dir) {
+              activeSegments.push([orderedIds[i], orderedIds[i + dir]]);
+            }
+          } else {
+            activeSegments.push([fromId, toId]);
+          }
+        }
+
+        activeSegments.forEach(([u, v]) => {
+          const selector1 = `[data-link="${u}-${v}"] .link-overlay`;
+          const selector2 = `[data-link="${v}-${u}"] .link-overlay`;
+          const overlay = els.layerLinks.querySelector(selector1) || els.layerLinks.querySelector(selector2);
+          if (overlay) {
+            overlay.setAttribute("stroke", strokeColor);
+            overlay.classList.add("link-active-flow");
+          }
+        });
+      }
+
+      function buildWaypoints(fromId, toId) {
+        const scene = getScene();
+        const orderedIds = scene.nodes.filter(n => n.type !== "middlebox").map(n => n.id);
+        const pts = [];
+
+        if (fromId === toId) {
+          const n = findNode(fromId);
+          return [{ x: n.x, y: n.y }];
+        }
+
+        if (fromId === "middlebox" && toId !== "gw1") {
+          pts.push(findNode("middlebox"));
+          pts.push(findNode("gw1"));
+          const idxGw1 = orderedIds.indexOf("gw1");
+          const idxTarget = orderedIds.indexOf(toId);
+          const dir = idxTarget > idxGw1 ? 1 : -1;
+          for (let i = idxGw1 + dir; i !== idxTarget + dir; i += dir) {
+            pts.push(findNode(orderedIds[i]));
+          }
+          return pts.map(n => ({ x: n.x, y: n.y }));
+        }
+
+        const idxA = orderedIds.indexOf(fromId);
+        const idxB = orderedIds.indexOf(toId);
+        if (idxA !== -1 && idxB !== -1) {
+          const dir = idxB > idxA ? 1 : -1;
+          for (let i = idxA; i !== idxB + dir; i += dir) {
+            pts.push(findNode(orderedIds[i]));
+          }
+          return pts.map(n => ({ x: n.x, y: n.y }));
+        }
+
+        return [findNode(fromId), findNode(toId)].map(n => ({ x: n.x, y: n.y }));
+      }
+
+      function interpolateWaypoints(pts, t) {
+        if (pts.length === 1) return pts[0];
+        let total = 0;
+        const segLens = [];
+        for (let i = 0; i < pts.length - 1; i++) {
+          const dx = pts[i + 1].x - pts[i].x;
+          const dy = pts[i + 1].y - pts[i].y;
+          const len = Math.hypot(dx, dy);
+          segLens.push(len);
+          total += len;
+        }
+        let target = total * t;
+        for (let i = 0; i < segLens.length; i++) {
+          if (target <= segLens[i] || i === segLens.length - 1) {
+            const localT = segLens[i] === 0 ? 0 : target / segLens[i];
+            return {
+              x: pts[i].x + (pts[i + 1].x - pts[i].x) * localT,
+              y: pts[i].y + (pts[i + 1].y - pts[i].y) * localT
+            };
+          }
+          target -= segLens[i];
+        }
+        return pts[pts.length - 1];
+      }
+
+      function createCapsuleGroup(label, tone, faded = false) {
+        const theme = TONE_MAP[tone] || TONE_MAP.sapphire;
+        const textW = measureLabelWidth(label, 6.6, 10.6);
+        const w = Math.max(96, Math.ceil(textW + 32));
+        const g = svgEl("g", {
+          opacity: faded ? 0.56 : 1,
+          filter: faded ? "" : "url(#capsuleShadow)"
+        });
+        g.appendChild(svgEl("rect", {
+          x: -w / 2, y: -13, width: w, height: 26, rx: 13,
+          fill: "#FFFFFF", stroke: theme.stroke, "stroke-width": 1.8
+        }));
+        g.appendChild(svgEl("circle", {
+          cx: -w / 2 + 12, cy: 0, r: 3.5, fill: theme.stroke
+        }));
+        const txt = svgEl("text", {
+          x: 6, y: 3.8, "text-anchor": "middle",
+          fill: theme.text, "font-size": 10.5, "font-weight": 600,
+          "font-family": "var(--font-mono)"
+        });
+        txt.textContent = label;
+        g.appendChild(txt);
+        return g;
+      }
+
+      function triggerArrivalPulse(nodeId, tone) {
+        const n = findNode(nodeId);
+        if (!n) return;
+        const theme = TONE_MAP[tone] || TONE_MAP.sapphire;
+        els.layerPulse.innerHTML = "";
+
+        const ring = svgEl("rect", {
+          x: n.x - 27, y: n.y - 27, width: 54, height: 54, rx: 13,
+          fill: "none", stroke: theme.stroke, "stroke-width": 2.4, opacity: 0.9
+        });
+        els.layerPulse.appendChild(ring);
+
+        // Animate expansion via rAF
+        const start = performance.now();
+        const dur = 620;
+        function stepPulse(now) {
+          const p = Math.min(1, (now - start) / dur);
+          const ease = 1 - Math.pow(1 - p, 3);
+          const expand = ease * 15;
+          ring.setAttribute("x", String(n.x - 27 - expand));
+          ring.setAttribute("y", String(n.y - 27 - expand));
+          ring.setAttribute("width", String(54 + expand * 2));
+          ring.setAttribute("height", String(54 + expand * 2));
+          ring.setAttribute("rx", String(13 + expand * 0.4));
+          ring.setAttribute("opacity", String((1 - p) * 0.85));
+          if (p < 1) {
+            requestAnimationFrame(stepPulse);
+          } else {
+            ring.remove();
+          }
+        }
+        requestAnimationFrame(stepPulse);
+      }
+
+      function highlightActiveNode(nodeId, tone) {
+        const scene = getScene();
+        const theme = TONE_MAP[tone] || TONE_MAP.sapphire;
+        els.layerNodes.querySelectorAll(".node-group").forEach(g => {
+          const id = g.getAttribute("data-node");
+          const card = g.querySelector(".node-card");
+          const isAlert = id === "middlebox";
+          if (id === nodeId) {
+            card.setAttribute("stroke", theme.stroke);
+            card.setAttribute("stroke-width", "2.4");
+            card.setAttribute("fill", theme.fill);
+          } else {
+            card.setAttribute("stroke", isAlert ? "#FCA5A5" : "#CBD5E1");
+            card.setAttribute("stroke-width", "1.4");
+            card.setAttribute("fill", isAlert ? "#FEF2F2" : "#FFFFFF");
+          }
+        });
+      }
+
+      function animatePacketForStep(step, instantEnd = false) {
+        if (state.rafId) {
+          cancelAnimationFrame(state.rafId);
+          state.rafId = null;
+        }
+        els.layerPackets.innerHTML = "";
+
+        const primaryPts = buildWaypoints(step.from, step.to);
+        const capPrimary = createCapsuleGroup(step.capsule, step.tone, false);
+        els.layerPackets.appendChild(capPrimary);
+
+        let capSecondary = null;
+        let secPts = null;
+        if (step.secondaryFrom && step.secondaryTo) {
+          secPts = buildWaypoints(step.secondaryFrom, step.secondaryTo);
+          capSecondary = createCapsuleGroup(step.secondaryLabel || "原包", "indigo", true);
+          els.layerPackets.appendChild(capSecondary);
+        }
+
+        const placeAt = (progress) => {
+          const ease = progress < 0.5
+            ? 4 * progress * progress * progress
+            : 1 - Math.pow(-2 * progress + 2, 3) / 2;
+
+          if (primaryPts.length === 1) {
+            const p = primaryPts[0];
+            const bob = Math.sin(progress * Math.PI) * -6;
+            capPrimary.setAttribute("transform", `translate(${p.x}, ${p.y - 40 + bob})`);
+          } else {
+            const pos = interpolateWaypoints(primaryPts, ease);
+            capPrimary.setAttribute("transform", `translate(${pos.x}, ${pos.y - 30})`);
+          }
+
+          if (capSecondary && secPts) {
+            const pos2 = interpolateWaypoints(secPts, ease);
+            capSecondary.setAttribute("transform", `translate(${pos2.x}, ${pos2.y - 30})`);
+          }
+        };
+
+        if (instantEnd || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+          placeAt(1);
+          triggerArrivalPulse(step.to, step.tone);
+          return;
+        }
+
+        const duration = Math.round(780 / state.speed);
+        const startTime = performance.now();
+
+        function tick(now) {
+          const p = Math.min(1, (now - startTime) / duration);
+          placeAt(p);
+          if (p < 1) {
+            state.rafId = requestAnimationFrame(tick);
+          } else {
+            state.rafId = null;
+            triggerArrivalPulse(step.to, step.tone);
+          }
+        }
+        state.rafId = requestAnimationFrame(tick);
+      }
+
+      function goToStep(idx, animate = true) {
+        const scene = getScene();
+        state.stepIdx = Math.max(0, Math.min(scene.steps.length - 1, idx));
+        const step = scene.steps[state.stepIdx];
+
+        els.stepBadge.className = `step-pill tabular tone-${step.tone}`;
+        els.stepBadge.textContent = `步骤 ${state.stepIdx + 1} / ${scene.steps.length}`;
+        els.stepTitle.textContent = step.title;
+        els.stepDesc.textContent = step.desc;
+
+        els.protoBadge.className = `proto-badge tone-${step.tone}`;
+        els.protoBadge.textContent = step.proto;
+
+        els.btnPrev.disabled = state.stepIdx === 0;
+        els.btnNext.disabled = state.stepIdx === scene.steps.length - 1;
+
+        renderInspector(step);
+        updateScrubberState();
+        updateTcpdumpHighlight();
+        highlightLinkPath(step.from, step.to, step.tone);
+        highlightActiveNode(step.to, step.tone);
+        animatePacketForStep(step, !animate);
+      }
+
+      function scheduleNextAuto() {
+        clearTimeout(state.timerId);
+        if (!state.playing) return;
+        const scene = getScene();
+        if (state.stepIdx >= scene.steps.length - 1) {
+          stopAutoPlay();
+          return;
+        }
+        const interval = Math.round(2550 / state.speed);
+        state.timerId = setTimeout(() => {
+          if (!state.playing) return;
+          goToStep(state.stepIdx + 1, true);
+          scheduleNextAuto();
+        }, interval);
+      }
+
+      function startAutoPlay() {
+        const scene = getScene();
+        if (state.stepIdx >= scene.steps.length - 1) {
+          goToStep(0, true);
+        }
+        state.playing = true;
+        els.playLabel.textContent = "暂停";
+        els.playIcon.innerHTML = '<rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>';
+        scheduleNextAuto();
+      }
+
+      function stopAutoPlay() {
+        state.playing = false;
+        clearTimeout(state.timerId);
+        els.playLabel.textContent = "播放";
+        els.playIcon.innerHTML = '<polygon points="6 4 20 12 6 20 6 4"></polygon>';
+      }
+
+      function switchScene(sceneId, initialStep = 0, shouldPlay = false) {
+        if (!SCENES[sceneId]) return;
+        stopAutoPlay();
+        state.sceneId = sceneId;
+        document.querySelectorAll(".scene-btn").forEach(btn => {
+          btn.classList.toggle("active", btn.getAttribute("data-scene") === sceneId);
+        });
+        renderTopologyBase();
+        renderScrubber();
+        renderTcpdumpList();
+        goToStep(initialStep, true);
+        if (shouldPlay) startAutoPlay();
+      }
+
+      // Wire events
+      document.querySelectorAll(".scene-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+          switchScene(btn.getAttribute("data-scene"), 0, true);
+        });
+      });
+
+      document.querySelectorAll(".speed-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+          state.speed = parseFloat(btn.getAttribute("data-speed")) || 1;
+          document.querySelectorAll(".speed-btn").forEach(b => b.classList.remove("active"));
+          btn.classList.add("active");
+          if (state.playing) scheduleNextAuto();
+        });
+      });
+
+      els.btnPlay.addEventListener("click", () => {
+        if (state.playing) stopAutoPlay();
+        else startAutoPlay();
+      });
+
+      els.btnPrev.addEventListener("click", () => {
+        stopAutoPlay();
+        goToStep(state.stepIdx - 1, true);
+      });
+
+      els.btnNext.addEventListener("click", () => {
+        stopAutoPlay();
+        goToStep(state.stepIdx + 1, true);
+      });
+
+      els.btnReplay.addEventListener("click", () => {
+        stopAutoPlay();
+        goToStep(0, true);
+        startAutoPlay();
+      });
+
+      els.nodePopoverClose.addEventListener("click", closePopover);
+
+      document.addEventListener("keydown", (e) => {
+        if (e.target && ["INPUT", "TEXTAREA"].includes(e.target.tagName)) return;
+        if (e.code === "Space") {
+          e.preventDefault();
+          if (state.playing) stopAutoPlay();
+          else startAutoPlay();
+        } else if (e.key === "ArrowRight") {
+          e.preventDefault();
+          stopAutoPlay();
+          goToStep(state.stepIdx + 1, true);
+        } else if (e.key === "ArrowLeft") {
+          e.preventDefault();
+          stopAutoPlay();
+          goToStep(state.stepIdx - 1, true);
+        }
+      });
+
+      // Read URL params for Hexo iframe deep linking (?scene=docker-tls-rst&step=8&autoplay=0)
+      const params = new URLSearchParams(window.location.search);
+      const paramScene = params.get("scene");
+      const initialScene = SCENES[paramScene] ? paramScene : "routed";
+      const stepParam = parseInt(params.get("step"), 10);
+      const hasExplicitStep = !Number.isNaN(stepParam) && stepParam >= 1;
+      const initialStep = hasExplicitStep ? stepParam - 1 : 0;
+      const autoplayParam = params.get("autoplay");
+      const shouldAutoPlay = autoplayParam === "1" || (!hasExplicitStep && autoplayParam !== "0");
+
+      switchScene(initialScene, initialStep, shouldAutoPlay);
+    })();
+  </script>
+</body>
+</html>

@@ -54,6 +54,8 @@
 
 
 
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600&display=swap">
 
   <noscript>
     <link rel="stylesheet" href="/css/noscript.css">
@@ -91,7 +93,7 @@
 
 
 <nav class="site-nav">
-  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-series"><a href="/series/" rel="section"><i class="fa fa-layer-group fa-fw"></i>Series</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li>
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-explore"><a href="/explore/" rel="section"><i class="fa fa-compass fa-fw"></i>Explore</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li>
   </ul>
 </nav>
 
@@ -351,7 +353,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">476k</span>
+    <span title="Symbols count total">477k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
@@ -490,6 +492,299 @@ document.querySelectorAll('figure.highlight').forEach(function (el) {
   var lang = el.className.replace('highlight', '').trim().split(/\s+/)[0];
   if (lang && lang !== 'plaintext') el.setAttribute('data-lang', lang);
 });
+(function () {
+  var header = document.querySelector('header.header');
+  if (header) {
+    var isScrolled = null;
+    var updateHeaderScroll = function () {
+      var next = window.scrollY > 12;
+      if (next !== isScrolled) {
+        isScrolled = next;
+        header.classList.toggle('is-scrolled', next);
+      }
+    };
+    updateHeaderScroll();
+    window.addEventListener('scroll', updateHeaderScroll, { passive: true });
+  }
+
+  var menu = document.querySelector('.site-nav .main-menu');
+  var rail = null;
+  if (menu) {
+    rail = document.createElement('li');
+    rail.className = 'menu-hover-rail';
+    rail.setAttribute('aria-hidden', 'true');
+    menu.insertBefore(rail, menu.firstChild);
+    menu.classList.add('has-hover-rail');
+
+    var moveRail = function (link) {
+      if (window.innerWidth < 768) return;
+      if (link.classList.contains('menu-item-active')) {
+        rail.classList.remove('is-visible');
+        return;
+      }
+      var menuRect = menu.getBoundingClientRect();
+      var linkRect = link.getBoundingClientRect();
+      var x = linkRect.left - menuRect.left - menu.clientLeft;
+      var w = linkRect.width;
+      if (!rail.classList.contains('is-visible')) {
+        rail.style.transition = 'none';
+        rail.style.transform = 'translate3d(' + x + 'px, 0, 0)';
+        rail.style.width = w + 'px';
+        void rail.offsetWidth;
+        rail.style.transition = '';
+        rail.classList.add('is-visible');
+      } else {
+        rail.style.transform = 'translate3d(' + x + 'px, 0, 0)';
+        rail.style.width = w + 'px';
+      }
+    };
+
+    menu.querySelectorAll('.menu-item a').forEach(function (link) {
+      link.addEventListener('mouseenter', function () { moveRail(link); });
+      link.addEventListener('focus', function () { moveRail(link); });
+    });
+
+    menu.addEventListener('mouseleave', function () {
+      rail.classList.remove('is-visible');
+    });
+
+    menu.addEventListener('focusout', function (e) {
+      if (!menu.contains(e.relatedTarget)) {
+        rail.classList.remove('is-visible');
+      }
+    });
+  }
+
+  var toggle = document.querySelector('.site-nav-toggle .toggle');
+  if (toggle) {
+    toggle.setAttribute('tabindex', '0');
+    toggle.setAttribute('aria-expanded', 'false');
+
+    var syncExpanded = function () {
+      toggle.setAttribute('aria-expanded', document.body.classList.contains('site-nav-on') ? 'true' : 'false');
+    };
+
+    toggle.addEventListener('click', function () {
+      requestAnimationFrame(syncExpanded);
+    });
+
+    toggle.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        toggle.click();
+      }
+    });
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && document.body.classList.contains('site-nav-on')) {
+        toggle.click();
+        toggle.focus();
+      }
+    });
+  }
+
+  var brand = document.querySelector('.site-meta .brand');
+  var titleEl = brand ? brand.querySelector('.site-title') : null;
+  var reducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (brand && titleEl && !brand.classList.contains('has-brand-mark')) {
+    var SVG_NS = 'http://www.w3.org/2000/svg';
+    var brandMark = document.createElement('span');
+    brandMark.className = 'brand-mark';
+    brandMark.setAttribute('aria-hidden', 'true');
+
+    var ring = document.createElement('span');
+    ring.className = 'brand-mark-ring';
+
+    var box = document.createElement('span');
+    box.className = 'brand-mark-box';
+
+    var sheen = document.createElement('span');
+    sheen.className = 'brand-mark-sheen';
+
+    var svg = document.createElementNS(SVG_NS, 'svg');
+    svg.setAttribute('class', 'brand-mark-svg');
+    svg.setAttribute('viewBox', '0 0 24 24');
+    svg.setAttribute('width', '22');
+    svg.setAttribute('height', '22');
+    svg.setAttribute('fill', 'none');
+    svg.setAttribute('aria-hidden', 'true');
+
+    var chevron = document.createElementNS(SVG_NS, 'polyline');
+    chevron.setAttribute('class', 'brand-chevron');
+    chevron.setAttribute('points', '4 7.5 9.5 12 4 16.5');
+    chevron.setAttribute('stroke', 'currentColor');
+    chevron.setAttribute('stroke-width', '2.4');
+    chevron.setAttribute('stroke-linecap', 'round');
+    chevron.setAttribute('stroke-linejoin', 'round');
+
+    var cursor = document.createElementNS(SVG_NS, 'line');
+    cursor.setAttribute('class', 'brand-cursor');
+    cursor.setAttribute('x1', '14');
+    cursor.setAttribute('y1', '16.5');
+    cursor.setAttribute('x2', '20');
+    cursor.setAttribute('y2', '16.5');
+    cursor.setAttribute('stroke', 'currentColor');
+    cursor.setAttribute('stroke-width', '2.4');
+    cursor.setAttribute('stroke-linecap', 'round');
+
+    svg.appendChild(chevron);
+    svg.appendChild(cursor);
+    box.appendChild(sheen);
+    box.appendChild(svg);
+    brandMark.appendChild(ring);
+    brandMark.appendChild(box);
+    brand.insertBefore(brandMark, titleEl);
+    brand.classList.add('has-brand-mark');
+
+    var rawTitle = titleEl.textContent.trim();
+    titleEl.setAttribute('aria-label', rawTitle);
+    titleEl.textContent = '';
+    var chars = [];
+    for (var i = 0; i < rawTitle.length; i++) {
+      var ch = rawTitle.charAt(i);
+      var span = document.createElement('span');
+      span.className = 'brand-char';
+      span.setAttribute('aria-hidden', 'true');
+      span.textContent = ch;
+      span.dataset.char = ch;
+      span.style.setProperty('--i', i);
+      titleEl.appendChild(span);
+      chars.push(span);
+    }
+    titleEl.classList.add('has-brand-chars');
+
+    if (!reducedMotion) {
+      brand.classList.add('is-entering');
+      setTimeout(function () {
+        brand.classList.remove('is-entering');
+      }, 950);
+
+      var decodeRaf = null;
+      var resolveTimers = [];
+      var lastDecodeAt = 0;
+      var glyphs = '>_/#$01*+:~';
+
+      var resetChars = function () {
+        if (decodeRaf) {
+          cancelAnimationFrame(decodeRaf);
+          decodeRaf = null;
+        }
+        while (resolveTimers.length) {
+          clearTimeout(resolveTimers.pop());
+        }
+        chars.forEach(function (s) {
+          s.textContent = s.dataset.char;
+          s.style.minWidth = '';
+          s.classList.remove('is-scrambling');
+          s.classList.remove('is-resolved');
+        });
+      };
+
+      var triggerPulse = function () {
+        brandMark.classList.remove('is-pulsing');
+        void brandMark.offsetWidth;
+        brandMark.classList.add('is-pulsing');
+      };
+
+      var startDecode = function () {
+        var now = Date.now();
+        if (now - lastDecodeAt < 650) return;
+        lastDecodeAt = now;
+        resetChars();
+
+        chars.forEach(function (s) {
+          s.style.minWidth = Math.ceil(s.getBoundingClientRect().width) + 'px';
+        });
+
+        var resolvedFlags = chars.map(function () { return false; });
+        var start = performance.now();
+        var totalDuration = (chars.length - 1) * 70 + 280;
+
+        var tick = function (ts) {
+          var elapsed = ts - start;
+          for (var j = 0; j < chars.length; j++) {
+            var s = chars[j];
+            var startJ = j * 70;
+            var endJ = startJ + 280;
+            if (elapsed < startJ) {
+              s.textContent = s.dataset.char;
+            } else if (elapsed < endJ) {
+              s.classList.add('is-scrambling');
+              var step = Math.floor((elapsed - startJ) / 75);
+              var idx = (j * 5 + step * 3) % glyphs.length;
+              s.textContent = glyphs.charAt(idx);
+            } else if (!resolvedFlags[j]) {
+              resolvedFlags[j] = true;
+              s.textContent = s.dataset.char;
+              s.classList.remove('is-scrambling');
+              s.classList.add('is-resolved');
+              (function (target) {
+                resolveTimers.push(setTimeout(function () {
+                  target.classList.remove('is-resolved');
+                }, 360));
+              })(s);
+            }
+          }
+          if (elapsed < totalDuration) {
+            decodeRaf = requestAnimationFrame(tick);
+          } else {
+            decodeRaf = null;
+            chars.forEach(function (s) {
+              s.style.minWidth = '';
+            });
+          }
+        };
+        decodeRaf = requestAnimationFrame(tick);
+      };
+
+      brand.addEventListener('mouseenter', function () {
+        triggerPulse();
+        startDecode();
+      });
+
+      brand.addEventListener('focus', function () {
+        if (brand.matches && brand.matches(':focus-visible')) {
+          triggerPulse();
+          startDecode();
+        }
+      });
+
+      brand.addEventListener('mousemove', function (e) {
+        var rect = brand.getBoundingClientRect();
+        if (!rect.width || !rect.height) return;
+        var rx = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+        var ry = ((e.clientY - rect.top) / rect.height) * 2 - 1;
+        rx = Math.max(-1, Math.min(1, rx));
+        ry = Math.max(-1, Math.min(1, ry));
+        brandMark.style.setProperty('--tilt-y', (rx * 11).toFixed(2) + 'deg');
+        brandMark.style.setProperty('--tilt-x', (-ry * 10).toFixed(2) + 'deg');
+        brandMark.style.setProperty('--shift-x', (rx * 2).toFixed(2) + 'px');
+        brandMark.style.setProperty('--shift-y', (ry * 1.6).toFixed(2) + 'px');
+        brandMark.style.setProperty('--glow-x', ((rx + 1) * 50).toFixed(1) + '%');
+        brandMark.style.setProperty('--glow-y', ((ry + 1) * 50).toFixed(1) + '%');
+      });
+
+      brand.addEventListener('mouseleave', function () {
+        brandMark.style.setProperty('--tilt-x', '0deg');
+        brandMark.style.setProperty('--tilt-y', '0deg');
+        brandMark.style.setProperty('--shift-x', '0px');
+        brandMark.style.setProperty('--shift-y', '0px');
+        brandMark.style.setProperty('--glow-x', '50%');
+        brandMark.style.setProperty('--glow-y', '50%');
+        resetChars();
+      });
+    }
+  }
+
+  window.addEventListener('resize', function () {
+    if (rail) rail.classList.remove('is-visible');
+    if (toggle && window.innerWidth >= 768 && document.body.classList.contains('site-nav-on')) {
+      document.body.classList.remove('site-nav-on');
+      toggle.classList.remove('toggle-close');
+      toggle.setAttribute('aria-expanded', 'false');
+    }
+  });
+})();
 </script>
 
 </body>
